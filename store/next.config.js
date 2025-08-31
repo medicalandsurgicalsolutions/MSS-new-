@@ -43,5 +43,17 @@ module.exports = withPWA({
     ],
   },
 
+  // ✅ ADD THIS FOR RUNTIME FIX
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  
+  // ✅ DISABLE SERVER-SIDE FEATURES TEMPORARILY
+  poweredByHeader: false,
+  generateEtags: false,
+  
+  // ✅ FORCE STATIC GENERATION
+  output: 'standalone',
+
   ...nextTranslate(),
 });
