@@ -54,6 +54,10 @@ module.exports = withPWA({
   
   // ✅ FORCE STATIC GENERATION
   output: 'standalone',
+   env: {
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'https://mss-new-impz.vercel.app',
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+  },
 
   ...nextTranslate(),
 });
