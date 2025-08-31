@@ -1,18 +1,17 @@
-import SettingServices from "@services/SettingServices";
 import Document, { Html, Head, Main, NextScript } from "next/document";
 
 class MyDocument extends Document {
   static async getInitialProps(ctx) {
     const initialProps = await Document.getInitialProps(ctx);
 
-    // Fetch general metadata from backend API
-    const setting = await SettingServices.getStoreSeoSetting();
+    // ✅ REMOVE API CALL from getInitialProps
+    // const setting = await SettingServices.getStoreSeoSetting(); // ❌ COMMENT/REMOVE THIS
 
-    return { ...initialProps, setting };
+    return { ...initialProps, setting: null }; // ✅ Return null for setting
   }
 
   render() {
-    const setting = this.props.setting;
+    const setting = this.props.setting; // This will be null now
     return (
       <Html lang="en">
         <Head>
@@ -74,46 +73,37 @@ class MyDocument extends Document {
             }}
           />
           {/* End Google Tag Manager */}
-          <link rel="icon" href={setting?.favicon || "/favicon.png"} />
+          
+          {/* ✅ Use fallback values instead of API data */}
+          <link rel="icon" href="/favicon.png" />
           <meta
             property="og:title"
-            content={
-              setting?.meta_title ||
-              "Medical&SurgicalSolutions - Medical & Surgical Solutions"
-            }
+            content="Medical&SurgicalSolutions - Medical & Surgical Solutions"
           />
           <meta property="og:type" content="eCommerce Website" />
           <meta
             property="og:description"
-            content={
-              setting?.meta_description ||
-              "Medical & Surgical Solutions"
-            }
+            content="Medical & Surgical Solutions"
           />
           <meta
             name="keywords"
-            content={setting?.meta_keywords || "ecommenrce online store"}
+            content="ecommerce online store"
           />
           <meta
             property="og:url"
-            content={
-              setting?.meta_url || "https://medicalsurgicalsolutions.com/"
-            }
+            content="https://medicalsurgicalsolutions.com/"
           />
           <meta
             property="og:image"
-            content={
-              setting?.meta_img ||
-              "https://medicalsurgicalsolutions.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdvqwfpmxo%2Fimage%2Fupload%2Fv1727785807%2Fundefined%2FAsset_1-transformed.png&w=1920&q=75"
-            }
+            content="https://medicalsurgicalsolutions.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdvqwfpmxo%2Fimage%2Fupload%2Fv1727785807%2Fundefined%2FAsset_1-transformed.png&w=1920&q=75"
           />
+          
           <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="true" />
           <link
             href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
             rel="stylesheet"
           />
-
           <link
             href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
             rel="stylesheet"
