@@ -1,0 +1,94 @@
+        <div id="printable">
+          {/* Prepaid Section */}
+          <div className="relative flex items-center p-4  font-russo">
+            <div className="absolute left-1/2 transform -translate-x-1/2 font-bold text-lg">
+                {data?.paymentMethod === "RazorPay" ? "PREPAID" : "CASH ON DELIVERY"}
+            </div>
+            <div className="absolute left-0 font-bold text-lg">
+                {data?.paymentMethod === "RazorPay" ? "" : `AMOUNT ₹${data?.total}`}
+            </div>
+          </div>
+          
+          {/* Delivery Address */}
+          <div className="flex border-b justify-between">
+            <div className="mt-2 border-gray-300 pb-2 text-s">
+                <p className="font-bold">DELIVERY ADDRESS:</p>
+                <p>{data?.user_info?.name}</p>
+                <p>Contact Number: {data?.user_info?.contact}</p>
+                <div className="flex"><p className="mr-1">{data?.user_info?.flat},</p><p>{data?.user_info?.address}</p></div>
+                <p>{data?.user_info?.landmark}, {data?.user_info?.city}</p>
+                <p>{data?.user_info?.district} ,{data?.user_info?.state}, {data?.user_info?.country}, {data?.user_info?.zipCode}</p>
+            </div>
+            <div className="mt-2 border-gray-300 pb-2 text-s">
+                <img className="h-16" src="/shipping_logo.png" alt="logo" />
+                <p className="font-bold">Medical & Surgical Solutions</p>
+                <p className="font-bold">402 Ground Floor Patparganj Industrial Area Delhi - 110092</p>
+            </div>
+          </div>
+  
+          {/* Courier Details */}
+          <div className="mt-2 border-b border-gray-300 pb-2 text-s">
+            <p><span className="font-bold">Courier Name:</span> {data?.deliveryPartner}</p>
+            <p><span className="font-bold">Courier AWB No:</span> {data?.trackno}</p>
+          </div>
+  
+          {/* Barcode */}
+          {/* <div className="flex flex-col items-center my-4">
+            <div className="bg-black h-12 w-48"></div>
+            <p className="mt-1 font-bold">411004740593</p>
+          </div> */}
+          
+          {/* Seller Details */}
+          <div className="mt-2 border-b border-gray-300 pb-2 text-s">
+            <p className="font-bold"><span className="font-bold">Sold By:</span> Medical & Surgical Solutions</p>
+            <p className="font-bold"><span className="font-bold">Contact:</span> 9810141884</p>
+            <p className="font-bold">402 Ground Floor Patparganj Industrial Area Delhi - 110092</p>
+            <p><span className="font-bold">GSTIN:</span> {globalSetting?.vat_number}</p>
+          </div>
+  
+          {/* Product Details */}
+          <table className="w-full mt-2 border border-gray-300 text-s">
+            <thead>
+              <tr className="bg-gray-200 text-left">
+                <th className="p-2 border">Product</th>
+                <th className="p-2 border">HSN</th>
+                <th className="p-2 border">Qty</th>
+                <th className="p-2 border">Shipping Cost</th>
+                <th className="p-2 border">Invoice Value</th>
+              </tr>
+            </thead>
+            {data?.cart?.map((item)=>{
+                return(
+                    <tbody>
+                        <tr>
+                            <td className="p-2 border">{item?.title}</td>
+                            <td className="p-2 border">{item?.hsn}</td>
+                            <td className="p-2 border">{item?.quantity}</td>
+                            <td className="p-2 border">{item?.deliveryCharge > 0 ? `${item?.deliveryCharge} INR` : "Free Delivery"}</td>
+                            <td className="p-2 border">{item?.itemTotal} INR</td>
+                        </tr>
+                    </tbody>
+                )
+            })}
+          </table>
+          
+          {/* Dimensions & Tracking */}
+          <div className="mt-2 text-s">
+            <p><span className="font-bold">Total Amount:</span> ₹{data?.total}</p>
+            <p><span className="font-bold">Tracking ID:</span> {data?.trackno}</p>
+          </div>
+  
+          {/* Second Barcode */}
+          {/* <div className="flex flex-col items-center my-4">
+            <div className="bg-black h-12 w-48"></div>
+            <p className="mt-1 font-bold">123015</p>
+          </div> */}
+          
+          {/* Order ID & Return Address */}
+          <div className="mt-2 border-t border-gray-300 pt-2 text-s">
+            <p><span className="font-bold">Order ID:</span> {data?.invoice}</p>
+            <p className="font-bold mt-2">Return Address:</p>
+            <p className="font-bold">Medical & Surgical Solutions</p>
+            <p className="font-bold">402 Ground Floor Patparganj Industrial Area Delhi - 110092</p>
+          </div>
+        </div>
