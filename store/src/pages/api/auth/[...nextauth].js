@@ -1,7 +1,17 @@
 import NextAuth from "next-auth";
-import { getDynamicAuthOptions } from "@lib/next-auth-options";
+import GoogleProvider from "next-auth/providers/google";
+
+const staticOptions = {
+  providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    }),
+  ],
+  secret: process.env.NEXTAUTH_SECRET,
+};
 
 export default async function auth(req, res) {
-  const options = await getDynamicAuthOptions();
-  return NextAuth(req, res, options);
+  // Temporary: Static options use karo
+  return NextAuth(req, res, staticOptions);
 }
