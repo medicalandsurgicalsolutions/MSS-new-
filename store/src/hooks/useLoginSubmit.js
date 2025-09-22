@@ -2,10 +2,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
-import { signIn } from "next-auth/react";
+//import { signIn } from "next-auth/react";
 
 //internal import
-
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 
@@ -22,41 +21,44 @@ const useLoginSubmit = () => {
     formState: { errors },
   } = useForm();
 
-  const submitHandler = async ({ phone, password, name }) => {
+  const submitHandler = async ({ phone, password}) => {
     setLoading(true);
     if(!isOpen){
       try{
-        setLoading(true);
-        const userInfo = await CustomerServices.loginCustomer({phone, password});
-        notifySuccess(userInfo?.message);
+        //setLoading(true);
+        const userInfo = await CustomerServices.loginCustomer({phone});
+        notifySuccess(res.message || "OTP Sent Successfully!");
         setIsOpen(true);
         setIsBtnName("Login")
       }catch(err){
-        notifyError(err.message);
+        notifyError(err?.response?.data?.message || err.message);
       }
       finally{
         setLoading(false);
       }
-      }else{
-        const result = await signIn("credentials", {
-          redirect: false, // Changed to false to handle redirection manually
-          phone,
-          password,
-          callbackUrl: "/user/dashboard",
-        });
-        setLoading(false);
-        // console.log("First Log ", result);
-        if (result?.error) {
-          // console.error("SignIn Error: check", result.error);
-          notifyError("Invalid OTP!");
-        } 
-        else if (result?.ok) {
-          notifySuccess("Login Successfully");
-          setIsOpen(true);
-          const url = redirectUrl ? "/checkout" : result.url;
+      }else {
+      // STEP 2: Verify OTP
+      try {
+        const res = await CustomerServices.loginCustomer({ phone, password });
+
+        if (res?.token) {
+          notifySuccess("Login successful!");
+
+          // Save token in localStorage
+          localStorage.setItem("mss_token", res.token);
+
+          // Redirect
+          const url = redirectUrl ? "/checkout" : "/user/dashboard";
           await router.push(url);
+        } else {
+          notifyError(res?.message || "Invalid OTP!");
         }
+      } catch (err) {
+        notifyError(err?.response?.data?.message || err.message);
+      } finally {
+        setLoading(false);
       }
+    }
   };
 
   return {
@@ -70,4 +72,5 @@ const useLoginSubmit = () => {
   };
 };
 
+export default useLoginSubmit;
 export default useLoginSubmit;
