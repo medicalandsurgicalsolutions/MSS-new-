@@ -48,7 +48,7 @@ const Login = () => {
                         <InputArea
                           register={register}
                           label="otp"
-                          name="password"
+                          name="otp"
                           type="number"
                           placeholder="otp"
                           Icon={FiLock}
