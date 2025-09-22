@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import ReactGA from "react-ga4";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-// ❌ Removed SessionProvider
+import { SessionProvider } from "next-auth/react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 
 //internal import
@@ -28,6 +28,7 @@ let persistor = persistStore(store);
 // let stripePromise = getStripe();
 
 function MyApp({ Component, pageProps }) {
+  
   const router = useRouter();
 
   const {
@@ -49,6 +50,7 @@ function MyApp({ Component, pageProps }) {
         handlePageView(`/${router.pathname}`, "Medical&SurgicalSolutions");
       };
 
+      // Set up event listeners
       router.events.on("routeChangeComplete", handleRouteChange);
 
       return () => {
@@ -56,6 +58,8 @@ function MyApp({ Component, pageProps }) {
       };
     }
   }, [storeSetting]);
+
+  // console.log("storeSetting", storeSetting, "stripePromise", stripePromise);
 
   return (
     <>
@@ -75,6 +79,7 @@ function MyApp({ Component, pageProps }) {
         `}
       </Script>
 
+      {/* NoScript Fallback */}
       <noscript>
         <img
           height="1"
@@ -83,7 +88,6 @@ function MyApp({ Component, pageProps }) {
           src="https://www.facebook.com/tr?id=497784453413104&ev=PageView&noscript=1"
         />
       </noscript>
-
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
@@ -91,21 +95,22 @@ function MyApp({ Component, pageProps }) {
         />
       )}
 
-      {/* ✅ Removed SessionProvider */}
-      <UserProvider>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <SidebarProvider>
-              {/* <Elements stripe={stripePromise}> */}
-              <CartProvider>
-                <DefaultSeo />
-                <Component {...pageProps} />
-              </CartProvider>
-              {/* </Elements> */}
-            </SidebarProvider>
-          </PersistGate>
-        </Provider>
-      </UserProvider>
+      <SessionProvider>
+        <UserProvider>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <SidebarProvider>
+                {/* <Elements stripe={stripePromise}> */}
+                <CartProvider>
+                  <DefaultSeo />
+                  <Component {...pageProps} />
+                </CartProvider>
+                {/* </Elements> */}
+              </SidebarProvider>
+            </PersistGate>
+          </Provider>
+        </UserProvider>
+      </SessionProvider>
     </>
   );
 }
