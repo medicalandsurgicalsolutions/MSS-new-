@@ -494,14 +494,7 @@ const Footer = () => {
             </div>
             <p className="text-sm text-gray-300 leading-6">
                
-                <Link
-                  href="https://kanakdrishtiinfo.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white"
-                >
-                  
-                </Link>
+                
             </p>
         </div>
       </div>
