@@ -22,9 +22,9 @@ export default NextAuth({
       return session;
     },
   },
-  pages: {
-    signIn: '/auth/signin',
-    error: '/auth/error',
-  },
+  //pages: {
+    //signIn: '/auth/signin',
+    //error: '/auth/error',
+  //},
 });
 
