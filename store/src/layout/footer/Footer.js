@@ -500,7 +500,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="text-white"
                 >
-                  // Kanak Drishti Infotech
+                  
                 </Link>
             </p>
         </div>
