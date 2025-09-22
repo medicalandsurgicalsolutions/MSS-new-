@@ -493,7 +493,7 @@ const Footer = () => {
                 Copyright © 2024 Medical Surgical Solutions.
             </div>
             <p className="text-sm text-gray-300 leading-6">
-                Designed & Developed by {" "}
+               
                 <Link
                   href="https://kanakdrishtiinfo.com/"
                   target="_blank"
