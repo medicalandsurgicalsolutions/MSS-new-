@@ -368,7 +368,7 @@ const Footer = () => {
         </div>
 
         <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 bg-gray-300 shadow-sm border border-gray-50 rounded-lg">
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-8 items-center justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-4 items-center justify-between">
             <div className="col-span-1">
               {storeCustomizationSetting?.footer?.social_links_status && (
                 <div>
@@ -472,7 +472,7 @@ const Footer = () => {
                     <Image
                       width={274}
                       height={85}
-                      className="w-auto h-24"
+                      className="w-auto h-15"
                       src={
                         storeCustomizationSetting?.footer?.payment_method_img ||
                         "/payment-method/payment-logo.png"
