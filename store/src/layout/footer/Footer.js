@@ -368,7 +368,7 @@ const Footer = () => {
         </div>
 
         <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 bg-gray-300 shadow-sm border border-gray-50 rounded-lg">
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-4 items-center justify-between">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-3 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-3 items-center justify-between">
             <div className="col-span-1">
               {storeCustomizationSetting?.footer?.social_links_status && (
                 <div>
@@ -391,7 +391,7 @@ const Footer = () => {
                           target="_blank"
                           className="block text-center mx-auto text-gray-500 hover:text-white"
                         >
-                          <FacebookIcon size={34} round />
+                          <FacebookIcon size={24} round />
                         </Link>
                       </li>
                     )}
@@ -403,7 +403,7 @@ const Footer = () => {
                           target="_blank"
                           className="block text-center mx-auto text-red-500 hover:text-red"
                         >
-                          <FaYoutube size={34} round />
+                          <FaYoutube size={24} round />
                         </Link>
                       </li>
                     {storeCustomizationSetting?.footer?.social_pinterest && (
@@ -415,7 +415,7 @@ const Footer = () => {
                           target="_blank"
                           className="block text-center mx-auto text-red-500 hover:text-red"
                         >
-                          <FaInstagram size={34} round/>
+                          <FaInstagram size={24} round/>
                         </Link>
                       </li>
                     )}
@@ -428,7 +428,7 @@ const Footer = () => {
                           target="_blank"
                           className="block text-center mx-auto text-gray-500 hover:text-white"
                         >
-                          <LinkedinIcon size={34} round />
+                          <LinkedinIcon size={24} round />
                         </Link>
                       </li>
                     )}
@@ -441,7 +441,7 @@ const Footer = () => {
                           target="_blank"
                           className="block text-center mx-auto text-gray-500 hover:text-white"
                         >
-                          <WhatsappIcon size={34} round />
+                          <WhatsappIcon size={24} round />
                         </Link>
                       </li>
                     )}
@@ -471,8 +471,8 @@ const Footer = () => {
                   <li className="md:mb-0 border transition hover:opacity-80 inline-flex justify-center w-full">
                     <Image
                       width={274}
-                      height={85}
-                      className="w-auto h-15"
+                      height={65}
+                      className="w-auto h-12"
                       src={
                         storeCustomizationSetting?.footer?.payment_method_img ||
                         "/payment-method/payment-logo.png"
