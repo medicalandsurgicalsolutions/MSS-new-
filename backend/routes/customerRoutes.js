@@ -30,7 +30,7 @@ const {
 router.post("/verify-email", emailVerificationLimit, verifyEmailAddress);
 
 // shipping address send to array
-router.post("/shipping/address/:id", addShippingAddress);
+router.post("/shipping/address", addShippingAddress);
 
 // get all shipping address
 router.get("/shipping/address/:id", getShippingAddress);
