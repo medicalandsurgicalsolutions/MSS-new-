@@ -110,7 +110,7 @@ class MyDocument extends Document {
           />
           <meta
             name="google-site-verification"
-            content="hGPqHpc-r0v6yTlc1CMruebiccOm16RNjD9LS3FIn2c"
+            content="n40DpVFfwsZYKM5viRCSrc6KqKOinLtYHJqdv1RwVpE"
           />
         </Head>
         <body>
