@@ -226,7 +226,7 @@ const Checkout = () => {
                           )}
                           name="phone"
                           type="tel"
-                          readOnly={true}
+                          // readOnly={true}
                           placeholder="Enter phone number"
                         />
 
