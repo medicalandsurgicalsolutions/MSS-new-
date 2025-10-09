@@ -166,8 +166,8 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="bg-[#1a1a1a] border-t border-gray-700 py-5">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-10 grid grid-cols-1 md:grid-cols-3 items-center gap-5">
+      <div className="bg-[#1a1a1a] border-t border-gray-700 ">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-10 grid grid-cols-1 md:grid-cols-3 items-center gap-3">
           {/* Social Icons */}
           <div>
             {storeCustomizationSetting?.footer?.social_links_status && (
@@ -241,8 +241,8 @@ const Footer = () => {
             <div className="text-center md:text-right">
               <h2 className="font-semibold mb-2">Secure Payment</h2>
               <Image
-                width={220}
-                height={50}
+                width={180}
+                height={20}
                 className="inline-block"
                 src={
                   storeCustomizationSetting?.footer?.payment_method_img ||
