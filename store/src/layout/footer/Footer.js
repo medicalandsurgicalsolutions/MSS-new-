@@ -1,130 +1,263 @@
 import Link from "next/link";
 import Image from "next/image";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-import { FaFacebookF, FaInstagram, FaLinkedinIn, FaYoutube } from "react-icons/fa";
+import useTranslation from "next-translate/useTranslation";
+import {
+  FacebookIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  WhatsappIcon,
+} from "react-share";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
+
+// internal imports
+import { getUserSession } from "@lib/auth";
+import useGetSetting from "@hooks/useGetSetting";
+import CMSkeleton from "@components/preloader/CMSkeleton";
+import useUtilsFunction from "@hooks/useUtilsFunction";
+import logo from "../../../public/logo/logo-color.png";
 
 const Footer = () => {
-  const [email, setEmail] = useState("");
+  const { t } = useTranslation();
+  const userInfo = getUserSession();
+  const { showingTranslateValue } = useUtilsFunction();
+  const { loading, storeCustomizationSetting } = useGetSetting();
 
   return (
-    <footer className="w-full text-white">
-      {/* Top section */}
+    <footer className="bg-[#0f0f0f] text-white">
+      {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Left Blue Section */}
-        <div className="bg-blue-700 p-8 md:p-12">
-          <div className="flex flex-col gap-4">
-            <Image
-              src="/logo/logo-color.png"
-              alt="Medical & Surgical Solutions"
-              width={180}
-              height={60}
-              className="mb-3"
-            />
-            <p className="text-sm text-gray-100 leading-relaxed">
-              We provide premium quality medical and surgical equipment across India,
-              ensuring reliability, precision, and trust for healthcare professionals.
-            </p>
-            <div className="mt-4">
-              <h4 className="text-base font-semibold text-white mb-1">Our Help Line:</h4>
-              <p className="text-2xl font-bold text-white">+91 96433 44588</p>
-              <p className="text-sm mt-1">Mon - Fri: 9:00 - 20:00</p>
-              <p className="text-sm">Sat: 11:00 - 15:00</p>
-              <p className="text-sm mt-2">care@medicalsurgical.org</p>
+        <div className="bg-cyan-600 p-8 md:p-12">
+          {storeCustomizationSetting?.footer?.block4_status && (
+            <div>
+              <Link href="/" className="block mb-5">
+                <div className="relative w-36 h-10">
+                  <Image
+                    src={storeCustomizationSetting?.footer?.block4_logo || logo}
+                    alt="logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </Link>
+              <p className="text-sm leading-7">
+                <strong>Medical & Surgical Solutions</strong>
+                <br />
+                <CMSkeleton
+                  count={1}
+                  height={10}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.block4_address}
+                />
+                <br />
+                Tel: {storeCustomizationSetting?.footer?.block4_phone}
+                <br />
+                Email: {storeCustomizationSetting?.footer?.block4_email}
+              </p>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Right Dark Section */}
         <div className="bg-[#0f0f0f] p-8 md:p-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {/* Column 1 */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-              Information
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/delivery" className="hover:text-blue-400">Delivery</Link></li>
-              <li><Link href="/about" className="hover:text-blue-400">About Us</Link></li>
-              <li><Link href="/payment" className="hover:text-blue-400">Secure Payment</Link></li>
-              <li><Link href="/contact" className="hover:text-blue-400">Contact Us</Link></li>
-              <li><Link href="/sitemap" className="hover:text-blue-400">Sitemap</Link></li>
-              <li><Link href="/stores" className="hover:text-blue-400">Stores</Link></li>
-            </ul>
-          </div>
+          {/* Block 1 */}
+          {storeCustomizationSetting?.footer?.block1_status && (
+            <div>
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+                <CMSkeleton
+                  count={1}
+                  height={20}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.block1_title}
+                />
+              </h3>
+              <ul className="space-y-2 text-sm">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <li key={i}>
+                    <Link
+                      href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
+                      className="hover:text-cyan-400"
+                    >
+                      <CMSkeleton
+                        count={1}
+                        height={10}
+                        loading={loading}
+                        data={storeCustomizationSetting?.footer?.[`block1_sub_title${i}`]}
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          {/* Column 2 */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-              Custom Links
-            </h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/legal" className="hover:text-blue-400">Legal Notice</Link></li>
-              <li><Link href="/offers" className="hover:text-blue-400">Price Drop</Link></li>
-              <li><Link href="/products" className="hover:text-blue-400">New Products</Link></li>
-              <li><Link href="/bestsales" className="hover:text-blue-400">Best Sales</Link></li>
-              <li><Link href="/login" className="hover:text-blue-400">Login</Link></li>
-              <li><Link href="/account" className="hover:text-blue-400">My Account</Link></li>
-            </ul>
-          </div>
+          {/* Block 2 */}
+          {storeCustomizationSetting?.footer?.block2_status && (
+            <div>
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+                <CMSkeleton
+                  count={1}
+                  height={20}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.block2_title}
+                />
+              </h3>
+              <ul className="space-y-2 text-sm">
+                {[1, 2, 3, 4].map((i) => (
+                  <li key={i}>
+                    <Link
+                      href={`${storeCustomizationSetting?.footer?.[`block2_sub_link${i}`]}`}
+                      className="hover:text-cyan-400"
+                    >
+                      <CMSkeleton
+                        count={1}
+                        height={10}
+                        loading={loading}
+                        data={storeCustomizationSetting?.footer?.[`block2_sub_title${i}`]}
+                      />
+                    </Link>
+                  </li>
+                ))}
+                <li>
+                  <Link href="/blogs" className="hover:text-cyan-400">
+                    Blogs
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          )}
 
-          {/* Column 3 */}
-          <div>
-            <h4 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-              Newsletter
-            </h4>
-            <p className="text-sm mb-4 text-gray-300">
-              Subscribe to receive product updates and special offers.
-            </p>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                alert(`Subscribed: ${email}`);
-              }}
-              className="flex flex-col gap-3"
-            >
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
-                className="bg-[#1b1b1b] text-gray-200 px-3 py-2 rounded focus:outline-none"
-                required
-              />
-              <button
-                type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded font-semibold"
-              >
-                SUBMIT NOW
-              </button>
-            </form>
-          </div>
+          {/* Block 3 */}
+          {storeCustomizationSetting?.footer?.block3_status && (
+            <div>
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+                <CMSkeleton
+                  count={1}
+                  height={20}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.block3_title}
+                />
+              </h3>
+              <ul className="space-y-2 text-sm">
+                {[1, 2, 3, 4].map((i) => (
+                  <li key={i}>
+                    <Link
+                      href={`${
+                        userInfo?.email
+                          ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
+                          : "/auth/login"
+                      }`}
+                      className="hover:text-cyan-400"
+                    >
+                      <CMSkeleton
+                        count={1}
+                        height={10}
+                        loading={loading}
+                        data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Bottom Bar */}
-      <div className="bg-[#0b0b0b] border-t border-gray-800">
-        <div className="max-w-screen-xl mx-auto py-4 px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-400 text-center md:text-left">
-            © 2025 Medical & Surgical Solutions. All Rights Reserved.
-          </p>
-
-          <div className="flex items-center gap-4">
-            <Image
-              src="/payment-method/payment-logo.png"
-              alt="payment"
-              width={180}
-              height={30}
-            />
-          </div>
-
+      {/* Bottom Section */}
+      <div className="bg-[#1a1a1a] border-t border-gray-700 py-5">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-10 grid grid-cols-1 md:grid-cols-3 items-center gap-5">
           {/* Social Icons */}
-          <div className="flex items-center gap-3 text-gray-400">
-            <Link href="#"><FaFacebookF className="hover:text-blue-500" /></Link>
-            <Link href="#"><FaInstagram className="hover:text-pink-500" /></Link>
-            <Link href="#"><FaLinkedinIn className="hover:text-blue-400" /></Link>
-            <Link href="#"><FaYoutube className="hover:text-red-600" /></Link>
+          <div>
+            {storeCustomizationSetting?.footer?.social_links_status && (
+              <div>
+                <span className="text-base font-medium block mb-2">
+                  {t("common:footer-follow-us")}
+                </span>
+                <div className="flex gap-3">
+                  {storeCustomizationSetting?.footer?.social_facebook && (
+                    <Link
+                      href={storeCustomizationSetting?.footer?.social_facebook}
+                      target="_blank"
+                      className="hover:text-cyan-400"
+                    >
+                      <FacebookIcon size={28} round />
+                    </Link>
+                  )}
+                  {storeCustomizationSetting?.footer?.social_pinterest && (
+                    <Link
+                      href={storeCustomizationSetting?.footer?.social_pinterest}
+                      target="_blank"
+                      className="hover:text-pink-500"
+                    >
+                      <FaInstagram size={24} />
+                    </Link>
+                  )}
+                  {storeCustomizationSetting?.footer?.social_linkedin && (
+                    <Link
+                      href={storeCustomizationSetting?.footer?.social_linkedin}
+                      target="_blank"
+                      className="hover:text-blue-400"
+                    >
+                      <LinkedinIcon size={28} round />
+                    </Link>
+                  )}
+                  {storeCustomizationSetting?.footer?.social_whatsapp && (
+                    <Link
+                      href={storeCustomizationSetting?.footer?.social_whatsapp}
+                      target="_blank"
+                      className="hover:text-green-400"
+                    >
+                      <WhatsappIcon size={28} round />
+                    </Link>
+                  )}
+                  <Link
+                    href={storeCustomizationSetting?.footer?.social_twitter || "#"}
+                    target="_blank"
+                    className="hover:text-red-500"
+                  >
+                    <FaYoutube size={24} />
+                  </Link>
+                </div>
+              </div>
+            )}
           </div>
+
+          {/* Contact */}
+          <div className="text-center">
+            {storeCustomizationSetting?.footer?.bottom_contact_status && (
+              <>
+                <p className="text-base font-medium">Call Us</p>
+                <h5 className="text-2xl font-bold text-cyan-500">
+                  {storeCustomizationSetting?.footer?.bottom_contact}
+                </h5>
+              </>
+            )}
+          </div>
+
+          {/* Payment */}
+          {storeCustomizationSetting?.footer?.payment_method_status && (
+            <div className="text-center md:text-right">
+              <h2 className="font-semibold mb-2">Secure Payment</h2>
+              <Image
+                width={220}
+                height={50}
+                className="inline-block"
+                src={
+                  storeCustomizationSetting?.footer?.payment_method_img ||
+                  "/payment-method/payment-logo.png"
+                }
+                alt="payment"
+              />
+            </div>
+          )}
         </div>
+      </div>
+
+      {/* Copyright */}
+      <div className="bg-black py-3 text-center text-gray-400 text-sm">
+        © 2025 Medical & Surgical Solutions. All Rights Reserved.
       </div>
     </footer>
   );
