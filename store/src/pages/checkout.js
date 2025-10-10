@@ -120,6 +120,76 @@ const createOrderRazorpay = async (orderData) => {
 };
 
 
+  const Checkout = () => {
+  // existing hooks and state
+  ...
+  
+  // 🔹 Ye function define karo yaha, CheckPin ke upar ya niche
+  const createOrderRazorpay = async (orderData) => {
+    try {
+      const response = await fetch("http://your-backend-domain.com/api/order/create/razorpay", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await response.json();
+      console.log("Order Response:", data);
+      return data;
+    } catch (error) {
+      console.error("Error creating order:", error);
+      notifyError("Failed to create order. Please try again.");
+    }
+  };
+
+  // 🔹 Ab submitHandler me Razorpay flow add karna
+  const newSubmitHandler = async (formData) => {
+    // Agar user payment method RazorPay select kare
+    if (formData.paymentMethod === "RazorPay") {
+      const orderData = {
+        amount: parseFloat(total), // total amount
+        currency: currency,
+        items: items,
+        customer: formData,
+      };
+
+      const order = await createOrderRazorpay(orderData);
+
+      if (!order) return; // agar order creation fail ho gaya to return
+
+      const options = {
+        key: "YOUR_RAZORPAY_KEY_ID",
+        amount: order.amount,
+        currency: order.currency,
+        name: "Your Store Name",
+        description: "Order Payment",
+        order_id: order.id,
+        handler: async function (response) {
+          console.log("Razorpay success:", response);
+          // call backend to verify payment and save order
+          notifySuccess("Payment Successful!");
+        },
+        prefill: {
+          name: formData.firstName + " " + formData.lastName,
+          email: formData.email,
+          contact: formData.phone,
+        },
+        theme: { color: "#3399cc" },
+      };
+
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+      return;
+    }
+
+    // baki submitHandler ka existing code yaha chalega (Cash on Delivery etc.)
+    submitHandler(formData);
+  };
+
+
+
   const CheckPin = async (pin) => {
     const response = await PinncodeService.getOnePin(pin).catch((e) => {
       if (e.response.data.error !== "pincode not found") {
@@ -178,7 +248,7 @@ const createOrderRazorpay = async (orderData) => {
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
             <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               <div className="mt-5 md:mt-0 md:col-span-2">
-                <form onSubmit={handleSubmit(submitHandler)}>
+                <form onSubmit={handleSubmit(newSubmitHandler)}>
                   {hasShippingAddress && (
                     <div className="flex justify-end my-2">
                       <SwitchToggle
