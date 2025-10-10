@@ -99,6 +99,27 @@ const Checkout = () => {
     },
   };
 
+  // 🔹 Add this above CheckPin
+const createOrderRazorpay = async (orderData) => {
+  try {
+    const response = await fetch("http://your-backend-domain.com/api/order/create/razorpay", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    const data = await response.json();
+    console.log("Order Response:", data);
+    return data;
+  } catch (error) {
+    console.error("Error creating order:", error);
+    notifyError("Failed to create order. Please try again.");
+  }
+};
+
+
   const CheckPin = async (pin) => {
     const response = await PinncodeService.getOnePin(pin).catch((e) => {
       if (e.response.data.error !== "pincode not found") {
