@@ -102,7 +102,7 @@ const Checkout = () => {
   // 🔹 Add this above CheckPin
 const createOrderRazorpay = async (orderData) => {
   try {
-    const response = await fetch("http://your-backend-domain.com/api/order/create/razorpay", {
+    const response = await fetch("https://api.medicalsurgicalsolutions.com/api/order/create/razorpay", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -127,7 +127,7 @@ const createOrderRazorpay = async (orderData) => {
   // 🔹 Ye function define karo yaha, CheckPin ke upar ya niche
   const createOrderRazorpay = async (orderData) => {
     try {
-      const response = await fetch("http://your-backend-domain.com/api/order/create/razorpay", {
+      const response = await fetch("https://api.medicalsurgicalsolutions.com/api/order/create/razorpay", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
