@@ -121,22 +121,24 @@ const createOrderRazorpay = async (orderData) => {
 
 
   const Checkout = () => {
-  // existing hooks and state
-  ...
+  // ✅ Get token from localStorage
   const token =
-  localStorage.getItem("userToken") || localStorage.getItem("token"); //New added code by suman kumar
-    
+    localStorage.getItem("userToken") || localStorage.getItem("token"); // added by Suman Kumar
+
   // 🔹 Ye function define karo yaha, CheckPin ke upar ya niche
   const createOrderRazorpay = async (orderData) => {
     try {
-      const response = await fetch("https://api.medicalsurgicalsolutions.com/api/order/create/razorpay", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(orderData),
-      });
+      const response = await fetch(
+        "https://api.medicalsurgicalsolutions.com/api/order/create/razorpay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
 
       const data = await response.json();
       console.log("Order Response:", data);
@@ -146,6 +148,7 @@ const createOrderRazorpay = async (orderData) => {
       notifyError("Failed to create order. Please try again.");
     }
   };
+
 
  const options = {
         key: "YOUR_RAZORPAY_KEY_ID",
