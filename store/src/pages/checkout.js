@@ -740,8 +740,9 @@ const createOrderRazorpay = async (orderData) => {
             </div>
           </div>
         </div>
+       </>
       </Layout>
-    </>
+
   );
 };
 
