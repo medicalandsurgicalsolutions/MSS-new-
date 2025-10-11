@@ -123,7 +123,9 @@ const createOrderRazorpay = async (orderData) => {
   const Checkout = () => {
   // existing hooks and state
   ...
-  
+  const token =
+  localStorage.getItem("userToken") || localStorage.getItem("token"); //New added code by suman kumar
+    
   // 🔹 Ye function define karo yaha, CheckPin ke upar ya niche
   const createOrderRazorpay = async (orderData) => {
     try {
@@ -131,6 +133,7 @@ const createOrderRazorpay = async (orderData) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(orderData),
       });
@@ -159,18 +162,94 @@ const createOrderRazorpay = async (orderData) => {
 
       if (!order) return; // agar order creation fail ho gaya to return
 
+      // 🔹 Razorpay + COD combined handler
+const newSubmitHandler = async (formData) => {
+  try {
+    const token =
+      localStorage.getItem("userToken") || localStorage.getItem("token");
+
+    if (!token) {
+      notifyError("User not logged in!");
+      return;
+    }
+
+    // ============================
+    // 🚀 1️⃣  IF PAYMENT = RAZORPAY
+    // ============================
+    if (formData.paymentMethod === "RazorPay") {
+      // Create Razorpay order
+      const orderResponse = await fetch(
+        "https://api.medicalsurgicalsolutions.com/api/order/create/razorpay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            amount: parseFloat(total),
+            currency: currency || "INR",
+            items: items,
+            customer: formData,
+          }),
+        }
+      );
+
+      const order = await orderResponse.json();
+      if (!orderResponse.ok) {
+        console.error("❌ Razorpay order creation failed:", order);
+        return notifyError(order.message || "Failed to create Razorpay order!");
+      }
+
+      // Razorpay options
       const options = {
-        key: "YOUR_RAZORPAY_KEY_ID",
+        key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_key",
         amount: order.amount,
         currency: order.currency,
-        name: "Your Store Name",
+        name: "Medical Surgical Solutions",
         description: "Order Payment",
         order_id: order.id,
+
+        // ✅ On success: verify and save order in backend
         handler: async function (response) {
-          console.log("Razorpay success:", response);
-          // call backend to verify payment and save order
-          notifySuccess("Payment Successful!");
+          try {
+            const verifyRes = await fetch(
+              "https://api.medicalsurgicalsolutions.com/api/order/add",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                  ...formData,
+                  paymentId: response.razorpay_payment_id,
+                  orderId: response.razorpay_order_id,
+                  signature: response.razorpay_signature,
+                  paymentMethod: "RazorPay",
+                  amount: order.amount / 100, // convert paise → INR
+                  items: items,
+                }),
+              }
+            );
+
+            const result = await verifyRes.json();
+
+            if (!verifyRes.ok) {
+              console.error("❌ Order save failed:", result);
+              return notifyError(
+                result.message || "Failed to save Razorpay order!"
+              );
+            }
+
+            notifySuccess("✅ Payment Successful & Order Saved!");
+            console.log("✅ Order saved successfully:", result);
+          } catch (err) {
+            console.error("❌ Error verifying order:", err);
+            notifyError("Order verification failed!");
+          }
         },
+
         prefill: {
           name: formData.firstName + " " + formData.lastName,
           email: formData.email,
@@ -181,12 +260,43 @@ const createOrderRazorpay = async (orderData) => {
 
       const rzp = new window.Razorpay(options);
       rzp.open();
-      return;
+      return; // ✅ stop here after Razorpay
     }
 
-    // baki submitHandler ka existing code yaha chalega (Cash on Delivery etc.)
-    submitHandler(formData);
-  };
+    // ============================
+    // 🚀 2️⃣  ELSE (CASH ON DELIVERY)
+    // ============================
+    const response = await fetch(
+      "https://api.medicalsurgicalsolutions.com/api/order/add",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          ...formData,
+          paymentMethod: "Cash",
+          items: items,
+          amount: parseFloat(total),
+        }),
+      }
+    );
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error("❌ COD order failed:", data);
+      return notifyError(data.message || "Failed to place order!");
+    }
+
+    notifySuccess("🛍️ Order placed successfully (Cash on Delivery)!");
+    console.log("✅ COD Order Saved:", data);
+  } catch (err) {
+    console.error("❌ Checkout Error:", err);
+    notifyError("Something went wrong! Please try again.");
+  }
+};
+
 
 
 
