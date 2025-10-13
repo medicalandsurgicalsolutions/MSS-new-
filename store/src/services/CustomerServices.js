@@ -60,9 +60,12 @@ const CustomerServices = {
   },
 
   
-  addShippingAddress: async (shippingAddressData) => {
-    return requests.post("/customer/shipping/address", shippingAddressData);
-  },
+  addShippingAddress: async (customerId, shippingAddressData) => {
+  if (!customerId) {
+    throw new Error("❌ Missing customer ID for shipping address");
+  }
+  return requests.post(`/customer/shipping/address/${customerId}`, shippingAddressData);
+},
 };
 
 export default CustomerServices;
