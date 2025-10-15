@@ -1,36 +1,30 @@
 import requests from "./httpServices";
 
 const CustomerServices = {
-  
   loginCustomer: async (body) => {
     return requests.post("/customer/login", body);
   },
 
-  
   signUpCustomer: async (body) => {
     return requests.post("/customer/direct/signup", body);
   },
 
-  
   verifyEmailAddress: async (body) => {
     return requests.post("/customer/verify-email", body);
   },
-
 
   registerCustomer: async (token, body) => {
     return requests.post(`/customer/register/${token}`, body);
   },
 
-  
   signUpWithOauthProvider: async (body) => {
-    return requests.post("/customer/signup/oauth", body);
+    return requests.post(`/customer/signup/oauth`, body);
   },
 
   signUpWithProvider(token, body) {
     return requests.post(`/customer/signup/${token}`, body);
   },
 
-  
   forgetPassword: async (body) => {
     return requests.put("/customer/forget-password", body);
   },
@@ -43,25 +37,21 @@ const CustomerServices = {
     return requests.post("/customer/change-password", body);
   },
 
-  
   updateCustomer: async (id, body) => {
     return requests.put(`/customer/${id}`, body);
   },
 
-  
-   getShippingAddress: async ({ userId = "" }) => {
-    return requests.get(/customer/shipping/address/${userId});
+  getShippingAddress: async ({ userId = "" }) => {
+    return requests.get(`/customer/shipping/address/${userId}`);
   },
 
-  
   contactSupport: async (body) => {
     return requests.post("/customer/support/contact", body);
   },
 
-  
-   addShippingAddress: async ({ userId = "", shippingAddressData }) => {
+  addShippingAddress: async ({ userId = "", shippingAddressData }) => {
     return requests.post(
-      customer/shipping/address/${userId},
+      `customer/shipping/address/${userId}`,
       shippingAddressData
     );
   },
