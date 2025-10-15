@@ -49,9 +49,8 @@ const CustomerServices = {
   },
 
   
-  getShippingAddress: async (userId = "") => {
-    // optional userId: backend may extract from token if not given
-    return requests.get(`/customer/shipping/address/${userId}`);
+   getShippingAddress: async ({ userId = "" }) => {
+    return requests.get(/customer/shipping/address/${userId});
   },
 
   
@@ -60,12 +59,12 @@ const CustomerServices = {
   },
 
   
-  addShippingAddress: async (customerId, shippingAddressData) => {
-  if (!customerId) {
-    throw new Error("❌ Missing customer ID for shipping address");
-  }
-  return requests.post(`/customer/shipping/address/${customerId}`, shippingAddressData);
-},
+   addShippingAddress: async ({ userId = "", shippingAddressData }) => {
+    return requests.post(
+      customer/shipping/address/${userId},
+      shippingAddressData
+    );
+  },
 };
 
 export default CustomerServices;
