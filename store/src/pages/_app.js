@@ -11,6 +11,8 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
+import { AuthProvider } from "@context/AuthContext";
+
 
 //internal import
 import store from "@redux/store";
@@ -96,21 +98,22 @@ function MyApp({ Component, pageProps }) {
       )}
 
       <SessionProvider>
-        <UserProvider>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <SidebarProvider>
-                {/* <Elements stripe={stripePromise}> */}
-                <CartProvider>
-                  <DefaultSeo />
-                  <Component {...pageProps} />
-                </CartProvider>
-                {/* </Elements> */}
-              </SidebarProvider>
-            </PersistGate>
-          </Provider>
-        </UserProvider>
-      </SessionProvider>
+  <AuthProvider>
+    <UserProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <SidebarProvider>
+            <CartProvider>
+              <DefaultSeo />
+              <Component {...pageProps} />
+            </CartProvider>
+          </SidebarProvider>
+        </PersistGate>
+      </Provider>
+    </UserProvider>
+  </AuthProvider>
+</SessionProvider>
+
     </>
   );
 }
