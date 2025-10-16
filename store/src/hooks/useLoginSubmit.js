@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
+import { setToken } from "@services/httpServices"; // ✅ import setToken
 
 const useLoginSubmit = () => {
   const router = useRouter();
@@ -42,7 +43,12 @@ const useLoginSubmit = () => {
 
         if (res?.token) {
           notifySuccess("Login successful!");
+
+          // ✅ Save token in localStorage
           localStorage.setItem("mss_token", res.token);
+
+          // ✅ Set token globally for Axios requests
+          setToken(res.token);
 
           const url = redirectUrl ? "/checkout" : "/user/dashboard";
           router.push(url);
