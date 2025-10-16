@@ -50,7 +50,7 @@ const useLoginSubmit = () => {
           // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          const url = redirectUrl ? "/checkout" : "/user/dashboard";
+          const url = redirectUrl || "/";
           router.push(url);
         } else {
           notifyError(res?.message || "Invalid OTP!");
