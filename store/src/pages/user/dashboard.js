@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,8 +14,9 @@ import {
   FiUser,
   FiRefreshCw,
 } from "react-icons/fi";
+import { signOut } from "next-auth/react";
 
-// internal imports
+//internal import
 import Layout from "@layout/Layout";
 import Card from "@components/order-card/Card";
 import OrderServices from "@services/OrderServices";
@@ -23,11 +25,11 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@components/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import { useAuth } from "@context/AuthContext"; // ✅ AuthContext import
+import { useAuth } from "@context/AuthContext";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
-  const { user, logout } = useAuth(); // ✅ user.token holds JWT
+  const { user } = useAuth(); // user.token will have JWT
   const { isLoading, setIsLoading, currentPage } = useContext(SidebarContext);
 
   const { storeCustomizationSetting } = useGetSetting();
@@ -37,52 +39,55 @@ const Dashboard = ({ title, description, children }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // ✅ Redirect if not logged in
+  // Redirect if not logged in
   useEffect(() => {
     if (!user?.token) {
       router.push("/auth/login");
     }
-  }, [user, router]);
+  }, [user]);
 
-  // ✅ Fetch customer orders
+  // Fetch dashboard orders
   useEffect(() => {
     if (!user?.token) return;
 
     let isMounted = true;
 
-    const fetchOrders = async () => {
+    const handleGetCustomerOrders = async () => {
       setLoading(true);
       try {
         const res = await OrderServices.getOrderCustomer(
           { page: currentPage, limit: 10 },
-          { headers: { Authorization: `Bearer ${user.token}` } } // ✅ auth header
+          { headers: { Authorization: `Bearer ${user.token}` } }
         );
+
         if (isMounted) {
           setData(res);
           setLoading(false);
         }
       } catch (err) {
         if (isMounted) {
-          setError(err.message);
           setLoading(false);
+          setError(err.message);
         }
       }
     };
 
-    fetchOrders();
+    handleGetCustomerOrders();
+
     return () => {
       isMounted = false;
     };
   }, [currentPage, user]);
 
   const handleLogOut = () => {
-    logout(); // ✅ AuthContext logout
+    signOut();
+    Cookies.remove("couponInfo");
     router.push("/");
   };
 
   useEffect(() => {
     setIsLoading(false);
-  }, [setIsLoading]);
+  }, []);
 
   const userSidebar = [
     {
@@ -125,7 +130,7 @@ const Dashboard = ({ title, description, children }) => {
           <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
             <div className="py-10 lg:py-12 flex flex-col lg:flex-row w-full">
               {/* Sidebar */}
-              <div className="flex-shrink-0 w-full lg:w-56 mr-7 lg:mr-10">
+              <div className="flex-shrink-0 w-full lg:w-56 mr-7 lg:mr-10  xl:mr-10 ">
                 <div className="bg-white p-4 sm:p-5 lg:p-8 rounded-md sticky top-32">
                   {userSidebar?.map((item) => (
                     <span
