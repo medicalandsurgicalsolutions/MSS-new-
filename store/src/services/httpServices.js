@@ -9,8 +9,8 @@ const instance = axios.create({
   },
 });
 
+// Optional helper to set token globally
 export const setToken = (token) => {
-  // console.log("token", token);
   if (token) {
     instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   } else {
@@ -21,10 +21,17 @@ export const setToken = (token) => {
 const responseBody = (response) => response.data;
 
 const requests = {
-  get: (url, body) => instance.get(url, body).then(responseBody),
-  post: (url, body, headers) =>
-    instance.post(url, body, headers).then(responseBody),
-  put: (url, body) => instance.put(url, body).then(responseBody),
+  get: (url, body = {}, config = {}) =>
+    instance.get(url, { params: body, ...config }).then(responseBody),
+
+  post: (url, body = {}, config = {}) =>
+    instance.post(url, body, config).then(responseBody),
+
+  put: (url, body = {}, config = {}) =>
+    instance.put(url, body, config).then(responseBody),
+
+  delete: (url, config = {}) =>
+    instance.delete(url, config).then(responseBody),
 };
 
 export default requests;
