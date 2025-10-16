@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
-import { setToken } from "@services/httpServices"; // ✅ import setToken
+import { setToken } from "@services/httpServices";
 
 const useLoginSubmit = () => {
   const router = useRouter();
@@ -13,20 +13,15 @@ const useLoginSubmit = () => {
   const [isBtnName, setIsBtnName] = useState("Get OTP");
   const redirectUrl = useSearchParams()?.get("redirectUrl");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
   const submitHandler = async ({ phone, password }) => {
     setLoading(true);
 
-    // 🟢 STEP 1: Request OTP
+    // STEP 1: Request OTP
     if (!isOpen) {
       try {
         const res = await CustomerServices.loginCustomer({ phone });
-
         notifySuccess(res?.message || "OTP Sent Successfully!");
         setIsOpen(true);
         setIsBtnName("Login");
@@ -36,7 +31,7 @@ const useLoginSubmit = () => {
         setLoading(false);
       }
 
-    // 🟢 STEP 2: Verify OTP
+    // STEP 2: Verify OTP
     } else {
       try {
         const res = await CustomerServices.loginCustomer({ phone, password });
@@ -44,14 +39,34 @@ const useLoginSubmit = () => {
         if (res?.token) {
           notifySuccess("Login successful!");
 
-          // ✅ Save token in localStorage
+          // Save token
           localStorage.setItem("mss_token", res.token);
-
-          // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          const url = redirectUrl || "/";
+          // SAFE REDIRECTION LOGIC
+          let url = "/"; // default homepage
+
+          if (redirectUrl) {
+            // If full URL
+            if (redirectUrl.startsWith("http")) {
+              try {
+                const parsedUrl = new URL(redirectUrl);
+                url = parsedUrl.pathname + parsedUrl.search + parsedUrl.hash;
+              } catch {
+                url = "/";
+              }
+            } 
+            // If relative path
+            else if (redirectUrl.startsWith("/")) {
+              url = redirectUrl;
+            }
+          }
+
+          // FORCE absolute path for checkout to avoid /auth prefix
+          if (url === "checkout") url = "/checkout";
+
           router.push(url);
+
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
