@@ -43,27 +43,13 @@ const useLoginSubmit = () => {
           localStorage.setItem("mss_token", res.token);
           setToken(res.token);
 
-          // SAFE REDIRECTION LOGIC
+          // REDIRECTION LOGIC
           let url = "/"; // default homepage
 
           if (redirectUrl) {
-            // If full URL
-            if (redirectUrl.startsWith("http")) {
-              try {
-                const parsedUrl = new URL(redirectUrl);
-                url = parsedUrl.pathname + parsedUrl.search + parsedUrl.hash;
-              } catch {
-                url = "/";
-              }
-            } 
-            // If relative path
-            else if (redirectUrl.startsWith("/")) {
-              url = redirectUrl;
-            }
+            // If the user came from checkout/cart, redirect to checkout
+            url = "/checkout";
           }
-
-          // FORCE absolute path for checkout to avoid /auth prefix
-          if (url === "checkout") url = "/checkout";
 
           router.push(url);
 
