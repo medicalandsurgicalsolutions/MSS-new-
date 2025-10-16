@@ -6,20 +6,19 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  // ✅ On app load, check if token exists in localStorage
+  // Check localStorage on client-side
   useEffect(() => {
-    const token = localStorage.getItem("mss_token"); // match with login
+    const token = localStorage.getItem("token");
     if (token) {
-      setToken(token); // set Axios header globally
-      setUser({ token }); // update user state
+      setToken(token); // set Axios header
+      setUser({ token });
     }
   }, []);
 
-  // ✅ Logout function
   const logout = () => {
-    localStorage.removeItem("mss_token");
+    localStorage.removeItem("token");
     setUser(null);
-    setToken(null); // remove Axios header
+    setToken(null);
   };
 
   return (
@@ -29,5 +28,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// ✅ Hook to use auth anywhere
 export const useAuth = () => useContext(AuthContext);
