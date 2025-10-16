@@ -9,7 +9,7 @@ const instance = axios.create({
   },
 });
 
-// Optional helper to set token globally
+// Set global token
 export const setToken = (token) => {
   if (token) {
     instance.defaults.headers.common["Authorization"] = `Bearer ${token}`;
