@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -14,9 +13,8 @@ import {
   FiUser,
   FiRefreshCw,
 } from "react-icons/fi";
-import { signOut } from "next-auth/react";
 
-//internal import
+// internal imports
 import Layout from "@layout/Layout";
 import Card from "@components/order-card/Card";
 import OrderServices from "@services/OrderServices";
@@ -25,11 +23,11 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@components/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import { useAuth } from "@context/AuthContext";
+import { useAuth } from "@context/AuthContext"; // ✅ AuthContext import
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
-  const { user } = useAuth(); // user.token will have JWT
+  const { user, logout } = useAuth(); // ✅ user.token holds JWT
   const { isLoading, setIsLoading, currentPage } = useContext(SidebarContext);
 
   const { storeCustomizationSetting } = useGetSetting();
@@ -39,55 +37,52 @@ const Dashboard = ({ title, description, children }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Redirect if not logged in
+  // ✅ Redirect if not logged in
   useEffect(() => {
     if (!user?.token) {
       router.push("/auth/login");
     }
-  }, [user]);
+  }, [user, router]);
 
-  // Fetch dashboard orders
+  // ✅ Fetch customer orders
   useEffect(() => {
     if (!user?.token) return;
 
     let isMounted = true;
 
-    const handleGetCustomerOrders = async () => {
+    const fetchOrders = async () => {
       setLoading(true);
       try {
         const res = await OrderServices.getOrderCustomer(
           { page: currentPage, limit: 10 },
-          { headers: { Authorization: `Bearer ${user.token}` } }
+          { headers: { Authorization: `Bearer ${user.token}` } } // ✅ auth header
         );
-
         if (isMounted) {
           setData(res);
           setLoading(false);
         }
       } catch (err) {
         if (isMounted) {
-          setLoading(false);
           setError(err.message);
+          setLoading(false);
         }
       }
     };
 
-    handleGetCustomerOrders();
-
+    fetchOrders();
     return () => {
       isMounted = false;
     };
   }, [currentPage, user]);
 
   const handleLogOut = () => {
-    signOut();
-    Cookies.remove("couponInfo");
+    logout(); // ✅ AuthContext logout
     router.push("/");
   };
 
   useEffect(() => {
     setIsLoading(false);
-  }, []);
+  }, [setIsLoading]);
 
   const userSidebar = [
     {
@@ -130,7 +125,7 @@ const Dashboard = ({ title, description, children }) => {
           <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
             <div className="py-10 lg:py-12 flex flex-col lg:flex-row w-full">
               {/* Sidebar */}
-              <div className="flex-shrink-0 w-full lg:w-56 mr-7 lg:mr-10  xl:mr-10 ">
+              <div className="flex-shrink-0 w-full lg:w-56 mr-7 lg:mr-10">
                 <div className="bg-white p-4 sm:p-5 lg:p-8 rounded-md sticky top-32">
                   {userSidebar?.map((item) => (
                     <span
