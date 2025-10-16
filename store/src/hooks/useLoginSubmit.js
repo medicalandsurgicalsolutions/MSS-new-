@@ -4,15 +4,17 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
-import { setToken } from "@services/httpServices"; // ✅ import setToken
-
+import { setToken } from "@services/httpServices"; // Axios token setter
 
 const useLoginSubmit = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
-  const redirectUrl = useSearchParams()?.get("redirectUrl");
+
+  // ✅ Read redirect URL properly
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams?.get("redirectUrl") || null;
 
   const {
     register,
@@ -46,14 +48,17 @@ const useLoginSubmit = () => {
           notifySuccess("Login successful!");
 
           // ✅ Save token in localStorage
-         localStorage.setItem("token", res.token);
-
+          localStorage.setItem("token", res.token);
 
           // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          const url = redirectUrl || "/user/dashboard";
-          router.push(url);
+          // ✅ Redirect properly
+          if (redirectUrl) {
+            router.push(redirectUrl); // Go to checkout if coming from checkout flow
+          } else {
+            router.push("/user/dashboard"); // Fallback dashboard
+          }
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
