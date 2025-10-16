@@ -470,7 +470,7 @@ const Checkout = () => {
                     )}
                   </div>
 
-                      // yha tak paste kiya hai
+{/*yha tak paste kiya hai*/}
 
                 <div className="form-group mt-12">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
@@ -686,7 +686,7 @@ const Checkout = () => {
               </div>
             </div>
 
-                      // yha tk paste kiya hai
+{/* yha tk paste kiya hai*/}
         </div>
       </div>
     </Layout>
