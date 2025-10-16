@@ -1,32 +1,10 @@
-import { useRouter } from "next/router";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useSearchParams } from "next/navigation";
-import { notifyError, notifySuccess } from "@utils/toast";
-import CustomerServices from "@services/CustomerServices";
-import { setToken } from "@services/httpServices"; // ✅ import setToken
-
-const useLoginSubmit = () => {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isBtnName, setIsBtnName] = useState("Get OTP");
-  const redirectUrl = useSearchParams()?.get("redirectUrl");
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  const submitHandler = async ({ phone, password }) => {
+const submitHandler = async ({ phone, password }) => {
     setLoading(true);
 
-    // 🟢 STEP 1: Request OTP
+    // STEP 1: Request OTP
     if (!isOpen) {
       try {
         const res = await CustomerServices.loginCustomer({ phone });
-
         notifySuccess(res?.message || "OTP Sent Successfully!");
         setIsOpen(true);
         setIsBtnName("Login");
@@ -36,7 +14,7 @@ const useLoginSubmit = () => {
         setLoading(false);
       }
 
-    // 🟢 STEP 2: Verify OTP
+    // STEP 2: Verify OTP
     } else {
       try {
         const res = await CustomerServices.loginCustomer({ phone, password });
@@ -44,14 +22,24 @@ const useLoginSubmit = () => {
         if (res?.token) {
           notifySuccess("Login successful!");
 
-          // ✅ Save token in localStorage
+          // Save token
           localStorage.setItem("mss_token", res.token);
-
-          // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          const url = redirectUrl || "/";
+          // SAFE REDIRECTION LOGIC
+          let url = "/"; // default to homepage
+          if (redirectUrl) {
+            try {
+              // Try parsing as full URL
+              const parsedUrl = new URL(redirectUrl);
+              url = parsedUrl.pathname; // use only the path part
+            } catch {
+              // If parsing fails, assume it's already a relative path
+              url = redirectUrl.startsWith("/") ? redirectUrl : "/";
+            }
+          }
           router.push(url);
+
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
@@ -62,16 +50,3 @@ const useLoginSubmit = () => {
       }
     }
   };
-
-  return {
-    register,
-    errors,
-    loading,
-    isOpen,
-    isBtnName,
-    handleSubmit,
-    submitHandler,
-  };
-};
-
-export default useLoginSubmit;
