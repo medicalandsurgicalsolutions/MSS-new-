@@ -4,17 +4,14 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
-import { setToken } from "@services/httpServices"; // Axios token setter
+import { setToken } from "@services/httpServices"; // ✅ import setToken
 
 const useLoginSubmit = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
-
-  // ✅ Read redirect URL properly
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams?.get("redirectUrl") || null;
+  const redirectUrl = useSearchParams()?.get("redirectUrl");
 
   const {
     register,
@@ -53,12 +50,8 @@ const useLoginSubmit = () => {
           // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          // ✅ Redirect properly
-          if (redirectUrl) {
-            router.push(redirectUrl); // Go to checkout if coming from checkout flow
-          } else {
-            router.push("/user/dashboard"); // Fallback dashboard
-          }
+          const url = redirectUrl ? "/checkout" : "/user/dashboard";
+          router.push(url);
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
