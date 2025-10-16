@@ -1,45 +1,40 @@
 import requests from "./httpServices";
 
-// helper to attach token
+// Helper to attach JWT token
 const getAuthHeaders = () => {
-  const token = localStorage.getItem("token"); // or wherever you store JWT
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  const token = localStorage.getItem("token"); // adjust if your token is stored elsewhere
+  return token ? { headers: { Authorization: `Bearer ${token}` } } : {};
 };
 
 const OrderServices = {
+  // === POST requests (add order / Razorpay) ===
   addOrder: async (body) => {
-    const headers = getAuthHeaders();
-    return requests.post("/order/add", body, { headers });
+    return requests.post("/order/add", body, getAuthHeaders());
   },
 
   createPaymentIntent: async (body) => {
-    const headers = getAuthHeaders();
-    return requests.post("/order/create-payment-intent", body, { headers });
+    return requests.post("/order/create-payment-intent", body, getAuthHeaders());
   },
 
   addRazorpayOrder: async (body) => {
-    const headers = getAuthHeaders();
-    return requests.post("/order/add/razorpay", body, { headers });
+    return requests.post("/order/add/razorpay", body, getAuthHeaders());
   },
 
   createOrderByRazorPay: async (body) => {
-    const headers = getAuthHeaders();
-    return requests.post("/order/create/razorpay", body, { headers });
+    return requests.post("/order/create/razorpay", body, getAuthHeaders());
   },
 
   cancelOrderById: async (id) => {
-    const headers = getAuthHeaders();
-    return requests.post(`/order/cancel/${id}`, {}, { headers });
+    return requests.post(`/order/cancel/${id}`, {}, getAuthHeaders());
   },
 
+  // === GET requests ===
   getOrderCustomer: async ({ page = 1, limit = 8 }) => {
-    const headers = getAuthHeaders();
-    return requests.get(`/order?limit=${limit}&page=${page}`, {}, { headers });
+    return requests.get(`/order`, { page, limit }, getAuthHeaders());
   },
 
-  getOrderById: async (id, body) => {
-    const headers = getAuthHeaders();
-    return requests.get(`/order/${id}`, body, { headers });
+  getOrderById: async (id, body = {}) => {
+    return requests.get(`/order/${id}`, body, getAuthHeaders());
   },
 };
 
