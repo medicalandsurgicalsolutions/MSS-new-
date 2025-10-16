@@ -48,7 +48,7 @@ const useLoginSubmit = () => {
           notifySuccess("Login successful!");
 
           // ✅ Save token in localStorage
-          localStorage.setItem("token", res.token);
+          localStorage.setItem("mss_token", res.token);
 
           // ✅ Set token globally for Axios requests
           setToken(res.token);
