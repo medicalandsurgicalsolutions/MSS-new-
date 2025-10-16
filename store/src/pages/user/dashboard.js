@@ -6,15 +6,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { IoLockOpenOutline } from "react-icons/io5";
 import {
   FiCheck,
-  FiFileText,
   FiGrid,
-  FiHome,
   FiList,
-  FiRefreshCw,
   FiSettings,
   FiShoppingCart,
   FiTruck,
   FiUser,
+  FiRefreshCw,
 } from "react-icons/fi";
 import { signOut } from "next-auth/react";
 
@@ -27,9 +25,11 @@ import { SidebarContext } from "@context/SidebarContext";
 import Loading from "@components/preloader/Loading";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { useAuth } from "@context/AuthContext";
 
 const Dashboard = ({ title, description, children }) => {
   const router = useRouter();
+  const { user } = useAuth(); // user.token will have JWT
   const { isLoading, setIsLoading, currentPage } = useContext(SidebarContext);
 
   const { storeCustomizationSetting } = useGetSetting();
@@ -39,26 +39,35 @@ const Dashboard = ({ title, description, children }) => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
 
-  console.log("Recent Data ", data);
-
+  // Redirect if not logged in
   useEffect(() => {
-    let isMounted = true; // Track if the component is mounted
+    if (!user?.token) {
+      router.push("/auth/login");
+    }
+  }, [user]);
+
+  // Fetch dashboard orders
+  useEffect(() => {
+    if (!user?.token) return;
+
+    let isMounted = true;
 
     const handleGetCustomerOrders = async () => {
       setLoading(true);
       try {
-        const res = await OrderServices.getOrderCustomer({
-          page: currentPage,
-          limit: 10,
-        });
+        const res = await OrderServices.getOrderCustomer(
+          { page: currentPage, limit: 10 },
+          { headers: { Authorization: `Bearer ${user.token}` } }
+        );
+
         if (isMounted) {
           setData(res);
           setLoading(false);
         }
-      } catch (error) {
+      } catch (err) {
         if (isMounted) {
           setLoading(false);
-          setError(error.message);
+          setError(err.message);
         }
       }
     };
@@ -66,9 +75,9 @@ const Dashboard = ({ title, description, children }) => {
     handleGetCustomerOrders();
 
     return () => {
-      isMounted = false; // Clean up the effect by setting isMounted to false
+      isMounted = false;
     };
-  }, [currentPage]);
+  }, [currentPage, user]);
 
   const handleLogOut = () => {
     signOut();
@@ -88,7 +97,6 @@ const Dashboard = ({ title, description, children }) => {
       href: "/user/dashboard",
       icon: FiGrid,
     },
-
     {
       title: showingTranslateValue(
         storeCustomizationSetting?.dashboard?.my_order
@@ -101,7 +109,6 @@ const Dashboard = ({ title, description, children }) => {
       href: "/user/my-account",
       icon: FiUser,
     },
-
     {
       title: showingTranslateValue(
         storeCustomizationSetting?.dashboard?.update_profile
@@ -109,13 +116,6 @@ const Dashboard = ({ title, description, children }) => {
       href: "/user/update-profile",
       icon: FiSettings,
     },
-    // {
-    //   title: showingTranslateValue(
-    //     storeCustomizationSetting?.dashboard?.change_password
-    //   ),
-    //   href: "/user/change-password",
-    //   icon: FiFileText,
-    // },
   ];
 
   return (
@@ -124,17 +124,18 @@ const Dashboard = ({ title, description, children }) => {
         <Loading loading={isLoading} />
       ) : (
         <Layout
-          title={title ? title : "Dashboard"}
-          description={description ? description : "This is User Dashboard"}
+          title={title || "Dashboard"}
+          description={description || "This is User Dashboard"}
         >
           <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
             <div className="py-10 lg:py-12 flex flex-col lg:flex-row w-full">
+              {/* Sidebar */}
               <div className="flex-shrink-0 w-full lg:w-56 mr-7 lg:mr-10  xl:mr-10 ">
                 <div className="bg-white p-4 sm:p-5 lg:p-8 rounded-md sticky top-32">
                   {userSidebar?.map((item) => (
                     <span
                       key={item.title}
-                      className="p-2 my-2 flex  items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600"
+                      className="p-2 my-2 flex items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600"
                     >
                       <item.icon
                         className="flex-shrink-0 h-4 w-4"
@@ -148,10 +149,10 @@ const Dashboard = ({ title, description, children }) => {
                       </Link>
                     </span>
                   ))}
-                  <span className="p-2 flex  items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600">
+                  <span className="p-2 flex items-center rounded-md hover:bg-gray-50 w-full hover:text-emerald-600">
                     <span className="mr-2">
                       <IoLockOpenOutline />
-                    </span>{" "}
+                    </span>
                     <button
                       onClick={handleLogOut}
                       className="inline-flex items-center justify-between text-sm font-medium w-full hover:text-emerald-600"
@@ -163,10 +164,12 @@ const Dashboard = ({ title, description, children }) => {
                   </span>
                 </div>
               </div>
+
+              {/* Main Content */}
               <div className="w-full bg-white mt-4 lg:mt-0 p-4 sm:p-5 lg:p-8 rounded-md overflow-hidden">
                 {!children && (
                   <div className="overflow-hidden">
-                    <h2 className="text-xl  font-semibold mb-5">
+                    <h2 className="text-xl font-semibold mb-5">
                       {showingTranslateValue(
                         storeCustomizationSetting?.dashboard?.dashboard_title
                       )}
@@ -178,7 +181,7 @@ const Dashboard = ({ title, description, children }) => {
                         )}
                         Icon={FiShoppingCart}
                         quantity={data?.totalDoc}
-                        className="text-red-600  bg-red-200"
+                        className="text-red-600 bg-red-200"
                       />
                       <Card
                         title={showingTranslateValue(
