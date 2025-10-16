@@ -97,8 +97,8 @@ function MyApp({ Component, pageProps }) {
         />
       )}
 
+<AuthProvider>
       <SessionProvider>
-  <AuthProvider>
     <UserProvider>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
@@ -111,8 +111,8 @@ function MyApp({ Component, pageProps }) {
         </PersistGate>
       </Provider>
     </UserProvider>
-  </AuthProvider>
 </SessionProvider>
+   </AuthProvider>
 
     </>
   );
