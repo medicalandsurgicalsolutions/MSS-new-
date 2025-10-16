@@ -49,7 +49,15 @@ const CustomerServices = {
     return requests.post("/customer/support/contact", body);
   },
 
+  // ✅ FINAL FIXED FUNCTION
   addShippingAddress: async ({ userId = "", shippingAddressData }) => {
+    console.log("UserId being sent:", userId);
+
+    // Check userId before sending request
+    if (!userId) {
+      throw new Error("User ID is missing! Cannot add shipping address.");
+    }
+
     return requests.post(
       `/customer/shipping/address/${userId}`,
       shippingAddressData
