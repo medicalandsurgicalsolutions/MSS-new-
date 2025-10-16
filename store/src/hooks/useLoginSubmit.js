@@ -6,6 +6,7 @@ import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
 import { setToken } from "@services/httpServices"; // ✅ import setToken
 
+
 const useLoginSubmit = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -50,7 +51,7 @@ const useLoginSubmit = () => {
           // ✅ Set token globally for Axios requests
           setToken(res.token);
 
-          const url = redirectUrl ? "/checkout" : "/user/dashboard";
+          const url = redirectUrl || "/user/dashboard";
           router.push(url);
         } else {
           notifyError(res?.message || "Invalid OTP!");
