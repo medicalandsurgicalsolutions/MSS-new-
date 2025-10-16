@@ -4,11 +4,10 @@ import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { notifyError, notifySuccess } from "@utils/toast";
 import CustomerServices from "@services/CustomerServices";
-import { useAuth } from "@context/AuthContext"; // ✅ import AuthContext
+import { setToken } from "@services/httpServices"; // ✅ import setToken
 
 const useLoginSubmit = () => {
   const router = useRouter();
-  const { setUser } = useAuth(); // ✅ update user state globally
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
@@ -48,10 +47,9 @@ const useLoginSubmit = () => {
           // ✅ Save token in localStorage
           localStorage.setItem("mss_token", res.token);
 
-          // ✅ Update AuthContext globally
-          setUser({ token: res.token });
+          // ✅ Set token globally for Axios requests
+          setToken(res.token);
 
-          // ✅ Navigate to redirectUrl or home
           const url = redirectUrl || "/";
           router.push(url);
         } else {
