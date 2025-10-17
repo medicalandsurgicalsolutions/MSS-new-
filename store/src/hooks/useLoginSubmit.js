@@ -11,16 +11,15 @@ const useLoginSubmit = () => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams?.get("redirectUrl");
+  const redirectUrl = useSearchParams()?.get("redirectUrl");
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const submitHandler = async ({ phone, password }) => {
     setLoading(true);
 
+    // STEP 1: Request OTP
     if (!isOpen) {
-      // STEP 1: Request OTP
       try {
         const res = await CustomerServices.loginCustomer({ phone });
         notifySuccess(res?.message || "OTP Sent Successfully!");
@@ -31,8 +30,9 @@ const useLoginSubmit = () => {
       } finally {
         setLoading(false);
       }
+
+    // STEP 2: Verify OTP
     } else {
-      // STEP 2: Verify OTP
       try {
         const res = await CustomerServices.loginCustomer({ phone, password });
 
@@ -43,42 +43,16 @@ const useLoginSubmit = () => {
           localStorage.setItem("mss_token", res.token);
           setToken(res.token);
 
-          // ✅ Debug logs
-          console.log("Raw redirectUrl:", redirectUrl);
-
-          // ✅ Default redirect
-          let finalUrl = "/";
+          // REDIRECTION LOGIC
+          let url = "/"; // default homepage
 
           if (redirectUrl) {
-            // Clean the redirectUrl (remove domain or /auth prefix)
-            const cleanUrl = redirectUrl
-              .replace(/^https?:\/\/[^/]+/i, "") // remove domain if present
-              .replace(/^\/auth/, ""); // remove /auth prefix if present
-
-            console.log("Cleaned redirectUrl:", cleanUrl);
-
-            // Checkout redirect
-            if (cleanUrl.startsWith("/checkout")) {
-              finalUrl = "/checkout";
-            }
-            // User-related pages (from your data.js userSidebar)
-            else if (
-              cleanUrl.startsWith("/user/dashboard") ||
-              cleanUrl.startsWith("/user/my-orders") ||
-              cleanUrl.startsWith("/user/recent-orders") ||
-              cleanUrl.startsWith("/user/update-profile") ||
-              cleanUrl.startsWith("/user/change-password")
-            ) {
-              finalUrl = cleanUrl;
-            }
-            // Other pages like offers, contact, etc.
-            else {
-              finalUrl = "/";
-            }
+            // If the user came from checkout/cart, redirect to checkout
+            url = "/checkout";
           }
 
-          console.log("Redirecting to:", finalUrl);
-          router.push(finalUrl);
+          router.push(url);
+
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
