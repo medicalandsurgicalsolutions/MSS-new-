@@ -1,57 +1,41 @@
+import usePermission from '@/hooks/usePermission';
+import { useTranslation } from 'react-i18next';
 import { Button } from "@windmill/react-ui";
-import { useTranslation } from "react-i18next";
-import { useState } from "react";
-import usePermission from "@/hooks/usePermission";
 import spinnerLoadingImage from "@/assets/img/spinner.gif";
 
-const StoreSubmitButton = ({ formData }) => {
+const StoreSubmitButton = ({isSubmitting, isSave}) => {
+    
   const { t } = useTranslation();
+
   const { can } = usePermission("store_customize");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  console.log("StoreSubmitButton rendered, permission:", can);
-
-  const handleUpdate = async () => {
-    console.log("Update button clicked");
-    if (!can) {
-      console.log("No permission to update");
-      alert("You don't have permission to update");
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      console.log("Submitting formData:", formData);
-
-      // simulate update
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-
-      console.log("Update success");
-      alert("Update successful!");
-    } catch (error) {
-      console.error("Update failed:", error);
-      alert("Update failed!");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
-    <Button
-      type="button"
-      onClick={() => {
-        console.log("Button clicked directly");
-        handleUpdate();
-      }}
-      disabled={isSubmitting || !can}
-    >
-      {isSubmitting ? (
-        <img src={spinnerLoadingImage} alt="loading" className="h-5 w-5" />
-      ) : (
-        t("Update")
-      )}
-    </Button>
-  );
-};
+    <>
+        {can.edit && (
+            <div className="sticky top-0 z-20 flex justify-end">
+            {isSubmitting ? (
+                <Button disabled={true} type="button" className="h-10 px-6">
+                <img
+                    src={spinnerLoadingImage}
+                    alt="Loading"
+                    width={20}
+                    height={10}
+                />{" "}
+                <span className="font-serif ml-2 font-light">
+                    {" "}
+                    {t("Processing")}
+                </span>
+                </Button>
+            ) : (
+                <Button type="submit" className="h-10 px-6 ">
+                    {" "}
+                    {isSave ? t("SaveBtn") : t("UpdateBtn")}
+                </Button>
+            )}
+            </div>
+        )}
+    </>
+  )
+}
 
-export default StoreSubmitButton;
+export default StoreSubmitButton
