@@ -1,4 +1,4 @@
-=import { Button } from "@windmill/react-ui";
+import { Button } from "@windmill/react-ui";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 import spinnerLoadingImage from "@/assets/img/spinner.gif";
