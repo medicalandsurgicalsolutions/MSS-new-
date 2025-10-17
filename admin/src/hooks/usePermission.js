@@ -1,48 +1,56 @@
 import hasPermission from "@/utils/hasPermission";
 import { notifyError } from "@/utils/toast";
+import { useEffect, useState } from "react";
 
-/**
- * Custom hook to handle permissions and edit/delete functions
- * @param {string} name - permission name for the current module
- * @param {function|null} editFunction - optional edit callback
- * @param {function|null} deleteFunction - optional delete callback
- */
 const usePermission = (name, editFunction = null, deleteFunction = null) => {
-  const permissions = hasPermission(); // get permissions from Redux
+    
+    const [can, setCan] = useState({ 
+        add: true,
+        edit: true,
+        list: true,
+        show: true,
+        delete: true
+    });
 
-  // Utility to check if a specific permission exists
-  const check = (permName) =>
-    permissions.some(
-      (item) => item.permission === name && item.name.en === permName
-    );
 
-  const can = {
-    add: check("Add"),
-    edit: check("Edit"),
-    list: check("List"),
-    show: check("Show"),
-    delete: check("Delete"),
-  };
+    const canDelete = hasPermission(name, "Delete");
+    const canAdd = hasPermission(name, "Add");
+    const canEdit = hasPermission(name, "Edit");
+    const canList = hasPermission(name, "List");
+    const canShow = hasPermission(name, "Show");
 
-  // Handler for delete action
-  const deleteButtonClick = (id, title, product) => {
-    if (can.edit && deleteFunction) {
-      deleteFunction(id, title, product);
-    } else {
-      notifyError("You don't have permission for this action.");
+
+    useEffect(() => {
+        setCan({
+          add: canAdd,
+          edit: canEdit,
+          list: canList,
+          show: canShow,
+          delete: canDelete,
+        });
+    }, []);
+
+    const deleteButtonCLick = (id, title, product) => {
+        if (can.edit && deleteFunction != null) {
+          deleteFunction(id, title, product);
+        }else{
+          notifyError("You don't have permission for this action.")
+        }   
+      }
+  
+    const editButtonCLick = (id) => {
+        if (can.edit && editFunction != null) {
+          editFunction(id);
+        }else{
+          notifyError("You don't have permission for this action.")
+        }      
     }
-  };
 
-  // Handler for edit action
-  const editButtonClick = (id) => {
-    if (can.edit && editFunction) {
-      editFunction(id);
-    } else {
-      notifyError("You don't have permission for this action.");
+    return {
+        can,
+        deleteButtonCLick,
+        editButtonCLick
     }
-  };
-
-  return { can, deleteButtonClick, editButtonClick };
-};
+}
 
 export default usePermission;
