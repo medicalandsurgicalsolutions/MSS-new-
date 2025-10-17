@@ -23,7 +23,7 @@ export default function blogs() {
       }, []);
 
   return (
-    <Layout title="About Us" description="This is about us page">
+    <Layout title="Blog Page" description="This is blog page">
 <div className="min-h-screen bg-gray-50">
       <div className="max-w-5xl mx-auto px-6 py-12">
         <div className="bg-white rounded-lg shadow-xl overflow-hidden">
