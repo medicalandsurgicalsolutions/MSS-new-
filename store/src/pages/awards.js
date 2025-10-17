@@ -17,7 +17,7 @@ export default function awards() {
       }, []);
 
   return (
-    <Layout title="About Us" description="This is about us page">
+    <Layout title="Awards & Recognition I Medical & Surgical Solutions" description="Explore the awards and recognitions received by Medical & Surgical Solutions for excellence in medical and surgical equipment, quality, and service across India.">
       <div className="relative z-10 bg-gray-100 w-full pt-8 text-center flex flex-col items-center">
   {/* Title Section */}
   <div className="max-w-2xl">
