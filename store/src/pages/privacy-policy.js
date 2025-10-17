@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
   // console.log("data", storeCustomizationSetting);
 
   return (
-    <Layout title="Privacy Policy" description="Read the Privacy Policy of Medical & Surgical Solutions to understand how we collect, use, and protect your personal and payment information securely.">
+    <Layout title="Privacy Policy I Medical & Surgical Solutions" description="Read the Privacy Policy of Medical & Surgical Solutions to understand how we collect, use, and protect your personal and payment information securely.">
       <PageHeader
         headerBg={storeCustomizationSetting?.privacy_policy?.header_bg}
         title={showingTranslateValue(
