@@ -57,7 +57,7 @@ const ContactUs = () => {
   };
 
   return (
-    <Layout title="Contact Us" description="This is contact us page">
+    <Layout title="Contact Medical & Surgical Solutions I Get in Touch" description="Reach out to Medical & Surgical Solutions for inquiries, orders, or support. Trusted supplier of medical and surgical equipment for hospitals and clinics in India.">
       <PageHeader
         headerBg={storeCustomizationSetting?.contact_us?.header_bg}
         title={showingTranslateValue(
