@@ -2,7 +2,8 @@ import { useSelector } from "react-redux";
 
 const hasPermission = (permission, name) => {
   const settings = useSelector((state) => state.setting.settingItem);
-  const permissions = settings.find(
+
+  const permissions = settings?.find(
     (value) => value.name === "permissionSetting"
   )?.permissions;
 
