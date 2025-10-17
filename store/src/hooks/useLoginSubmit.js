@@ -11,15 +11,16 @@ const useLoginSubmit = () => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
-  const redirectUrl = useSearchParams()?.get("redirectUrl");
+  const searchParams = useSearchParams();
+  const redirectUrl = searchParams?.get("redirectUrl");
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const submitHandler = async ({ phone, password }) => {
     setLoading(true);
 
-    // STEP 1: Request OTP
     if (!isOpen) {
+      // STEP 1: Request OTP
       try {
         const res = await CustomerServices.loginCustomer({ phone });
         notifySuccess(res?.message || "OTP Sent Successfully!");
@@ -30,9 +31,8 @@ const useLoginSubmit = () => {
       } finally {
         setLoading(false);
       }
-
-    // STEP 2: Verify OTP
     } else {
+      // STEP 2: Verify OTP
       try {
         const res = await CustomerServices.loginCustomer({ phone, password });
 
@@ -43,26 +43,42 @@ const useLoginSubmit = () => {
           localStorage.setItem("mss_token", res.token);
           setToken(res.token);
 
-          // REDIRECTION LOGIC
-          let url = "/"; // default homepage
+          // ✅ Debug logs
+          console.log("Raw redirectUrl:", redirectUrl);
+
+          // ✅ Default redirect
+          let finalUrl = "/";
 
           if (redirectUrl) {
-            if (redirectUrl.includes("/checkout")) {
-              url = "/checkout"; // always go to checkout
-            } else if (
-              redirectUrl.includes("user/dashboard") ||
-              redirectUrl.includes("/user/user/my-orders") ||
-              redirectUrl.includes("/user/update-profile") ||
-              redirectUrl.includes("/user/change-password")
+            // Clean the redirectUrl (remove domain or /auth prefix)
+            const cleanUrl = redirectUrl
+              .replace(/^https?:\/\/[^/]+/i, "") // remove domain if present
+              .replace(/^\/auth/, ""); // remove /auth prefix if present
+
+            console.log("Cleaned redirectUrl:", cleanUrl);
+
+            // Checkout redirect
+            if (cleanUrl.startsWith("/checkout")) {
+              finalUrl = "/checkout";
+            }
+            // User-related pages (from your data.js userSidebar)
+            else if (
+              cleanUrl.startsWith("/user/dashboard") ||
+              cleanUrl.startsWith("/user/my-orders") ||
+              cleanUrl.startsWith("/user/recent-orders") ||
+              cleanUrl.startsWith("/user/update-profile") ||
+              cleanUrl.startsWith("/user/change-password")
             ) {
-              url = redirectUrl; // stay on the same user page
-            } else {
-              url = "/"; // fallback
+              finalUrl = cleanUrl;
+            }
+            // Other pages like offers, contact, etc.
+            else {
+              finalUrl = "/";
             }
           }
 
-          router.push(url);
-
+          console.log("Redirecting to:", finalUrl);
+          router.push(finalUrl);
         } else {
           notifyError(res?.message || "Invalid OTP!");
         }
