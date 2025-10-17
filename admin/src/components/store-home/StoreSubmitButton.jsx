@@ -9,9 +9,6 @@ const StoreSubmitButton = ({ isSubmitting, isSave }) => {
   // Get permissions from hook
   const { can } = usePermission("store_customize");
 
-  // Log permissions for debugging
-  console.log("Permissions loaded:", can);
-
   // Safety: if permissions are not loaded yet, don't render button
   if (!can) return null;
 
@@ -32,11 +29,7 @@ const StoreSubmitButton = ({ isSubmitting, isSave }) => {
               </span>
             </Button>
           ) : (
-            <Button
-              type="submit"
-              className="h-10 px-6"
-              onClick={() => console.log(isSave ? "Save clicked" : "Update clicked")}
-            >
+            <Button type="submit" className="h-10 px-6">
               {isSave ? t("SaveBtn") : t("UpdateBtn")}
             </Button>
           )}
