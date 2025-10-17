@@ -14,7 +14,7 @@ const TermAndConditions = () => {
   return (
     <Layout
       title="Terms & Conditions"
-      description="This is terms and conditions page"
+      description="Read the Terms & Conditions of Medical & Surgical Solutions, covering product purchases, shipping, returns, and usage policies for our medical equipment store."
     >
       <PageHeader
         headerBg={storeCustomizationSetting?.term_and_condition?.header_bg}
