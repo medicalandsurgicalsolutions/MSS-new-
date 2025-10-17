@@ -13,7 +13,7 @@ const PrivacyPolicy = () => {
   // console.log("data", storeCustomizationSetting);
 
   return (
-    <Layout title="Privacy Policy" description="This is privacy policy page">
+    <Layout title="Shipping Policy" description="This is shipping policy page">
       <PageHeader
         headerBg={storeCustomizationSetting?.privacy_policy?.header_bg}
         title={showingTranslateValue(
