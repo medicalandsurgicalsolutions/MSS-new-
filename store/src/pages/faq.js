@@ -14,7 +14,7 @@ const Faq = () => {
   const { showingTranslateValue } = useUtilsFunction();
 
   return (
-    <Layout title="FAQ I Medical & Surgical Solutions I Your Questions Answered" description="This is faq page">
+    <Layout title="FAQ I Medical & Surgical Solutions I Your Questions Answered" description="Find answers to common questions about medical and surgical equipment, orders, shipping, and support. Trusted solutions for hospitals and healthcare professionals.">
       <PageHeader
         headerBg={storeCustomizationSetting?.faq?.header_bg}
         title={showingTranslateValue(storeCustomizationSetting?.faq?.title)}
