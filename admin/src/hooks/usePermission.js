@@ -1,15 +1,30 @@
-import useHasPermission from "@/utils/hasPermission"; // same import
+import hasPermission from "@/utils/hasPermission";
 import { notifyError } from "@/utils/toast";
 
+/**
+ * Custom hook to handle permissions and edit/delete functions
+ * @param {string} name - permission name for the current module
+ * @param {function|null} editFunction - optional edit callback
+ * @param {function|null} deleteFunction - optional delete callback
+ */
 const usePermission = (name, editFunction = null, deleteFunction = null) => {
-  const canAdd = useHasPermission(name, "Add");
-  const canEdit = useHasPermission(name, "Edit");
-  const canList = useHasPermission(name, "List");
-  const canShow = useHasPermission(name, "Show");
-  const canDelete = useHasPermission(name, "Delete");
+  const permissions = hasPermission(); // get permissions from Redux
 
-  const can = { add: canAdd, edit: canEdit, list: canList, show: canShow, delete: canDelete };
+  // Utility to check if a specific permission exists
+  const check = (permName) =>
+    permissions.some(
+      (item) => item.permission === name && item.name.en === permName
+    );
 
+  const can = {
+    add: check("Add"),
+    edit: check("Edit"),
+    list: check("List"),
+    show: check("Show"),
+    delete: check("Delete"),
+  };
+
+  // Handler for delete action
   const deleteButtonClick = (id, title, product) => {
     if (can.edit && deleteFunction) {
       deleteFunction(id, title, product);
@@ -18,6 +33,7 @@ const usePermission = (name, editFunction = null, deleteFunction = null) => {
     }
   };
 
+  // Handler for edit action
   const editButtonClick = (id) => {
     if (can.edit && editFunction) {
       editFunction(id);
