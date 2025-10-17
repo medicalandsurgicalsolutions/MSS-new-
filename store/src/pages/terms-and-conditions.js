@@ -13,7 +13,7 @@ const TermAndConditions = () => {
 
   return (
     <Layout
-      title="Terms & Conditions"
+      title="Terms & Conditions I Medical & Surgical Solutions"
       description="Read the Terms & Conditions of Medical & Surgical Solutions, covering product purchases, shipping, returns, and usage policies for our medical equipment store."
     >
       <PageHeader
