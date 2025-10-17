@@ -47,8 +47,18 @@ const useLoginSubmit = () => {
           let url = "/"; // default homepage
 
           if (redirectUrl) {
-            // If the user came from checkout/cart, redirect to checkout
-            url = "/checkout";
+            if (redirectUrl.includes("/checkout")) {
+              url = "/checkout"; // always go to checkout
+            } else if (
+              redirectUrl.includes("user/dashboard") ||
+              redirectUrl.includes("/user/user/my-orders") ||
+              redirectUrl.includes("/user/update-profile") ||
+              redirectUrl.includes("/user/change-password")
+            ) {
+              url = redirectUrl; // stay on the same user page
+            } else {
+              url = "/"; // fallback
+            }
           }
 
           router.push(url);
