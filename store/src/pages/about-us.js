@@ -15,7 +15,7 @@ const AboutUs = () => {
   // console.log("data", data, );
 
   return (
-    <Layout title="About Us" description="This is about us page">
+    <Layout title="Buy Surgical Instruments & Products in Bulk | Medical & Surgical Solutions" description="Buy top-quality surgical instruments and medical products in bulk from Medical & Surgical Solutions. Trusted by hospitals and clinics for reliable, sterile, and affordable healthcare supplies.">
       <PageHeader
         headerBg={storeCustomizationSetting?.about_us?.header_bg}
         title={showingTranslateValue(
