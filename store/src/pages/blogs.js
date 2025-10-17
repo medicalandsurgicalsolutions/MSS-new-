@@ -26,7 +26,7 @@ export default function blogs() {
       };
 
   return (
-    <Layout title="About Us" description="This is about us page">
+    <Layout title="Blog Page" description="This is blog page">
       <div className="relative z-10 bg-gray-100 w-full pt-8 text-center flex flex-col items-center">
   {/* Title Section */}
   <div className="max-w-2xl">
