@@ -11,8 +11,7 @@ const useLoginSubmit = () => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [isBtnName, setIsBtnName] = useState("Get OTP");
-  const searchParams = useSearchParams();
-  const redirectUrl = searchParams?.get("redirectUrl");
+  const redirectUrl = useSearchParams()?.get("redirectUrl");
 
   const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -44,18 +43,12 @@ const useLoginSubmit = () => {
           localStorage.setItem("mss_token", res.token);
           setToken(res.token);
 
-          // ✅ Redirect Logic
-          let url = "/";
+          // REDIRECTION LOGIC
+          let url = "/"; // default homepage
 
-          // Check redirectUrl (if user came from protected page)
           if (redirectUrl) {
-            if (redirectUrl.includes("checkout")) url = "/checkout";
-            else if (redirectUrl.includes("dashboard")) url = "/dashboard";
-            else if (redirectUrl.includes("my-orders")) url = "/my-orders";
-            else if (redirectUrl.includes("recent-orders")) url = "/recent-orders";
-            else if (redirectUrl.includes("update-profile") || redirectUrl.includes("my-account"))
-              url = "/user/my-account";
-            else url = redirectUrl; // fallback if custom
+            // If the user came from checkout/cart, redirect to checkout
+            url = "/checkout";
           }
 
           router.push(url);
