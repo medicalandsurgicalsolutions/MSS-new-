@@ -12,7 +12,7 @@ const ExchangeReturnPolicy = () => {
   const { showingTranslateValue } = useUtilsFunction();
 
   return (
-    <Layout title="Exchange & Return Policy" description="This is exchange & return policy page">
+    <Layout title="Exchange & Return Policy I Medical & Surgical Solutions" description="Check Medical & Surgical Solutions’ Exchange & Return Policy. Hassle-free returns and exchanges for medical and surgical equipment across India.">
       <PageHeader
         headerBg={storeCustomizationSetting?.exchange_and_return_policy?.header_bg}
         title={showingTranslateValue(
