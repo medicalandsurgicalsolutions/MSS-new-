@@ -21,7 +21,7 @@ const SeoSetting = ({
   isSubmitting,
 }) => {
   const { t } = useTranslation();
-
+    console.log("Rendering SeoSetting ✅");
   return (
     <>
       <StoreSubmitButton isSubmitting={isSubmitting} isSave={isSave}/>
