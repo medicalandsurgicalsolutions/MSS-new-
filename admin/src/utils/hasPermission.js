@@ -1,18 +1,14 @@
 import { useSelector } from "react-redux";
 
-const hasPermission = (permission, name) => {
-  const settings = useSelector((state) => state.setting.settingItem);
-  const permissions = settings.find(
-    (value) => value.name === "permissionSetting"
-  )?.permissions;
+// src/utils/hasPermission.js
+const hasPermission = (permissions, permissionType, name) => {
+  if (!permissions) return false;
 
-  if (!permissions) {
-    return false;
-  }
-
-  return permissions.some(
-    (item) => item.permission === permission && item.name.en === name
-  );
+  return permissions.some(
+    (item) =>
+      item.permission === permissionType &&
+      item.name?.en?.toLowerCase() === name?.toLowerCase()
+  );
 };
 
 export default hasPermission;
