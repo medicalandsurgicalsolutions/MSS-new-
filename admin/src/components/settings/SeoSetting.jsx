@@ -9,7 +9,6 @@ import InputAreaTwo from "@/components/form/input/InputAreaTwo";
 import Uploader from "@/components/image-uploader/Uploader";
 import TextAreaCom from "@/components/form/others/TextAreaCom";
 import StoreSubmitButton from "../store-home/StoreSubmitButton";
-console.log("Rendering SeoSetting ✅");
 const SeoSetting = ({
   errors,
   register,
