@@ -119,11 +119,7 @@ const Footer = () => {
                     </Link>
                   </li>
                 ))}
-                // <li>
-                //   <Link href="/blogs" className="hover:text-cyan-400">
-                //     Blogs
-                //   </Link>
-                // </li>
+               
               </ul>
             </div>
           )}
