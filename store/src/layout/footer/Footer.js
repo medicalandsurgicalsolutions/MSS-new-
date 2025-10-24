@@ -162,43 +162,43 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-       {/* ================= BOTTOM SECTION ================= */}
+    {/* ================= BOTTOM SECTION ================= */}
 <div className="bg-gray-800 mt-8 rounded-lg">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
     <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-8">
 
       {/* ---- FOLLOW US ---- */}
       <div className="flex flex-col items-center md:items-start justify-center w-full md:w-1/3">
-        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+        <h4 className="text-base font-semibold text-white mb-1 tracking-wide">
           Follow Us
         </h4>
-        <div className="flex gap-3 justify-center md:justify-start">
-          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-blue-200 transition">
-            <FacebookIcon size={26} round />
+        <div className="flex gap-2 justify-center md:justify-start">
+          <Link href="#" className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <FacebookIcon size={20} round />
           </Link>
-          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-pink-200 transition">
-            <FaInstagram size={22} className="text-pink-500 hover:text-pink-600 transition" />
+          <Link href="#" className="bg-white p-1 rounded-full shadow hover:bg-pink-100 transition">
+            <FaInstagram size={18} className="text-pink-500 hover:text-pink-600 transition" />
           </Link>
-          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-blue-200 transition">
-            <LinkedinIcon size={26} round />
+          <Link href="#" className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <LinkedinIcon size={20} round />
           </Link>
-          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-green-200 transition">
-            <WhatsappIcon size={26} round />
+          <Link href="#" className="bg-white p-1 rounded-full shadow hover:bg-green-100 transition">
+            <WhatsappIcon size={20} round />
           </Link>
-          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-red-200 transition">
-            <FaYoutube size={22} className="text-red-500 hover:text-red-600 transition" />
+          <Link href="#" className="bg-white p-1 rounded-full shadow hover:bg-red-100 transition">
+            <FaYoutube size={18} className="text-red-500 hover:text-red-600 transition" />
           </Link>
         </div>
       </div>
 
       {/* ---- CALL US ---- */}
-      <div className="flex flex-col items-center justify-center w-full md:w-1/3">
-        <h4 className="text-base font-semibold text-white mb-2 tracking-wide">
+      <div className="flex flex-col items-center justify-center w-full md:w-1/3 -mt-1">
+        <h4 className="text-base font-semibold text-white mb-1 tracking-wide">
           Call Us Today
         </h4>
         <a
           href="tel:+919643344588"
-          className="text-2xl font-bold text-cyan-400 hover:text-cyan-300 transition"
+          className="text-xl font-bold text-cyan-400 hover:text-cyan-300 transition"
         >
           +91 96433 44588
         </a>
@@ -206,7 +206,7 @@ const Footer = () => {
 
       {/* ---- SECURE PAYMENT ---- */}
       <div className="flex flex-col items-center md:items-end justify-center w-full md:w-1/3">
-        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+        <h4 className="text-base font-semibold text-white mb-1 tracking-wide">
           Secure Payment
         </h4>
         <div className="flex items-center justify-center bg-white rounded-lg shadow px-3 py-2">
@@ -223,8 +223,6 @@ const Footer = () => {
     </div>
   </div>
 </div>
-
-
 
       {/* Copyright */}
       <div className="bg-black py-3 text-center text-gray-400 text-sm">
