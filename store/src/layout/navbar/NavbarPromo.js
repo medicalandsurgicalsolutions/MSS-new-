@@ -103,7 +103,7 @@ const NavbarPromo = () => {
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-2 lg:px-2 flex justify-between items-center">
+        <div className="max-w-screen-2xl mx-auto px-8 sm:px-10 lg:px-16 flex justify-between items-center">
           <div>
             {/* <Image
                           src={"https://decorncompany.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdjrbdgtzr%2Fimage%2Fupload%2Fv1734243800%2Fproduct%2FWhatsAppImage2024-12-15at11.18.45AM.jpg&w=640&q=75"} // Replace with your image path
