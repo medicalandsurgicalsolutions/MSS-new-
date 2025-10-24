@@ -172,21 +172,21 @@ const Footer = () => {
         <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
           Follow Us
         </h4>
-        <div className="flex gap-3 justify-center md:justify-start">
-          <Link href="https://www.facebook.com/share/1BKFiDnANi/"  target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow rounded-full hover:bg-blue-100 transition rounded-md">
-            <FacebookIcon size={28} round />
+         <div className="flex gap-2 justify-center md:justify-start">
+          <Link href="https://www.facebook.com/share/1BKFiDnANi/" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <FacebookIcon size={22} round />
           </Link>
-          <Link href="https://www.instagram.com/mssofficial2011/"  target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow rounded-full hover:bg-pink-100 transition">
-            <FaInstagram size={26} className="text-pink-500 hover:text-pink-600 transition" rounded-md />
+          <Link href="https://www.instagram.com/mssofficial2011/" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-pink-100 transition">
+            <FaInstagram size={20} className="text-pink-500 hover:text-pink-600 transition" />
           </Link>
-          <Link href="https://www.linkedin.com/company/105331627/admin/page-posts/published/"  target="_blank" rel="noopener noreferrer"className="bg-white p-2 shadow rounded-full hover:bg-blue-100 transition ">
-            <LinkedinIcon size={28} round />
+          <Link href="https://www.linkedin.com/company/105331627/admin/page-posts/published/" target="_blank" rel="noopener noreferrer" className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <LinkedinIcon size={22} round />
           </Link>
-          <Link href="https://wa.me/9643344588" target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow rounded-full hover:bg-green-100 transition rounded-md">
-            <WhatsappIcon size={28} round />
+          <Link href="https://wa.me/9643344588" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-green-100 transition">
+            <WhatsappIcon size={22} round />
           </Link>
-          <Link href="https://www.youtube.com/@MEDICALANDSURGICALSOLUTIONS" target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow rounded-full hover:bg-red-100 transition ">
-            <FaYoutube size={26} className="text-red-500 hover:text-red-600 transition" />
+          <Link href="https://www.youtube.com/@MEDICALANDSURGICALSOLUTIONS" target="_blank" rel="noopener noreferrer" className="bg-white p-1 rounded-full shadow hover:bg-red-100 transition">
+            <FaYoutube size={20} className="text-red-500 hover:text-red-600 transition" />
           </Link>
         </div>
       </div>
