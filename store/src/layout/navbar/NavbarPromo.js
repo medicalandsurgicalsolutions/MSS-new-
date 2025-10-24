@@ -25,13 +25,11 @@ const NavbarPromo = () => {
   const router = useRouter();
 
   const { showingTranslateValue } = useUtilsFunction();
-  const currentLanguage = Cookies.get("_curr_lang") || null;
+  const currentLanguage = Cookies.get("_curr_lang") || null; 
 
   const { data, loading, error } = useAsync(() =>
     CategoryServices.getShowingCategory()
   );
-
-  // console.log("Category Log ", data);
 
   let currentLang = {};
 
