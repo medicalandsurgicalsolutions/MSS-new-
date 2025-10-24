@@ -48,13 +48,13 @@ const NavbarPromo = () => {
 
   const handleSubNestedCategory = (id, categoryName) => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    router.push(`/search?category=${name}&_id=${id}`);
+    router.push(/search?category=${name}&_id=${id});
     setIsLoading(!isLoading);
   };
 
   const handleSubCategory = (id, categoryName) => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    router.push(`/search?category=${name}&_id=${id}`);
+    router.push(/search?category=${name}&_id=${id});
     setIsLoading(!isLoading);
   };
 
