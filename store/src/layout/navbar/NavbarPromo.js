@@ -101,8 +101,7 @@ const NavbarPromo = () => {
   return (
     <>
      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-  <div className="max-w-screen-2xl mx-auto px-3 sm:px-2 lg:px-2 flex justify-between items-center 
-                gap-2 lg:gap-[7px] lg:text-sm xl:text-base">
+ <div className="max-w-screen-2xl mx-auto px-3 sm:px-2 lg:px-2 flex justify-between items-center">
       <div>
          {/* <Image src={"https://decorncompany.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdjrbdgtzr%2Fimage%2Fupload%2Fv1734243800%2Fproduct%2FWhatsAppImage2024-12-15at11.18.45AM.jpg&w=640&q=75"} // Replace with your image path alt="Home" width={200} // Set width of the image height={100} // Set height of the image className="mx-auto rounded-lg h-16 w-20" // Center image and add margin bottom /> */} 
          <Link onClick={() =>
