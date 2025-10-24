@@ -162,10 +162,10 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      {/* ================= BOTTOM SECTION ================= */}
-<div className="bg-gray-800 mt-8 rounded-lg">
-  <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
-    <div className="flex flex-col md:flex-row items-start md:items-center justify-between text-center md:text-left gap-8">
+
+  <div className="bg-gray-800 mt-4 rounded-lg">
+    <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between text-center md:text-left gap-8">
 
       {/* ---- FOLLOW US ---- */}
       <div className="flex flex-col items-center md:items-start justify-start w-full md:w-1/3">
@@ -173,19 +173,19 @@ const Footer = () => {
           Follow Us
         </h4>
         <div className="flex gap-3 justify-center md:justify-start">
-          <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
+          <Link href="https://www.facebook.com/share/1BKFiDnANi/"  target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
             <FacebookIcon size={28}  rounded-md />
           </Link>
-          <Link href="#" className="bg-white p-2 shadow hover:bg-pink-100 transition  rounded-md">
+          <Link href="https://www.instagram.com/mssofficial2011/"  target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow hover:bg-pink-100 transition  rounded-md">
             <FaInstagram size={26} className="text-pink-500 hover:text-pink-600 transition" rounded-md />
           </Link>
-          <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
+          <Link href="https://www.linkedin.com/company/105331627/admin/page-posts/published/"  target="_blank" rel="noopener noreferrer"className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
             <LinkedinIcon size={28}  rounded-md />
           </Link>
-          <Link href="#" className="bg-white p-2 shadow hover:bg-green-100 transition rounded-md">
+          <Link href="https://wa.me/9643344588" target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow hover:bg-green-100 transition rounded-md">
             <WhatsappIcon size={28}  rounded-md />
           </Link>
-          <Link href="#" className="bg-white p-2 shadow hover:bg-red-100 transition rounded-md">
+          <Link href="https://www.youtube.com/@MEDICALANDSURGICALSOLUTIONS" target="_blank" rel="noopener noreferrer" className="bg-white p-2 shadow hover:bg-red-100 transition rounded-md">
             <FaYoutube size={26} className="text-red-500 hover:text-red-600 transition"  rounded-md />
           </Link>
         </div>
@@ -198,7 +198,7 @@ const Footer = () => {
         </h4>
         <a
           href="tel:+919643344588"
-          className="text-white font-bold text-xl hover:text-blue-400 transition"
+         className="text-white font-bold text-xl transition hover:text-[#0891b2]"
         >
           +91 96433 44588
         </a>
