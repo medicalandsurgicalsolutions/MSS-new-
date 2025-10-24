@@ -173,19 +173,19 @@ const Footer = () => {
           Follow Us
         </h4>
         <div className="flex gap-3 justify-center md:justify-start">
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-100 transition">
-            <FacebookIcon size={28} round />
+          <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition">
+            <FacebookIcon size={28}  />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-pink-100 transition">
+          <Link href="#" className="bg-white p-2 shadow hover:bg-pink-100 transition">
             <FaInstagram size={26} className="text-pink-500 hover:text-pink-600 transition" />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-100 transition">
-            <LinkedinIcon size={28} round />
+          <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition">
+            <LinkedinIcon size={28}  />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-green-100 transition">
-            <WhatsappIcon size={28} round />
+          <Link href="#" className="bg-white p-2 shadow hover:bg-green-100 transition">
+            <WhatsappIcon size={28}  />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-red-100 transition">
+          <Link href="#" className="bg-white p-2 shadow hover:bg-red-100 transition">
             <FaYoutube size={26} className="text-red-500 hover:text-red-600 transition" />
           </Link>
         </div>
