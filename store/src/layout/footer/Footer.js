@@ -6,6 +6,7 @@ import {
   FacebookIcon,
   LinkedinIcon,
   PinterestIcon,
+  TwitterIcon,
   WhatsappIcon,
 } from "react-share";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
@@ -16,33 +17,36 @@ import useGetSetting from "@hooks/useGetSetting";
 import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import logo from "../../../public/logo/logo-color.png";
+import { useRouter } from "next/router";
 
 const Footer = () => {
   const { t } = useTranslation();
   const userInfo = getUserSession();
   const { showingTranslateValue } = useUtilsFunction();
   const { loading, storeCustomizationSetting } = useGetSetting();
+  const router = useRouter();
 
   return (
-    <footer className="bg-[#0f0f0f] text-white">
-      {/* Top Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {/* Left Blue Section */}
-        <div className="bg-cyan-600 p-8 md:p-12">
+    <div className="pb-16 lg:pb-0 xl:pb-0 bg-cyan-600">
+      <div className="mx-auto max-w-screen-2xl px-4 sm:px-10">
+        {/* Top Footer Section */}
+        <div className="grid grid-cols-2 md:grid-cols-7 xl:grid-cols-12 gap-5 sm:gap-9 lg:gap-11 xl:gap-7 py-10 lg:py-16 justify-between">
           {storeCustomizationSetting?.footer?.block4_status && (
-            <div>
-              <Link href="/" className="block mb-5">
-                <div className="relative w-36 h-10">
+            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
+              <Link href="/" className="mr-3 lg:mr-12 xl:mr-12" rel="noreferrer">
+                <div className="relative w-32 h-10">
                   <Image
+                    width="0"
+                    height="0"
+                    sizes="100vw"
+                    className="w-full h-auto"
                     src={storeCustomizationSetting?.footer?.block4_logo || logo}
                     alt="logo"
-                    fill
-                    className="object-contain"
                   />
                 </div>
               </Link>
-              <p className="text-sm leading-7">
-                <strong>Medical & Surgical Solutions</strong>
+              <p className="leading-7 font-sans text-sm text-white mt-3">
+                <span className="text-bold">Medical & Surgical Solutions</span>
                 <br />
                 <CMSkeleton
                   count={1}
@@ -51,51 +55,16 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block4_address}
                 />
                 <br />
-                Tel: {storeCustomizationSetting?.footer?.block4_phone}
+                <span>Tel : {storeCustomizationSetting?.footer?.block4_phone}</span>
                 <br />
-                Email: {storeCustomizationSetting?.footer?.block4_email}
+                <span>Email : {storeCustomizationSetting?.footer?.block4_email}</span>
               </p>
             </div>
           )}
-        </div>
 
-        {/* Right Dark Section */}
-        <div className="bg-[#0f0f0f] p-8 md:p-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {/* Block 1 */}
-          {storeCustomizationSetting?.footer?.block1_status && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-                <CMSkeleton
-                  count={1}
-                  height={20}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block1_title}
-                />
-              </h3>
-              <ul className="space-y-2 text-sm">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <li key={i}>
-                    <Link
-                      href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
-                      className="hover:text-cyan-400"
-                    >
-                      <CMSkeleton
-                        count={1}
-                        height={10}
-                        loading={loading}
-                        data={storeCustomizationSetting?.footer?.[`block1_sub_title${i}`]}
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Block 2 */}
           {storeCustomizationSetting?.footer?.block2_status && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
+              <h3 className="text-lg text-white lg:leading-7 font-bold mb-4 sm:mb-5 lg:mb-6 mt-4 pb-0.5">
                 <CMSkeleton
                   count={1}
                   height={20}
@@ -103,12 +72,12 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block2_title}
                 />
               </h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="text-sm lg:text-15px flex flex-col space-y-3">
                 {[1, 2, 3, 4].map((i) => (
-                  <li key={i}>
+                  <li key={i} className="flex items-baseline">
                     <Link
                       href={`${storeCustomizationSetting?.footer?.[`block2_sub_link${i}`]}`}
-                      className="hover:text-cyan-400"
+                      className="text-white inline-block w-full"
                     >
                       <CMSkeleton
                         count={1}
@@ -119,15 +88,23 @@ const Footer = () => {
                     </Link>
                   </li>
                 ))}
-               
+                <li>
+                  <Link href="#" className="text-white inline-block w-full tracking-wide">
+                    Certificate
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/blogs" className="text-white inline-block w-full tracking-wide">
+                    Blogs
+                  </Link>
+                </li>
               </ul>
             </div>
           )}
 
-          {/* Block 3 */}
           {storeCustomizationSetting?.footer?.block3_status && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
+              <h3 className="text-lg text-white lg:leading-7 font-bold mb-4 sm:mb-5 lg:mb-6 mt-4 pb-0.5">
                 <CMSkeleton
                   count={1}
                   height={20}
@@ -135,16 +112,16 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block3_title}
                 />
               </h3>
-              <ul className="space-y-2 text-sm">
+              <ul className="text-sm lg:text-15px flex flex-col space-y-3">
                 {[1, 2, 3, 4].map((i) => (
-                  <li key={i}>
+                  <li key={i} className="flex items-baseline">
                     <Link
                       href={`${
                         userInfo?.email
                           ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
                           : "/auth/login"
                       }`}
-                      className="hover:text-cyan-400"
+                      className="text-white inline-block w-full"
                     >
                       <CMSkeleton
                         count={1}
@@ -158,104 +135,121 @@ const Footer = () => {
               </ul>
             </div>
           )}
-        </div>
-      </div>
 
-      {/* Bottom Section */}
-      <div className="bg-[#1a1a1a] border-t border-gray-700 ">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-10 grid grid-cols-1 md:grid-cols-3 items-center gap-3">
-          {/* Social Icons */}
-          <div>
-            {storeCustomizationSetting?.footer?.social_links_status && (
-              <div>
-                <span className="text-base font-medium block mb-2">
-                  {t("common:footer-follow-us")}
-                </span>
-                <div className="flex gap-3">
-                  {storeCustomizationSetting?.footer?.social_facebook && (
+          {storeCustomizationSetting?.footer?.block1_status && (
+            <div className="pb-3.5 sm:pb-0 col-span-1 md:col-span-2 lg:col-span-3">
+              <h3 className="text-lg text-white lg:leading-7 font-bold mb-4 sm:mb-5 lg:mb-6 mt-4 pb-0.5">
+                <CMSkeleton
+                  count={1}
+                  height={20}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.block1_title}
+                />
+              </h3>
+              <ul className="text-sm flex flex-col space-y-3">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <li key={i}>
                     <Link
-                      href={storeCustomizationSetting?.footer?.social_facebook}
-                      target="_blank"
-                      className="hover:text-cyan-400"
+                      href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
+                      className="text-white inline-block w-full"
                     >
-                      <FacebookIcon size={28} round />
+                      <CMSkeleton
+                        count={1}
+                        height={10}
+                        loading={loading}
+                        data={storeCustomizationSetting?.footer?.[`block1_sub_title${i}`]}
+                      />
                     </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_pinterest && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_pinterest}
-                      target="_blank"
-                      className="hover:text-pink-500"
-                    >
-                      <FaInstagram size={24} />
-                    </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_linkedin && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_linkedin}
-                      target="_blank"
-                      className="hover:text-blue-400"
-                    >
-                      <LinkedinIcon size={28} round />
-                    </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_whatsapp && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_whatsapp}
-                      target="_blank"
-                      className="hover:text-green-400"
-                    >
-                      <WhatsappIcon size={28} round />
-                    </Link>
-                  )}
-                  <Link
-                    href={storeCustomizationSetting?.footer?.social_twitter || "#"}
-                    target="_blank"
-                    className="hover:text-red-500"
-                  >
-                    <FaYoutube size={24} />
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Contact */}
-          <div className="text-center">
-            {storeCustomizationSetting?.footer?.bottom_contact_status && (
-              <>
-                <p className="text-base font-medium">Call Us</p>
-                <h5 className="text-2xl font-bold text-cyan-500">
-                  {storeCustomizationSetting?.footer?.bottom_contact}
-                </h5>
-              </>
-            )}
-          </div>
-
-          {/* Payment */}
-          {storeCustomizationSetting?.footer?.payment_method_status && (
-            <div className="text-center md:text-right">
-              <h2 className="font-semibold mb-2">Secure Payment</h2>
-              <Image
-                width={180}
-                height={20}
-                className="inline-block"
-                src={
-                  storeCustomizationSetting?.footer?.payment_method_img ||
-                  "/payment-method/payment-logo.png"
-                }
-                alt="payment"
-              />
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
+
+        {/* ================= BOTTOM SECTION ================= */}
+        <div className="bg-gray-800 mt-8 rounded-lg">
+          <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
+            <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-8">
+
+              {/* ---- FOLLOW US ---- */}
+              <div className="flex flex-col items-center md:items-start justify-center">
+                <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+                  Follow Us
+                </h4>
+                <div className="flex gap-3">
+                  <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-600 transition">
+                    <FacebookIcon size={32} round />
+                  </Link>
+                  <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-pink-500 transition">
+                    <FaInstagram size={26} className="text-pink-600 hover:text-white transition" />
+                  </Link>
+                  <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-700 transition">
+                    <LinkedinIcon size={32} round />
+                  </Link>
+                  <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-green-600 transition">
+                    <WhatsappIcon size={32} round />
+                  </Link>
+                  <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-red-600 transition">
+                    <FaYoutube size={26} className="text-red-500 hover:text-white transition" />
+                  </Link>
+                </div>
+              </div>
+
+              {/* ---- CALL US ---- */}
+              <div className="flex flex-col items-center justify-center">
+                <h4 className="text-base font-semibold text-white mb-2 tracking-wide">
+                  Call Us Today
+                </h4>
+                <a
+                  href="tel:+919643344588"
+                  className="text-2xl font-bold text-cyan-400 hover:text-cyan-300 transition"
+                >
+                  +91 96433 44588
+                </a>
+              </div>
+
+              {/* ---- SECURE PAYMENT ---- */}
+              <div className="flex flex-col items-center md:items-end justify-center">
+                <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+                  Secure Payment
+                </h4>
+                <div className="flex items-center justify-center bg-white rounded-lg shadow px-3 py-2">
+                  <Image
+                    src="/payment-method/payment-logo.png"
+                    alt="Secure Payment"
+                    width={200}
+                    height={40}
+                    className="h-10 w-auto object-contain"
+                  />
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
       </div>
 
-      {/* Copyright */}
-      <div className="bg-black py-3 text-center text-gray-400 text-sm">
-        © 2025 Medical & Surgical Solutions. All Rights Reserved.
+      {/* Footer Bottom Bar */}
+      <div className="text-white py-4">
+        <div className="container mx-auto md:flex lg:flex justify-between items-center px-8">
+          <div className="text-sm text-gray-300">
+            Copyright © 2024 Medical Surgical Solutions.
+          </div>
+          <p className="text-sm text-gray-300 leading-6">
+            Designed & Developed by{" "}
+            <Link
+              href="https://kanakdrishtiinfo.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white"
+            >
+              Kanak Drishti Infotech
+            </Link>
+          </p>
+        </div>
       </div>
-    </footer>
+    </div>
   );
 };
 
