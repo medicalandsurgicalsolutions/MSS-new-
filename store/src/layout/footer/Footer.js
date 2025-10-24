@@ -174,19 +174,19 @@ const Footer = () => {
         </h4>
         <div className="flex gap-3 justify-center md:justify-start">
           <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
-            <FacebookIcon size={28}  />
+            <FacebookIcon size={28}  rounded-md />
           </Link>
           <Link href="#" className="bg-white p-2 shadow hover:bg-pink-100 transition  rounded-md">
-            <FaInstagram size={26} className="text-pink-500 hover:text-pink-600 transition" />
+            <FaInstagram size={26} className="text-pink-500 hover:text-pink-600 transition" rounded-md />
           </Link>
           <Link href="#" className="bg-white p-2 shadow hover:bg-blue-100 transition rounded-md">
-            <LinkedinIcon size={28}  />
+            <LinkedinIcon size={28}  rounded-md />
           </Link>
           <Link href="#" className="bg-white p-2 shadow hover:bg-green-100 transition rounded-md">
-            <WhatsappIcon size={28}  />
+            <WhatsappIcon size={28}  rounded-md />
           </Link>
           <Link href="#" className="bg-white p-2 shadow hover:bg-red-100 transition rounded-md">
-            <FaYoutube size={26} className="text-red-500 hover:text-red-600 transition" />
+            <FaYoutube size={26} className="text-red-500 hover:text-red-600 transition"  rounded-md />
           </Link>
         </div>
       </div>
