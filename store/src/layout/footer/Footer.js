@@ -162,7 +162,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      {/* ================= BOTTOM SECTION ================= */}
+       {/* ================= BOTTOM SECTION ================= */}
 <div className="bg-gray-800 mt-8 rounded-lg">
   <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
     <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-8">
@@ -173,20 +173,20 @@ const Footer = () => {
           Follow Us
         </h4>
         <div className="flex gap-3 justify-center md:justify-start">
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-600 transition">
-            <FacebookIcon size={32} round />
+          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-blue-200 transition">
+            <FacebookIcon size={26} round />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-pink-500 transition">
-            <FaInstagram size={26} className="text-pink-600 hover:text-white transition" />
+          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-pink-200 transition">
+            <FaInstagram size={22} className="text-pink-500 hover:text-pink-600 transition" />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-700 transition">
-            <LinkedinIcon size={32} round />
+          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-blue-200 transition">
+            <LinkedinIcon size={26} round />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-green-600 transition">
-            <WhatsappIcon size={32} round />
+          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-green-200 transition">
+            <WhatsappIcon size={26} round />
           </Link>
-          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-red-600 transition">
-            <FaYoutube size={26} className="text-red-500 hover:text-white transition" />
+          <Link href="#" className="bg-white p-1.5 rounded-full shadow hover:bg-red-200 transition">
+            <FaYoutube size={22} className="text-red-500 hover:text-red-600 transition" />
           </Link>
         </div>
       </div>
@@ -223,6 +223,7 @@ const Footer = () => {
     </div>
   </div>
 </div>
+
 
 
       {/* Copyright */}
