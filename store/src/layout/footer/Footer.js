@@ -28,36 +28,49 @@ const Footer = () => {
       {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Left Blue Section */}
-        <div className="bg-cyan-600 p-8 md:p-12">
-          {storeCustomizationSetting?.footer?.block4_status && (
-            <div>
-              <Link href="/" className="block mb-5">
-                <div className="relative w-36 h-10">
-                  <Image
-                    src={storeCustomizationSetting?.footer?.block4_logo || logo}
-                    alt="logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </Link>
-              <p className="text-sm leading-7">
-                <strong>Medical & Surgical Solutions</strong>
-                <br />
-                <CMSkeleton
-                  count={1}
-                  height={10}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block4_address}
-                />
-                <br />
-                Tel: {storeCustomizationSetting?.footer?.block4_phone}
-                <br />
-                Email: {storeCustomizationSetting?.footer?.block4_email}
-              </p>
-            </div>
-          )}
+       <div className="bg-cyan-600 p-8 md:p-12">
+  {storeCustomizationSetting?.footer?.block4_status && (
+    <div>
+      <Link href="/" className="block mb-5">
+        <div className="relative w-36 h-10">
+          <Image
+            src={storeCustomizationSetting?.footer?.block4_logo || logo}
+            alt="logo"
+            fill
+            className="object-contain"
+          />
         </div>
+      </Link>
+      <p className="text-sm leading-7">
+        <strong>Medical & Surgical Solutions</strong>
+        <br />
+        <CMSkeleton
+          count={1}
+          height={10}
+          loading={loading}
+          data={storeCustomizationSetting?.footer?.block4_address}
+        />
+        <br />
+        {/* Clickable Phone */}
+        <a
+          href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
+          className="cursor-pointer"
+        >
+          Tel: {storeCustomizationSetting?.footer?.block4_phone}
+        </a>
+        <br />
+        {/* Clickable Email */}
+        <a
+          href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
+          className="cursor-pointer"
+        >
+          Email: {storeCustomizationSetting?.footer?.block4_email}
+        </a>
+      </p>
+    </div>
+  )}
+</div>
+
 
         {/* Right Dark Section */}
         <div className="bg-[#0f0f0f] p-8 md:p-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
