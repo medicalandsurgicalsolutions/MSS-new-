@@ -162,94 +162,68 @@ const Footer = () => {
       </div>
 
       {/* Bottom Section */}
-      <div className="bg-[#1a1a1a] border-t border-gray-700 ">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-10 grid grid-cols-1 md:grid-cols-3 items-center gap-3">
-          {/* Social Icons */}
-          <div>
-            {storeCustomizationSetting?.footer?.social_links_status && (
-              <div>
-                <span className="text-base font-medium block mb-2">
-                  {t("common:footer-follow-us")}
-                </span>
-                <div className="flex gap-3">
-                  {storeCustomizationSetting?.footer?.social_facebook && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_facebook}
-                      target="_blank"
-                      className="hover:text-cyan-400"
-                    >
-                      <FacebookIcon size={28} round />
-                    </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_pinterest && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_pinterest}
-                      target="_blank"
-                      className="hover:text-pink-500"
-                    >
-                      <FaInstagram size={24} />
-                    </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_linkedin && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_linkedin}
-                      target="_blank"
-                      className="hover:text-blue-400"
-                    >
-                      <LinkedinIcon size={28} round />
-                    </Link>
-                  )}
-                  {storeCustomizationSetting?.footer?.social_whatsapp && (
-                    <Link
-                      href={storeCustomizationSetting?.footer?.social_whatsapp}
-                      target="_blank"
-                      className="hover:text-green-400"
-                    >
-                      <WhatsappIcon size={28} round />
-                    </Link>
-                  )}
-                  <Link
-                    href={storeCustomizationSetting?.footer?.social_twitter || "#"}
-                    target="_blank"
-                    className="hover:text-red-500"
-                  >
-                    <FaYoutube size={24} />
-                  </Link>
-                </div>
-              </div>
-            )}
-          </div>
+      {/* ================= BOTTOM SECTION ================= */}
+<div className="bg-gray-800 mt-8 rounded-lg">
+  <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
+    <div className="flex flex-col md:flex-row items-center justify-between text-center md:text-left gap-8">
 
-          {/* Contact */}
-          <div className="text-center">
-            {storeCustomizationSetting?.footer?.bottom_contact_status && (
-              <>
-                <p className="text-base font-medium">Call Us</p>
-                <h5 className="text-2xl font-bold text-cyan-500">
-                  {storeCustomizationSetting?.footer?.bottom_contact}
-                </h5>
-              </>
-            )}
-          </div>
-
-          {/* Payment */}
-          {storeCustomizationSetting?.footer?.payment_method_status && (
-            <div className="text-center md:text-right">
-              <h2 className="font-semibold mb-2">Secure Payment</h2>
-              <Image
-                width={180}
-                height={20}
-                className="inline-block"
-                src={
-                  storeCustomizationSetting?.footer?.payment_method_img ||
-                  "/payment-method/payment-logo.png"
-                }
-                alt="payment"
-              />
-            </div>
-          )}
+      {/* ---- FOLLOW US ---- */}
+      <div className="flex flex-col items-center md:items-start justify-center w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+          Follow Us
+        </h4>
+        <div className="flex gap-3 justify-center md:justify-start">
+          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-600 transition">
+            <FacebookIcon size={32} round />
+          </Link>
+          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-pink-500 transition">
+            <FaInstagram size={26} className="text-pink-600 hover:text-white transition" />
+          </Link>
+          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-blue-700 transition">
+            <LinkedinIcon size={32} round />
+          </Link>
+          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-green-600 transition">
+            <WhatsappIcon size={32} round />
+          </Link>
+          <Link href="#" className="bg-white p-2 rounded-full shadow hover:bg-red-600 transition">
+            <FaYoutube size={26} className="text-red-500 hover:text-white transition" />
+          </Link>
         </div>
       </div>
+
+      {/* ---- CALL US ---- */}
+      <div className="flex flex-col items-center justify-center w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-2 tracking-wide">
+          Call Us Today
+        </h4>
+        <a
+          href="tel:+919643344588"
+          className="text-2xl font-bold text-cyan-400 hover:text-cyan-300 transition"
+        >
+          +91 96433 44588
+        </a>
+      </div>
+
+      {/* ---- SECURE PAYMENT ---- */}
+      <div className="flex flex-col items-center md:items-end justify-center w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+          Secure Payment
+        </h4>
+        <div className="flex items-center justify-center bg-white rounded-lg shadow px-3 py-2">
+          <Image
+            src="/payment-method/payment-logo.png"
+            alt="Secure Payment"
+            width={200}
+            height={40}
+            className="h-10 w-auto object-contain"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
       {/* Copyright */}
       <div className="bg-black py-3 text-center text-gray-400 text-sm">
