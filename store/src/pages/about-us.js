@@ -105,7 +105,7 @@ const AboutUs = () => {
           </div>
 
           <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-6 lg:p-10 border-2 border-slate-200 mb-16 shadow-lg">
-            <div className="max-w-6xl space-y-5 text-slate-700 leading-relaxed">
+            <div className="max-w-12xl space-y-5 text-slate-700 leading-relaxed">
               <p className="text-base sm:text-lg font-medium">
                 <CMSkeleton
                   count={5}
