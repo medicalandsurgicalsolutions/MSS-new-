@@ -170,7 +170,7 @@ const AboutUs = () => {
               </p>
             </div>
 
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
   {[
     {
       img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
@@ -203,28 +203,27 @@ const AboutUs = () => {
       role: storeCustomizationSetting?.about_us?.founder_six_sub,
     },
   ].map((member, index) => (
-    <div key={index} className="group">
-      <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors">
+    <div key={index} className="group flex flex-col items-center justify-center">
+      <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors flex justify-center">
         <Image
-          width={200} // decreased size
-          height={200} // decreased size
+          width={300} // You can leave width and height, but class w-auto makes it auto
+          height={300}
           src={member.img || "/placeholder.svg"}
           alt={showingTranslateValue(member.name) || "Team member"}
-          className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
+          className="w-auto h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
         />
-        {/* Removed colored overlay */}
+        {/* Colored overlay removed */}
       </div>
-      <div className="flex flex-col items-center text-center">
-        <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors">
-          {showingTranslateValue(member.name)}
-        </h5>
-        <p className="text-xs sm:text-sm text-white font-medium">
-          {showingTranslateValue(member.role)}
-        </p>
-      </div>
+      <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors text-center">
+        {showingTranslateValue(member.name)}
+      </h5>
+      <p className="text-xs sm:text-sm text-white font-medium text-center">
+        {showingTranslateValue(member.role)}
+      </p>
     </div>
   ))}
 </div>
+
 
           </div>
         </div>
