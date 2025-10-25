@@ -105,7 +105,7 @@ const AboutUs = () => {
           </div>
 
           <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-6 lg:p-10 border-2 border-slate-200 mb-16 shadow-lg">
-            <div className="max-w-12xl space-y-5 text-slate-700 leading-relaxed">
+            <div className="max-w-4xl space-y-5 text-slate-700 leading-relaxed">
               <p className="text-base sm:text-lg font-medium">
                 <CMSkeleton
                   count={5}
@@ -204,20 +204,20 @@ const AboutUs = () => {
                 },
               ].map((member, index) => (
                 <div key={index} className="group">
-                  <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-teal-500 transition-colors">
+                  <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors">
                     <Image
-                      width={420}
-                      height={420}
+                      width={300}
+                      height={300}
                       src={member.img || "/placeholder.svg"}
                       alt={showingTranslateValue(member.name) || "Team member"}
                       className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0891B2] via-[#0891B2]/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                   </div>
-                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-teal-300 transition-colors text-center">
+                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors txt-center">
                     {showingTranslateValue(member.name)}
                   </h5>
-                  <p className="text-xs sm:text-sm text-teal-300 font-medium text-center">
+                  <p className="text-xs sm:text-sm text-[#0891B2] font-medium text-center">
                     {showingTranslateValue(member.role)}
                   </p>
                 </div>
