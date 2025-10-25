@@ -212,14 +212,16 @@ const AboutUs = () => {
                       alt={showingTranslateValue(member.name) || "Team member"}
                       className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0891B2] via-[#0891B2]/60 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
+                    <div className="absolute inset-0 bg-[#0891B2] opacity-60 group-hover:opacity-80 transition-opacity"></div>
                   </div>
-                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors txt-center">
+                  <div className="flex flex-col items-center text-center">
+                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors">
                     {showingTranslateValue(member.name)}
                   </h5>
-                  <p className="text-xs sm:text-sm text-[#0891B2] font-medium text-center">
+                  <p className="text-xs sm:text-sm  bg-[#0891B2] font-medium">
                     {showingTranslateValue(member.role)}
                   </p>
+                </div>
                 </div>
               ))}
             </div>
