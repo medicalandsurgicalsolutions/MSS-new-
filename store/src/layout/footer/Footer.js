@@ -16,10 +16,10 @@ const Footer = () => {
 
   return (
     <footer className="bg-[#0f0f0f] text-white">
-      {/* Top Section */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        {/* Left Teal Section */}
-        <div className="bg-[#0891B2] p-6 md:p-10 text-white">
+      {/* Main Layout */}
+      <div className="flex flex-col md:flex-row">
+        {/* Left Teal Section (Narrower) */}
+        <div className="bg-[#0891B2] w-full md:w-[35%] p-6 md:p-10 text-white">
           {storeCustomizationSetting?.footer?.block4_status && (
             <div>
               <Link href="/" className="block mb-5">
@@ -34,7 +34,12 @@ const Footer = () => {
               </Link>
 
               <p className="text-sm leading-7">
-                <strong>Medical & Surgical Solutions, we take pride in being a trusted partner for healthcare professionals, hospitals, and institutions across the globe - providing reliable, high-quality medical supplies and equipment that empower better patient care.</strong>
+                <strong>
+                  Medical & Surgical Solutions, we take pride in being a trusted partner for
+                  healthcare professionals, hospitals, and institutions across the globe —
+                  providing reliable, high-quality medical supplies and equipment that empower
+                  better patient care.
+                </strong>
                 <br />
                 <CMSkeleton
                   count={1}
@@ -61,8 +66,8 @@ const Footer = () => {
           )}
         </div>
 
-        {/* Right Dark Section */}
-        <div className="bg-[#0f0f0f] p-6 md:p-10 flex flex-col justify-between">
+        {/* Right Dark Section (Wider) */}
+        <div className="bg-[#0f0f0f] w-full md:w-[65%] p-6 md:p-10 flex flex-col justify-between">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {/* Block 1 */}
             {storeCustomizationSetting?.footer?.block1_status && (
@@ -162,9 +167,9 @@ const Footer = () => {
             )}
           </div>
 
-          {/* Bottom Inside Dark Section */}
+          {/* Bottom Section Inside Dark Part */}
           <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-gray-400 text-sm text-center">
-            <p>2025 © All rights reserved by RadiusTheme</p>
+            <p>2025 © All rights reserved by Medical & Surgical Solutions</p>
             <Image
               src="/payment-method/payment-logo.png"
               alt="Secure Payment"
