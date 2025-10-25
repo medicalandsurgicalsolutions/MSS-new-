@@ -20,9 +20,10 @@ const Footer = () => {
       <div className="flex flex-col md:flex-row">
         {/* Left Teal Section (Slightly Wider Now) */}
 {/* Left Teal Section (Slightly Wider Now) */}
-<div className="bg-[#0891B2] w-full md:w-[40%] p-6 md:p-10 text-white flex flex-col gap-4">
+<div className="bg-[#0891B2] w-full md:w-[40%] p-6 md:p-10 text-white flex flex-col gap-5">
   {storeCustomizationSetting?.footer?.block4_status && (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-5">
+      {/* Logo */}
       <Link href="/" className="block">
         <div className="relative w-40 h-12">
           <Image
@@ -34,14 +35,15 @@ const Footer = () => {
         </div>
       </Link>
 
+      {/* Description */}
       <p className="text-sm leading-7">
-        <strong>
-          Medical & Surgical Solutions, we take pride in being a trusted partner for
-          healthcare professionals, hospitals, and institutions across the globe — providing reliable, high-quality medical supplies and equipment that empower
-          better patient care.
-        </strong>
+        Medical & Surgical Solutions, we take pride in being a trusted partner for
+        healthcare professionals, hospitals, and institutions across the globe —
+        providing reliable, high-quality medical supplies and equipment that empower
+        better patient care.
       </p>
 
+      {/* Address */}
       <p className="text-sm leading-6">
         <CMSkeleton
           count={1}
@@ -51,24 +53,32 @@ const Footer = () => {
         />
       </p>
 
-      <p className="text-sm">
+      {/* Help Line Section (Styled like the Medimall image) */}
+      <div>
+        <p className="text-base mb-1">Our Help Line:</p>
         <a
           href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-          className="cursor-pointer font-bold block"
+          className="text-2xl font-bold tracking-wide block mb-4"
         >
           {storeCustomizationSetting?.footer?.block4_phone}
         </a>
+
+        <p className="text-sm leading-6 mb-2">
+          Monday - Friday: 9:00 - 20:00 <br />
+          Saturday: 11:00 - 15:00
+        </p>
+
         <a
           href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-          className="cursor-pointer hover:underline block"
+          className="text-sm block"
         >
           {storeCustomizationSetting?.footer?.block4_email}
         </a>
-      </p>
-
+      </div>
     </div>
   )}
 </div>
+
 
         {/* Right Dark Section */}
         <div className="bg-[#0f0f0f] w-full md:w-[60%] p-6 md:p-10 flex flex-col justify-between">
