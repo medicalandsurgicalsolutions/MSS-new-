@@ -28,7 +28,7 @@ const Footer = () => {
       {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Left Blue Section */}
-       <div className="bg-cyan-600 p-8 md:p-12">
+       <div className="bg-cyan-600 p-4 md:p-6">
   {storeCustomizationSetting?.footer?.block4_status && (
     <div>
       <Link href="/" className="block mb-5">
@@ -73,7 +73,7 @@ const Footer = () => {
 
 
         {/* Right Dark Section */}
-        <div className="bg-[#0f0f0f] p-8 md:p-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="bg-[#0f0f0f] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
           {/* Block 1 */}
           {storeCustomizationSetting?.footer?.block1_status && (
             <div>
@@ -177,7 +177,7 @@ const Footer = () => {
       {/* Bottom Section */}
 
   <div className="bg-gray-800 mt-4 rounded-lg">
-    <div className="mx-auto max-w-screen-2xl px-4 sm:px-10 py-8">
+    <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 py-4">
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between text-center md:text-left gap-8">
 
       {/* ---- FOLLOW US ---- */}
