@@ -129,18 +129,31 @@ const handleSubCategory = (id, categoryName) => {
             )} 
          </div>
          {category?.children && ( 
-         <div className="absolute left-0 w-60 top-full hidden group-hover:block shadow-lg">
-            {category?.children && ( <div className="absolute left-0 w-auto top-full rounded-md hidden group-hover:block bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 " style={{ display: "grid", gridTemplateColumns: repeat(${Math.ceil( category.children.length / 8 )}, auto), }} > {category?.children?.map((subCategory, subIndex) => ( 
-            <div className="border-b ">
-               {/* 
-               <div className="h-8 w-8">
-                  <Image src={subCategory?.icon} alr="sub category" height={300} width={300} />
-               </div>
-               */} 
-               <div key={subIndex} className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap" onClick={(event) => { event.stopPropagation(); handleSubNestedCategory( subCategory?._id, showingTranslateValue(subCategory?.name) ); }} > {subCategory?.name?.en} </div>
-            </div>
-            ))} 
-         </div>
+         <div
+  className="absolute left-0 w-auto top-full rounded-md hidden group-hover:block bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6"
+  style={{
+    display: "grid",
+    gridTemplateColumns: `repeat(${Math.ceil(category.children.length / 8)}, auto)`,
+  }}
+>
+  {category?.children?.map((subCategory, subIndex) => (
+    <div className="border-b" key={subIndex}>
+      <div
+        className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
+        onClick={(event) => {
+          event.stopPropagation();
+          handleSubNestedCategory(
+            subCategory?._id,
+            showingTranslateValue(subCategory?.name)
+          );
+        }}
+      >
+        {subCategory?.name?.en}
+      </div>
+    </div>
+  ))}
+</div>
+
          )} 
       </div>
       )} 
