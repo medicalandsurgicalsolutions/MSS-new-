@@ -54,17 +54,18 @@ const Footer = () => {
       <p className="text-sm">
         <a
           href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-          className="cursor-pointer hover:underline block"
+          className="cursor-pointer font-bold block"
         >
-          Tel: {storeCustomizationSetting?.footer?.block4_phone}
+          {storeCustomizationSetting?.footer?.block4_phone}
         </a>
         <a
           href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
           className="cursor-pointer hover:underline block"
         >
-          Email: {storeCustomizationSetting?.footer?.block4_email}
+          {storeCustomizationSetting?.footer?.block4_email}
         </a>
       </p>
+
     </div>
   )}
 </div>
@@ -171,7 +172,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Section Inside Dark Part */}
-          <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-gray-400 text-sm text-center">
+          <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-white  text-sm text-center">
             <p>2025 © All rights reserved by Medical & Surgical Solutions</p>
             <Image
               src="/payment-method/payment-logo.png"
