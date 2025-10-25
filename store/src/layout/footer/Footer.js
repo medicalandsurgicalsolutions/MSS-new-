@@ -1,92 +1,83 @@
-import Link from "next/link"
-import Image from "next/image"
-import dynamic from "next/dynamic"
-import useTranslation from "next-translate/useTranslation"
+import Link from "next/link";
+import Image from "next/image";
+import dynamic from "next/dynamic";
+import useTranslation from "next-translate/useTranslation";
+import {
+  FacebookIcon,
+  LinkedinIcon,
+  PinterestIcon,
+  WhatsappIcon,
+} from "react-share";
+import { FaInstagram, FaYoutube } from "react-icons/fa";
 
 // internal imports
-import { getUserSession } from "@lib/auth"
-import useGetSetting from "@hooks/useGetSetting"
-import CMSkeleton from "@components/preloader/CMSkeleton"
-import useUtilsFunction from "@hooks/useUtilsFunction"
-import logo from "../../../public/logo/logo-color.png"
+import { getUserSession } from "@lib/auth";
+import useGetSetting from "@hooks/useGetSetting";
+import CMSkeleton from "@components/preloader/CMSkeleton";
+import useUtilsFunction from "@hooks/useUtilsFunction";
+import logo from "../../../public/logo/logo-color.png";
 
 const Footer = () => {
-  const { t } = useTranslation()
-  const userInfo = getUserSession()
-  const { showingTranslateValue } = useUtilsFunction()
-  const { loading, storeCustomizationSetting } = useGetSetting()
+  const { t } = useTranslation();
+  const userInfo = getUserSession();
+  const { showingTranslateValue } = useUtilsFunction();
+  const { loading, storeCustomizationSetting } = useGetSetting();
 
   return (
-    <footer className="bg-black text-white">
-      {/* Top Section - Two Column Layout */}
+    <footer className="bg-[#0f0f0f] text-white">
+      {/* Top Section */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         {/* Left Blue Section */}
-        <div className="bg-blue-600 p-8 md:p-12">
-          {storeCustomizationSetting?.footer?.block4_status && (
-            <div>
-              <Link href="/" className="block mb-6">
-                <div className="relative w-40 h-12">
-                  <Image
-                    src={storeCustomizationSetting?.footer?.block4_logo || logo}
-                    alt="logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </Link>
-              <p className="text-sm leading-7 text-white">
-                <CMSkeleton
-                  count={1}
-                  height={10}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block4_address}
-                />
-              </p>
-
-              {/* Our Help Line */}
-              <div className="mt-6">
-                <p className="text-sm font-semibold mb-2">Our Help Line:</p>
-                <a
-                  href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-                  className="text-2xl font-bold hover:text-blue-200 transition"
-                >
-                  <CMSkeleton
-                    count={1}
-                    height={20}
-                    loading={loading}
-                    data={storeCustomizationSetting?.footer?.block4_phone}
-                  />
-                </a>
-              </div>
-
-              {/* Hours */}
-              <div className="mt-4 text-sm">
-                <p className="mb-1">Monday - Friday: 9:00 - 20:00</p>
-                <p className="mb-3">Saturday: 11:00 - 15:00</p>
-              </div>
-
-              {/* Email */}
-              <a
-                href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-                className="text-sm hover:text-blue-200 transition"
-              >
-                <CMSkeleton
-                  count={1}
-                  height={10}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block4_email}
-                />
-              </a>
-            </div>
-          )}
+       <div className="bg-cyan-600 p-4 md:p-6">
+  {storeCustomizationSetting?.footer?.block4_status && (
+    <div>
+      <Link href="/" className="block mb-5">
+        <div className="relative w-36 h-10">
+          <Image
+            src={storeCustomizationSetting?.footer?.block4_logo || logo}
+            alt="logo"
+            fill
+            className="object-contain"
+          />
         </div>
+      </Link>
+      <p className="text-sm leading-7">
+        <strong>Medical & Surgical Solutions</strong>
+        <br />
+        <CMSkeleton
+          count={1}
+          height={10}
+          loading={loading}
+          data={storeCustomizationSetting?.footer?.block4_address}
+        />
+        <br />
+        {/* Clickable Phone */}
+        <a
+          href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
+          className="cursor-pointer"
+        >
+          Tel: {storeCustomizationSetting?.footer?.block4_phone}
+        </a>
+        <br />
+        {/* Clickable Email */}
+        <a
+          href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
+          className="cursor-pointer"
+        >
+          Email: {storeCustomizationSetting?.footer?.block4_email}
+        </a>
+      </p>
+    </div>
+  )}
+</div>
 
-        {/* Right Dark Section - Three Columns */}
-        <div className="bg-gray-900 p-8 md:p-12 grid grid-cols-1 sm:grid-cols-3 gap-8">
-          {/* Block 1 - Information */}
+
+        {/* Right Dark Section */}
+        <div className="bg-[#0f0f0f] p-4 md:p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+          {/* Block 1 */}
           {storeCustomizationSetting?.footer?.block1_status && (
             <div>
-              <h3 className="text-base font-semibold mb-4 pb-2 border-b-2 border-yellow-500">
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
                 <CMSkeleton
                   count={1}
                   height={20}
@@ -94,12 +85,12 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block1_title}
                 />
               </h3>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-2 text-sm">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <li key={i}>
                     <Link
                       href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
-                      className="hover:text-yellow-400 transition"
+                      className="hover:text-cyan-400"
                     >
                       <CMSkeleton
                         count={1}
@@ -114,10 +105,10 @@ const Footer = () => {
             </div>
           )}
 
-          {/* Block 2 - Custom Links */}
+          {/* Block 2 */}
           {storeCustomizationSetting?.footer?.block2_status && (
             <div>
-              <h3 className="text-base font-semibold mb-4 pb-2 border-b-2 border-yellow-500">
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
                 <CMSkeleton
                   count={1}
                   height={20}
@@ -125,12 +116,12 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block2_title}
                 />
               </h3>
-              <ul className="space-y-3 text-sm">
+              <ul className="space-y-2 text-sm">
                 {[1, 2, 3, 4].map((i) => (
                   <li key={i}>
                     <Link
                       href={`${storeCustomizationSetting?.footer?.[`block2_sub_link${i}`]}`}
-                      className="hover:text-yellow-400 transition"
+                      className="hover:text-cyan-400"
                     >
                       <CMSkeleton
                         count={1}
@@ -141,14 +132,15 @@ const Footer = () => {
                     </Link>
                   </li>
                 ))}
+               
               </ul>
             </div>
           )}
 
-          {/* Block 3 - Newsletter */}
+          {/* Block 3 */}
           {storeCustomizationSetting?.footer?.block3_status && (
             <div>
-              <h3 className="text-base font-semibold mb-4 pb-2 border-b-2 border-yellow-500">
+              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
                 <CMSkeleton
                   count={1}
                   height={20}
@@ -156,25 +148,101 @@ const Footer = () => {
                   data={storeCustomizationSetting?.footer?.block3_title}
                 />
               </h3>
-              <p className="text-sm mb-4 leading-6">
-                You may unsubscribe at any moment. For that purpose, please find our contact.
-              </p>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="email"
-                  placeholder="Enter your mail"
-                  className="px-4 py-2 rounded text-black text-sm focus:outline-none focus:ring-2 focus:ring-yellow-500"
-                />
-                <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition">
-                  SUBMIT NOW
-                </button>
-              </div>
+              <ul className="space-y-2 text-sm">
+                {[1, 2, 3, 4].map((i) => (
+                  <li key={i}>
+                    <Link
+                      href={`${
+                        userInfo?.email
+                          ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
+                          : "/auth/login"
+                      }`}
+                      className="hover:text-cyan-400"
+                    >
+                      <CMSkeleton
+                        count={1}
+                        height={10}
+                        loading={loading}
+                        data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
+                      />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>
       </div>
-    </footer>
-  )
-}
 
-export default dynamic(() => Promise.resolve(Footer), { ssr: false })
+      {/* Bottom Section */}
+
+  <div className="bg-gray-800 mt-4 rounded-lg">
+    <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 py-4">
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between text-center md:text-left gap-8">
+
+      {/* ---- FOLLOW US ---- */}
+      <div className="flex flex-col items-center md:items-start justify-start w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+          Follow Us
+        </h4>
+         <div className="flex gap-2 justify-center md:justify-start">
+          <Link href="https://www.facebook.com/share/1BKFiDnANi/" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <FacebookIcon size={26} round />
+          </Link>
+          <Link href="https://www.instagram.com/mssofficial2011/" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-pink-100 transition">
+            <FaInstagram size={24} className="text-pink-500 hover:text-pink-600 transition" />
+          </Link>
+          <Link href="https://www.linkedin.com/company/105331627/admin/page-posts/published/" target="_blank" rel="noopener noreferrer" className="bg-white p-1 rounded-full shadow hover:bg-blue-100 transition">
+            <LinkedinIcon size={26} round />
+          </Link>
+          <Link href="https://wa.me/9643344588" target="_blank" rel="noopener noreferrer"className="bg-white p-1 rounded-full shadow hover:bg-green-100 transition">
+            <WhatsappIcon size={26} round />
+          </Link>
+          <Link href="https://www.youtube.com/@MEDICALANDSURGICALSOLUTIONS" target="_blank" rel="noopener noreferrer" className="bg-white p-1 rounded-full shadow hover:bg-red-100 transition">
+            <FaYoutube size={24} className="text-red-500 hover:text-red-600 transition" />
+          </Link>
+        </div>
+      </div>
+
+      {/* ---- CALL US ---- */}
+      <div className="flex flex-col items-center justify-start w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+          Call Us Today
+        </h4>
+        <a
+          href="tel:+919643344588"
+         className="text-white font-bold text-xl transition hover:text-[#0891b2]"
+        >
+          +91 96433 44588
+        </a>
+      </div>
+
+      {/* ---- SECURE PAYMENT ---- */}
+      <div className="flex flex-col items-center md:items-end justify-start w-full md:w-1/3">
+        <h4 className="text-base font-semibold text-white mb-3 tracking-wide">
+          Secure Payment
+        </h4>
+        <div className="flex items-center justify-center bg-white rounded-lg shadow px-3 py-2">
+          <Image
+            src="/payment-method/payment-logo.png"
+            alt="Secure Payment"
+            width={200}
+            height={40}
+            className="h-10 w-auto object-contain"
+          />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+      {/* Copyright */}
+      <div className="bg-black py-3 text-center text-gray-400 text-sm">
+        © 2025 Medical & Surgical Solutions. All Rights Reserved.
+      </div>
+    </footer>
+  );
+};
+
+export default dynamic(() => Promise.resolve(Footer), { ssr: false });
