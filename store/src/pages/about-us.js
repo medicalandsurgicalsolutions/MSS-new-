@@ -105,7 +105,7 @@ const AboutUs = () => {
           </div>
 
           <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-6 lg:p-10 border-2 border-slate-200 mb-16 shadow-lg">
-            <div className="max-w-4xl space-y-5 text-slate-700 leading-relaxed">
+            <div className="max-w-6xl space-y-5 text-slate-700 leading-relaxed">
               <p className="text-base sm:text-lg font-medium">
                 <CMSkeleton
                   count={5}
@@ -214,10 +214,12 @@ const AboutUs = () => {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity"></div>
                   </div>
-                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-teal-300 transition-colors">
+                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-teal-300 transition-colors text-center">
                     {showingTranslateValue(member.name)}
                   </h5>
-                  <p className="text-xs sm:text-sm text-teal-300 font-medium">{showingTranslateValue(member.role)}</p>
+                  <p className="text-xs sm:text-sm text-teal-300 font-medium text-center">
+                    {showingTranslateValue(member.role)}
+                  </p>
                 </div>
               ))}
             </div>
