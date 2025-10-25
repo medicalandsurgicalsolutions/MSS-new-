@@ -62,7 +62,7 @@ const Footer = () => {
         </div>
 
         {/* Right Dark Section */}
-        <div className="bg-[#0f0f0f] p-6 md:p-10 grid grid-cols-1 sm:grid-cols-3 gap-8">
+        <div className="bg-[#0f0f0f] p-6 md:p-10 grid grid-cols-1 sm:grid-cols-3 gap-8 relative">
           {/* Block 1 */}
           {storeCustomizationSetting?.footer?.block1_status && (
             <div>
@@ -127,55 +127,56 @@ const Footer = () => {
 
           {/* Block 3 */}
           {storeCustomizationSetting?.footer?.block3_status && (
-            <div>
-              <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-                <CMSkeleton
-                  count={1}
-                  height={20}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block3_title}
-                />
-              </h3>
-              <ul className="space-y-2 text-sm">
-                {[1, 2, 3, 4].map((i) => (
-                  <li key={i}>
-                    <Link
-                      href={`${
-                        userInfo?.email
-                          ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
-                          : "/auth/login"
-                      }`}
-                      className="hover:text-[#0891B2] transition"
-                    >
-                      <CMSkeleton
-                        count={1}
-                        height={10}
-                        loading={loading}
-                        data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
-                      />
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            <div className="flex flex-col justify-between h-full">
+              <div>
+                <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+                  <CMSkeleton
+                    count={1}
+                    height={20}
+                    loading={loading}
+                    data={storeCustomizationSetting?.footer?.block3_title}
+                  />
+                </h3>
+                <ul className="space-y-2 text-sm">
+                  {[1, 2, 3, 4].map((i) => (
+                    <li key={i}>
+                      <Link
+                        href={`${
+                          userInfo?.email
+                            ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
+                            : "/auth/login"
+                        }`}
+                        className="hover:text-[#0891B2] transition"
+                      >
+                        <CMSkeleton
+                          count={1}
+                          height={10}
+                          loading={loading}
+                          data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
+                        />
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Bottom (Copyright + Payment) */}
+              <div className="mt-8 border-t border-gray-700 pt-4 flex flex-col sm:flex-row items-center justify-between text-gray-400 text-sm">
+                <p className="text-center sm:text-left">
+                  © 2025 Medical & Surgical Solutions. All Rights Reserved.
+                </p>
+                <div className="mt-4 sm:mt-0">
+                  <Image
+                    src="/payment-method/payment-logo.png"
+                    alt="Secure Payment"
+                    width={220}
+                    height={40}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Bottom Section (Copyright + Payment) */}
-      <div className="bg-black border-t border-gray-800">
-        <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row items-center justify-between px-4 sm:px-6 py-4 text-gray-400 text-sm">
-          <p>© 2025 Medical & Surgical Solutions. All Rights Reserved.</p>
-
-          <div className="mt-4 md:mt-0">
-            <Image
-              src="/payment-method/payment-logo.png"
-              alt="Secure Payment"
-              width={220}
-              height={40}
-              className="object-contain"
-            />
-          </div>
         </div>
       </div>
     </footer>
