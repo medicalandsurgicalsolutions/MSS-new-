@@ -45,16 +45,17 @@ const NavbarPromo = () => {
   const userInfo = getUserSession();
 
   const handleSubNestedCategory = (id, categoryName) => {
-    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    router.push(/search?category=${name}&_id=${id});
-    setIsLoading(!isLoading);
-  };
+  const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+  router.push(`/search?category=${name}&_id=${id}`);
+  setIsLoading(!isLoading);
+};
 
-  const handleSubCategory = (id, categoryName) => {
-    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    router.push(/search?category=${name}&_id=${id});
-    setIsLoading(!isLoading);
-  };
+const handleSubCategory = (id, categoryName) => {
+  const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+  router.push(`/search?category=${name}&_id=${id}`);
+  setIsLoading(!isLoading);
+};
+
 
   const handleLanguage = (lang) => {
     // setCurrentLang(lang);
