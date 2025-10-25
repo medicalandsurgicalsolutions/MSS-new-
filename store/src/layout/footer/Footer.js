@@ -34,7 +34,7 @@ const Footer = () => {
               </Link>
 
               <p className="text-sm leading-7">
-                <strong>Medical & Surgical Solutions</strong>
+                <strong>Medical & Surgical Solutions, we take pride in being a trusted partner for healthcare professionals, hospitals, and institutions across the globe - providing reliable, high-quality medical supplies and equipment that empower better patient care.</strong>
                 <br />
                 <CMSkeleton
                   count={1}
