@@ -80,118 +80,122 @@ const Footer = () => {
             
 
         {/* Right Dark Section */}
-        <div className="bg-[#0f0f0f] w-full md:w-[60%] p-6 md:p-10 flex flex-col justify-between">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {/* Block 1 */}
-            {storeCustomizationSetting?.footer?.block1_status && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-                  <CMSkeleton
-                    count={1}
-                    height={20}
-                    loading={loading}
-                    data={storeCustomizationSetting?.footer?.block1_title}
-                  />
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  {[1, 2, 3, 4, 5].map((i) => (
-                    <li key={i}>
-                      <Link
-                        href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
-                        className="hover:text-[#0891B2] transition"
-                      >
-                        <CMSkeleton
-                          count={1}
-                          height={10}
-                          loading={loading}
-                          data={storeCustomizationSetting?.footer?.[`block1_sub_title${i}`]}
-                        />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+       {/* Right Dark Section */}
+<div className="bg-[#0f0f0f] w-full md:w-[60%] p-6 md:p-10 flex flex-col justify-between">
+  {/* Grid Blocks */}
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
+    {/* Block 1 */}
+    {storeCustomizationSetting?.footer?.block1_status && (
+      <div>
+        <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+          <CMSkeleton
+            count={1}
+            height={20}
+            loading={loading}
+            data={storeCustomizationSetting?.footer?.block1_title}
+          />
+        </h3>
+        <ul className="space-y-2 text-sm">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <li key={i}>
+              <Link
+                href={`${storeCustomizationSetting?.footer?.[`block1_sub_link${i}`]}`}
+                className="hover:text-[#0891B2] transition"
+              >
+                <CMSkeleton
+                  count={1}
+                  height={10}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.[`block1_sub_title${i}`]}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
-            {/* Block 2 */}
-            {storeCustomizationSetting?.footer?.block2_status && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-                  <CMSkeleton
-                    count={1}
-                    height={20}
-                    loading={loading}
-                    data={storeCustomizationSetting?.footer?.block2_title}
-                  />
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  {[1, 2, 3, 4].map((i) => (
-                    <li key={i}>
-                      <Link
-                        href={`${storeCustomizationSetting?.footer?.[`block2_sub_link${i}`]}`}
-                        className="hover:text-[#0891B2] transition"
-                      >
-                        <CMSkeleton
-                          count={1}
-                          height={10}
-                          loading={loading}
-                          data={storeCustomizationSetting?.footer?.[`block2_sub_title${i}`]}
-                        />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+    {/* Block 2 */}
+    {storeCustomizationSetting?.footer?.block2_status && (
+      <div>
+        <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+          <CMSkeleton
+            count={1}
+            height={20}
+            loading={loading}
+            data={storeCustomizationSetting?.footer?.block2_title}
+          />
+        </h3>
+        <ul className="space-y-2 text-sm">
+          {[1, 2, 3, 4].map((i) => (
+            <li key={i}>
+              <Link
+                href={`${storeCustomizationSetting?.footer?.[`block2_sub_link${i}`]}`}
+                className="hover:text-[#0891B2] transition"
+              >
+                <CMSkeleton
+                  count={1}
+                  height={10}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.[`block2_sub_title${i}`]}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
 
-            {/* Block 3 */}
-            {storeCustomizationSetting?.footer?.block3_status && (
-              <div>
-                <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
-                  <CMSkeleton
-                    count={1}
-                    height={20}
-                    loading={loading}
-                    data={storeCustomizationSetting?.footer?.block3_title}
-                  />
-                </h3>
-                <ul className="space-y-2 text-sm">
-                  {[1, 2, 3, 4].map((i) => (
-                    <li key={i}>
-                      <Link
-                        href={`${
-                          userInfo?.email
-                            ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
-                            : "/auth/login"
-                        }`}
-                        className="hover:text-[#0891B2] transition"
-                      >
-                        <CMSkeleton
-                          count={1}
-                          height={10}
-                          loading={loading}
-                          data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
-                        />
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
+    {/* Block 3 */}
+    {storeCustomizationSetting?.footer?.block3_status && (
+      <div>
+        <h3 className="text-lg font-semibold mb-4 border-l-4 border-yellow-500 pl-3">
+          <CMSkeleton
+            count={1}
+            height={20}
+            loading={loading}
+            data={storeCustomizationSetting?.footer?.block3_title}
+          />
+        </h3>
+        <ul className="space-y-2 text-sm">
+          {[1, 2, 3, 4].map((i) => (
+            <li key={i}>
+              <Link
+                href={`${
+                  userInfo?.email
+                    ? storeCustomizationSetting?.footer?.[`block3_sub_link${i}`]
+                    : "/auth/login"
+                }`}
+                className="hover:text-[#0891B2] transition"
+              >
+                <CMSkeleton
+                  count={1}
+                  height={10}
+                  loading={loading}
+                  data={storeCustomizationSetting?.footer?.[`block3_sub_title${i}`]}
+                />
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
 
-          {/* Bottom Section Inside Dark Part */}
-        <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-sm text-center">
-              <p>© {new Date().getFullYear()} All rights reserved by Medical & Surgical Solutions</p>
-            <Image
-              src="/payment-method/payment-logo.png"
-              alt="Secure Payment"
-              width={220}
-              height={40}
-              className="object-contain"
-            />
-          </div>
-        </div>
+  {/* Bottom Section */}
+  <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-sm text-center
+                  mb-14 md:mb-6 lg:mb-0">
+    <p>© {new Date().getFullYear()} All rights reserved by Medical & Surgical Solutions</p>
+    <Image
+      src="/payment-method/payment-logo.png"
+      alt="Secure Payment"
+      width={220}
+      height={40}
+      className="object-contain"
+    />
+  </div>
+</div>
+
       </div>
     </footer>
   );
