@@ -181,7 +181,7 @@ const Footer = () => {
           </div>
 
           {/* Bottom Section Inside Dark Part */}
-         <div className="bg-[#111827] px-4 py-4 text-center text-white text-xs sm:text-sm leading-5 break-words">
+        <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-white text-sm text-center">
               <p>© {new Date().getFullYear()} All rights reserved by Medical & Surgical Solutions</p>
             <Image
               src="/payment-method/payment-logo.png"
