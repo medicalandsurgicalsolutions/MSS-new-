@@ -94,7 +94,7 @@ const NavbarPromo = () => {
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-2 lg:px-2 flex justify-between items-center">
+        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 flex justify-between items-center">
           <div>
             <Link
               onClick={() => setIsLoading(!isLoading)}
