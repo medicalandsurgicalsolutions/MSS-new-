@@ -18,67 +18,66 @@ const Footer = () => {
     <footer className="bg-[#0f0f0f] text-white">
       {/* Main Layout */}
       <div className="flex flex-col md:flex-row">
-        {/* Left Teal Section (Slightly Wider Now) */}
-{/* Left Teal Section (Slightly Wider Now) */}
-<div className="bg-[#0891B2] w-full md:w-[40%] p-6 md:p-10 text-white flex flex-col gap-5">
-  {storeCustomizationSetting?.footer?.block4_status && (
-    <div className="flex flex-col gap-5">
-      {/* Logo */}
-      <Link href="/" className="block">
-        <div className="relative w-40 h-12">
-          <Image
-            src={storeCustomizationSetting?.footer?.block4_logo || logo}
-            alt="logo"
-            fill
-            className="object-contain"
-          />
-        </div>
-      </Link>
+            {/* Left Teal Section (Slightly Wider Now) */}
+            <div className="bg-[#0891B2] w-full md:w-[40%] p-6 md:p-10 text-white flex flex-col gap-5">
+              {storeCustomizationSetting?.footer?.block4_status && (
+                <div className="flex flex-col gap-5">
+                  {/* Logo */}
+                  <Link href="/" className="block">
+                    <div className="relative w-52 h-15">
+                      <Image
+                        src={storeCustomizationSetting?.footer?.block4_logo || logo}
+                        alt="logo"
+                        fill
+                        className="object-contain"
+                      />
+                    </div>
+                  </Link>
+            
+                  {/* Description */}
+                  <p className="text-sm leading-7 font-medium">
+                    Medical & Surgical Solutions, we take pride in being a trusted partner for
+                    healthcare professionals, hospitals, and institutions across the globe —
+                    providing reliable, high-quality medical supplies and equipment that empower
+                    better patient care.
+                  </p>
 
-      {/* Description */}
-      <p className="text-sm leading-7 font-medium">
-        Medical & Surgical Solutions, we take pride in being a trusted partner for
-        healthcare professionals, hospitals, and institutions across the globe —
-        providing reliable, high-quality medical supplies and equipment that empower
-        better patient care.
-      </p>
+                {/* Address */}
+                <p className="text-sm leading-6 font-medium">
+                  <CMSkeleton
+                    count={1}
+                    height={10}
+                    loading={loading}
+                    data={storeCustomizationSetting?.footer?.block4_address}
+                  />
+                </p>
+          
+                {/* Help Line Section (Styled like the Medimall image) */}
+                <div>
+                  <p className="text-base mb-1 font-medium">Our Help Line:</p>
+                  <a
+                    href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
+                    className="text-2xl font-bold tracking-wide block mb-4"
+                  >
+                    {storeCustomizationSetting?.footer?.block4_phone}
+                  </a>
+          
+                  <p className="text-sm leading-6 mb-2 font-medium">
+                    Monday - Friday: 10:00 - 07:00 <br />
+                    Saturday: 10:00 - 05:00
+                  </p>
 
-      {/* Address */}
-      <p className="text-sm leading-6 font-medium">
-        <CMSkeleton
-          count={1}
-          height={10}
-          loading={loading}
-          data={storeCustomizationSetting?.footer?.block4_address}
-        />
-      </p>
-
-      {/* Help Line Section (Styled like the Medimall image) */}
-      <div>
-        <p className="text-base mb-1 font-medium">Our Help Line:</p>
-        <a
-          href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-          className="text-2xl font-bold tracking-wide block mb-4"
-        >
-          {storeCustomizationSetting?.footer?.block4_phone}
-        </a>
-
-        <p className="text-sm leading-6 mb-2 font-medium">
-          Monday - Friday: 10:00 - 07:00 <br />
-          Saturday: 10:00 - 05:00
-        </p>
-
-        <a
-          href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-          className="text-sm block font-medium"
-        >
-          {storeCustomizationSetting?.footer?.block4_email}
-        </a>
-      </div>
-    </div>
-  )}
-</div>
-
+                    <a
+                      href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
+                      className="text-sm block font-medium"
+                    >
+                      {storeCustomizationSetting?.footer?.block4_email}
+                    </a>
+                  </div>
+                </div>
+              )}
+            </div>
+            
 
         {/* Right Dark Section */}
         <div className="bg-[#0f0f0f] w-full md:w-[60%] p-6 md:p-10 flex flex-col justify-between">
@@ -182,8 +181,8 @@ const Footer = () => {
           </div>
 
           {/* Bottom Section Inside Dark Part */}
-          <div className="mt-10 border-t border-gray-700 pt-4 flex flex-col md:flex-row items-center justify-center gap-4 text-white  text-sm text-center">
-            <p>2025 © All rights reserved by Medical & Surgical Solutions</p>
+         <div className="bg-[#111827] px-4 py-4 text-center text-white text-xs sm:text-sm leading-5 break-words">
+              <p>© {new Date().getFullYear()} All rights reserved by Medical & Surgical Solutions</p>
             <Image
               src="/payment-method/payment-logo.png"
               alt="Secure Payment"
