@@ -18,56 +18,59 @@ const Footer = () => {
     <footer className="bg-[#0f0f0f] text-white">
       {/* Main Layout */}
       <div className="flex flex-col md:flex-row">
-        {/* Left Teal Section (Narrower) */}
-        <div className="bg-[#0891B2] w-full md:w-[35%] p-6 md:p-10 text-white">
-          {storeCustomizationSetting?.footer?.block4_status && (
-            <div>
-              <Link href="/" className="block mb-5">
-                <div className="relative w-40 h-12">
-                  <Image
-                    src={storeCustomizationSetting?.footer?.block4_logo || logo}
-                    alt="logo"
-                    fill
-                    className="object-contain"
-                  />
-                </div>
-              </Link>
-
-              <p className="text-sm leading-7">
-                <strong>
-                  Medical & Surgical Solutions, we take pride in being a trusted partner for
-                  healthcare professionals, hospitals, and institutions across the globe —
-                  providing reliable, high-quality medical supplies and equipment that empower
-                  better patient care.
-                </strong>
-                <br />
-                <CMSkeleton
-                  count={1}
-                  height={10}
-                  loading={loading}
-                  data={storeCustomizationSetting?.footer?.block4_address}
-                />
-                <br />
-                <a
-                  href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
-                  className="cursor-pointer hover:underline"
-                >
-                  Tel: {storeCustomizationSetting?.footer?.block4_phone}
-                </a>
-                <br />
-                <a
-                  href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-                  className="cursor-pointer hover:underline"
-                >
-                  Email: {storeCustomizationSetting?.footer?.block4_email}
-                </a>
-              </p>
-            </div>
-          )}
+        {/* Left Teal Section (Slightly Wider Now) */}
+{/* Left Teal Section (Slightly Wider Now) */}
+<div className="bg-[#0891B2] w-full md:w-[40%] p-6 md:p-10 text-white flex flex-col gap-4">
+  {storeCustomizationSetting?.footer?.block4_status && (
+    <div className="flex flex-col gap-4">
+      <Link href="/" className="block">
+        <div className="relative w-40 h-12">
+          <Image
+            src={storeCustomizationSetting?.footer?.block4_logo || logo}
+            alt="logo"
+            fill
+            className="object-contain"
+          />
         </div>
+      </Link>
 
-        {/* Right Dark Section (Wider) */}
-        <div className="bg-[#0f0f0f] w-full md:w-[65%] p-6 md:p-10 flex flex-col justify-between">
+      <p className="text-sm leading-7">
+        <strong>
+          Medical & Surgical Solutions, we take pride in being a trusted partner for
+          healthcare professionals, hospitals, and institutions across the globe — providing reliable, high-quality medical supplies and equipment that empower
+          better patient care.
+        </strong>
+      </p>
+
+      <p className="text-sm leading-6">
+        <CMSkeleton
+          count={1}
+          height={10}
+          loading={loading}
+          data={storeCustomizationSetting?.footer?.block4_address}
+        />
+      </p>
+
+      <p className="text-sm">
+        <a
+          href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
+          className="cursor-pointer hover:underline block"
+        >
+          Tel: {storeCustomizationSetting?.footer?.block4_phone}
+        </a>
+        <a
+          href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
+          className="cursor-pointer hover:underline block"
+        >
+          Email: {storeCustomizationSetting?.footer?.block4_email}
+        </a>
+      </p>
+    </div>
+  )}
+</div>
+
+        {/* Right Dark Section */}
+        <div className="bg-[#0f0f0f] w-full md:w-[60%] p-6 md:p-10 flex flex-col justify-between">
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
             {/* Block 1 */}
             {storeCustomizationSetting?.footer?.block1_status && (
