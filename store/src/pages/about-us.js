@@ -105,7 +105,7 @@ const AboutUs = () => {
           </div>
 
           <div className="bg-gradient-to-br from-white to-slate-50 rounded-3xl p-6 lg:p-10 border-2 border-slate-200 mb-16 shadow-lg">
-            <div className="max-w-4xl space-y-5 text-slate-700 leading-relaxed">
+            <div className="max-w-12xl space-y-5 text-slate-700 leading-relaxed">
               <p className="text-base sm:text-lg font-medium">
                 <CMSkeleton
                   count={5}
@@ -144,7 +144,7 @@ const AboutUs = () => {
             <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl"></div>
           </div>
 
-          <div className="relative max-w-screen-2xl mx-auto px-3 sm:px-6">
+          <div className="relative max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-8">
             <div className="mb-12">
               <div className="inline-flex items-center gap-2 mb-4 px-3 py-2 bg-teal-500/20 rounded-full border border-teal-500/40">
                 <div className="w-2 h-2 bg-teal-400 rounded-full"></div>
@@ -171,58 +171,58 @@ const AboutUs = () => {
             </div>
 
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-  {[
-    {
-      img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_one_name,
-      role: storeCustomizationSetting?.about_us?.founder_one_sub,
-    },
-    {
-      img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_two_name,
-      role: storeCustomizationSetting?.about_us?.founder_two_sub,
-    },
-    {
-      img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_three_name,
-      role: storeCustomizationSetting?.about_us?.founder_three_sub,
-    },
-    {
-      img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_four_name,
-      role: storeCustomizationSetting?.about_us?.founder_four_sub,
-    },
-    {
-      img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_five_name,
-      role: storeCustomizationSetting?.about_us?.founder_five_sub,
-    },
-    {
-      img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
-      name: storeCustomizationSetting?.about_us?.founder_six_name,
-      role: storeCustomizationSetting?.about_us?.founder_six_sub,
-    },
-  ].map((member, index) => (
-    <div key={index} className="group flex flex-col items-center justify-center">
-      <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors flex justify-center">
-        <Image
-          width={300} // You can leave width and height, but class w-auto makes it auto
-          height={300}
-          src={member.img || "/placeholder.svg"}
-          alt={showingTranslateValue(member.name) || "Team member"}
-          className="w-auto h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
-        />
-        {/* Colored overlay removed */}
-      </div>
-      <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors text-center">
-        {showingTranslateValue(member.name)}
-      </h5>
-      <p className="text-xs sm:text-sm text-white font-medium text-center">
-        {showingTranslateValue(member.role)}
-      </p>
-    </div>
-  ))}
-</div>
+                    {[
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_one_name,
+                        role: storeCustomizationSetting?.about_us?.founder_one_sub,
+                      },
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_two_name,
+                        role: storeCustomizationSetting?.about_us?.founder_two_sub,
+                      },
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_three_name,
+                        role: storeCustomizationSetting?.about_us?.founder_three_sub,
+                      },
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_four_name,
+                        role: storeCustomizationSetting?.about_us?.founder_four_sub,
+                      },
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_five_name,
+                        role: storeCustomizationSetting?.about_us?.founder_five_sub,
+                      },
+                      {
+                        img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
+                        name: storeCustomizationSetting?.about_us?.founder_six_name,
+                        role: storeCustomizationSetting?.about_us?.founder_six_sub,
+                      },
+                    ].map((member, index) => (
+                      <div key={index} className="group flex flex-col items-center justify-center px-2">
+                        <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors flex justify-center">
+                          <Image
+                            width={300} // You can leave width and height, but class w-auto makes it auto
+                            height={300}
+                            src={member.img || "/placeholder.svg"}
+                            alt={showingTranslateValue(member.name) || "Team member"}
+                            className="w-auto h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
+                          />
+                          {/* Colored overlay removed */}
+                        </div>
+                        <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors text-center">
+                          {showingTranslateValue(member.name)}
+                        </h5>
+                        <p className="text-xs sm:text-sm text-white font-medium text-center">
+                          {showingTranslateValue(member.role)}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
 
 
           </div>
