@@ -23,15 +23,15 @@ const Footer = () => {
               {storeCustomizationSetting?.footer?.block4_status && (
                 <div className="flex flex-col gap-5">
                   {/* Logo */}
-                  <Link href="/" className="block">
-                    <div className="relative w-52 h-15">
-                      <Image
-                        src={storeCustomizationSetting?.footer?.block4_logo || logo}
-                        alt="logo"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
+                <Link href="/" className="block">
+                 <div className="relative w-52 h-16">
+                    <Image
+                      src={storeCustomizationSetting?.footer?.block4_logo || logo}
+                      alt="logo"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
                   </Link>
             
                   {/* Description */}
