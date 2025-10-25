@@ -36,7 +36,7 @@ const Footer = () => {
       </Link>
 
       {/* Description */}
-      <p className="text-sm leading-7">
+      <p className="text-sm leading-7 font-medium">
         Medical & Surgical Solutions, we take pride in being a trusted partner for
         healthcare professionals, hospitals, and institutions across the globe —
         providing reliable, high-quality medical supplies and equipment that empower
@@ -44,7 +44,7 @@ const Footer = () => {
       </p>
 
       {/* Address */}
-      <p className="text-sm leading-6">
+      <p className="text-sm leading-6 font-medium">
         <CMSkeleton
           count={1}
           height={10}
@@ -55,7 +55,7 @@ const Footer = () => {
 
       {/* Help Line Section (Styled like the Medimall image) */}
       <div>
-        <p className="text-base mb-1">Our Help Line:</p>
+        <p className="text-base mb-1 font-medium">Our Help Line:</p>
         <a
           href={`tel:${storeCustomizationSetting?.footer?.block4_phone}`}
           className="text-2xl font-bold tracking-wide block mb-4"
@@ -63,14 +63,14 @@ const Footer = () => {
           {storeCustomizationSetting?.footer?.block4_phone}
         </a>
 
-        <p className="text-sm leading-6 mb-2">
-          Monday - Friday: 9:00 - 20:00 <br />
-          Saturday: 11:00 - 15:00
+        <p className="text-sm leading-6 mb-2 font-medium">
+          Monday - Friday: 10:00 - 07:00 <br />
+          Saturday: 10:00 - 05:00
         </p>
 
         <a
           href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-          className="text-sm block"
+          className="text-sm block font-medium"
         >
           {storeCustomizationSetting?.footer?.block4_email}
         </a>
