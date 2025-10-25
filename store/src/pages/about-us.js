@@ -170,61 +170,62 @@ const AboutUs = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {[
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_one_name,
-                  role: storeCustomizationSetting?.about_us?.founder_one_sub,
-                },
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_two_name,
-                  role: storeCustomizationSetting?.about_us?.founder_two_sub,
-                },
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_three_name,
-                  role: storeCustomizationSetting?.about_us?.founder_three_sub,
-                },
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_four_name,
-                  role: storeCustomizationSetting?.about_us?.founder_four_sub,
-                },
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_five_name,
-                  role: storeCustomizationSetting?.about_us?.founder_five_sub,
-                },
-                {
-                  img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
-                  name: storeCustomizationSetting?.about_us?.founder_six_name,
-                  role: storeCustomizationSetting?.about_us?.founder_six_sub,
-                },
-              ].map((member, index) => (
-                <div key={index} className="group">
-                  <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors">
-                    <Image
-                      width={300}
-                      height={300}
-                      src={member.img || "/placeholder.svg"}
-                      alt={showingTranslateValue(member.name) || "Team member"}
-                      className="w-full h-auto object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-[#0891B2] opacity-60 group-hover:opacity-80 transition-opacity"></div>
-                  </div>
-                  <div className="flex flex-col items-center text-center">
-                  <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors">
-                    {showingTranslateValue(member.name)}
-                  </h5>
-                  <p className="text-xs sm:text-sm  bg-[#0891B2] font-medium">
-                    {showingTranslateValue(member.role)}
-                  </p>
-                </div>
-                </div>
-              ))}
-            </div>
+           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+  {[
+    {
+      img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_one_name,
+      role: storeCustomizationSetting?.about_us?.founder_one_sub,
+    },
+    {
+      img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_two_name,
+      role: storeCustomizationSetting?.about_us?.founder_two_sub,
+    },
+    {
+      img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_three_name,
+      role: storeCustomizationSetting?.about_us?.founder_three_sub,
+    },
+    {
+      img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_four_name,
+      role: storeCustomizationSetting?.about_us?.founder_four_sub,
+    },
+    {
+      img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_five_name,
+      role: storeCustomizationSetting?.about_us?.founder_five_sub,
+    },
+    {
+      img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
+      name: storeCustomizationSetting?.about_us?.founder_six_name,
+      role: storeCustomizationSetting?.about_us?.founder_six_sub,
+    },
+  ].map((member, index) => (
+    <div key={index} className="group">
+      <div className="relative mb-3 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#0891B2] transition-colors">
+        <Image
+          width={200} // decreased size
+          height={200} // decreased size
+          src={member.img || "/placeholder.svg"}
+          alt={showingTranslateValue(member.name) || "Team member"}
+          className="w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500 rounded-2xl"
+        />
+        {/* Removed colored overlay */}
+      </div>
+      <div className="flex flex-col items-center text-center">
+        <h5 className="text-base sm:text-lg font-bold text-white mb-1 group-hover:text-[#0891B2] transition-colors">
+          {showingTranslateValue(member.name)}
+        </h5>
+        <p className="text-xs sm:text-sm text-white font-medium">
+          {showingTranslateValue(member.role)}
+        </p>
+      </div>
+    </div>
+  ))}
+</div>
+
           </div>
         </div>
       </div>
