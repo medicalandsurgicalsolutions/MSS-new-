@@ -451,7 +451,7 @@ const Home = ({
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group"
+                      className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
                     >
                       <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#F97316]">
                         {item.icon}
