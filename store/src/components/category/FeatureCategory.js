@@ -40,20 +40,20 @@ const FeatureCategory = () => {
           <div className="absolute top-[-65px] right-0 z-10 flex items-center">
             <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
               {/* Prev Button */}
-              <button
+            <button
                 ref={swiperNavPrevRef}
-                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center 
-                text-gray-700 hover:text-[#0891B2] transition-colors duration-300 
+                className="group swiper-button-prev !static flex-1 h-full flex items-center justify-center 
+                text-gray-700 hover:text-[#0891B2] active:text-[#b52228] transition-colors duration-300 
                 border-r border-gray-200"
               >
                 <FiChevronLeft className="text-[22px]" />
               </button>
 
               {/* Next Button */}
-              <button
+             <button
                 ref={swiperNavNextRef}
-                className="swiper-button-next !static flex-1 h-full flex items-center justify-center
-                text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
+                className="group swiper-button-next !static flex-1 h-full flex items-center justify-center
+                text-gray-700 hover:text-[#0891B2] active:text-[#b52228] transition-colors duration-300"
               >
                 <FiChevronRight className="text-[22px]" />
               </button>
