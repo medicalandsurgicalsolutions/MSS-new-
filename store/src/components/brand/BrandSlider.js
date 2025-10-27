@@ -11,15 +11,12 @@ const BrandSlider = () => {
     {
       id: 11,
       name: "mss",
-      logo:
-        "https://medicalsurgicalsolutions.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdvqwfpmxo%2Fimage%2Fupload%2Fv1731307505%2Fundefined%2FLOGONEW1copy.png&w=1920&q=75",
+      logo: "https://medicalsurgicalsolutions.com/_next/image?url=https%3A%2F%2Fres.cloudinary.com%2Fdvqwfpmxo%2Fimage%2Fupload%2Fv1731307505%2Fundefined%2FLOGONEW1copy.png&w=1920&q=75",
       website: "https://medicalsurgicalsolutions.com/",
     },
   ]);
 
   const sliderRef = useRef(null);
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const router = useRouter();
 
   const fetchBrands = async () => {
     const response = await BrandServices.getAll().catch((e) => e);
@@ -29,6 +26,9 @@ const BrandSlider = () => {
   useEffect(() => {
     fetchBrands();
   }, []);
+
+  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const router = useRouter();
 
   const handleBrandClick = (id) => {
     const url = `/search?brand=${id}`;
@@ -44,90 +44,66 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false, // We'll use custom buttons
+    arrows: false, // hide default arrows
     responsive: [
-      {
-        breakpoint: 1280,
-        settings: {
-          slidesToShow: 6,
-          slidesToScroll: 6,
-        },
-      },
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
+          slidesToShow: 4,
+          slidesToScroll: 4,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
+          slidesToShow: 4,
+          slidesToScroll: 4,
         },
       },
     ],
   };
 
   return (
-    <div className="relative bg-gray-100 p-6">
-      <div className="relative">
-        {/* Custom Navigation Arrows */}
-        <div className="absolute top-[-65px] right-0 z-10 flex items-center">
-          <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
-              {/* Prev Button */}
-              <button
-                ref={swiperNavPrevRef}
-                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center 
-                text-gray-700 hover:text-[#0891B2] transition-colors duration-300 
-                border-r border-gray-200"
-              >
-                <FiChevronLeft className="text-[22px]" />
-              </button>
+    <div className="relative bg-gray-100 p-4">
+      {/* Custom arrow container */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
+        <button
+          onClick={() => sliderRef.current?.slickPrev()}
+          className="flex-1 text-blue-500 hover:text-blue-600 transition"
+        >
+          <IoIosArrowBack size={18} />
+        </button>
+        <div className="h-6 w-[1px] bg-gray-200"></div>
+        <button
+          onClick={() => sliderRef.current?.slickNext()}
+          className="flex-1 text-blue-500 hover:text-blue-600 transition"
+        >
+          <IoIosArrowForward size={18} />
+        </button>
+      </div>
 
-              {/* Next Button */}
-              <button
-                ref={swiperNavNextRef}
-                className="swiper-button-next !static flex-1 h-full flex items-center justify-center
-                text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
-              >
-                <FiChevronRight className="text-[22px]" />
-              </button>
-          </div>
-        </div>
-
-        {/* Slider */}
-        <Slider ref={sliderRef} {...settings}>
-          {brands.map((brand) => (
-            <div key={brand.id} className="px-1 lg:px-2">
-              <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
-                <div className="relative h-full w-full rounded-full overflow-hidden">
-                  <div
-                    className="cursor-pointer"
-                    onClick={() => handleBrandClick(brand._id)}
-                  >
-                    <Image
-                      src={brand?.icon || brand?.logo}
-                      alt={brand?.name?.en || brand?.name}
-                      fill
-                      sizes="124px"
-                      className="object-cover"
-                    />
-                  </div>
+      <Slider ref={sliderRef} {...settings}>
+        {brands.map((brand) => (
+          <div key={brand.id} className="px-0 lg:px-2">
+            <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
+              <div className="relative h-full w-full rounded-full overflow-hidden">
+                <div
+                  className="cursor-pointer"
+                  onClick={() => handleBrandClick(brand._id)}
+                >
+                  <Image
+                    src={brand?.icon || brand?.logo}
+                    alt={brand?.name?.en || brand?.name}
+                    fill
+                    sizes="124px"
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </div>
-          ))}
-        </Slider>
-      </div>
+          </div>
+        ))}
+      </Slider>
     </div>
   );
 };
