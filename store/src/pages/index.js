@@ -127,23 +127,48 @@ const Home = ({
 
             {/* Brands category */}
 
-            <div className="bg-gray-100 lg:py-10">
-              <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                <div className="mb-2 lg:mb-10 flex justify-center">
-                  <div className="text-left w-full">
-                    <h2 className="text-xl lg:text-3xl ">
-                      <CMSkeleton
-                        count={1}
-                        height={30}
-                        loading={loading}
-                        data={{ en: "Brands" }}
-                      />
-                    </h2>
-                  </div>
-                </div>
-                <BrandSlider />
-              </div>
-            </div>
+          <div className="bg-gray-100 lg:py-10">
+  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+    <div className="mb-2 lg:mb-10 flex items-center justify-between">
+      <h2 className="text-xl lg:text-3xl">
+        <CMSkeleton
+          count={1}
+          height={30}
+          loading={loading}
+          data={{ en: "Brands" }}
+        />
+      </h2>
+
+      {/* Custom Arrow Controls */}
+      <div className="bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
+        <button
+          onClick={() =>
+            document
+              .querySelector(".brand-slider")
+              ?.slickPrev()
+          }
+          className="flex-1 text-blue-500 hover:text-[#0891B2] transition"
+        >
+          <IoIosArrowBack size={18} />
+        </button>
+        <div className="h-6 w-[1px] bg-gray-200"></div>
+        <button
+          onClick={() =>
+            document
+              .querySelector(".brand-slider")
+              ?.slickNext()
+          }
+          className="flex-1 text-blue-500 hover:text-[#0891B2] transition"
+        >
+          <IoIosArrowForward size={18} />
+        </button>
+      </div>
+    </div>
+
+    <BrandSlider />
+  </div>
+</div>
+
 
             {/* <div className="bg-gray-100 lg:py-10 py-10">
                 <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
