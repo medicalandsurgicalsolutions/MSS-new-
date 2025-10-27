@@ -126,46 +126,45 @@ const Home = ({
             )}
 
             {/* Brands category */}
-/* Brands category */
-<div className="bg-gray-100 lg:py-10">
-  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-    {/* Heading + Arrows in one line */}
-    <div className="mb-2 lg:mb-10 flex items-center justify-between">
-      <h2 className="text-xl lg:text-3xl">
-        <CMSkeleton
-          count={1}
-          height={30}
-          loading={loading}
-          data={{ en: "Brands" }}
-        />
-      </h2>
-
-      {/* Arrows beside heading */}
-      <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
-        <button
-          onClick={() =>
-            document.querySelector(".brand-slider-prev")?.click()
-          }
-          className="p-2 hover:bg-gray-100 transition"
-        >
-          <IoIosArrowBack className="text-gray-700 text-lg" />
-        </button>
-        <div className="w-px h-5 bg-gray-200" />
-        <button
-          onClick={() =>
-            document.querySelector(".brand-slider-next")?.click()
-          }
-          className="p-2 hover:bg-gray-100 transition"
-        >
-          <IoIosArrowForward className="text-gray-700 text-lg" />
-        </button>
-      </div>
-    </div>
-
-    {/* Slider */}
-    <BrandSlider />
-  </div>
-</div>
+                <div className="bg-gray-100 lg:py-10">
+                  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                    {/* Heading + Arrows in one line */}
+                    <div className="mb-2 lg:mb-10 flex items-center justify-between">
+                      <h2 className="text-xl lg:text-3xl">
+                        <CMSkeleton
+                          count={1}
+                          height={30}
+                          loading={loading}
+                          data={{ en: "Brands" }}
+                        />
+                      </h2>
+                
+                      {/* Arrows beside heading */}
+                      <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
+                        <button
+                          onClick={() =>
+                            document.querySelector(".brand-slider-prev")?.click()
+                          }
+                          className="p-2 hover:bg-gray-100 transition"
+                        >
+                          <IoIosArrowBack className="text-gray-700 text-lg" />
+                        </button>
+                        <div className="w-px h-5 bg-gray-200" />
+                        <button
+                          onClick={() =>
+                            document.querySelector(".brand-slider-next")?.click()
+                          }
+                          className="p-2 hover:bg-gray-100 transition"
+                        >
+                          <IoIosArrowForward className="text-gray-700 text-lg" />
+                        </button>
+                      </div>
+                    </div>
+                
+                    {/* Slider */}
+                    <BrandSlider />
+                  </div>
+                </div>
 
             {/* <div className="bg-gray-100 lg:py-10 py-10">
                 <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
