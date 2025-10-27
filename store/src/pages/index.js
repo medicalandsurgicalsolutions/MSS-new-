@@ -453,7 +453,7 @@ const Home = ({
                       key={idx}
                       className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
                     >
-                      <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#F97316]">
+                      <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
                         {item.icon}
                       </div>
                       <div>
