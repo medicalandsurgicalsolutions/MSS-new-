@@ -44,68 +44,67 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false, // hide default arrows
+    arrows: false, // we'll use custom arrows
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 5,
+          slidesToScroll: 5,
         },
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 3,
+          slidesToScroll: 3,
         },
       },
     ],
   };
 
   return (
-    <div className="relative bg-gray-100 p-4">
-      {/* Custom arrow container */}
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
-        <button
-          onClick={() => sliderRef.current?.slickPrev()}
-          className="flex-1 text-blue-500 hover:text-blue-600 transition"
-        >
-          <IoIosArrowBack size={18} />
-        </button>
-        <div className="h-6 w-[1px] bg-gray-200"></div>
-        <button
-          onClick={() => sliderRef.current?.slickNext()}
-          className="flex-1 text-blue-500 hover:text-blue-600 transition"
-        >
-          <IoIosArrowForward size={18} />
-        </button>
+    <div className="relative bg-gray-100 p-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-semibold text-gray-900">Brands</h2>
+
+        {/* Arrow container */}
+        <div className="bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
+          <button
+            onClick={() => sliderRef.current?.slickPrev()}
+            className="flex-1 text-blue-500 hover:text-blue-600 transition"
+          >
+            <IoIosArrowBack size={18} />
+          </button>
+          <div className="h-6 w-[1px] bg-gray-200"></div>
+          <button
+            onClick={() => sliderRef.current?.slickNext()}
+            className="flex-1 text-blue-500 hover:text-blue-600 transition"
+          >
+            <IoIosArrowForward size={18} />
+          </button>
+        </div>
       </div>
 
-      <Slider ref={sliderRef} {...settings}>
-        {brands.map((brand) => (
-          <div key={brand.id} className="px-0 lg:px-2">
-            <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
-              <div className="relative h-full w-full rounded-full overflow-hidden">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => handleBrandClick(brand._id)}
-                >
-                  <Image
-                    src={brand?.icon || brand?.logo}
-                    alt={brand?.name?.en || brand?.name}
-                    fill
-                    sizes="124px"
-                    className="object-cover"
-                  />
+      <div className="relative">
+        <Slider ref={sliderRef} {...settings}>
+          {brands.map((brand) => (
+            <div key={brand.id} className="px-0 lg:px-2">
+              <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
+                <div className="relative h-full w-full rounded-full overflow-hidden">
+                  <div
+                    className="cursor-pointer"
+                    onClick={() => handleBrandClick(brand._id)}
+                  >
+                    <Image
+                      src={brand?.icon || brand?.logo}
+                      alt={brand?.name?.en || brand?.name}
+                      fill
+                      sizes="124px"
+                      className="object-cover"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
-};
-
-export default BrandSlider;
+          ))}
