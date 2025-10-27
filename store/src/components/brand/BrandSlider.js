@@ -44,27 +44,36 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false, // Hide default arrows
+    arrows: false, // hide default
     responsive: [
       {
         breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        },
+        settings: { slidesToShow: 4, slidesToScroll: 4 },
       },
       {
         breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
+        settings: { slidesToShow: 2, slidesToScroll: 2 },
       },
     ],
   };
 
   return (
     <div className="relative bg-gray-100 p-4">
+      {/* Custom Arrows */}
+      <button
+        onClick={() => sliderRef.current.slickPrev()}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 shadow-md rounded-full w-10 h-10 flex items-center justify-center hover:bg-orange-100 transition"
+      >
+        <IoIosArrowBack className="text-gray-700 text-xl" />
+      </button>
+
+      <button
+        onClick={() => sliderRef.current.slickNext()}
+        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 shadow-md rounded-full w-10 h-10 flex items-center justify-center hover:bg-orange-100 transition"
+      >
+        <IoIosArrowForward className="text-gray-700 text-xl" />
+      </button>
+
       <Slider ref={sliderRef} {...settings} className="brand-slider">
         {brands.map((brand) => (
           <div key={brand.id} className="px-0 lg:px-2">
