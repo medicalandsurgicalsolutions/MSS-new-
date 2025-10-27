@@ -1,30 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BrandServices from "@services/BrandServices";
-import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import { useRouter } from "next/navigation";
-
-// ✅ Custom Arrows (same style as you used before)
-const NextArrow = ({ onClick }) => (
-  <div
-    className="absolute top-1/2 right-[-28px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-orange-500 transition-colors duration-300"
-    onClick={onClick}
-  >
-    <IoIosArrowForward size={20} />
-  </div>
-);
-
-const PrevArrow = ({ onClick }) => (
-  <div
-    className="absolute top-1/2 left-[-28px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-orange-500 transition-colors duration-300 z-10"
-    onClick={onClick}
-  >
-    <IoIosArrowBack size={20} />
-  </div>
-);
 
 const BrandSlider = () => {
   const [brands, setBrands] = useState([
@@ -35,6 +15,8 @@ const BrandSlider = () => {
       website: "https://medicalsurgicalsolutions.com/",
     },
   ]);
+
+  const sliderRef = useRef(null);
 
   const fetchBrands = async () => {
     const response = await BrandServices.getAll().catch((e) => e);
@@ -54,7 +36,6 @@ const BrandSlider = () => {
     setIsLoading(!isLoading);
   };
 
-  // ✅ Slick settings with custom arrows
   const settings = {
     dots: false,
     infinite: false,
@@ -63,8 +44,7 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
+    arrows: false, // hide default arrows
     responsive: [
       {
         breakpoint: 1024,
@@ -78,15 +58,31 @@ const BrandSlider = () => {
         settings: {
           slidesToShow: 4,
           slidesToScroll: 4,
-          arrows: false,
         },
       },
     ],
   };
 
   return (
-    <div className="bg-gray-100 p-4 relative">
-      <Slider {...settings}>
+    <div className="relative bg-gray-100 p-4">
+      {/* Custom arrow container */}
+      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
+        <button
+          onClick={() => sliderRef.current?.slickPrev()}
+          className="flex-1 text-blue-500 hover:text-blue-600 transition"
+        >
+          <IoIosArrowBack size={18} />
+        </button>
+        <div className="h-6 w-[1px] bg-gray-200"></div>
+        <button
+          onClick={() => sliderRef.current?.slickNext()}
+          className="flex-1 text-blue-500 hover:text-blue-600 transition"
+        >
+          <IoIosArrowForward size={18} />
+        </button>
+      </div>
+
+      <Slider ref={sliderRef} {...settings}>
         {brands.map((brand) => (
           <div key={brand.id} className="px-0 lg:px-2">
             <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
