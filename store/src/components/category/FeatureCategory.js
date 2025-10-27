@@ -38,20 +38,21 @@ const FeatureCategory = () => {
         <div className="relative w-full">
           {/* Custom Navigation Buttons */}
           <div className="absolute top-[-65px] right-0 z-10 flex items-center">
-            <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[90px] h-[46px] items-center justify-between">
+            <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
               {/* Prev Button */}
               <button
                 ref={swiperNavPrevRef}
                 className="swiper-button-prev !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300 border-r border-gray-200"
               >
-                <FiChevronLeft className="text-2xl" />
+                <FiChevronLeft className="text-[22px]" />
               </button>
+
               {/* Next Button */}
               <button
                 ref={swiperNavNextRef}
                 className="swiper-button-next !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
               >
-                <FiChevronRight className="text-2xl" />
+                <FiChevronRight className="text-[22px]" />
               </button>
             </div>
           </div>
@@ -103,7 +104,7 @@ const FeatureCategory = () => {
                   {/* Bottom Card */}
                   <div className="bg-white -mt-5 mx-3 rounded-b-3xl shadow-sm pb-4 pt-6 text-center">
                     <FaCapsules className="text-cyan-500 text-xl mx-auto group-hover:text-[#0891B2] transition-colors duration-300 mb-1" />
-                    <h4 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-[#0891B2]">
+                    <h4 className="text-xs md:text-sm font-semibold text-gray-800 group-hover:text-[#0891B2]">
                       {showingTranslateValue(category?.name)}
                     </h4>
                     <p className="text-xs md:text-sm text-gray-500">
