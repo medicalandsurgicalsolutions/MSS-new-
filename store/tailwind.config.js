@@ -8,8 +8,8 @@ module.exports = {
 
   theme: {
     fontFamily: {
-    sans: ["Montserrat", "sans-serif"], // 👈 default body font
-      serif: ["Montserrat", "sans-serif"], // 👈 consistent headings too
+    sans: ["Montserrat", "sans-serif"], 
+      serif: ["Montserrat", "sans-serif"],
       DejaVu: ["DejaVu Sans", "Arial", "sans-serif"],
       montserrat: ["Montserrat", "sans-serif"],
     },
