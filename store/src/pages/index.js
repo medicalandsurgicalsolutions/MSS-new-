@@ -126,7 +126,7 @@ const Home = ({
             )}
 
             {/* Brands category */}
-                <div className="bg-gray-100 lg:py-10">
+                <div className="bg-white-100 lg:py-10">
                   <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                     {/* Heading + Arrows in one line */}
                     <div className="mb-2 lg:mb-10 flex items-center justify-between">
