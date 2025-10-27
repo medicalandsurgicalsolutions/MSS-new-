@@ -1,86 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"; // Import arrow icons
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BrandServices from "@services/BrandServices";
 import Link from "next/link";
 import { SidebarContext } from "@context/SidebarContext";
 import { useRouter } from "next/navigation";
 
+// ✅ Custom Arrows (same style as you used before)
 const NextArrow = ({ onClick }) => (
   <div
-    className="absolute top-1/2 right-[-20px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-lg"
+    className="absolute top-1/2 right-[-28px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-orange-500 transition-colors duration-300"
     onClick={onClick}
   >
-    <IoIosArrowForward size={24} />
+    <IoIosArrowForward size={20} />
   </div>
 );
 
 const PrevArrow = ({ onClick }) => (
   <div
-    className="absolute top-1/2 left-[-30px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-lg z-10"
+    className="absolute top-1/2 left-[-28px] transform -translate-y-1/2 bg-cyan-500 text-white p-2 rounded-full cursor-pointer shadow-md hover:bg-orange-500 transition-colors duration-300 z-10"
     onClick={onClick}
   >
-    <IoIosArrowBack size={24} />
+    <IoIosArrowBack size={20} />
   </div>
 );
-// const demoBrands = [
-//   {
-//     id: 1,
-//     name: "Nivea",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272290_hmd_brand_logo.png",
-//   },
-//   {
-//     id: 2,
-//     name: "Baidyanath",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272520_ethicon_brand_logo.png",
-//   },
-//   {
-//     id: 3,
-//     name: "Himalaya",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272879_romsons_barnd_logo.png",
-//   },
-//   {
-//     id: 4,
-//     name: "Cetaphil",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272640_bd_brand_logo.png",
-//   },
-//   {
-//     id: 5,
-//     name: "Hansaplast",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272543_3m_brand_logo.png",
-//   },
-//   {
-//     id: 6,
-//     name: "Tejasya",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272570_diamond_brand_logo.png",
-//   },
-//   {
-//     id: 7,
-//     name: "Baidyanath",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272520_ethicon_brand_logo.png",
-//   },
-//   {
-//     id: 8,
-//     name: "Himalaya",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272879_romsons_barnd_logo.png",
-//   },
-//   {
-//     id: 9,
-//     name: "Cetaphil",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272640_bd_brand_logo.png",
-//   },
-//   {
-//     id: 10,
-//     name: "Hansaplast",
-//     logo: "https://www.meddeygo.com/uploads/images/brand_images/1636272543_3m_brand_logo.png",
-//   },
-//   {
-//     id: 11,
-//     name: "Tejasya",
-//     logo: "https://play-lh.googleusercontent.com/yjbAu08_Ahes38IEMV8slP91zgjh2mdh5xpZefvcbYuZxR8O7FZFderRn2Ivaz0uR2Lw",
-//   },
-// ];
+
 const BrandSlider = () => {
   const [brands, setBrands] = useState([
     {
@@ -92,22 +37,34 @@ const BrandSlider = () => {
   ]);
 
   const fetchBrands = async () => {
-    const response = await BrandServices.getAll().catch((e) => {
-      return e;
-    });
-      setBrands(response);
+    const response = await BrandServices.getAll().catch((e) => e);
+    setBrands(response);
   };
+
   useEffect(() => {
     fetchBrands();
   }, []);
+
+  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const router = useRouter();
+
+  const handleBrandClick = (id) => {
+    const url = `/search?brand=${id}`;
+    router.push(url);
+    setIsLoading(!isLoading);
+  };
+
+  // ✅ Slick settings with custom arrows
   const settings = {
     dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 10,
     slidesToScroll: 10,
-    nextArrow: <NextArrow />, // Custom next arrow
-    prevArrow: <PrevArrow />, // Custom prev arrow
+    autoplay: true,
+    autoplaySpeed: 2500,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     responsive: [
       {
         breakpoint: 1024,
@@ -126,32 +83,21 @@ const BrandSlider = () => {
       },
     ],
   };
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const router = useRouter();
-
-  const handleBrandClick = (id) => {
-    // const brand_name = brandName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    const url = `/search?brand=${id}`;
-    router.push(url);
-    setIsLoading(!isLoading);
-  };
 
   return (
-    <div className="bg-gray-100 p-4">
+    <div className="bg-gray-100 p-4 relative">
       <Slider {...settings}>
         {brands.map((brand) => (
           <div key={brand.id} className="px-0 lg:px-2">
-            <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center">
+            <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
               <div className="relative h-full w-full rounded-full overflow-hidden">
                 <div
                   className="cursor-pointer"
-                  onClick={() => {
-                    handleBrandClick(brand._id);
-                  }}
+                  onClick={() => handleBrandClick(brand._id)}
                 >
                   <Image
-                    src={brand?.icon}
-                    alt={brand?.name?.en}
+                    src={brand?.icon || brand?.logo}
+                    alt={brand?.name?.en || brand?.name}
                     fill
                     sizes="124px"
                     className="object-cover"
