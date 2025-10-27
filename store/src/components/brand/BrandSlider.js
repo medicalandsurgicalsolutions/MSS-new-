@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from "react";
 import Slider from "react-slick";
 import Image from "next/image";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import BrandServices from "@services/BrandServices";
 import { SidebarContext } from "@context/SidebarContext";
 import { useRouter } from "next/navigation";
@@ -17,6 +16,8 @@ const BrandSlider = () => {
   ]);
 
   const sliderRef = useRef(null);
+  const { isLoading, setIsLoading } = useContext(SidebarContext);
+  const router = useRouter();
 
   const fetchBrands = async () => {
     const response = await BrandServices.getAll().catch((e) => e);
@@ -26,9 +27,6 @@ const BrandSlider = () => {
   useEffect(() => {
     fetchBrands();
   }, []);
-
-  const { isLoading, setIsLoading } = useContext(SidebarContext);
-  const router = useRouter();
 
   const handleBrandClick = (id) => {
     const url = `/search?brand=${id}`;
@@ -47,58 +45,54 @@ const BrandSlider = () => {
     arrows: false,
     responsive: [
       {
+        breakpoint: 1280,
+        settings: { slidesToShow: 6, slidesToScroll: 3 },
+      },
+      {
         breakpoint: 1024,
-        settings: { slidesToShow: 4, slidesToScroll: 4 },
+        settings: { slidesToShow: 4, slidesToScroll: 2 },
       },
       {
         breakpoint: 768,
-        settings: { slidesToShow: 2, slidesToScroll: 2 },
+        settings: { slidesToShow: 3, slidesToScroll: 1 },
+      },
+      {
+        breakpoint: 480,
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
       },
     ],
   };
 
   return (
-    <div className="relative bg-gray-100 p-4">
-      {/* Header with title and grouped arrows */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-semibold">Brands</h2>
-
-        {/* Arrow group like “Featured Categories” */}
-        <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
-          <button
-            onClick={() => sliderRef.current.slickPrev()}
-            className="p-2 hover:bg-gray-100 transition"
-          >
-            <IoIosArrowBack className="text-gray-700 text-lg" />
-          </button>
-          <div className="w-px h-5 bg-gray-200" />
-          <button
-            onClick={() => sliderRef.current.slickNext()}
-            className="p-2 hover:bg-gray-100 transition"
-          >
-            <IoIosArrowForward className="text-gray-700 text-lg" />
-          </button>
-        </div>
-      </div>
+    <div className="relative">
+      {/* Hidden buttons for external arrow control */}
+      <button
+        type="button"
+        className="brand-slider-prev hidden"
+        onClick={() => sliderRef.current?.slickPrev()}
+      />
+      <button
+        type="button"
+        className="brand-slider-next hidden"
+        onClick={() => sliderRef.current?.slickNext()}
+      />
 
       {/* Slider Section */}
       <Slider ref={sliderRef} {...settings} className="brand-slider">
-        {brands.map((brand) => (
-          <div key={brand.id} className="px-0 lg:px-2">
-            <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
-              <div className="relative h-full w-full rounded-full overflow-hidden">
-                <div
-                  className="cursor-pointer"
-                  onClick={() => handleBrandClick(brand._id)}
-                >
-                  <Image
-                    src={brand?.icon || brand?.logo}
-                    alt={brand?.name?.en || brand?.name}
-                    fill
-                    sizes="124px"
-                    className="object-cover"
-                  />
-                </div>
+        {brands?.map((brand) => (
+          <div key={brand._id || brand.id} className="px-1 lg:px-2">
+            <div
+              className="bg-white h-20 w-20 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto cursor-pointer hover:shadow-lg transition"
+              onClick={() => handleBrandClick(brand._id)}
+            >
+              <div className="relative h-full w-full rounded-full overflow-hidden p-2">
+                <Image
+                  src={brand?.icon || brand?.logo}
+                  alt={brand?.name?.en || brand?.name}
+                  fill
+                  sizes="124px"
+                  className="object-contain"
+                />
               </div>
             </div>
           </div>
