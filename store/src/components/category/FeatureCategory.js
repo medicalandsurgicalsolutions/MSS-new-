@@ -88,7 +88,7 @@ const FeatureCategory = () => {
   }}
   breakpoints={{
     0: { slidesPerView: 1 },       // ✅ Mobile - show one card
-    640: { slidesPerView: 2 },     // Small screens
+    380: { slidesPerView: 2 },     // Small screens
     768: { slidesPerView: 3 },     // Tablets
     1024: { slidesPerView: 4 },    // Laptops
     1280: { slidesPerView: 5 },    // Desktops
