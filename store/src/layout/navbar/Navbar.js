@@ -145,7 +145,7 @@ const Navbar = () => {
               </div>
             </Link>
                       
-           <div className="w-full py-4 transition-all duration-200 ease-in-out lg:flex lg:max-w-[450px] xl:max-w-[650px] 2xl:max-w-[750px] md:mx-8 lg:mx-4 xl:mx-0">
+           <div className="w-full py-4 transition-all duration-200 ease-in-out lg:flex lg:max-w-[350px] xl:max-w-[550px] 2xl:max-w-[650px] md:mx-8 lg:mx-4 xl:mx-0">
               <div className="w-full flex flex-col justify-center flex-shrink-0 relative z-30">
                 <div className="flex flex-col mx-auto w-full">
                   <form
