@@ -257,19 +257,19 @@ const Home = ({
                 </div>
                 {/* Right Section */}
                 {/* <div className="bg-blue-500 hidden lg:block rounded-md text-white mt-12 mb-12 justify-center items-center w-[432px] p-6">
-        <img
-          src={""}
-          alt={"image"}
-          className="object-contain h-[78%] w-full mb-2"
-        />
-      <h3 className="text-xl font-bold mb-2">Stay Fit & Active</h3>
-      <p className="text-sm text-center mb-4">
-        Shop from our Fitness & Sports Equipment Collection
-      </p>
-      <button className="bg-white text-blue-500 px-4 py-2 rounded font-medium hover:bg-blue-100">
-        Explore &rarr;
-      </button>
-    </div> */}
+                    <img
+                      src={""}
+                      alt={"image"}
+                      className="object-contain h-[78%] w-full mb-2"
+                    />
+                  <h3 className="text-xl font-bold mb-2">Stay Fit & Active</h3>
+                  <p className="text-sm text-center mb-4">
+                    Shop from our Fitness & Sports Equipment Collection
+                  </p>
+                  <button className="bg-white text-blue-500 px-4 py-2 rounded font-medium hover:bg-blue-100">
+                    Explore &rarr;
+                  </button>
+                </div> */}
               </div>
             </div>
 
@@ -391,69 +391,51 @@ const Home = ({
             )} */}
 
             {/* discounted products */}
-            {storeCustomizationSetting?.home?.discount_product_status &&
-              DisProduct?.length > 0 && (
-                <div
-                  id="discount"
-                  className="bg-gray-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
-                >
-                  <div className="mb-10 flex justify-center">
-                    <div className="text-center w-full lg:w-2/5">
-                      <h2 className="text-xl lg:text-2xl mb-2  font-semibold">
-                        <CMSkeleton
-                          count={1}
-                          height={30}
-                          // error={error}
-                          loading={loading}
-                          data={
-                            storeCustomizationSetting?.home
-                              ?.latest_discount_title
-                          }
-                        />
-                      </h2>
-                      <p className="text-base font-sans text-gray-600 leading-6">
-                        <CMSkeleton
-                          count={5}
-                          height={20}
-                          // error={error}
-                          loading={loading}
-                          data={
-                            storeCustomizationSetting?.home
-                              ?.latest_discount_description
-                          }
-                        />
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex">
-                    <div className="w-full">
-                      {loading ? (
-                        <CMSkeleton
-                          count={20}
-                          height={20}
-                          error={error}
-                          loading={loading}
-                        />
-                      ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                          {DisProduct?.slice(
-                            0,
-                            storeCustomizationSetting?.home
-                              ?.latest_discount_product_limit
-                          ).map((product) => (
-                            <ProductCard
-                              key={product._id}
-                              product={product}
-                              attributes={attributes}
-                            />
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-          </div>
+          {storeCustomizationSetting?.home?.popular_products_status && (
+  <section className="bg-gray-50 py-8 sm:py-10 lg:py-14">
+    <div className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-10">
+      {/* Title Section */}
+      <div className="mb-6 sm:mb-10 text-center sm:text-left">
+        <h2 className="text-xl sm:text-2xl lg:text-3xl font-semibold text-gray-800">
+          <CMSkeleton
+            count={1}
+            height={30}
+            loading={loading}
+            data={storeCustomizationSetting?.home?.popular_title}
+          />
+        </h2>
+        {/* Optional description */}
+        {/* <p className="mt-2 text-sm sm:text-base text-gray-600 leading-6">
+          <CMSkeleton
+            count={5}
+            height={10}
+            error={error}
+            loading={loading}
+            data={storeCustomizationSetting?.home?.popular_description}
+          />
+        </p> */}
+      </div>
+
+      {/* Product Grid Section */}
+      {loading ? (
+        <CMSkeleton count={20} height={20} loading={loading} />
+      ) : (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-5">
+          {showProduct
+            ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
+            .map((product) => (
+              <ProductCard
+                key={product._id}
+                product={product}
+                attributes={attributes}
+              />
+            ))}
+        </div>
+      )}
+    </div>
+  </section>
+)}
+
   
           {/* < OurPartner /> */}
           <ClientSection />
