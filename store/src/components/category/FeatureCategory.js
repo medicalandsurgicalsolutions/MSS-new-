@@ -39,7 +39,7 @@ const FeatureCategory = () => {
         <div className="relative w-full">
           <Swiper
             modules={[Navigation]}
-            spaceBetween={20}
+            spaceBetween={30}
             slidesPerView={2}
             navigation={{
               nextEl: ".swiper-button-next",
@@ -55,7 +55,7 @@ const FeatureCategory = () => {
             {data[0]?.children?.map((category, i) => (
               <SwiperSlide key={i + 1}>
                 <div
-                  className="group cursor-pointer bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+                  className="group cursor-pointer bg-white rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
                   onClick={() =>
                     handleCategoryClick(
                       category._id,
@@ -63,8 +63,8 @@ const FeatureCategory = () => {
                     )
                   }
                 >
-                  {/* Image */}
-                  <div className="relative w-full h-40 md:h-44 lg:h-48 overflow-hidden">
+                  {/* Image section */}
+                  <div className="relative w-full h-44 md:h-52 overflow-hidden rounded-t-3xl">
                     <Image
                       src={category?.icon || DUMMY_IMAGE}
                       alt="category"
@@ -73,9 +73,9 @@ const FeatureCategory = () => {
                     />
                   </div>
 
-                  {/* Content */}
-                  <div className="p-4 flex flex-col items-center text-center">
-                    <FaCapsules className="text-cyan-500 text-lg group-hover:text-orange-500 transition-colors duration-300 mb-1" />
+                  {/* Bottom content card */}
+                  <div className="bg-white -mt-5 mx-3 rounded-b-3xl shadow-sm pb-4 pt-6 text-center">
+                    <FaCapsules className="text-cyan-500 text-xl mx-auto group-hover:text-orange-500 transition-colors duration-300 mb-1" />
                     <h4 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-orange-500">
                       {showingTranslateValue(category?.name)}
                     </h4>
@@ -90,22 +90,20 @@ const FeatureCategory = () => {
 
           {/* Navigation Buttons */}
           <div
-            className="swiper-button-next !text-cyan-500 hover:!text-orange-500 transition-colors duration-300"
+            className="swiper-button-next !text-gray-700 hover:!text-orange-500 !bg-white shadow-md border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300"
             style={{
               position: "absolute",
-              right: "0px",
-              top: "50%",
-              transform: "translateY(-50%)",
+              right: "-20px",
+              top: "-50px",
               zIndex: 10,
             }}
           ></div>
           <div
-            className="swiper-button-prev !text-cyan-500 hover:!text-orange-500 transition-colors duration-300"
+            className="swiper-button-prev !text-gray-700 hover:!text-orange-500 !bg-white shadow-md border border-gray-200 rounded-full w-10 h-10 flex items-center justify-center transition-all duration-300"
             style={{
               position: "absolute",
-              left: "0px",
-              top: "50%",
-              transform: "translateY(-50%)",
+              right: "30px",
+              top: "-50px",
               zIndex: 10,
             }}
           ></div>
