@@ -37,7 +37,7 @@ const FeatureCategory = () => {
       ) : (
         <div className="relative w-full">
           {/* Custom Navigation Buttons */}
-          <div className="absolute top-[-65px] right-0 z-10 flex items-center">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex items-center">
             <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
               {/* Prev Button */}
               <button
