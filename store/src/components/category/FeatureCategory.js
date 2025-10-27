@@ -37,22 +37,32 @@ const FeatureCategory = () => {
       ) : (
         <div className="relative w-full">
           {/* Custom Navigation Buttons */}
-          <div className="absolute top-[-60px] right-0 z-10 flex items-center">
-            <div className="flex bg-white border border-gray-200 rounded-full shadow-sm overflow-hidden">
+          <div className="absolute top-[-65px] right-0 z-10 flex items-center">
+            <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[90px] h-[46px] items-center justify-between">
+              {/* Prev Button */}
               <button
                 ref={swiperNavPrevRef}
-                className="swiper-button-prev !static !w-10 !h-10 flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300 border-r border-gray-200"
+                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300 border-r border-gray-200"
               >
-                <FiChevronLeft className="text-xl" />
+                <FiChevronLeft className="text-2xl" />
               </button>
+              {/* Next Button */}
               <button
                 ref={swiperNavNextRef}
-                className="swiper-button-next !static !w-10 !h-10 flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
+                className="swiper-button-next !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
               >
-                <FiChevronRight className="text-xl" />
+                <FiChevronRight className="text-2xl" />
               </button>
             </div>
           </div>
+
+          {/* Hide default Swiper arrows */}
+          <style jsx global>{`
+            .swiper-button-prev::after,
+            .swiper-button-next::after {
+              display: none !important;
+            }
+          `}</style>
 
           {/* Swiper */}
           <Swiper
@@ -80,7 +90,7 @@ const FeatureCategory = () => {
                     handleCategoryClick(category._id, showingTranslateValue(category?.name))
                   }
                 >
-                  {/* Image section */}
+                  {/* Image */}
                   <div className="relative w-full h-44 md:h-52 overflow-hidden rounded-t-3xl">
                     <Image
                       src={category?.icon || DUMMY_IMAGE}
@@ -90,7 +100,7 @@ const FeatureCategory = () => {
                     />
                   </div>
 
-                  {/* Bottom content card */}
+                  {/* Bottom Card */}
                   <div className="bg-white -mt-5 mx-3 rounded-b-3xl shadow-sm pb-4 pt-6 text-center">
                     <FaCapsules className="text-cyan-500 text-xl mx-auto group-hover:text-[#0891B2] transition-colors duration-300 mb-1" />
                     <h4 className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-[#0891B2]">
