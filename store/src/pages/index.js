@@ -147,7 +147,7 @@ const Home = ({
                           }
                           className="p-2 hover:bg-gray-100 transition"
                         >
-                          <IoIosArrowBack className="text-gray-700 text-lg" />
+                          <IoIosArrowBack className="text-[#0891b2] text-lg" />
                         </button>
                         <div className="w-px h-5 bg-gray-200" />
                         <button
@@ -156,7 +156,7 @@ const Home = ({
                           }
                           className="p-2 hover:bg-gray-100 transition"
                         >
-                          <IoIosArrowForward className="text-gray-700 text-lg" />
+                         <IoIosArrowBack className="text-[#0891b2] text-lg" />
                         </button>
                       </div>
                     </div>
