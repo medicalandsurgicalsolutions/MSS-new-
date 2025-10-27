@@ -8,10 +8,10 @@ module.exports = {
 
   theme: {
     fontFamily: {
-      sans: ["Open Sans", "sans-serif"],
-      serif: ["Inter", "sans-serif"],
+    sans: ["Montserrat", "sans-serif"], // 👈 default body font
+      serif: ["Montserrat", "sans-serif"], // 👈 consistent headings too
       DejaVu: ["DejaVu Sans", "Arial", "sans-serif"],
-      poppins: ["Poppins"],
+      montserrat: ["Montserrat", "sans-serif"],
     },
     extend: {
       colors: {
