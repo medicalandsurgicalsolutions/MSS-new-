@@ -2,7 +2,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import "@styles/custom.css";
 import { CartProvider } from "react-use-cart";
-// import { Elements } from "@stripe/react-stripe-js";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { Provider } from "react-redux";
@@ -12,26 +11,27 @@ import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import { AuthProvider } from "@context/AuthContext";
-
-
-
-//internal import
 import store from "@redux/store";
-// import getStripe from "@lib/stripe";
 import useAsync from "@hooks/useAsync";
 import { handlePageView } from "@lib/analytics";
 import { UserProvider } from "@context/UserContext";
 import DefaultSeo from "@components/common/DefaultSeo";
 import { SidebarProvider } from "@context/SidebarContext";
 import SettingServices from "@services/SettingServices";
-import Script from 'next/script';
+import Script from "next/script";
+
+// ✅ Add Google Font (Montserrat)
+import { Montserrat } from "next/font/google";
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
 
 let persistor = persistStore(store);
 
-// let stripePromise = getStripe();
-
 function MyApp({ Component, pageProps }) {
-  
   const router = useRouter();
 
   const {
@@ -49,24 +49,17 @@ function MyApp({ Component, pageProps }) {
       handlePageView();
 
       // Track page view on route change
-      const handleRouteChange = (url) => {
+      const handleRouteChange = () => {
         handlePageView(`/${router.pathname}`, "Medical&SurgicalSolutions");
       };
 
-      // Set up event listeners
       router.events.on("routeChangeComplete", handleRouteChange);
-
-      return () => {
-        router.events.off("routeChangeComplete", handleRouteChange);
-      };
+      return () => router.events.off("routeChangeComplete", handleRouteChange);
     }
   }, [storeSetting]);
 
-  // console.log("storeSetting", storeSetting, "stripePromise", stripePromise);
-
   return (
     <>
-
       {/* Meta Pixel Script */}
       <Script id="facebook-pixel" strategy="afterInteractive">
         {`
@@ -92,6 +85,8 @@ function MyApp({ Component, pageProps }) {
           src="https://www.facebook.com/tr?id=497784453413104&ev=PageView&noscript=1"
         />
       </noscript>
+
+      {/* Tawk Chat */}
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
@@ -99,23 +94,25 @@ function MyApp({ Component, pageProps }) {
         />
       )}
 
-<AuthProvider>
-      <SessionProvider>
-    <UserProvider>
-      <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <SidebarProvider>
-            <CartProvider>
-              <DefaultSeo />
-              <Component {...pageProps} />
-            </CartProvider>
-          </SidebarProvider>
-        </PersistGate>
-      </Provider>
-    </UserProvider>
-</SessionProvider>
-   </AuthProvider>
-
+      {/* ✅ Apply Montserrat font globally */}
+      <main className={montserrat.className}>
+        <AuthProvider>
+          <SessionProvider>
+            <UserProvider>
+              <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                  <SidebarProvider>
+                    <CartProvider>
+                      <DefaultSeo />
+                      <Component {...pageProps} />
+                    </CartProvider>
+                  </SidebarProvider>
+                </PersistGate>
+              </Provider>
+            </UserProvider>
+          </SessionProvider>
+        </AuthProvider>
+      </main>
     </>
   );
 }
