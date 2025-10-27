@@ -44,7 +44,7 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false, // hide default arrows
+    arrows: false, // Hide default arrows
     responsive: [
       {
         breakpoint: 1024,
@@ -56,8 +56,8 @@ const BrandSlider = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
+          slidesToShow: 2,
+          slidesToScroll: 2,
         },
       },
     ],
@@ -65,24 +65,7 @@ const BrandSlider = () => {
 
   return (
     <div className="relative bg-gray-100 p-4">
-      {/* Custom arrow container */}
-      <div className="absolute right-2 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md border rounded-full flex items-center justify-center w-16 h-8">
-        <button
-          onClick={() => sliderRef.current?.slickPrev()}
-          className="flex-1 text-blue-500 hover:text-blue-600 transition"
-        >
-          <IoIosArrowBack size={18} />
-        </button>
-        <div className="h-6 w-[1px] bg-gray-200"></div>
-        <button
-          onClick={() => sliderRef.current?.slickNext()}
-          className="flex-1 text-blue-500 hover:text-blue-600 transition"
-        >
-          <IoIosArrowForward size={18} />
-        </button>
-      </div>
-
-      <Slider ref={sliderRef} {...settings}>
+      <Slider ref={sliderRef} {...settings} className="brand-slider">
         {brands.map((brand) => (
           <div key={brand.id} className="px-0 lg:px-2">
             <div className="bg-white h-16 w-16 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto">
