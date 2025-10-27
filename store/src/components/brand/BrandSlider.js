@@ -44,7 +44,7 @@ const BrandSlider = () => {
     slidesToScroll: 10,
     autoplay: true,
     autoplaySpeed: 2500,
-    arrows: false, // hide default
+    arrows: false,
     responsive: [
       {
         breakpoint: 1024,
@@ -59,21 +59,29 @@ const BrandSlider = () => {
 
   return (
     <div className="relative bg-gray-100 p-4">
-      {/* Custom Arrows */}
-      <button
-        onClick={() => sliderRef.current.slickPrev()}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 shadow-md rounded-full w-10 h-10 flex items-center justify-center hover:bg-orange-100 transition"
-      >
-        <IoIosArrowBack className="text-gray-700 text-xl" />
-      </button>
+      {/* Header with title and grouped arrows */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-semibold">Brands</h2>
 
-      <button
-        onClick={() => sliderRef.current.slickNext()}
-        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white border border-gray-300 shadow-md rounded-full w-10 h-10 flex items-center justify-center hover:bg-orange-100 transition"
-      >
-        <IoIosArrowForward className="text-gray-700 text-xl" />
-      </button>
+        {/* Arrow group like “Featured Categories” */}
+        <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
+          <button
+            onClick={() => sliderRef.current.slickPrev()}
+            className="p-2 hover:bg-gray-100 transition"
+          >
+            <IoIosArrowBack className="text-gray-700 text-lg" />
+          </button>
+          <div className="w-px h-5 bg-gray-200" />
+          <button
+            onClick={() => sliderRef.current.slickNext()}
+            className="p-2 hover:bg-gray-100 transition"
+          >
+            <IoIosArrowForward className="text-gray-700 text-lg" />
+          </button>
+        </div>
+      </div>
 
+      {/* Slider Section */}
       <Slider ref={sliderRef} {...settings} className="brand-slider">
         {brands.map((brand) => (
           <div key={brand.id} className="px-0 lg:px-2">
