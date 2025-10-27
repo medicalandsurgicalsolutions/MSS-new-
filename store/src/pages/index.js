@@ -439,7 +439,7 @@ const Home = ({
 
 
               {/* Info Feature Section start */}
-              <div className="bg-white py-10">
+              <div className="bg-white py-12">
                 <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               
                   {/* Feature Card */}
@@ -451,9 +451,9 @@ const Home = ({
                   ].map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center border rounded-lg p-4 shadow-sm hover:shadow-md transition duration-200 group"
+                      className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group"
                     >
-                      <div className="text-[#0891B2] text-3xl mr-3 transition duration-300 group-hover:text-[#F97316]">
+                      <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#F97316]">
                         {item.icon}
                       </div>
                       <div>
