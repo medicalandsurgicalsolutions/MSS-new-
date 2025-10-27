@@ -79,30 +79,28 @@ const BrandSlider = () => {
 
   return (
     <div className="relative bg-gray-100 p-6">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold text-gray-900">Brands</h2>
-      </div>
-
       <div className="relative">
         {/* Custom Navigation Arrows */}
-        <div className="absolute top-1/2 -translate-y-1/2 right-0 z-10 flex items-center">
-          <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[90px] h-[42px] items-center justify-center">
-            {/* Prev Button */}
-            <button
-              onClick={() => sliderRef.current?.slickPrev()}
-              className="flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300 border-r border-gray-200"
-            >
-              <IoIosArrowBack className="text-[20px]" />
-            </button>
+        <div className="absolute top-[-65px] right-0 z-10 flex items-center">
+          <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
+              {/* Prev Button */}
+              <button
+                ref={swiperNavPrevRef}
+                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center 
+                text-gray-700 hover:text-[#0891B2] transition-colors duration-300 
+                border-r border-gray-200"
+              >
+                <FiChevronLeft className="text-[22px]" />
+              </button>
 
-            {/* Next Button */}
-            <button
-              onClick={() => sliderRef.current?.slickNext()}
-              className="flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
-            >
-              <IoIosArrowForward className="text-[20px]" />
-            </button>
+              {/* Next Button */}
+              <button
+                ref={swiperNavNextRef}
+                className="swiper-button-next !static flex-1 h-full flex items-center justify-center
+                text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
+              >
+                <FiChevronRight className="text-[22px]" />
+              </button>
           </div>
         </div>
 
