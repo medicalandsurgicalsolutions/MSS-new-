@@ -437,56 +437,36 @@ const Home = ({
           {/* < OurPartner /> */}
           <ClientSection />
 
-           {/* Info Feature Section start */}
-<div className="bg-white py-10">
-  <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-    {/* Free Shipping */}
-    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-      <div className="text-[#0891B2] text-4xl mr-4">
-        <FaTruck />
-      </div>
-      <div>
-        <h4 className="text-lg font-semibold text-gray-900">FREE & FAST SHIPPING</h4>
-        <p className="text-gray-600 text-sm">Orders All Over $100</p>
-      </div>
-    </div>
+              {/* Info Feature Section start */}
+              <div className="bg-white py-10">
+                <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              
+                  {/* Feature Card */}
+                  {[
+                    { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
+                    { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
+                    { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
+                    { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
+                  ].map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center border rounded-lg p-4 shadow-sm hover:shadow-md transition duration-200 group"
+                    >
+                      <div className="text-[#0891B2] text-3xl mr-3 transition duration-300 group-hover:text-[#F97316]">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
+                        <p className="text-gray-600 text-xs">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+              
+                </div>
+              </div>
+              {/* Info Feature Section end */}
 
-    {/* Money Back Guarantee */}
-    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-      <div className="text-[#0891B2] text-4xl mr-4">
-        <FaMoneyBillWave />
-      </div>
-      <div>
-        <h4 className="text-lg font-semibold text-gray-900">MONEY BACK GUARANTEE</h4>
-        <p className="text-gray-600 text-sm">With a 30 Day Minimum</p>
-      </div>
-    </div>
-
-    {/* Secure Payment */}
-    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-      <div className="text-[#0891B2] text-4xl mr-4">
-        <FaShieldAlt />
-      </div>
-      <div>
-        <h4 className="text-lg font-semibold text-gray-900">ALL SECURE PAYMENT</h4>
-        <p className="text-gray-600 text-sm">Up to 12 months installments</p>
-      </div>
-    </div>
-
-    {/* Special Offer */}
-    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-      <div className="text-[#0891B2] text-4xl mr-4">
-        <FaPercent />
-      </div>
-      <div>
-        <h4 className="text-lg font-semibold text-gray-900">SPECIAL OFFER</h4>
-        <p className="text-gray-600 text-sm">Up to 12 months installments</p>
-      </div>
-    </div>
-
-  </div>
-</div>
 {/* Info Feature Section end */}
 
         </Layout>
