@@ -2,7 +2,7 @@ import Image from "next/image";
 import { useRouter } from "next/router";
 import { useContext, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
+import { Navigation , Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import { SidebarContext } from "@context/SidebarContext";
@@ -75,56 +75,58 @@ const FeatureCategory = () => {
             }
           `}</style>
 
-          {/* Swiper */}
-          <Swiper
-            modules={[Navigation]}
-            spaceBetween={30}
-            slidesPerView={2}
-            onInit={(swiper) => {
-              swiper.params.navigation.prevEl = swiperNavPrevRef.current;
-              swiper.params.navigation.nextEl = swiperNavNextRef.current;
-              swiper.navigation.init();
-              swiper.navigation.update();
-            }}
-            breakpoints={{
-              640: { slidesPerView: 2 },
-              768: { slidesPerView: 3 },
-              1024: { slidesPerView: 4 },
-              1280: { slidesPerView: 5 },
-            }}
-          >
-            {data[0]?.children?.map((category, i) => (
-              <SwiperSlide key={i + 1}>
-                <div
-                  className="group cursor-pointer bg-white rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
-                  onClick={() =>
-                    handleCategoryClick(category._id, showingTranslateValue(category?.name))
-                  }
-                >
-                  {/* Image */}
-                  <div className="relative w-full h-44 md:h-52 overflow-hidden rounded-t-3xl">
-                    <Image
-                      src={category?.icon || DUMMY_IMAGE}
-                      alt="category"
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
+         <Swiper
+  modules={[Navigation, Autoplay]}
+  spaceBetween={30}
+  slidesPerView={1} // default - for very small screens
+  autoplay={{ delay: 2500, disableOnInteraction: false }}
+  onInit={(swiper) => {
+    swiper.params.navigation.prevEl = swiperNavPrevRef.current;
+    swiper.params.navigation.nextEl = swiperNavNextRef.current;
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }}
+  breakpoints={{
+    0: { slidesPerView: 1 },       // ✅ Mobile - show one card
+    640: { slidesPerView: 2 },     // Small screens
+    768: { slidesPerView: 3 },     // Tablets
+    1024: { slidesPerView: 4 },    // Laptops
+    1280: { slidesPerView: 5 },    // Desktops
+  }}
+>
+  {data[0]?.children?.map((category, i) => (
+    <SwiperSlide key={i + 1}>
+      <div
+        className="group cursor-pointer bg-white rounded-3xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden"
+        onClick={() =>
+          handleCategoryClick(category._id, showingTranslateValue(category?.name))
+        }
+      >
+        {/* Image */}
+        <div className="relative w-full h-44 md:h-52 overflow-hidden rounded-t-3xl">
+          <Image
+            src={category?.icon || DUMMY_IMAGE}
+            alt="category"
+            fill
+            className="object-cover transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
 
-                  {/* Bottom Card */}
-                  <div className="bg-white -mt-5 mx-3 rounded-b-3xl shadow-sm pb-4 pt-6 text-center">
-                    <FaCapsules className="text-cyan-500 text-xl mx-auto group-hover:text-[#0891B2] transition-colors duration-300 mb-1" />
-                    <h4 className="text-xs md:text-sm font-semibold text-gray-800 group-hover:text-[#0891B2]">
-                      {showingTranslateValue(category?.name)}
-                    </h4>
-                    <p className="text-xs md:text-sm text-gray-500">
-                      Born For Medicine
-                    </p>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+        {/* Bottom Card */}
+        <div className="bg-white -mt-5 mx-3 rounded-b-3xl shadow-sm pb-4 pt-6 text-center">
+          <FaCapsules className="text-cyan-500 text-xl mx-auto group-hover:text-[#0891B2] transition-colors duration-300 mb-1" />
+          <h4 className="text-xs md:text-sm font-semibold text-gray-800 group-hover:text-[#0891B2]">
+            {showingTranslateValue(category?.name)}
+          </h4>
+          <p className="text-xs md:text-sm text-gray-500">
+            Born For Medicine
+          </p>
+        </div>
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
+
         </div>
       )}
     </>
