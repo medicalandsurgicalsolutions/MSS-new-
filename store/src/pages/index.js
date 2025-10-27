@@ -23,8 +23,7 @@ import BrandSlider from "@components/brand/BrandSlider";
 import Brands from "@components/brand/Brands";
 import Image from "next/image";
 import DUMMY_IMAGE from "@components/constants";
-
-import { FaTruckFast, FaSackDollar, FaShieldAlt, FaPercent } from "react-icons/fa6";
+import { FaTruck, FaMoneyBillWave, FaShieldAlt, FaPercent } from "react-icons/fa";
 
 
 const Home = ({
@@ -438,55 +437,58 @@ const Home = ({
           {/* < OurPartner /> */}
           <ClientSection />
 
-            {/* Info Feature Section start */}
-            <div className="bg-white py-10">
-              <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {/* Free Shipping */}
-                <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-                  <div className="text-[#0891B2] text-4xl mr-4">
-                    <i className="fas fa-truck-fast"></i>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900">FREE & FAST SHIPPING</h4>
-                    <p className="text-gray-600 text-sm">Orders All Over $100</p>
-                  </div>
-                </div>
-            
-                {/* Money Back Guarantee */}
-                <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-                  <div className="text-[#0891B2] text-4xl mr-4">
-                    <i className="fas fa-sack-dollar"></i>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900">MONEY BACK GUARANTEE</h4>
-                    <p className="text-gray-600 text-sm">With a 30 Day Minimum</p>
-                  </div>
-                </div>
-            
-                {/* Secure Payment */}
-                <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-                  <div className="text-[#0891B2] text-4xl mr-4">
-                    <i className="fas fa-shield-halved"></i>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900">ALL SECURE PAYMENT</h4>
-                    <p className="text-gray-600 text-sm">Up to 12 months installments</p>
-                  </div>
-                </div>
-            
-                {/* Special Offer */}
-                <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
-                  <div className="text-[#0891B2] text-4xl mr-4">
-                    <i className="fas fa-percent"></i>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900">ALL SECURE PAYMENT</h4>
-                    <p className="text-gray-600 text-sm">Up to 12 months installments</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-             {/* Info Feature Section  end*/}
+           {/* Info Feature Section start */}
+<div className="bg-white py-10">
+  <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+    {/* Free Shipping */}
+    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
+      <div className="text-[#0891B2] text-4xl mr-4">
+        <FaTruck />
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-gray-900">FREE & FAST SHIPPING</h4>
+        <p className="text-gray-600 text-sm">Orders All Over $100</p>
+      </div>
+    </div>
+
+    {/* Money Back Guarantee */}
+    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
+      <div className="text-[#0891B2] text-4xl mr-4">
+        <FaMoneyBillWave />
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-gray-900">MONEY BACK GUARANTEE</h4>
+        <p className="text-gray-600 text-sm">With a 30 Day Minimum</p>
+      </div>
+    </div>
+
+    {/* Secure Payment */}
+    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
+      <div className="text-[#0891B2] text-4xl mr-4">
+        <FaShieldAlt />
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-gray-900">ALL SECURE PAYMENT</h4>
+        <p className="text-gray-600 text-sm">Up to 12 months installments</p>
+      </div>
+    </div>
+
+    {/* Special Offer */}
+    <div className="flex items-center border rounded-lg p-5 shadow-sm hover:shadow-md transition duration-200">
+      <div className="text-[#0891B2] text-4xl mr-4">
+        <FaPercent />
+      </div>
+      <div>
+        <h4 className="text-lg font-semibold text-gray-900">SPECIAL OFFER</h4>
+        <p className="text-gray-600 text-sm">Up to 12 months installments</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+{/* Info Feature Section end */}
+
         </Layout>
       )}
     </>
