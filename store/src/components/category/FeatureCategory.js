@@ -37,12 +37,14 @@ const FeatureCategory = () => {
       ) : (
         <div className="relative w-full">
           {/* Custom Navigation Buttons */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 z-10 flex items-center">
+          <div className="absolute top-[-65px] right-0 z-10 flex items-center">
             <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
               {/* Prev Button */}
               <button
                 ref={swiperNavPrevRef}
-                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300 border-r border-gray-200"
+                className="swiper-button-prev !static flex-1 h-full flex items-center justify-center 
+                text-gray-700 hover:text-[#0891B2] transition-colors duration-300 
+                border-r border-gray-200"
               >
                 <FiChevronLeft className="text-[22px]" />
               </button>
@@ -50,15 +52,23 @@ const FeatureCategory = () => {
               {/* Next Button */}
               <button
                 ref={swiperNavNextRef}
-                className="swiper-button-next !static flex-1 h-full flex items-center justify-center text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
+                className="swiper-button-next !static flex-1 h-full flex items-center justify-center
+                text-gray-700 hover:text-[#0891B2] transition-colors duration-300"
               >
                 <FiChevronRight className="text-[22px]" />
               </button>
             </div>
           </div>
 
-          {/* Hide default Swiper arrows */}
+          {/* Remove Swiper default margin-top & position */}
           <style jsx global>{`
+            .swiper-button-prev,
+            .swiper-button-next {
+              position: static !important;
+              top: auto !important;
+              margin-top: 0 !important;
+              transform: none !important;
+            }
             .swiper-button-prev::after,
             .swiper-button-next::after {
               display: none !important;
