@@ -156,7 +156,7 @@ const Home = ({
                           }
                           className="p-2 hover:bg-gray-100 transition"
                         >
-                         <IoIosArrowBack className="text-[#0891b2] text-lg" />
+                         <IoIosArrowForward className="text-[#0891b2] text-lg" />
                         </button>
                       </div>
                     </div>
