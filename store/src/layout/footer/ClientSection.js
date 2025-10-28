@@ -10,23 +10,24 @@ export default function ClientSection() {
   useEffect(() => {
     async function fetchData() {
       const data = await ClientServices.getAllClients();
-      setClients([...data, ...data]); // Duplicate for smooth looping
+      setClients([...data, ...data]); // Duplicate for smooth loop
     }
     fetchData();
   }, []);
 
   return (
-    <div className="w-full overflow-hidden bg-gray-100 py-6 flex flex-col items-center">
-      <h3 className="text-center text-2xl lg:text-4xl font-bold mb-4">
+    <div className="w-full overflow-hidden bg-gray-100 py-10 flex flex-col items-center">
+      <h3 className="text-center text-2xl lg:text-4xl font-bold mb-8 text-[#0891b2]">
         Our Clients
       </h3>
+
       <div
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setIsPaused(true)}
         onMouseLeave={() => setIsPaused(false)}
       >
         <div
-          className={`slider flex gap-6`}
+          className="slider flex gap-6"
           style={{
             animationPlayState: isPaused ? "paused" : "running",
           }}
@@ -34,18 +35,18 @@ export default function ClientSection() {
           {clients.map((client, index) => (
             <div
               key={index}
-              className="flex-none flex flex-col items-center justify-center w-[150px] lg:w-[200px]"
+              className="flex-none bg-white border border-gray-100 shadow-md rounded-xl flex flex-col items-center justify-center w-[180px] lg:w-[220px] py-8 hover:shadow-lg transition-all duration-300 hover:border-[#0891b2]"
             >
-              <div className="relative h-20 lg:h-28 w-full">
+              <div className="relative h-20 w-20 mb-4">
                 <Image
                   src={client?.icon}
-                  alt={client?.name?.en}
+                  alt={client?.name?.en || 'Client'}
                   fill
-                  className="rounded-md object-contain"
+                  className="object-contain transition-transform duration-300 hover:scale-105"
                 />
               </div>
-              <Link href={client?.website} target="_blank">
-                <p className="mt-2 text-center text-gray-700 text-sm lg:text-lg">
+              <Link href={client?.website || "#"} target="_blank">
+                <p className="text-center font-semibold text-sm lg:text-base text-[#0891b2]">
                   {client?.name?.en}
                 </p>
               </Link>
@@ -57,12 +58,9 @@ export default function ClientSection() {
       <style jsx>{`
         .slider {
           display: flex;
-          animation: scroll 20s linear infinite;
+          align-items: center;
+          animation: scroll 25s linear infinite;
           min-width: max-content;
-        }
-
-        .slider.paused {
-          animation-play-state: paused;
         }
 
         @keyframes scroll {
@@ -76,7 +74,7 @@ export default function ClientSection() {
 
         @media (max-width: 768px) {
           .slider {
-            animation: scroll 12s linear infinite; /* Faster scroll for mobile */
+            animation: scroll 15s linear infinite;
           }
         }
       `}</style>
