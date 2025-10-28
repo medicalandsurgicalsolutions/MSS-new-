@@ -169,7 +169,7 @@ const Navbar = () => {
               </div>
 
               {/* Phone Info Section */}
-              <div className="hidden lg:flex items-center text-white font-medium">
+              <div className="hidden lg:flex items-center text-white font-small">
                 <FiPhoneCall className="mr-2 text-white" />
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.help_text
