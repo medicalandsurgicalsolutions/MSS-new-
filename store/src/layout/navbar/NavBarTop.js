@@ -57,7 +57,24 @@ const NavBarTop = () => {
       <div className="hidden lg:block bg-gray-100">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="text-gray-700 py-2 font-sans text-xs font-medium border-b flex justify-between items-center">
-          
+            {/* 
+               <span className="flex items-center font-bold">
+                  <FiPhoneCall className="mr-2" />
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.navbar?.help_text
+                  )}
+                  <a
+                    href={`tel:${
+                      storeCustomizationSetting?.navbar?.phone ||
+                      "+099949343"
+                    }`}
+                    className="font-bold text-cyan-600 ml-1"
+                  >
+                    {storeCustomizationSetting?.navbar?.phone ||
+                      "+099949343"}
+                  </a>
+                </span>
+             */}
             <div className="lg:text-right flex items-center navBar">
               {storeCustomizationSetting?.navbar?.about_menu_status && (
                 <div>
