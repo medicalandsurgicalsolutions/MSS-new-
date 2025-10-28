@@ -127,44 +127,54 @@ const Home = ({
 
             {/* Brands category */}
                 <div className="bg-white lg:py-10">
-                <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                  {/* Heading + Arrows in one line */}
-                  <div className="mb-2 lg:mb-10 flex items-center justify-between">
-                    <h2 className="text-xl lg:text-3xl">
-                      <CMSkeleton
-                        count={1}
-                        height={30}
-                        loading={loading}
-                        data={{ en: "Brands" }}
-                      />
-                    </h2>
-              
-                    {/* Arrows beside heading */}
-                    <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
-                      <button
-                        onClick={() =>
-                          document.querySelector(".brand-slider-prev")?.click()
-                        }
-                        className="group p-2 hover:bg-gray-100 active:bg-gray-100 transition"
-                      >
-                        <IoIosArrowBack className="text-[#0891b2] group-hover:text-[#b52228] group-active:text-[#b52228] text-lg transition-colors duration-200" />
-                      </button>
-                      <div className="w-px h-5 bg-gray-200" />
-                      <button
-                        onClick={() =>
-                          document.querySelector(".brand-slider-next")?.click()
-                        }
-                        className="group p-2 hover:bg-gray-100 active:bg-gray-100 transition"
-                      >
-                        <IoIosArrowForward className="text-[#0891b2] group-hover:text-[#b52228] group-active:text-[#b52228] text-lg transition-colors duration-200" />
-                      </button>
+                    <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                      {/* Heading + Arrows in one line */}
+                      <div className="mb-2 lg:mb-10 flex items-center justify-between">
+                        <h2 className="text-xl lg:text-3xl">
+                          <CMSkeleton
+                            count={1}
+                            height={30}
+                            loading={loading}
+                            data={{ en: "Brands" }}
+                          />
+                        </h2>
+                  
+                        {/* Arrows beside heading */}
+                        <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
+                          
+                          {/* Prev Button (Red hover) */}
+                          <button
+                            onClick={() =>
+                              document.querySelector(".brand-slider-prev")?.click()
+                            }
+                            className="group p-2 bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
+                            transition-all duration-300"
+                          >
+                            <IoIosArrowBack className="text-lg" />
+                          </button>
+                  
+                          <div className="w-px h-5 bg-gray-200" />
+                  
+                          {/* Next Button (Blue hover) */}
+                          <button
+                            onClick={() =>
+                              document.querySelector(".brand-slider-next")?.click()
+                            }
+                            className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
+                            transition-all duration-300"
+                          >
+                            <IoIosArrowForward className="text-lg" />
+                          </button>
+                  
+                        </div>
+                      </div>
+                  
+                      {/* Slider */}
+                      <BrandSlider />
                     </div>
                   </div>
-              
-                  {/* Slider */}
-                  <BrandSlider />
-                </div>
-              </div>
+
+            {/* Brands category end */}
 
 
             {/* <div className="bg-gray-100 lg:py-10 py-10">
