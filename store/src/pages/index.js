@@ -274,55 +274,88 @@ const Home = ({
               </div>
             </div>
 
-            <div className="bg-gray-100 py-8 px-2 sm:px-8 md:px-12 lg:px-10">
-              <div className="flex justify-between">
-                <div className="text-left mb-4 text-2xl lg:text-3xl">
-                  New Arrivals
-                </div>
-                <div
-                  className="text-right cursor-pointer mb-4 text-2xl lg:text-3xl relative"
-                  onClick={viewNewArr}
-                >
-                  <div className="text-right text-xl lg:text-xl rounded-sm relative bg-cyan-600 flex items-center justify-center text-white h-8 w-10 mx-auto">
-                    →
+            {/* new arrivals */}
+              <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
+                {/* Header Row */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="text-left text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
+                    New Arrivals
+                  </div>
+                  <div
+                    className="cursor-pointer"
+                    onClick={viewNewArr}
+                  >
+                    <div className="text-xl lg:text-xl rounded-sm bg-cyan-600 flex items-center justify-center text-white h-8 w-10 hover:bg-cyan-700 transition-colors duration-200">
+                      →
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-6 gap-2 lg:gap-4">
-                {allProduct
-                  ?.sort(
-                    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-                  )
-                  .slice(0, 12)
-                  .map((category, index) => (
-                    <div
-                      onClick={() => handleMoreInfo(category?.slug)}
-                      key={index}
-                      className="relative bg-white cursor-pointer rounded-lg h-40 lg:h-60 shadow-md overflow-hidden group"
-                    >
-                      <div className="relative w-full h-full">
-                        <Image
-                          src={category?.image[0] || DUMMY_IMAGE}
-                          alt={category?.title?.en}
-                          fill // ✅ Replaces layout="fill"
-                          className="object-cover" // ✅ Tailwind class replaces objectFit="cover"
-                        />
+              
+                {/* Product Grid */}
+                <div
+                  className="
+                    container mx-auto 
+                    grid 
+                    grid-cols-2 
+                    sm:grid-cols-3 
+                    md:grid-cols-4 
+                    lg:grid-cols-5   /* ✅ 5 columns on desktop */
+                    xl:grid-cols-5   /* ✅ 5 columns on large screens */
+                    2xl:grid-cols-5  /* ✅ stays 5 even on ultra-wide */
+                    gap-2 sm:gap-3 md:gap-4 lg:gap-5
+                  "
+                >
+                  {allProduct
+                    ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                    .slice(0, 12)
+                    .map((category, index) => (
+                      <div
+                        onClick={() => handleMoreInfo(category?.slug)}
+                        key={index}
+                        className="
+                          relative 
+                          bg-white/90 
+                          hover:bg-white 
+                          cursor-pointer 
+                          rounded-xl 
+                          shadow-sm 
+                          hover:shadow-md 
+                          overflow-hidden 
+                          group 
+                          transform 
+                          transition-all 
+                          duration-200 
+                          hover:scale-[1.02] 
+                          lg:hover:scale-[1.03]
+                          h-40 sm:h-48 md:h-52 lg:h-60
+                        "
+                      >
+                        {/* Product Image */}
+                        <div className="relative w-full h-full">
+                          <Image
+                            src={category?.image?.[0] || DUMMY_IMAGE}
+                            alt={category?.title?.en}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+              
+                        {/* Gradient Overlay */}
+                        <div className="absolute top-0 left-0 w-full h-full"></div>
+              
+                        {/* Title Overlay */}
+                        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-3 lg:p-4 text-white">
+                          <h6 className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-semibold leading-tight">
+                            {`${category.title.en.slice(0, 56)}...`}
+                          </h6>
+                        </div>
                       </div>
-
-                      <div className="absolute top-0 left-0 w-full h-full"></div>
-                      <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black to-transparent p-2 lg:p-4 text-white">
-                        <h6 className="text-[10px] lg:text-[14px] font-bold">{`${category.title.en.slice(
-                          0,
-                          56
-                        )}...`}</h6>
-                        {/* <p className="text-sm">{category.subtitle}</p> */}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                </div>
               </div>
-            </div>
 
-            {/* popular products */}
+            {/* new arrivals end  */}
+        
              {/* popular products */}
 {storeCustomizationSetting?.home?.popular_products_status && (
   <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
