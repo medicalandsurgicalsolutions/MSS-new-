@@ -296,7 +296,7 @@ const Home = ({
                           <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
                   
                             {/* Next Button (Blue hover) */}
-                            <button
+                           <button
                               onClick={viewNewArr}
                               className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
                               transition-all duration-300"
