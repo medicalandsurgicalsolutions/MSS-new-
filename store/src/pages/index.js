@@ -251,7 +251,7 @@ const Home = ({
             </div>
 
                     {/* new arrivals */}
-                     <div className="bg-white-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
+                     <div className="bg-white py-8 px-3 sm:px-8 md:px-12 lg:px-10">
                           {/* Header Row */}
                           <div className="flex justify-between items-center mb-6">
                             {/* Heading */}
@@ -427,7 +427,7 @@ const Home = ({
               DisProduct?.length > 0 && (
                 <div
                   id="discount"
-                  className="bg-white-50 lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
+                  className="bg-white lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
                 >
                   <div className="mb-10 flex justify-center">
                     <div className="text-center w-full lg:w-2/5">
