@@ -372,7 +372,7 @@ const Home = ({
                     <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
                       {/* Section Heading */}
                       <div className="mb-8 text-left w-full">
-                        h2 className="text-xl lg:text-3xl font-semibold text-gray-800"
+                        <h2 className="text-xl lg:text-3xl font-semibold text-gray-800">
                           <CMSkeleton
                             count={1}
                             height={30}
