@@ -147,7 +147,7 @@ const Home = ({
                               document.querySelector(".brand-slider-prev")?.click()
                             }
                             className="group flex-1 h-full flex items-center justify-center 
-                            bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22]  
+                            bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22]
                             transition-all duration-300 border-r border-gray-200"
                           >
                             <IoIosArrowBack className="text-[22px]" />
@@ -159,7 +159,7 @@ const Home = ({
                               document.querySelector(".brand-slider-next")?.click()
                             }
                             className="group flex-1 h-full flex items-center justify-center 
-                            bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#9d1d22] 
+                            bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
                             transition-all duration-300"
                           >
                             <IoIosArrowForward className="text-[22px]" />
