@@ -38,7 +38,7 @@ export default function ClientSection() {
               className="flex-none bg-white border border-gray-100 shadow-md rounded-xl flex flex-col items-center justify-center w-[180px] lg:w-[220px] py-8 hover:shadow-lg transition-all duration-300 hover:border-[#0891b2]"
             >
               {/* Image slightly larger */}
-              <div className="relative h-26 w-26 mb-3">
+              <div className="relative h-24 w-24 mb-3">
                 <Image
                   src={client?.icon}
                   alt={client?.name?.en || 'Client'}
