@@ -37,28 +37,31 @@ const FeatureCategory = () => {
       ) : (
         <div className="relative w-full">
           {/* Custom Navigation Buttons */}
-          <div className="absolute top-[-65px] right-0 z-10 flex items-center">
-            <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
-              {/* Prev Button */}
-            <button
-                ref={swiperNavPrevRef}
-                className="group swiper-button-prev !static flex-1 h-full flex items-center justify-center 
-                text-gray-700 hover:text-[#0891B2] active:text-[#b52228] transition-colors duration-300 
-                border-r border-gray-200"
-              >
-                <FiChevronLeft className="text-[22px]" />
-              </button>
+         <div className="absolute top-[-65px] right-0 z-10 flex items-center">
+  <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
+    
+    {/* Prev Button (Red hover) */}
+    <button
+      ref={swiperNavPrevRef}
+      className="group swiper-button-prev !static flex-1 h-full flex items-center justify-center 
+      bg-white text-white hover:bg-[#b52228] active:bg-[#9d1d22] transition-all duration-300 
+      border-r border-gray-200"
+    >
+      <FiChevronLeft className="text-[22px]" />
+    </button>
 
-              {/* Next Button */}
-             <button
-                ref={swiperNavNextRef}
-                className="group swiper-button-next !static flex-1 h-full flex items-center justify-center
-                text-gray-700 hover:text-[#0891B2] active:text-[#b52228] transition-colors duration-300"
-              >
-                <FiChevronRight className="text-[22px]" />
-              </button>
-            </div>
-          </div>
+    {/* Next Button (Blue hover) */}
+    <button
+      ref={swiperNavNextRef}
+      className="group swiper-button-next !static flex-1 h-full flex items-center justify-center 
+      bg-white text-white hover:bg-[#0891B2] active:bg-[#067c99] transition-all duration-300"
+    >
+      <FiChevronRight className="text-[22px]" />
+    </button>
+
+  </div>
+</div>
+
 
           {/* Remove Swiper default margin-top & position */}
           <style jsx global>{`
