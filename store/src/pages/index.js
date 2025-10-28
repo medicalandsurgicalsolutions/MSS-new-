@@ -258,15 +258,14 @@ const Home = ({
                             <div className="text-left text-xl lg:text-3xl text-gray-800">
                               New Arrivals
                             </div>
-                        
-                           <button onClick={viewNewArr}}
-                            className="group flex-1 h-full flex items-center justify-center 
-                              bg-white text-[#0891B2] hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22]
-                              transition-all duration-300 border-r border-gray-200"
-                          >
-                            <IoIosArrowBack className="text-[22px]" />
-                          </button>
 
+                           <button onClick={handlePrevArr}  className="group flex-1 h-full flex items-center justify-center 
+                                  bg-white text-[#0891B2] hover:bg-[#067c99] hover:text-white active:bg-[#056b86] 
+                                    transition-all duration-300 border-r border-gray-200"
+                                   >
+                               <IoIosArrowBack className="text-[22px]" />
+                      </button>
+                          
                             {/* Next Button (Blue hover) */}
                               <button
                                 onClick={viewNewArr}
