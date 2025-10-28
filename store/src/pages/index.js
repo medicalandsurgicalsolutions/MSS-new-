@@ -259,9 +259,15 @@ const Home = ({
                               New Arrivals
                             </div>
                         
-                            {/* Arrow Buttons (same size and margin as Brands section) */}
-                            <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200 w-[95px] h-[48px] mr-1 sm:mr-3 lg:mr-5 justify-center">
-                              {/* Next Button (Blue hover) */}
+                           <button onClick={viewNewArr}}
+                            className="group flex-1 h-full flex items-center justify-center 
+                              bg-white text-[#0891B2] hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22]
+                              transition-all duration-300 border-r border-gray-200"
+                          >
+                            <IoIosArrowBack className="text-[22px]" />
+                          </button>
+
+                            {/* Next Button (Blue hover) */}
                               <button
                                 onClick={viewNewArr}
                                 className="group flex-1 h-full flex items-center justify-center 
