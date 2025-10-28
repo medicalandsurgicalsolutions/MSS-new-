@@ -127,22 +127,20 @@ const Home = ({
 
             {/* Brands category */}
                 <div className="bg-white lg:py-10">
-                  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                    {/* Heading + Arrows in one line */}
-                    <div className="mb-2 lg:mb-10 flex items-center justify-between">
-                      <h2 className="text-xl lg:text-3xl font-semibold text-gray-800">
-                        <CMSkeleton
-                          count={1}
-                          height={30}
-                          loading={loading}
-                          data={{ en: "Brands" }}
-                        />
-                      </h2>
-                
-                      {/* Arrows beside heading (same size/style as above) */}
-                      <div className="absolute right-0 z-10 flex items-center">
-                        <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
-                
+                    <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                      {/* Heading + Arrows in one line */}
+                      <div className="mb-2 lg:mb-10 flex items-center justify-between">
+                        <h2 className="text-xl lg:text-3xl text-gray-800">
+                          <CMSkeleton
+                            count={1}
+                            height={30}
+                            loading={loading}
+                            data={{ en: "Brands" }}
+                          />
+                        </h2>
+                  
+                        {/* Arrows beside heading — aligned & spaced properly */}
+                        <div className="flex items-center bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] mr-1 sm:mr-3 lg:mr-5">
                           {/* Prev Button (Red hover) */}
                           <button
                             onClick={() =>
@@ -154,7 +152,7 @@ const Home = ({
                           >
                             <IoIosArrowBack className="text-[22px]" />
                           </button>
-                
+                  
                           {/* Next Button (Blue hover) */}
                           <button
                             onClick={() =>
@@ -168,13 +166,11 @@ const Home = ({
                           </button>
                         </div>
                       </div>
+                  
+                      {/* Slider */}
+                      <BrandSlider />
                     </div>
-                
-                    {/* Slider */}
-                    <BrandSlider />
                   </div>
-                </div>
-
 
             {/* Brands category end */}
 
