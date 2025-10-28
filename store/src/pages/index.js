@@ -275,161 +275,155 @@ const Home = ({
             </div>
 
             {/* new arrivals */}
-              <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
-                {/* Header Row */}
-                <div className="flex justify-between items-center mb-6">
-                  <div className="text-left text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
-                    New Arrivals
-                  </div>
-                  <div
-                    className="cursor-pointer"
-                    onClick={viewNewArr}
-                  >
-                    <div className="text-xl lg:text-xl rounded-sm bg-cyan-600 flex items-center justify-center text-white h-8 w-10 hover:bg-cyan-700 transition-colors duration-200">
-                      →
-                    </div>
-                  </div>
-                </div>
-              
-                {/* Product Grid */}
-                <div
-                  className="
-                    container mx-auto 
-                    grid 
-                    grid-cols-2 
-                    sm:grid-cols-3 
-                    md:grid-cols-4 
-                    lg:grid-cols-5   /* ✅ 5 columns on desktop */
-                    xl:grid-cols-5   /* ✅ 5 columns on large screens */
-                    2xl:grid-cols-5  /* ✅ stays 5 even on ultra-wide */
-                    gap-2 sm:gap-3 md:gap-4 lg:gap-5
-                  "
-                >
-                  {allProduct
-                    ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                    .slice(0, 12)
-                    .map((category, index) => (
-                      <div
-                        onClick={() => handleMoreInfo(category?.slug)}
-                        key={index}
-                        className="
-                          relative 
-                          bg-white/90 
-                          hover:bg-white 
-                          cursor-pointer 
-                          rounded-xl 
-                          shadow-sm 
-                          hover:shadow-md 
-                          overflow-hidden 
-                          group 
-                          transform 
-                          transition-all 
-                          duration-200 
-                          hover:scale-[1.02] 
-                          lg:hover:scale-[1.03]
-                          h-40 sm:h-48 md:h-52 lg:h-60
-                        "
-                      >
-                        {/* Product Image */}
-                        <div className="relative w-full h-full">
-                          <Image
-                            src={category?.image?.[0] || DUMMY_IMAGE}
-                            alt={category?.title?.en}
-                            fill
-                            className="object-cover"
-                          />
+                <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
+                      {/* Header Row */}
+                      <div className="flex justify-between items-center mb-6">
+                        <div className="text-left text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
+                          New Arrivals
                         </div>
-              
-                        {/* Gradient Overlay */}
-                        <div className="absolute top-0 left-0 w-full h-full"></div>
-              
-                        {/* Title Overlay */}
-                        <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-3 lg:p-4 text-white">
-                          <h6 className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-semibold leading-tight">
-                            {`${category.title.en.slice(0, 56)}...`}
-                          </h6>
+                        <div onClick={viewNewArr} className="cursor-pointer">
+                          <div className="text-xl rounded-sm bg-cyan-600 flex items-center justify-center text-white h-8 w-10 hover:bg-cyan-700 transition-colors duration-200">
+                            →
+                          </div>
                         </div>
                       </div>
-                    ))}
-                </div>
-              </div>
+                    
+                      {/* Product Grid */}
+                      <div
+                        className="
+                          container mx-auto 
+                          grid 
+                          grid-cols-2 
+                          sm:grid-cols-3 
+                          md:grid-cols-4 
+                          custom-lg:grid-cols-4 
+                          custom-xl:grid-cols-5 
+                          gap-2 sm:gap-3 md:gap-4 lg:gap-5
+                        "
+                      >
+                        {allProduct
+                          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                          .slice(0, 12)
+                          .map((category, index) => (
+                            <div
+                              onClick={() => handleMoreInfo(category?.slug)}
+                              key={index}
+                              className="
+                                relative 
+                                bg-white/90 
+                                hover:bg-white 
+                                cursor-pointer 
+                                rounded-xl 
+                                shadow-sm 
+                                hover:shadow-md 
+                                overflow-hidden 
+                                group 
+                                transform 
+                                transition-all 
+                                duration-200 
+                                hover:scale-[1.02] 
+                                lg:hover:scale-[1.03]
+                                h-40 sm:h-48 md:h-52 lg:h-60
+                              "
+                            >
+                              {/* Product Image */}
+                              <div className="relative w-full h-full">
+                                <Image
+                                  src={category?.image?.[0] || DUMMY_IMAGE}
+                                  alt={category?.title?.en}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                    
+                              {/* Title Overlay */}
+                              <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-3 lg:p-4 text-white">
+                                <h6 className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-semibold leading-tight">
+                                  {`${category.title.en.slice(0, 56)}...`}
+                                </h6>
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+
 
             {/* new arrivals end  */}
         
              {/* popular products */}
-{storeCustomizationSetting?.home?.popular_products_status && (
-  <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
-    {/* Section Heading */}
-    <div className="mb-8 text-left w-full">
-      <h2 className="text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
-        <CMSkeleton
-          count={1}
-          height={30}
-          loading={loading}
-          data={storeCustomizationSetting?.home?.popular_title}
-        />
-      </h2>
-    </div>
-
-    {/* Product Grid */}
-    <div className="w-full">
-      {loading ? (
-        <CMSkeleton count={20} height={20} error={error} loading={loading} />
-      ) : (
-        <div
-          className="
-            grid 
-            grid-cols-2 
-            sm:grid-cols-3 
-            md:grid-cols-4 
-            lg:grid-cols-5   /* ✅ 5 columns on desktop */
-            xl:grid-cols-5   /* ✅ 5 columns on large desktop */
-            2xl:grid-cols-5  /* ✅ 5 columns even on ultra-wide */
-            gap-3 sm:gap-4 lg:gap-5
-          "
-        >
-          {showProduct
-            ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
-            .map((product) => (
-              <div
-                key={product._id}
-                className="
-                  transform transition-transform duration-200
-                  hover:scale-[1.02]
-                  lg:hover:scale-[1.03]
-                  group
-                "
-              >
-                <div
-                  className="
-                    bg-white/90 
-                    group-hover:bg-white 
-                    rounded-xl 
-                    shadow-sm 
-                    hover:shadow-md 
-                    transition-all 
-                    duration-200 
-                    p-2 sm:p-3 lg:p-4
-                  "
-                >
-                  <ProductCard
-                    product={product}
-                    attributes={attributes}
-                    className="
-                      text-sm 
-                      sm:text-base 
-                      lg:text-[0.9rem] 
-                      xl:text-[1rem]
-                    "
-                  />
-                </div>
-              </div>
-            ))}
-        </div>
-      )}
-    </div>
-  </div>
-)}
+                  {storeCustomizationSetting?.home?.popular_products_status && (
+                    <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
+                      {/* Section Heading */}
+                      <div className="mb-8 text-left w-full">
+                        <h2 className="text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
+                          <CMSkeleton
+                            count={1}
+                            height={30}
+                            loading={loading}
+                            data={storeCustomizationSetting?.home?.popular_title}
+                          />
+                        </h2>
+                      </div>
+                  
+                      {/* Product Grid */}
+                      <div className="w-full">
+                        {loading ? (
+                          <CMSkeleton count={20} height={20} error={error} loading={loading} />
+                        ) : (
+                          <div
+                            className="
+                              grid 
+                              grid-cols-2 
+                              sm:grid-cols-3 
+                              md:grid-cols-4 
+                              custom-lg:grid-cols-4   /* ✅ 4 columns from 1000–1399px */
+                              custom-xl:grid-cols-5   /* ✅ 5 columns from 1400px+ */
+                              gap-3 sm:gap-4 lg:gap-5
+                            "
+                          >
+                            {showProduct
+                              ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
+                              .map((product) => (
+                                <div
+                                  key={product._id}
+                                  className="
+                                    transform transition-transform duration-200
+                                    hover:scale-[1.02]
+                                    lg:hover:scale-[1.03]
+                                    group
+                                  "
+                                >
+                                  <div
+                                    className="
+                                      bg-white/90 
+                                      group-hover:bg-white 
+                                      rounded-xl 
+                                      shadow-sm 
+                                      hover:shadow-md 
+                                      transition-all 
+                                      duration-200 
+                                      p-2 sm:p-3 lg:p-4
+                                    "
+                                  >
+                                    <ProductCard
+                                      product={product}
+                                      attributes={attributes}
+                                      className="
+                                        text-sm 
+                                        sm:text-base 
+                                        lg:text-[0.9rem] 
+                                        xl:text-[1rem]
+                                      "
+                                    />
+                                  </div>
+                                </div>
+                              ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                {/* new arrival secion end */}
 
 
             {/* promotional banner card */}
