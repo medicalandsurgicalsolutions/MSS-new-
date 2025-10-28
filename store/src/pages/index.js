@@ -127,52 +127,54 @@ const Home = ({
 
             {/* Brands category */}
                 <div className="bg-white lg:py-10">
-                    <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                      {/* Heading + Arrows in one line */}
-                      <div className="mb-2 lg:mb-10 flex items-center justify-between">
-                        <h2 className="text-xl lg:text-3xl">
-                          <CMSkeleton
-                            count={1}
-                            height={30}
-                            loading={loading}
-                            data={{ en: "Brands" }}
-                          />
-                        </h2>
-                  
-                        {/* Arrows beside heading */}
-                        <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
-                          
+                  <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+                    {/* Heading + Arrows in one line */}
+                    <div className="mb-2 lg:mb-10 flex items-center justify-between">
+                      <h2 className="text-xl lg:text-3xl font-semibold text-gray-800">
+                        <CMSkeleton
+                          count={1}
+                          height={30}
+                          loading={loading}
+                          data={{ en: "Brands" }}
+                        />
+                      </h2>
+                
+                      {/* Arrows beside heading (same size/style as above) */}
+                      <div className="absolute right-0 z-10 flex items-center">
+                        <div className="flex bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] items-center justify-center">
+                
                           {/* Prev Button (Red hover) */}
                           <button
                             onClick={() =>
                               document.querySelector(".brand-slider-prev")?.click()
                             }
-                            className="group p-2 bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
-                            transition-all duration-300"
+                            className="group flex-1 h-full flex items-center justify-center 
+                            bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
+                            transition-all duration-300 border-r border-gray-200"
                           >
-                            <IoIosArrowBack className="text-lg" />
+                            <IoIosArrowBack className="text-[22px]" />
                           </button>
-                  
-                          <div className="w-px h-5 bg-gray-200" />
-                  
+                
                           {/* Next Button (Blue hover) */}
                           <button
                             onClick={() =>
                               document.querySelector(".brand-slider-next")?.click()
                             }
-                            className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
+                            className="group flex-1 h-full flex items-center justify-center 
+                            bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
                             transition-all duration-300"
                           >
-                            <IoIosArrowForward className="text-lg" />
+                            <IoIosArrowForward className="text-[22px]" />
                           </button>
-                  
                         </div>
                       </div>
-                  
-                      {/* Slider */}
-                      <BrandSlider />
                     </div>
+                
+                    {/* Slider */}
+                    <BrandSlider />
                   </div>
+                </div>
+
 
             {/* Brands category end */}
 
