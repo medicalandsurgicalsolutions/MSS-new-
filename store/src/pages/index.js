@@ -274,13 +274,13 @@ const Home = ({
               </div>
             </div>
 
-            {/* new arrivals */}
+              {/* new arrivals */}
                 <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
                       {/* Header Row */}
                       <div className="flex justify-between items-center mb-6">
-                        <div className="text-left text-xl sm:text-2xl lg:text-[1.75rem] xl:text-3xl font-semibold text-gray-800">
-                          New Arrivals
-                        </div>
+                          <div className="text-left text-xl lg:text-3xl text-gray-800">
+                            New Arrivals
+                          </div>
                         <div onClick={viewNewArr} className="cursor-pointer">
                           <div className="text-xl rounded-sm bg-cyan-600 flex items-center justify-center text-white h-8 w-10 hover:bg-cyan-700 transition-colors duration-200">
                             →
