@@ -286,76 +286,94 @@ const Home = ({
 
               {/* new arrivals */}
                 <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
-                      {/* Header Row */}
-                      <div className="flex justify-between items-center mb-6">
-                          <div className="text-left text-xl lg:text-3xl text-gray-800">
+                        {/* Header Row */}
+                        <div className="flex justify-between items-center mb-6">
+                          <div className="text-left text-xl lg:text-3xl text-gray-800 font-semibold">
                             New Arrivals
                           </div>
-                        <div onClick={viewNewArr} className="cursor-pointer">
-                          <div className="text-xl rounded-sm bg-cyan-600 flex items-center justify-center text-white h-8 w-10 hover:bg-cyan-700 transition-colors duration-200">
-                            →
+                      
+                          {/* Arrow Buttons */}
+                          <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
+                            
+                            {/* Prev Button (Red hover) */}
+                            <button
+                              onClick={() => console.log("Prev clicked")} // Replace if needed
+                              className="group p-2 bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
+                              transition-all duration-300 border-r border-gray-200"
+                            >
+                              <IoIosArrowBack className="text-lg" />
+                            </button>
+                      
+                            {/* Next Button (Blue hover) */}
+                            <button
+                              onClick={viewNewArr}
+                              className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
+                              transition-all duration-300"
+                            >
+                              <IoIosArrowForward className="text-lg" />
+                            </button>
                           </div>
                         </div>
-                      </div>
-                    
-                      {/* Product Grid */}
-                      <div
-                        className="
-                          container mx-auto 
-                          grid 
-                          grid-cols-2 
-                          sm:grid-cols-3 
-                          md:grid-cols-4 
-                          custom-lg:grid-cols-4 
-                          custom-xl:grid-cols-5 
-                          gap-2 sm:gap-3 md:gap-4 lg:gap-5
-                        "
-                      >
-                        {allProduct
-                          ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-                          .slice(0, 12)
-                          .map((category, index) => (
-                            <div
-                              onClick={() => handleMoreInfo(category?.slug)}
-                              key={index}
-                              className="
-                                relative 
-                                bg-white/90 
-                                hover:bg-white 
-                                cursor-pointer 
-                                rounded-xl 
-                                shadow-sm 
-                                hover:shadow-md 
-                                overflow-hidden 
-                                group 
-                                transform 
-                                transition-all 
-                                duration-200 
-                                hover:scale-[1.02] 
-                                lg:hover:scale-[1.03]
-                                h-40 sm:h-48 md:h-52 lg:h-60
-                              "
-                            >
-                              {/* Product Image */}
-                              <div className="relative w-full h-full">
-                                <Image
-                                  src={category?.image?.[0] || DUMMY_IMAGE}
-                                  alt={category?.title?.en}
-                                  fill
-                                  className="object-cover"
-                                />
+                      
+                        {/* Product Grid */}
+                        <div
+                          className="
+                            container mx-auto 
+                            grid 
+                            grid-cols-2 
+                            sm:grid-cols-3 
+                            md:grid-cols-4 
+                            custom-lg:grid-cols-4 
+                            custom-xl:grid-cols-5 
+                            gap-2 sm:gap-3 md:gap-4 lg:gap-5
+                          "
+                        >
+                          {allProduct
+                            ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                            .slice(0, 12)
+                            .map((category, index) => (
+                              <div
+                                onClick={() => handleMoreInfo(category?.slug)}
+                                key={index}
+                                className="
+                                  relative 
+                                  bg-white/90 
+                                  hover:bg-white 
+                                  cursor-pointer 
+                                  rounded-xl 
+                                  shadow-sm 
+                                  hover:shadow-md 
+                                  overflow-hidden 
+                                  group 
+                                  transform 
+                                  transition-all 
+                                  duration-200 
+                                  hover:scale-[1.02] 
+                                  lg:hover:scale-[1.03]
+                                  h-40 sm:h-48 md:h-52 lg:h-60
+                                "
+                              >
+                                {/* Product Image */}
+                                <div className="relative w-full h-full">
+                                  <Image
+                                    src={category?.image?.[0] || DUMMY_IMAGE}
+                                    alt={category?.title?.en}
+                                    fill
+                                    className="object-cover"
+                                  />
+                                </div>
+                      
+                                {/* Title Overlay */}
+                                <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-3 lg:p-4 text-white">
+                                  <h6 className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-semibold leading-tight">
+                                    {`${category.title.en.slice(0, 56)}...`}
+                                  </h6>
+                                </div>
                               </div>
-                    
-                              {/* Title Overlay */}
-                              <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-2 sm:p-3 lg:p-4 text-white">
-                                <h6 className="text-[10px] sm:text-[12px] md:text-[13px] lg:text-[14px] font-semibold leading-tight">
-                                  {`${category.title.en.slice(0, 56)}...`}
-                                </h6>
-                              </div>
-                            </div>
-                          ))}
+                            ))}
+                        </div>
                       </div>
-                    </div>
+
 
 
             {/* new arrivals end  */}
