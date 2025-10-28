@@ -260,25 +260,13 @@ const Home = ({
                     </div>
                 
                     {/* Arrow Buttons (same size and gap as Brands section) */}
-                    <div className="flex items-center bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] mr-1 sm:mr-3 lg:mr-5">
-                      {/* Prev Button (Red hover) */}
-                      <button
-                        onClick={viewPrevArr} // optional if you have a previous function
-                        className="group flex-1 h-full flex items-center justify-center 
-                        bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
-                        transition-all duration-300 border-r border-gray-200"
-                      >
-                        <IoIosArrowBack className="text-[22px]" />
-                      </button>
-                
+                    <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
                       {/* Next Button (Blue hover) */}
                       <button
                         onClick={viewNewArr}
-                        className="group flex-1 h-full flex items-center justify-center 
-                        bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
-                        transition-all duration-300"
+                      className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] transition-all duration-300"
                       >
-                        <IoIosArrowForward className="text-[22px]" />
+                      <IoIosArrowForward className="text-lg" />
                       </button>
                     </div>
                   </div>
