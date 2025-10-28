@@ -323,7 +323,7 @@ const Home = ({
             </div>
 
             {/* popular products */}
-           {/* popular products */}
+             {/* popular products */}
 {storeCustomizationSetting?.home?.popular_products_status && (
   <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
     {/* Section Heading */}
@@ -336,15 +336,6 @@ const Home = ({
           data={storeCustomizationSetting?.home?.popular_title}
         />
       </h2>
-      {/* Optional description */}
-      {/* <p className="text-sm sm:text-base text-gray-600 leading-6 mt-1">
-        <CMSkeleton
-          count={5}
-          height={10}
-          loading={loading}
-          data={storeCustomizationSetting?.home?.popular_description}
-        />
-      </p> */}
     </div>
 
     {/* Product Grid */}
@@ -358,9 +349,9 @@ const Home = ({
             grid-cols-2 
             sm:grid-cols-3 
             md:grid-cols-4 
-            lg:grid-cols-4 
-            xl:grid-cols-5 
-            2xl:grid-cols-6 
+            lg:grid-cols-5   /* ✅ 5 columns on desktop */
+            xl:grid-cols-5   /* ✅ 5 columns on large desktop */
+            2xl:grid-cols-5  /* ✅ 5 columns even on ultra-wide */
             gap-3 sm:gap-4 lg:gap-5
           "
         >
@@ -387,9 +378,6 @@ const Home = ({
                     duration-200 
                     p-2 sm:p-3 lg:p-4
                   "
-                  style={{
-                    minHeight: "100%",
-                  }}
                 >
                   <ProductCard
                     product={product}
