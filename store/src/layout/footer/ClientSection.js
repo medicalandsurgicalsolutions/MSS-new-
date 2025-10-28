@@ -16,7 +16,7 @@ export default function ClientSection() {
   }, []);
 
   return (
-    <div className="w-full overflow-hidden bg-gray-100 py-10 flex flex-col items-center">
+    <div className="w-full overflow-hidden bg-grey-100 py-10 flex flex-col items-center">
       <h3 className="text-center text-2xl lg:text-4xl font-bold mb-8 text-[#0891b2]">
         Our Clients
       </h3>
@@ -35,9 +35,10 @@ export default function ClientSection() {
           {clients.map((client, index) => (
             <div
               key={index}
-              className="flex-none bg-white border border-gray-100 shadow-md rounded-xl flex flex-col items-center justify-center w-[180px] lg:w-[220px] py-8 hover:shadow-lg transition-all duration-300 hover:border-[#0891b2]"
+              className="flex-none bg-[#f8fafc] border border-gray-100 shadow-md rounded-xl flex flex-col items-center justify-center w-[180px] lg:w-[220px] py-8 hover:shadow-lg transition-all duration-300 hover:border-[#0891b2]"
             >
-              <div className="relative h-20 w-20 mb-4">
+              {/* Image slightly larger */}
+              <div className="relative h-24 w-24 mb-3">
                 <Image
                   src={client?.icon}
                   alt={client?.name?.en || 'Client'}
@@ -45,8 +46,10 @@ export default function ClientSection() {
                   className="object-contain transition-transform duration-300 hover:scale-105"
                 />
               </div>
+
+              {/* Text slightly smaller */}
               <Link href={client?.website || "#"} target="_blank">
-                <p className="text-center font-semibold text-sm lg:text-base text-[#0891b2]">
+                <p className="text-center font-medium text-xs lg:text-sm text-[#0891b2]">
                   {client?.name?.en}
                 </p>
               </Link>
