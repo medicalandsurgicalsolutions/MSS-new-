@@ -63,7 +63,7 @@ const NavBarTop = () => {
                 <div>
                   <Link
                     href="/about-us"
-                    className="font-medium hover:text-cyan-600"
+                    className="font-bold hover:text-cyan-600"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.navbar?.about_us
@@ -76,7 +76,7 @@ const NavBarTop = () => {
                 <div>
                   <Link
                     href="/contact-us"
-                    className="font-medium hover:text-cyan-600"
+                    className="font-bold hover:text-cyan-600"
                   >
                     {showingTranslateValue(
                       storeCustomizationSetting?.navbar?.contact_us
@@ -87,7 +87,7 @@ const NavBarTop = () => {
               )}
               <Link
                 href="/user/my-account"
-                className="font-medium hover:text-cyan-600"
+                className="font-bold hover:text-cyan-600"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.my_account
@@ -109,7 +109,7 @@ const NavBarTop = () => {
               ) : (
                 <Link
                   href="/auth/login"
-                  className="flex items-center font-medium hover:text-cyan-600"
+                  className="flex items-center font-bold hover:text-cyan-600"
                 >
                   <span className="mr-1">
                     <FiUser />
