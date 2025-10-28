@@ -51,6 +51,11 @@ module.exports = {
           '100%': { transform: 'translateX(-100%)' }, // Move by full width of both card sets
         },
       },
+       
+      screens: {
+        "custom-lg": "1000px", // 4 columns from 1000–1399px
+        "custom-xl": "1400px", // 5 columns from 1400px and above
+      },
     },
   },
   plugins: [
