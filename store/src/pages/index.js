@@ -288,7 +288,7 @@ const Home = ({
                 <div className="bg-gray-100 py-8 px-3 sm:px-8 md:px-12 lg:px-10">
                         {/* Header Row */}
                         <div className="flex justify-between items-center mb-6">
-                          <div className="text-left text-xl lg:text-3xl text-gray-800 font-semibold">
+                          <div className="text-left text-xl lg:text-3xl text-gray-800">
                             New Arrivals
                           </div>
                       
