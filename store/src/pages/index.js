@@ -294,16 +294,7 @@ const Home = ({
                       
                           {/* Arrow Buttons */}
                           <div className="flex items-center bg-white shadow-md rounded-full overflow-hidden border border-gray-200">
-                            
-                            {/* Prev Button (Red hover) */}
-                            <button
-                              onClick={() => console.log("Prev clicked")} // Replace if needed
-                              className="group p-2 bg-white text-gray-700 hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22] 
-                              transition-all duration-300 border-r border-gray-200"
-                            >
-                              <IoIosArrowBack className="text-lg" />
-                            </button>
-                      
+                  
                             {/* Next Button (Blue hover) */}
                             <button
                               onClick={viewNewArr}
