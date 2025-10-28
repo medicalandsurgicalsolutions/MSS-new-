@@ -24,7 +24,7 @@ import Brands from "@components/brand/Brands";
 import Image from "next/image";
 import DUMMY_IMAGE from "@components/constants";
 import { FaTruck, FaMoneyBillWave, FaShieldAlt, FaPercent } from "react-icons/fa";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowBack, IoIosArrowForward , GoArrowRight } from "react-icons/io";
 
 const Home = ({
   popularProducts,
@@ -301,7 +301,7 @@ const Home = ({
                               className="group p-2 bg-white text-gray-700 hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
                               transition-all duration-300"
                             >
-                              <IoIosArrowForward className="text-lg" />
+                              <GoArrowRight className="text-lg" />
                             </button>
                           </div>
                         </div>
@@ -364,8 +364,6 @@ const Home = ({
                             ))}
                         </div>
                       </div>
-
-
 
             {/* new arrivals end  */}
         
