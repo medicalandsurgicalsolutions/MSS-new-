@@ -27,6 +27,8 @@ module.exports = {
           800: '#7C1518',
           900: '#6A1013',
           950: '#54100F',
+           "brand-red": "#b52228",
+          "brand-blue": "#0891b2",
         },
       },
       height: {
