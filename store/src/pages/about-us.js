@@ -181,47 +181,78 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* Section 4: Expert Team */}
-      <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2"> PROFESSIONAL Team</p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
-             MEET OUR PROFESSIONAL DEDICATED
-              <br />
-              EXPERT TEAM
-            </h2>
-          </div>
+     <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-screen-xl mx-auto">
+    <div className="text-center mb-16">
+      <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">
+        PROFESSIONAL TEAM
+      </p>
+      <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+        MEET OUR PROFESSIONAL DEDICATED
+        <br />
+        EXPERT TEAM
+      </h2>
+    </div>
 
-          <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {[
-              { name: "Dr. Andrew White", role: "Cardiology Specialist" },
-              { name: "Dr. Sarah Khan", role: "Heart Surgeon" },
-              { name: "Dr. Priya Menon", role: "Rehabilitation Expert" },
-              { name: "Dr. James Miller", role: "Cardiac Nurse" },
-            ].map((member, i) => (
-              <div
-                key={i}
-                className="bg-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
-              >
-                <div className="aspect-square bg-slate-200 flex items-center justify-center">
-                  <Image
-                    src={`/professional-doctor-.jpg?height=300&width=300&query=professional-doctor-${i + 1}`}
-                    alt={member.name}
-                    width={300}
-                    height={300}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="p-5 text-center">
-                  <h5 className="text-base font-bold text-slate-900 mb-1">{member.name}</h5>
-                  <p className="text-sm text-slate-600">{member.role}</p>
-                </div>
-              </div>
-            ))}
+    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+      {[
+        {
+          img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_one_name,
+          role: storeCustomizationSetting?.about_us?.founder_one_sub,
+        },
+        {
+          img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_two_name,
+          role: storeCustomizationSetting?.about_us?.founder_two_sub,
+        },
+        {
+          img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_three_name,
+          role: storeCustomizationSetting?.about_us?.founder_three_sub,
+        },
+        {
+          img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_four_name,
+          role: storeCustomizationSetting?.about_us?.founder_four_sub,
+        },
+        {
+          img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_five_name,
+          role: storeCustomizationSetting?.about_us?.founder_five_sub,
+        },
+        {
+          img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
+          name: storeCustomizationSetting?.about_us?.founder_six_name,
+          role: storeCustomizationSetting?.about_us?.founder_six_sub,
+        },
+      ].map((member, i) => (
+        <div
+          key={i}
+          className="bg-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+        >
+          <div className="aspect-square bg-slate-200 flex items-center justify-center">
+            <Image
+              src={member.img}
+              alt={member.name || "Team Member"}
+              width={300}
+              height={300}
+              className="w-full h-full object-cover"
+            />
+          </div>
+          <div className="p-5 text-center">
+            <h5 className="text-base font-bold text-slate-900 mb-1">
+              {member.name || "Team Member"}
+            </h5>
+            <p className="text-sm text-slate-600">
+              {member.role || "Specialist"}
+            </p>
           </div>
         </div>
-      </div>
+      ))}
+    </div>
+  </div>
+</div>
     </Layout>
   )
 }
