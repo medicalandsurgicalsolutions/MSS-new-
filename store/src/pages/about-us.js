@@ -30,38 +30,40 @@ const AboutUs = () => {
               <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">
                 About Medical & Surgical Solutions
               </p>
-              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
                 OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
               </h2>
             </div>
             <div>
-              <p className="text-slate-600 text-base leading-relaxed pt-6">
+              <p className="text-slate-600 text-base leading-relaxed">
                 Medical & Surgical Solutions delivers trusted, high-quality medical equipment and products to healthcare
                 professionals. Our innovative range ensures precision, reliability, and safety, empowering excellence in
                 patient care across hospitals and institutions.
               </p>
             </div>
           </div>
-           <div className="relative w-full h-96 lg:h-80">
-            {/* Stats Grid - positioned absolutely to overlap image */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 z-10">
-              <div className="grid grid-cols-2 gap-0">
-                {[
-                  { number: "1100+", label: "HAPPY CUSTOMER" },
-                  { number: "1500+", label: "PREMIUM MEDICAL AND SURGICAL PRODUCT" },
-                  { number: "150+", label: "CUSTOMER TEAM" },
-                  { number: "750+", label: "SUPPORT TEAM" },
-                ].map((item, i) => (
-                  <div key={i} className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800">
-                    <h4 className="text-4xl font-bold mb-2">{item.number}</h4>
-                    <p className="text-xs font-bold tracking-wide">{item.label}</p>
-                  </div>
-                ))}
+
+          <div className="relative h-96 lg:h-80">
+            <div className="grid lg:grid-cols-2 gap-0 h-full">
+              {/* Left: Stats Grid - positioned absolutely to overlap image */}
+              <div className="relative z-10 flex items-center">
+                <div className="grid grid-cols-2 gap-0 w-fit">
+                  {[
+                    { number: "1100+", label: "HAPPY CUSTOMER" },
+                    { number: "1500+", label: "PREMIUM MEDICAL AND SURGICAL PRODUCT" },
+                    { number: "150+", label: "CUSTOMER TEAM" },
+                    { number: "750+", label: "SUPPORT TEAM" },
+                  ].map((item, i) => (
+                    <div key={i} className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800">
+                      <h4 className="text-4xl font-bold mb-2">{item.number}</h4>
+                      <p className="text-xs font-bold tracking-wide">{item.label}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
 
               {/* Right: Image */}
-                <div className="flex justify-end">
+            <div className="flex justify-end">
               <Image
                 src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg"}
                 alt="About our company"
