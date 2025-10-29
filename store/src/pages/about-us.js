@@ -1,20 +1,28 @@
-import Image from "next/image";
 
-// internal imports
-import Layout from "@layout/Layout";
-import useGetSetting from "@hooks/useGetSetting";
-import PageHeader from "@components/header/PageHeader";
-import CMSkeleton from "@components/preloader/CMSkeleton";
-import useUtilsFunction from "@hooks/useUtilsFunction";
+import Image from "next/image"
 
-export default function AboutUs() {
-  const { storeCustomizationSetting, loading, error } = useGetSetting();
-  const { showingTranslateValue } = useUtilsFunction();
+//internal import
+import Layout from "@layout/Layout"
+import useGetSetting from "@hooks/useGetSetting"
+import PageHeader from "@components/header/PageHeader"
+import CMSkeleton from "@components/preloader/CMSkeleton"
+import useUtilsFunction from "@hooks/useUtilsFunction"
+
+const AboutUs = () => {
+  const { storeCustomizationSetting, loading, error } = useGetSetting()
+  const { showingTranslateValue } = useUtilsFunction()
 
   return (
-    <main className="bg-white">
-      {/* Section 1: Trust Medipulse with Stats */}
-      <div className="bg-slate-50">
+    <Layout
+      title="Buy Surgical Instruments & Products in Bulk | Medical & Surgical Solutions"
+      description="Buy top-quality surgical instruments and medical products in bulk from Medical & Surgical Solutions. Trusted by hospitals and clinics for reliable, sterile, and affordable healthcare supplies."
+    >
+      <PageHeader
+        headerBg={storeCustomizationSetting?.about_us?.header_bg}
+        title={showingTranslateValue(storeCustomizationSetting?.about_us?.title)}
+      />
+
+       <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
             {/* Left Content */}
@@ -199,6 +207,8 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
-    </main>
-  );
+    </Layout>
+  )
 }
+
+export default AboutUs
