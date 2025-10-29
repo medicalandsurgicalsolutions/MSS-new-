@@ -429,7 +429,7 @@ const Home = ({
             )} */}
 
             {/* discounted products */}
-            {storeCustomizationSetting?.home?.discount_product_status &&
+             {storeCustomizationSetting?.home?.discount_product_status &&
               DisProduct?.length > 0 && (
                 <div
                   id="discount"
@@ -465,7 +465,12 @@ const Home = ({
                   <div className="flex">
                     <div className="w-full">
                       {loading ? (
-                        <CMSkeleton count={20} height={20} error={error} loading={loading} />
+                        <CMSkeleton
+                          count={20}
+                          height={20}
+                          error={error}
+                          loading={loading}
+                        />
                       ) : (
                         <div
                           className="
@@ -480,7 +485,8 @@ const Home = ({
                         >
                           {DisProduct?.slice(
                             0,
-                            storeCustomizationSetting?.home?.latest_discount_product_limit
+                            storeCustomizationSetting?.home
+                              ?.latest_discount_product_limit
                           ).map((product) => (
                             <ProductCard
                               key={product._id}
@@ -493,17 +499,16 @@ const Home = ({
                     </div>
                   </div>
                 </div>
-              )}
-          </div>
-    
-          {/* < OurPartner /> */}
+              )} {/* ✅ properly closed conditional */}
+
+          </div> {/* ✅ closes <div className="min-h-screen"> */}
+
+          {/* <OurPartner /> */}
           <ClientSection />
 
-              {/* Info Feature Section start */}
- <div className="bg-white py-12">
+          {/* Info Feature Section start */}
+          <div className="bg-white py-12">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-
-              {/* Feature Card */}
               {[
                 { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
                 { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
@@ -527,11 +532,12 @@ const Home = ({
           </div>
           {/* Info Feature Section end */}
 
-        </Layout> {/* ✅ Close Layout here */}
-      )} {/* ✅ Close the conditional rendering */}
-    </> {/* ✅ Close fragment */}
-  );  {/* ✅ Close return */}
+        </Layout> {/* ✅ now Layout properly closes */}
+      )} {/* ✅ conditional closes */}
+    </> {/* ✅ fragment closes */}
+  );
 };
+
 
 export const getServerSideProps = async (context) => {
   const { cookies } = context.req;
