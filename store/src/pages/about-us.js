@@ -61,7 +61,7 @@ const AboutUs = () => {
             </div>
 
               {/* Right: Image */}
-                <div className="w-full h-full flex justify-end">
+                <div className="flex justify-end -ml-20 lg:-ml-32">
               <Image
                 src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg"}
                 alt="About our company"
