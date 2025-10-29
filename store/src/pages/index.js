@@ -534,9 +534,9 @@ const Home = ({
 
         </Layout> {/* ✅ now Layout properly closes */}
       )} {/* ✅ conditional closes */}
-    </> {/* ✅ fragment closes */}
+    </>
   );
-};
+
 
 
 export const getServerSideProps = async (context) => {
