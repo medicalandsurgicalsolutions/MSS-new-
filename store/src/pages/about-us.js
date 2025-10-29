@@ -22,7 +22,7 @@ const AboutUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.about_us?.title)}
       />
 
-     <div className="bg-slate-50">
+    <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
           {/* Top: Label, Heading, and Description */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12 items-start">
@@ -43,9 +43,10 @@ const AboutUs = () => {
             </div>
           </div>
 
+          {/* Stats + Image Section */}
           <div className="relative h-96 lg:h-80">
             <div className="grid lg:grid-cols-2 gap-0 h-full">
-              {/* Left: Stats Grid - positioned absolutely to overlap image */}
+              {/* Left: Stats Grid */}
               <div className="relative z-10 flex items-center">
                 <div className="grid grid-cols-2 gap-0 w-fit">
                   {[
@@ -54,7 +55,10 @@ const AboutUs = () => {
                     { number: "150+", label: "CUSTOMER TEAM" },
                     { number: "750+", label: "SUPPORT TEAM" },
                   ].map((item, i) => (
-                    <div key={i} className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800">
+                    <div
+                      key={i}
+                      className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800"
+                    >
                       <h4 className="text-4xl font-bold mb-2">{item.number}</h4>
                       <p className="text-xs font-bold tracking-wide">{item.label}</p>
                     </div>
@@ -63,18 +67,19 @@ const AboutUs = () => {
               </div>
 
               {/* Right: Image */}
-            <div className="flex justify-end">
-              <Image
-                src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg"}
-                alt="About our company"
-                width={600}
-                height={500}
-                className="w-full h-full object-cover"
-              />
-              </div>
+              <div className="flex justify-end">
+                <Image
+                  src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg"}
+                  alt="About our company"
+                  width={600}
+                  height={500}
+                  className="w-full h-full object-cover"
+                />
               </div>
             </div>
           </div>
+        </div>
+      </div>
     
       {/* Section 2: Heart Care Step by Step */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
