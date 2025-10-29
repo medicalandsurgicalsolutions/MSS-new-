@@ -500,35 +500,32 @@ const Home = ({
           <ClientSection />
 
               {/* Info Feature Section start */}
-              <div className="bg-white py-12">
-                <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              
-                  {/* Feature Card */}
-                  {[
-                    { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
-                    { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
-                    { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
-                    { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
-                    >
-                      <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
-                        <p className="text-gray-600 text-xs">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-              
-              </div>
-              </div>
-              {/* Info Feature Section end */}
-           
-        </Layout>
+               <div className="bg-white py-12">
+            <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
+                { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
+                { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
+                { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
+                >
+                  <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
+                    <p className="text-gray-600 text-xs">{item.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Info Feature Section end */}
+
+        </Layout> {/* ✅ THIS closes the Layout tag */}
       )}
     </>
   );
