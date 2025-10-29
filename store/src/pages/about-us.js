@@ -63,8 +63,8 @@ const AboutUs = () => {
               {/* Right: Image */}
               <div className="flex justify-end">
                 <Image
-                  src="/doctor-with-elderly-patient.jpg"
-                  alt="Doctor helping patient"
+                  src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg" || "/placeholder.svg"}
+                  alt="About our company"
                   width={600}
                   height={500}
                   className="w-full h-full object-cover"
