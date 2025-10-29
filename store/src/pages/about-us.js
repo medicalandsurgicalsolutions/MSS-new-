@@ -27,29 +27,31 @@ const AboutUs = () => {
           {/* Top: Label, Heading, and Description */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12 items-start">
             <div>
-              <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">About Medipulse</p>
+              <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">
+                About Medical & Surgical Solutions
+              </p>
               <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
-                TRUST MEDIPULSE FOR YOUR LOVED ONES
+                OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
               </h2>
             </div>
             <div>
               <p className="text-slate-600 text-base leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing lorem elit, sed do eiusmod tempor incididunt ut
-                labore et dolore magna aliqua. contary popul Quis ipsum pendisse ultrices gravida. Risus commodo viverra
-                maen
+                Medical & Surgical Solutions delivers trusted, high-quality medical equipment and products to healthcare
+                professionals. Our innovative range ensures precision, reliability, and safety, empowering excellence in
+                patient care across hospitals and institutions.
               </p>
             </div>
           </div>
 
-          <div className="relative">
-            <div className="grid lg:grid-cols-2 gap-0 items-stretch">
-              {/* Left: Stats Grid */}
-              <div className="flex items-center">
+          <div className="relative h-96 lg:h-80">
+            <div className="grid lg:grid-cols-2 gap-0 h-full">
+              {/* Left: Stats Grid - positioned absolutely to overlap image */}
+              <div className="relative z-10 flex items-center">
                 <div className="grid grid-cols-2 gap-0 w-fit">
                   {[
-                    { number: "456+", label: "SATISFIED PATIENTS" },
-                    { number: "326+", label: "SUCCESS HEART SURGERY" },
-                    { number: "878+", label: "WORLDWIDE BRANCHES" },
+                    { number: "1100+", label: "HAPPY CUSTOMER" },
+                    { number: "1500+", label: "PREMIUM MEDICAL AND SURGICAL PRODUCT" },
+                    { number: "150+", label: "CUSTOMER TEAM" },
                     { number: "750+", label: "SUPPORT TEAM" },
                   ].map((item, i) => (
                     <div key={i} className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800">
@@ -61,7 +63,7 @@ const AboutUs = () => {
               </div>
 
               {/* Right: Image */}
-              <div className="flex justify-end">
+               <div className="flex justify-end -ml-20 lg:-ml-32">
                 <Image
                   src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg" || "/placeholder.svg"}
                   alt="About our company"
@@ -179,9 +181,9 @@ const AboutUs = () => {
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">Professional Doctors</p>
+            <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2"> PROFESSIONAL Team</p>
             <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
-              MEET OUR PROFESSIONAL DEDICATED
+             MEET OUR PROFESSIONAL DEDICATED
               <br />
               EXPERT TEAM
             </h2>
