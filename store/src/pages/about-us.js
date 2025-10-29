@@ -170,7 +170,7 @@ const AboutUs = () => {
             {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src={storeCustomizationSetting?.about_us?.content_middle_Img || "/about-banner.jpg" || "/placeholder.svg
+                src={storeCustomizationSetting?.about_us?.content_middle_Img || "/about-banner.jpg" || "/placeholder.svg"}
                 alt="Company banner"
                 width={500}
                 height={400}
