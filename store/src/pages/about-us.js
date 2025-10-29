@@ -1,5 +1,4 @@
 import Image from "next/image";
-import { motion } from "framer-motion";
 
 // internal imports
 import Layout from "@layout/Layout";
@@ -7,11 +6,6 @@ import useGetSetting from "@hooks/useGetSetting";
 import PageHeader from "@components/header/PageHeader";
 import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-};
 
 export default function AboutUs() {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
@@ -31,13 +25,7 @@ export default function AboutUs() {
       <section className="bg-gradient-to-b from-white via-slate-50 to-white font-montserrat">
         <div className="max-w-screen-2xl mx-auto py-16 px-4 sm:px-8 lg:px-10 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="space-y-6"
-          >
+          <div className="space-y-6 transition-all duration-700 ease-in-out">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#b52228]/10 border border-[#b52228]/30">
               <div className="w-2 h-2 bg-[#b52228] rounded-full"></div>
               <span className="text-sm font-semibold text-[#b52228]">
@@ -77,12 +65,8 @@ export default function AboutUs() {
                   desc: storeCustomizationSetting?.about_us?.card_two_description,
                 },
               ].map((card, i) => (
-                <motion.div
+                <div
                   key={i}
-                  variants={fadeUp}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
                   className="group bg-[#0f172a] border border-slate-800 text-white rounded-2xl p-6 transition-all duration-300 hover:border-[#b52228] hover:shadow-lg"
                 >
                   <div className="text-4xl sm:text-5xl font-bold text-[#0891b2] mb-2">
@@ -94,19 +78,13 @@ export default function AboutUs() {
                   <p className="text-xs text-white/70">
                     {showingTranslateValue(card.desc)}
                   </p>
-                </motion.div>
+                </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Right Image */}
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="relative"
-          >
+          <div className="relative transition-all duration-700 ease-in-out">
             <div className="absolute -inset-4 bg-gradient-to-br from-[#b52228]/10 to-[#0891b2]/10 rounded-3xl blur-2xl"></div>
             <Image
               width={920}
@@ -116,21 +94,15 @@ export default function AboutUs() {
                 "/about-us.jpg"
               }
               alt="About our company"
-              className="relative rounded-3xl shadow-2xl w-full h-auto object-cover"
+              className="relative rounded-3xl shadow-2xl w-full h-auto object-cover hover:scale-[1.02] transition-transform duration-500"
             />
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* ================= MIDDLE TEXT SECTION ================= */}
       <section className="bg-gradient-to-br from-white to-slate-50 py-16">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
-          className="max-w-screen-2xl mx-auto p-6 lg:p-10 border-2 border-slate-200 rounded-3xl shadow-lg space-y-6 text-slate-700"
-        >
+        <div className="max-w-screen-2xl mx-auto p-6 lg:p-10 border-2 border-slate-200 rounded-3xl shadow-lg space-y-6 text-slate-700">
           <p className="text-base sm:text-lg font-medium leading-relaxed">
             <CMSkeleton
               count={5}
@@ -148,17 +120,11 @@ export default function AboutUs() {
               data={storeCustomizationSetting?.about_us?.middle_description_two}
             />
           </p>
-        </motion.div>
+        </div>
       </section>
 
       {/* ================= BANNER IMAGE ================= */}
-      <motion.div
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
-        className="max-w-screen-2xl mx-auto mb-20 px-4"
-      >
+      <div className="max-w-screen-2xl mx-auto mb-20 px-4">
         <div className="rounded-3xl overflow-hidden shadow-2xl border-2 border-slate-200">
           <Image
             width={1920}
@@ -171,7 +137,7 @@ export default function AboutUs() {
             className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
           />
         </div>
-      </motion.div>
+      </div>
 
       {/* ================= LEADERSHIP TEAM ================= */}
       <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white py-16 overflow-hidden">
@@ -181,13 +147,7 @@ export default function AboutUs() {
         </div>
 
         <div className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            className="mb-12"
-          >
+          <div className="mb-12 text-center">
             <div className="inline-flex items-center gap-2 mb-4 px-3 py-2 bg-[#b52228]/20 rounded-full border border-[#b52228]/40">
               <div className="w-2 h-2 bg-[#b52228] rounded-full"></div>
               <span className="text-xs sm:text-sm font-semibold text-[#b52228]">
@@ -204,7 +164,7 @@ export default function AboutUs() {
               />
             </h3>
 
-            <p className="text-base sm:text-xl text-slate-300 max-w-3xl leading-relaxed">
+            <p className="text-base sm:text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
               <CMSkeleton
                 count={3}
                 height={28}
@@ -212,7 +172,7 @@ export default function AboutUs() {
                 data={storeCustomizationSetting?.about_us?.founder_description}
               />
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
@@ -259,21 +219,17 @@ export default function AboutUs() {
                 role: storeCustomizationSetting?.about_us?.founder_six_sub,
               },
             ].map((member, i) => (
-              <motion.div
+              <div
                 key={i}
-                variants={fadeUp}
-                initial="hidden"
-                whileInView="show"
-                viewport={{ once: true }}
-                className="group flex flex-col items-center justify-center text-center"
+                className="group flex flex-col items-center justify-center text-center transition-all duration-500 hover:scale-[1.03]"
               >
-                <div className="relative mb-4 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#b52228] transition-all">
+                <div className="relative mb-4 overflow-hidden rounded-2xl border-2 border-slate-700 group-hover:border-[#b52228] transition-all duration-500">
                   <Image
                     width={320}
                     height={320}
                     src={member.img || "/placeholder.svg"}
                     alt={showingTranslateValue(member.name) || "Team member"}
-                    className="object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
                 <h5 className="text-lg font-bold text-white mb-1 group-hover:text-[#0891b2] transition-colors">
@@ -282,7 +238,7 @@ export default function AboutUs() {
                 <p className="text-sm text-white/70 font-medium">
                   {showingTranslateValue(member.role)}
                 </p>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
