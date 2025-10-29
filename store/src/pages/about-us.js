@@ -22,45 +22,46 @@ const AboutUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.about_us?.title)}
       />
 
-       <div className="bg-slate-50">
+      <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
-            {/* Left Content */}
-            <div>
-              <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">About Medipulse</p>
+          <div className="grid lg:grid-cols-2 gap-0 items-stretch mb-24 relative">
+            {/* Left Content with Stats Grid */}
+            <div className="pr-8 flex flex-col justify-center">
+              <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">About Medipulse</p>
               <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
                 TRUST MEDIPULSE FOR YOUR LOVED ONES
               </h2>
               <p className="text-slate-600 text-base leading-relaxed mb-10">
-                Learn expert skills and care, modernized adaptive features, and advanced healing experiences. Our
-                dedicated team ensures top-quality treatment and compassionate support.
+                Lorem ipsum dolor sit amet, consectetur adipiscing lorem elit, sed do eiusmod tempor incididunt ut
+                labore et dolore magna aliqua. contary popul Quis ipsum pendisse ultrices gravida. Risus commodo viverra
+                maen
               </p>
+
+              {/* Stats Grid - 2x2 */}
+              <div className="grid grid-cols-2 gap-0 w-fit">
+                {[
+                  { number: "456+", label: "SATISFIED PATIENTS" },
+                  { number: "326+", label: "SUCCESS HEART SURGERY" },
+                  { number: "878+", label: "WORLDWIDE BRANCHES" },
+                  { number: "750+", label: "SUPPORT TEAM" },
+                ].map((item, i) => (
+                  <div key={i} className="bg-slate-900 text-white px-8 py-8 text-center border border-slate-800">
+                    <h4 className="text-4xl font-bold mb-2">{item.number}</h4>
+                    <p className="text-xs font-bold tracking-wide">{item.label}</p>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Right: Image with Overlaid Stats */}
-            <div className="relative">
+            {/* Right Image */}
+            <div className="flex justify-end">
               <Image
                 src="/doctor-with-elderly-patient.jpg"
                 alt="Doctor helping patient"
-                width={500}
-                height={400}
-                className="rounded-2xl shadow-lg w-full object-cover"
+                width={600}
+                height={500}
+                className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-0 left-0 bg-slate-900 rounded-2xl p-8 shadow-xl -mb-12 ml-4">
-                <div className="grid grid-cols-2 gap-8">
-                  {[
-                    { number: "456+", label: "Satisfied Patients" },
-                    { number: "326+", label: "Success Heart Surgery" },
-                    { number: "878+", label: "Worldwide Branches" },
-                    { number: "750+", label: "Support Team" },
-                  ].map((item, i) => (
-                    <div key={i} className="text-center">
-                      <h4 className="text-3xl font-bold text-white mb-1">{item.number}</h4>
-                      <p className="text-xs font-medium text-slate-300 uppercase">{item.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </div>
           </div>
         </div>
