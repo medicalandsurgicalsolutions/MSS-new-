@@ -500,8 +500,10 @@ const Home = ({
           <ClientSection />
 
               {/* Info Feature Section start */}
-               <div className="bg-white py-12">
+ <div className="bg-white py-12">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+              {/* Feature Card */}
               {[
                 { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
                 { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
@@ -525,10 +527,10 @@ const Home = ({
           </div>
           {/* Info Feature Section end */}
 
-        </Layout> {/* ✅ THIS closes the Layout tag */}
-      )}
-    </>
-  );
+        </Layout> {/* ✅ Close Layout here */}
+      )} {/* ✅ Close the conditional rendering */}
+    </> {/* ✅ Close fragment */}
+  );  {/* ✅ Close return */}
 };
 
 export const getServerSideProps = async (context) => {
