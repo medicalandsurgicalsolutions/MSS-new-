@@ -523,11 +523,11 @@ const Home = ({
             </div>
           </div>
           {/* Info Feature Section end */}
-        </Layout>  {/* ✅ properly closes Layout */}
+        </Layout>  
       )}
     </>
   );
-};
+
 export const getServerSideProps = async (context) => {
   const { cookies } = context.req;
   const { query, _id } = context.query;
