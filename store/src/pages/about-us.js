@@ -1,3 +1,4 @@
+// ======================= src/pages/about-us.js =======================
 import Image from "next/image";
 
 // internal imports
@@ -53,7 +54,7 @@ export default function AboutUs() {
 
             {/* Stat Cards */}
             <div className="grid grid-cols-2 gap-5 pt-4">
-              {[ 
+              {[
                 {
                   title: storeCustomizationSetting?.about_us?.card_one_title,
                   sub: storeCustomizationSetting?.about_us?.card_one_sub,
@@ -228,7 +229,7 @@ export default function AboutUs() {
                     width={320}
                     height={320}
                     src={member.img || "/placeholder.svg"}
-                    alt={showingTranslateValue(member.name) || "Team member"}
+                    alt={showingTranslateValue(member.name) || 'Team member'}
                     className="object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
                   />
                 </div>
