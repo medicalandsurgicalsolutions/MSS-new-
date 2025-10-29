@@ -428,7 +428,7 @@ const Home = ({
             )} */}
 
             {/* discounted products */}
-            {storeCustomizationSetting?.home?.discount_product_status &&
+          {storeCustomizationSetting?.home?.discount_product_status &&
               DisProduct?.length > 0 && (
                 <div
                   id="discount"
@@ -440,7 +440,6 @@ const Home = ({
                         <CMSkeleton
                           count={1}
                           height={30}
-                          // error={error}
                           loading={loading}
                           data={
                             storeCustomizationSetting?.home
@@ -452,7 +451,6 @@ const Home = ({
                         <CMSkeleton
                           count={5}
                           height={20}
-                          // error={error}
                           loading={loading}
                           data={
                             storeCustomizationSetting?.home
@@ -462,21 +460,26 @@ const Home = ({
                       </p>
                     </div>
                   </div>
+
                   <div className="flex">
                     <div className="w-full">
                       {loading ? (
-                        <CMSkeleton
-                          count={20}
-                          height={20}
-                          error={error}
-                          loading={loading}
-                        />
+                        <CMSkeleton count={20} height={20} error={error} loading={loading} />
                       ) : (
-                       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
+                        <div
+                          className="
+                            grid 
+                            grid-cols-2 
+                            sm:grid-cols-3 
+                            md:grid-cols-4 
+                            custom-lg:grid-cols-4 
+                            custom-xl:grid-cols-5 
+                            gap-3 sm:gap-4 lg:gap-5
+                          "
+                        >
                           {DisProduct?.slice(
                             0,
-                            storeCustomizationSetting?.home
-                              ?.latest_discount_product_limit
+                            storeCustomizationSetting?.home?.latest_discount_product_limit
                           ).map((product) => (
                             <ProductCard
                               key={product._id}
@@ -496,42 +499,35 @@ const Home = ({
           <ClientSection />
 
               {/* Info Feature Section start */}
-              <div className="bg-white py-12">
-                <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              
-                  {/* Feature Card */}
-                  {[
-                    { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
-                    { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
-                    { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
-                    { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
-                  ].map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
-                    >
-                      <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
-                        <p className="text-gray-600 text-xs">{item.desc}</p>
-                      </div>
-                    </div>
-                  ))}
-              
+                 <div className="bg-white py-12">
+            <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
+                { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
+                { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
+                { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white"
+                >
+                  <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
+                    {item.icon}
+                  </div>
+                  <div>
+                    <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
+                    <p className="text-gray-600 text-xs">{item.desc}</p>
+                  </div>
                 </div>
-              </div>
-              {/* Info Feature Section end */}
-
-{/* Info Feature Section end */}
-
-        </Layout>
+              ))}
+            </div>
+          </div>
+          {/* Info Feature Section end */}
+        </Layout>  {/* ✅ properly closes Layout */}
       )}
     </>
   );
 };
-
 export const getServerSideProps = async (context) => {
   const { cookies } = context.req;
   const { query, _id } = context.query;
