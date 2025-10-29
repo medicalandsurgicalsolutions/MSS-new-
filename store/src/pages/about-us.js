@@ -73,9 +73,7 @@ const AboutUs = () => {
               </div>
             </div>
           </div>
-        </div>
-      
-
+    
       {/* Section 2: Heart Care Step by Step */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
