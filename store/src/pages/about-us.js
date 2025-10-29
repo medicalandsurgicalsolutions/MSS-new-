@@ -30,12 +30,12 @@ const AboutUs = () => {
               <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">
                 About Medical & Surgical Solutions
               </p>
-              <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
                 OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
               </h2>
             </div>
             <div>
-              <p className="text-slate-600 text-base leading-relaxed">
+              <p className="text-slate-600 text-base leading-relaxed pt-5">
                 Medical & Surgical Solutions delivers trusted, high-quality medical equipment and products to healthcare
                 professionals. Our innovative range ensures precision, reliability, and safety, empowering excellence in
                 patient care across hospitals and institutions.
