@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 import Layout from "@layout/Layout";
 import Banner from "@components/banner/Banner";
 import useGetSetting from "@hooks/useGetSetting";
+import CardTwo from "@components/cta-card/CardTwo";
+import OfferCard from "@components/offer/OfferCard";
+import StickyCart from "@components/cart/StickyCart";
 import Loading from "@components/preloader/Loading";
 import ProductServices from "@services/ProductServices";
 import ProductCard from "@components/product/ProductCard";
@@ -13,10 +16,11 @@ import MainCarousel from "@components/carousel/MainCarousel";
 import FeatureCategory from "@components/category/FeatureCategory";
 import AttributeServices from "@services/AttributeServices";
 import CMSkeleton from "@components/preloader/CMSkeleton";
+import OurPartner from "@layout/footer/OurPartner";
 import ClientSection from "@layout/footer/ClientSection";
 import BrandSlider from "@components/brand/BrandSlider";
 import Image from "next/image";
-import { DUMMY_IMAGE } from "@components/constants";
+import DUMMY_IMAGE from "@components/constants";
 import { FaTruck, FaMoneyBillWave, FaShieldAlt, FaPercent } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
@@ -25,24 +29,22 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const { loading, error, storeCustomizationSetting } = useGetSetting();
 
-  // Filters
   const showProduct = popularProducts.filter((product) => product?.status === "show");
   const DisProduct = discountProducts.filter((product) => product?.status === "show");
   const allProduct = allProducts.filter((product) => product?.status === "show");
 
-  // Reset loading on navigation
   useEffect(() => {
     setIsLoading(false);
   }, [router]);
 
   const handleMoreInfo = (slug) => {
     router.push(`/product/${slug}`);
-    setIsLoading(true);
+    setIsLoading(!isLoading);
   };
 
   const viewNewArr = () => {
     router.push("search?query=latest");
-    setIsLoading(true);
+    setIsLoading(!isLoading);
   };
 
   return (
@@ -52,28 +54,26 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
       ) : (
         <Layout>
           <div className="min-h-screen">
-            {/* Carousel */}
+            {/* Hero Section */}
             <div className="bg-white">
               <div className="mx-auto py-5 max-w-screen-2xl px-3 sm:px-10">
                 <MainCarousel />
               </div>
             </div>
 
-            {/* Feature Categories */}
+            {/* Feature Category */}
             {storeCustomizationSetting?.home?.featured_status && (
-              <div className="bg-gray-100 lg:py-10 py-10">
+              <div className="bg-gray-100 py-10">
                 <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-                  <div className="mb-10 flex justify-center">
-                    <div className="text-left w-full">
-                      <h2 className="text-xl lg:text-3xl">
-                        <CMSkeleton
-                          count={1}
-                          height={30}
-                          loading={loading}
-                          data={storeCustomizationSetting?.home?.feature_title}
-                        />
-                      </h2>
-                    </div>
+                  <div className="mb-10">
+                    <h2 className="text-xl lg:text-3xl">
+                      <CMSkeleton
+                        count={1}
+                        height={30}
+                        loading={loading}
+                        data={storeCustomizationSetting?.home?.feature_title}
+                      />
+                    </h2>
                   </div>
                   <FeatureCategory />
                 </div>
@@ -85,36 +85,28 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
               <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="mb-2 lg:mb-10 flex items-center justify-between">
                   <h2 className="text-xl lg:text-3xl text-gray-800">
-                    <CMSkeleton
-                      count={1}
-                      height={30}
-                      loading={loading}
-                      data={{ en: "Brands" }}
-                    />
+                    <CMSkeleton count={1} height={30} loading={loading} data={{ en: "Brands" }} />
                   </h2>
+
                   <div className="flex items-center bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] mr-1 sm:mr-3 lg:mr-5">
                     <button
-                      onClick={() =>
-                        document.querySelector(".brand-slider-prev")?.click()
-                      }
+                      onClick={() => document.querySelector(".brand-slider-prev")?.click()}
                       className="group flex-1 h-full flex items-center justify-center 
-                        bg-white text-[#0891B2] hover:bg-[#b52228] hover:text-white active:bg-[#9d1d22]
-                        transition-all duration-300 border-r border-gray-200"
+                        bg-white text-[#0891B2] hover:bg-[#b52228] hover:text-white transition-all duration-300 border-r border-gray-200"
                     >
                       <IoIosArrowBack className="text-[22px]" />
                     </button>
+
                     <button
-                      onClick={() =>
-                        document.querySelector(".brand-slider-next")?.click()
-                      }
+                      onClick={() => document.querySelector(".brand-slider-next")?.click()}
                       className="group flex-1 h-full flex items-center justify-center 
-                        bg-white text-[#0891B2] hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
-                        transition-all duration-300"
+                        bg-white text-[#0891B2] hover:bg-[#0891B2] hover:text-white transition-all duration-300"
                     >
                       <IoIosArrowForward className="text-[22px]" />
                     </button>
                   </div>
                 </div>
+
                 <BrandSlider />
               </div>
             </div>
@@ -122,7 +114,9 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             {/* Offer Deals */}
             <div className="p-4 bg-gray-100 px-2 sm:px-8 md:px-12 lg:px-10 pt-8">
               <h2 className="text-2xl lg:text-3xl mb-4">Offer Deals</h2>
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-6 gap-2 lg:gap-4">
+              <div
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+              >
                 {DisProduct.sort((a, b) => {
                   const discountA =
                     ((a.prices.originalPrice - a.prices.price) / a.prices.originalPrice) * 100;
@@ -135,36 +129,34 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                     <div
                       onClick={() => handleMoreInfo(item?.slug)}
                       key={index}
-                      className="h-[200px] lg:h-[300px] relative cursor-pointer w-full rounded-md flex flex-col items-left"
+                      className="relative cursor-pointer bg-white rounded-md shadow-sm hover:shadow-md transition-all duration-200"
                     >
-                      <div className="h-[200px] relative w-full bg-gray-50">
-                        <div className="relative w-full h-[78%] mb-2">
-                          <Image
-                            src={item?.image[0] || DUMMY_IMAGE}
-                            alt={item?.title || "product item"}
-                            fill
-                            className="object-contain"
-                          />
-                        </div>
+                      <div className="relative w-full h-56">
+                        <Image
+                          src={item?.image[0] || DUMMY_IMAGE}
+                          alt={item?.title || "product item"}
+                          fill
+                          className="object-contain p-2"
+                        />
                       </div>
-                      <h3 className="text-sm mt-2 font-medium text-left">
-                        {`${item?.title?.en.slice(0, 28)}...`}
-                      </h3>
-                      <p
-                        className={`text-sm font-semibold ${
-                          item.discount === "Special Offer"
-                            ? "text-red-600"
-                            : "text-green-600"
-                        }`}
-                      >
-                        {item?.prices?.originalPrice && item?.prices?.price
-                          ? `Min. ${Math.floor(
-                              ((item.prices.originalPrice - item.prices.price) /
-                                item.prices.originalPrice) *
-                                100
-                            )}% off`
-                          : "No discount"}
-                      </p>
+                      <div className="p-3">
+                        <h3 className="text-sm font-medium text-left truncate">
+                          {item?.title?.en}
+                        </h3>
+                        <p
+                          className={`text-sm font-semibold ${
+                            item.discount === "Special Offer" ? "text-red-600" : "text-green-600"
+                          }`}
+                        >
+                          {item?.prices?.originalPrice && item?.prices?.price
+                            ? `Min. ${Math.floor(
+                                ((item.prices.originalPrice - item.prices.price) /
+                                  item.prices.originalPrice) *
+                                  100
+                              )}% off`
+                            : "No discount"}
+                        </p>
+                      </div>
                     </div>
                   ))}
               </div>
@@ -173,23 +165,11 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             {/* New Arrivals */}
             <div className="bg-white py-8 px-3 sm:px-8 md:px-12 lg:px-10">
               <div className="flex justify-between items-center mb-6">
-                <div className="text-left text-xl lg:text-3xl text-gray-800">
-                  New Arrivals
-                </div>
+                <div className="text-left text-xl lg:text-3xl text-gray-800">New Arrivals</div>
                 <div className="flex gap-2">
                   <button
-                    onClick={() => document.querySelector(".arrivals-prev")?.click()}
-                    className="group flex items-center justify-center 
-                      bg-white text-[#b52228] hover:bg-[#b52228] hover:text-white active:bg-[#9b1c20]
-                      transition-all duration-300 border border-gray-200 rounded-full p-2"
-                  >
-                    <IoIosArrowBack className="text-[22px]" />
-                  </button>
-                  <button
                     onClick={viewNewArr}
-                    className="group flex items-center justify-center 
-                      bg-white text-[#0891B2] hover:bg-[#0891B2] hover:text-white active:bg-[#067c99] 
-                      transition-all duration-300 border border-gray-200 rounded-full p-2"
+                    className="flex items-center justify-center w-10 h-10 rounded-full border border-gray-300 text-[#0891B2] hover:bg-[#0891B2] hover:text-white transition-all duration-300"
                   >
                     <IoIosArrowForward className="text-[22px]" />
                   </button>
@@ -197,12 +177,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
               </div>
 
               <div
-                className="
-                  container mx-auto 
-                  grid 
-                  grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 
-                  gap-3 sm:gap-4 lg:gap-5
-                "
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
               >
                 {allProduct
                   ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
@@ -211,14 +186,9 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                     <div
                       onClick={() => handleMoreInfo(category?.slug)}
                       key={index}
-                      className="
-                        relative bg-white/90 hover:bg-white cursor-pointer 
-                        rounded-xl shadow-sm hover:shadow-md overflow-hidden 
-                        group transform transition-all duration-200 hover:scale-[1.02]
-                        h-40 sm:h-48 md:h-52 lg:h-60
-                      "
+                      className="relative bg-white/90 hover:bg-white cursor-pointer rounded-xl shadow-sm hover:shadow-md overflow-hidden group transform transition-all duration-200 hover:scale-[1.02]"
                     >
-                      <div className="relative w-full h-full">
+                      <div className="relative w-full h-56">
                         <Image
                           src={category?.image?.[0] || DUMMY_IMAGE}
                           alt={category?.title?.en}
@@ -227,8 +197,8 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                         />
                       </div>
                       <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-3 text-white">
-                        <h6 className="text-sm font-semibold leading-tight">
-                          {`${category.title.en.slice(0, 56)}...`}
+                        <h6 className="text-sm font-semibold leading-tight truncate">
+                          {category.title.en}
                         </h6>
                       </div>
                     </div>
@@ -249,54 +219,39 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                     />
                   </h2>
                 </div>
-                <div className="w-full">
-                  {loading ? (
-                    <CMSkeleton count={20} height={20} error={error} loading={loading} />
-                  ) : (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
-                      {showProduct
-                        ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
-                        .map((product) => (
-                          <div key={product._id} className="transform transition-transform duration-200 hover:scale-[1.02] group">
-                            <div className="bg-white/90 group-hover:bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200 p-4">
-                              <ProductCard product={product} attributes={attributes} />
-                            </div>
-                          </div>
-                        ))}
-                    </div>
-                  )}
+
+                <div
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                >
+                  {showProduct
+                    ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
+                    .map((product) => (
+                      <div key={product._id} className="transform transition duration-200 hover:scale-[1.02]">
+                        <ProductCard product={product} attributes={attributes} />
+                      </div>
+                    ))}
                 </div>
               </div>
             )}
 
-            {/* Discount Products */}
+            {/* Discounted Products */}
             {storeCustomizationSetting?.home?.discount_product_status &&
               DisProduct?.length > 0 && (
-                <div
-                  id="discount"
-                  className="bg-white lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
-                >
-                  <div className="mb-10 flex justify-center">
-                    <div className="w-full lg:w-2/5">
-                      <h2 className="text-xl lg:text-3xl text-gray-800">
-                        <CMSkeleton
-                          count={1}
-                          height={30}
-                          loading={loading}
-                          data={storeCustomizationSetting?.home?.latest_discount_title}
-                        />
-                      </h2>
-                      <p className="text-base font-sans text-gray-600 leading-6">
-                        <CMSkeleton
-                          count={5}
-                          height={20}
-                          loading={loading}
-                          data={storeCustomizationSetting?.home?.latest_discount_description}
-                        />
-                      </p>
-                    </div>
+                <div className="bg-white py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+                  <div className="mb-10">
+                    <h2 className="text-xl lg:text-3xl text-gray-800">
+                      <CMSkeleton
+                        count={1}
+                        height={30}
+                        loading={loading}
+                        data={storeCustomizationSetting?.home?.latest_discount_title}
+                      />
+                    </h2>
                   </div>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+
+                  <div
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                  >
                     {DisProduct.slice(
                       0,
                       storeCustomizationSetting?.home?.latest_discount_product_limit
@@ -308,7 +263,6 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
               )}
           </div>
 
-          {/* Footer Client Section */}
           <ClientSection />
 
           {/* Info Feature Section */}
@@ -322,7 +276,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
               ].map((item, idx) => (
                 <div
                   key={idx}
-                  className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 group bg-white p-[2rem]"
+                  className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 bg-white"
                 >
                   <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
                     {item.icon}
