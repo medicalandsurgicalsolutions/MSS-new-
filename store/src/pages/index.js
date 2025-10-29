@@ -340,7 +340,7 @@ const Home = ({
                 {/* new arrivals end */}
 
         
-             {/* popular products */}
+               {/* popular products */}
                   {storeCustomizationSetting?.home?.popular_products_status && (
                     <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
                       {/* Section Heading */}
@@ -435,8 +435,8 @@ const Home = ({
                   className="bg-white lg:py-16 py-10 mx-auto max-w-screen-2xl px-3 sm:px-10"
                 >
                   <div className="mb-10 flex justify-center">
-                    <div className="text-center w-full lg:w-2/5">
-                      <h2 className="text-xl lg:text-2xl mb-2  font-semibold">
+                    <div className="w-full lg:w-2/5">
+                      <h2 className="text-xl lg:text-3xl text-gray-800">
                         <CMSkeleton
                           count={1}
                           height={30}
@@ -472,19 +472,19 @@ const Home = ({
                           loading={loading}
                         />
                       ) : (
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-2 md:gap-3 lg:gap-3">
-                          {DisProduct?.slice(
-                            0,
-                            storeCustomizationSetting?.home
-                              ?.latest_discount_product_limit
-                          ).map((product) => (
-                            <ProductCard
-                              key={product._id}
-                              product={product}
-                              attributes={attributes}
-                            />
-                          ))}
-                        </div>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 custom-lg:grid-cols-4 custom-xl:grid-cols-5 gap-3 sm:gap-4 lg:gap-5">
+                            {DisProduct?.slice(
+                              0,
+                              storeCustomizationSetting?.home?.latest_discount_product_limit
+                            ).map((product) => (
+                              <ProductCard
+                                key={product._id}
+                                product={product}
+                                attributes={attributes}
+                              />
+                            ))}
+                          </div>
+
                       )}
                     </div>
                   </div>
