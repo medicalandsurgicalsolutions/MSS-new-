@@ -524,10 +524,10 @@ const Home = ({
                     </div>
                   ))}
               
-                </div>
+              </div>
               </div>
               {/* Info Feature Section end */}
-           </div>
+           
         </Layout>
       )}
     </>
