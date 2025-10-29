@@ -21,28 +21,26 @@ export default function AboutUs() {
         title={showingTranslateValue(storeCustomizationSetting?.about_us?.title) || "About Medipulse"}
       />
 
-      {/* Main Content */}
       <div className="bg-slate-50">
-        <div className="max-w-screen-2xl mx-auto py-16 px-4 lg:px-10">
-
-          {/* Section 1 - Trust Medipulse */}
-          <div className="grid lg:grid-cols-2 gap-10 items-center mb-24">
-            {/* Text */}
+        <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
+          {/* Section 1: Trust Medipulse */}
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+            {/* Left Content */}
             <div>
-              <h2 className="text-[#0891B2] uppercase tracking-wide text-sm font-semibold mb-2">
+              <h2 className="text-[#0891B2] text-sm font-semibold uppercase tracking-widest mb-2">
                 About Medipulse
               </h2>
-              <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-5">
+              <h3 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
                 TRUST MEDIPULSE FOR YOUR LOVED ONES
               </h3>
-              <p className="text-slate-600 text-sm md:text-base mb-6">
+              <p className="text-slate-600 text-base leading-relaxed mb-10">
                 Learn expert skills and care, modernized adaptive features, and
                 advanced healing experiences. Our dedicated team ensures top-quality
                 treatment and compassionate support.
               </p>
 
-              {/* Stats Cards */}
-              <div className="flex flex-wrap gap-4">
+              {/* Stats */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 {[
                   { number: "456+", label: "Satisfied Patients" },
                   { number: "326+", label: "Success Heart Surgery" },
@@ -51,59 +49,67 @@ export default function AboutUs() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="flex flex-col items-center justify-center bg-[#0891B2] text-white rounded-xl px-6 py-4 shadow-md hover:scale-105 transition-transform"
+                    className="bg-[#0891B2] text-white rounded-2xl px-6 py-6 text-center shadow-md hover:shadow-lg transition-all duration-300"
                   >
-                    <span className="text-2xl md:text-3xl font-bold">{item.number}</span>
-                    <span className="text-xs md:text-sm font-medium text-center">{item.label}</span>
+                    <h4 className="text-3xl font-bold mb-1">{item.number}</h4>
+                    <p className="text-sm font-medium">{item.label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Image */}
+            {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src="/about/about-trust.jpg"
-                alt="Doctor with patient"
+                src="/about/about-1.jpg"
+                alt="Doctor helping patient"
                 width={500}
-                height={350}
+                height={400}
                 className="rounded-2xl shadow-lg w-full object-cover"
               />
             </div>
           </div>
 
-          {/* Section 2 - Heart Care Steps */}
+          {/* Section 2: Heart Care Step by Step */}
           <div className="text-center mb-24">
-            <h4 className="text-[#0891B2] uppercase tracking-wide text-sm font-semibold mb-2">
+            <h4 className="text-[#0891B2] text-sm font-semibold uppercase tracking-widest mb-2">
               Cardiology Steps
             </h4>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-10">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-14 leading-tight">
               HEART CARE CARDIOLOGY STEP BY STEP
             </h2>
 
-            <div className="grid sm:grid-cols-3 gap-8">
+            <div className="grid sm:grid-cols-3 gap-10 max-w-5xl mx-auto">
               {[
                 {
-                  icon: "🏥",
+                  img: "/about/icon-1.png",
                   title: "Surf Medipulse Website",
                   desc: "Search our site to explore the best facilities and services we offer.",
                 },
                 {
-                  icon: "💊",
+                  img: "/about/icon-2.png",
                   title: "Expert Treatment",
                   desc: "Receive expert care from experienced professionals for faster recovery.",
                 },
                 {
-                  icon: "📅",
+                  img: "/about/icon-3.png",
                   title: "Book an Appointment",
                   desc: "Schedule an appointment online to connect with our specialists.",
                 },
               ].map((step, i) => (
                 <div
                   key={i}
-                  className="p-6 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-[#0891B2] transition-all duration-300"
+                  className="p-8 bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md hover:border-[#0891B2] transition-all duration-300"
                 >
-                  <div className="text-3xl mb-3">{step.icon}</div>
+                  <div className="flex justify-center mb-4">
+                    <Image
+                      src={step.img}
+                      alt={step.title}
+                      width={60}
+                      height={60}
+                      className="w-16 h-16 object-contain"
+                    />
+                  </div>
                   <h5 className="text-lg font-semibold text-slate-800 mb-2">{step.title}</h5>
                   <p className="text-sm text-slate-600">{step.desc}</p>
                 </div>
@@ -111,22 +117,23 @@ export default function AboutUs() {
             </div>
           </div>
 
-          {/* Section 3 - Trust Medipulse (Progress Bars) */}
-          <div className="grid lg:grid-cols-2 gap-10 items-center mb-24">
-            {/* Text */}
+          {/* Section 3: Progress Bars */}
+          <div className="grid lg:grid-cols-2 gap-16 items-center mb-24">
+            {/* Left Text */}
             <div>
-              <h4 className="text-[#0891B2] uppercase tracking-wide text-sm font-semibold mb-2">
+              <h4 className="text-[#0891B2] text-sm font-semibold uppercase tracking-widest mb-2">
                 Trust Medipulse
               </h4>
-              <h3 className="text-3xl md:text-4xl font-bold text-slate-900 mb-5">
+              <h3 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
                 TRUST MEDIPULSE FOR YOUR LOVED ONES
               </h3>
-              <p className="text-slate-600 text-sm md:text-base mb-6">
+              <p className="text-slate-600 text-base leading-relaxed mb-8">
                 Medipulse has established a reputation for providing excellent
                 healthcare with advanced surgical and rehabilitation support.
               </p>
 
-              <div className="space-y-4">
+              {/* Progress Bars */}
+              <div className="space-y-5">
                 {[
                   { label: "Heart Surgery", value: 90 },
                   { label: "Manage Treatment", value: 70 },
@@ -140,7 +147,7 @@ export default function AboutUs() {
                     </div>
                     <div className="w-full bg-slate-200 rounded-full h-2">
                       <div
-                        className="h-2 bg-[#0891B2] rounded-full transition-all duration-700"
+                        className="h-2 bg-[#0891B2] rounded-full"
                         style={{ width: `${bar.value}%` }}
                       ></div>
                     </div>
@@ -149,28 +156,28 @@ export default function AboutUs() {
               </div>
             </div>
 
-            {/* Image */}
+            {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src="/about/about-doctor.jpg"
-                alt="Doctor consultation"
+                src="/about/about-2.jpg"
+                alt="Doctor consulting patient"
                 width={500}
-                height={350}
+                height={400}
                 className="rounded-2xl shadow-lg w-full object-cover"
               />
             </div>
           </div>
 
-          {/* Section 4 - Expert Team */}
-          <div className="text-center mb-10">
-            <h4 className="text-[#0891B2] uppercase tracking-wide text-sm font-semibold mb-2">
+          {/* Section 4: Expert Team */}
+          <div className="text-center">
+            <h4 className="text-[#0891B2] text-sm font-semibold uppercase tracking-widest mb-2">
               Professional Doctors
             </h4>
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-10">
+            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-14 leading-tight">
               MEET OUR PROFESSIONAL DEDICATED EXPERT TEAM
             </h2>
 
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-10">
               {[
                 { img: "/team/team-1.jpg", name: "Dr. Andrew White", role: "Cardiology Specialist" },
                 { img: "/team/team-2.jpg", name: "Dr. Sarah Khan", role: "Heart Surgeon" },
@@ -178,21 +185,23 @@ export default function AboutUs() {
               ].map((member, i) => (
                 <div
                   key={i}
-                  className="group bg-white p-4 rounded-2xl shadow-md hover:shadow-lg hover:border-[#0891B2] border border-transparent transition-all duration-300"
+                  className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden"
                 >
-                  <div className="overflow-hidden rounded-xl mb-4">
+                  <div className="overflow-hidden">
                     <Image
                       src={member.img}
                       alt={member.name}
                       width={400}
                       height={300}
-                      className="rounded-xl w-full h-auto object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="w-full h-auto object-cover hover:scale-105 transition-transform duration-500"
                     />
                   </div>
-                  <h5 className="text-lg font-bold text-slate-800 group-hover:text-[#0891B2] transition-colors">
-                    {member.name}
-                  </h5>
-                  <p className="text-sm text-slate-600">{member.role}</p>
+                  <div className="p-5">
+                    <h5 className="text-lg font-bold text-slate-800 mb-1 hover:text-[#0891B2] transition-colors">
+                      {member.name}
+                    </h5>
+                    <p className="text-sm text-slate-600">{member.role}</p>
+                  </div>
                 </div>
               ))}
             </div>
