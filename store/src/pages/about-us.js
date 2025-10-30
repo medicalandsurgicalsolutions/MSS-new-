@@ -1,4 +1,3 @@
-
 import Image from "next/image"
 
 //internal import
@@ -22,15 +21,15 @@ const AboutUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.about_us?.title)}
       />
 
-    <div className="bg-slate-50">
+      <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
           {/* Top: Label, Heading, and Description */}
           <div className="grid lg:grid-cols-2 gap-12 mb-12 items-start">
             <div>
-              <p className="text-red-600 text-sm font-semibold uppercase tracking-widest mb-2">
+              <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
                 About Medical & Surgical Solutions
               </p>
-              <h2 className="text-3xl lg:text-4xl font-bold text-slate-900 mb-6 leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-[#0891b2] mb-6 leading-tight">
                 OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
               </h2>
             </div>
@@ -80,13 +79,15 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
-    
+
       {/* Section 2: Heart Care Step by Step */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">Cardiology Steps</p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
+            <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
+              Cardiology Steps
+            </p>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
               HEART CARE CARDIOLOGY
               <br />
               STEP BY STEP
@@ -113,15 +114,15 @@ const AboutUs = () => {
             ].map((step, i) => (
               <div key={i} className="text-center">
                 <div className="flex justify-center mb-4">
-                  <div className="w-12 h-1 bg-red-600 rounded-full"></div>
+                  <div className="w-12 h-1 bg-[#b52228] rounded-full"></div>
                 </div>
-                <p className="text-red-600 text-sm font-bold mb-4">{step.number}</p>
+                <p className="text-[#b52228] text-sm font-bold mb-4">{step.number}</p>
                 <div className="flex justify-center mb-6">
                   <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
                     <span className="text-2xl">❤️</span>
                   </div>
                 </div>
-                <h5 className="text-lg font-bold text-slate-900 mb-3 uppercase">{step.title}</h5>
+                <h5 className="text-lg font-bold text-[#0891b2] mb-3 uppercase">{step.title}</h5>
                 <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
               </div>
             ))}
@@ -135,8 +136,10 @@ const AboutUs = () => {
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left Text */}
             <div>
-              <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">Trust Medipulse</p>
-              <h3 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-6 leading-tight">
+              <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
+                Trust Medipulse
+              </p>
+              <h3 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-6 leading-tight">
                 TRUST MEDIPULSE FOR YOUR LOVED ONES
               </h3>
               <p className="text-slate-600 text-base leading-relaxed mb-10">
@@ -158,7 +161,7 @@ const AboutUs = () => {
                     </div>
                     <div className="w-full bg-slate-200 rounded-full h-2">
                       <div
-                        className="h-2 bg-red-600 rounded-full transition-all duration-500"
+                        className="h-2 bg-[#b52228] rounded-full transition-all duration-500"
                         style={{ width: `${bar.value}%` }}
                       ></div>
                     </div>
@@ -170,7 +173,11 @@ const AboutUs = () => {
             {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src={storeCustomizationSetting?.about_us?.content_middle_Img || "/about-banner.jpg" || "/placeholder.svg"}
+                src={
+                  storeCustomizationSetting?.about_us?.content_middle_Img ||
+                  "/about-banner.jpg" ||
+                  "/placeholder.svg"
+                }
                 alt="Company banner"
                 width={500}
                 height={400}
@@ -181,78 +188,79 @@ const AboutUs = () => {
         </div>
       </div>
 
-     <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
-  <div className="max-w-screen-xl mx-auto">
-    <div className="text-center mb-16">
-      <p className="text-slate-500 text-sm font-semibold uppercase tracking-widest mb-2">
-        PROFESSIONAL TEAM
-      </p>
-      <h2 className="text-4xl lg:text-5xl font-bold text-slate-900 mb-4 leading-tight">
-        MEET OUR PROFESSIONAL DEDICATED
-        <br />
-        EXPERT TEAM
-      </h2>
-    </div>
-
-    <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-      {[
-        {
-          img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_one_name,
-          role: storeCustomizationSetting?.about_us?.founder_one_sub,
-        },
-        {
-          img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_two_name,
-          role: storeCustomizationSetting?.about_us?.founder_two_sub,
-        },
-        {
-          img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_three_name,
-          role: storeCustomizationSetting?.about_us?.founder_three_sub,
-        },
-        {
-          img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_four_name,
-          role: storeCustomizationSetting?.about_us?.founder_four_sub,
-        },
-        {
-          img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_five_name,
-          role: storeCustomizationSetting?.about_us?.founder_five_sub,
-        },
-        {
-          img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
-          name: storeCustomizationSetting?.about_us?.founder_six_name,
-          role: storeCustomizationSetting?.about_us?.founder_six_sub,
-        },
-      ].map((member, i) => (
-        <div
-          key={i}
-          className="bg-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
-        >
-          <div className="aspect-square bg-slate-200 flex items-center justify-center">
-            <Image
-              src={member.img}
-              alt={member.name || "Team Member"}
-              width={300}
-              height={300}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="p-5 text-center">
-            <h5 className="text-base font-bold text-slate-900 mb-1">
-              {member.name || "Team Member"}
-            </h5>
-            <p className="text-sm text-slate-600">
-              {member.role || "Specialist"}
+      {/* Section 4: Team Section */}
+      <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-screen-xl mx-auto">
+          <div className="text-center mb-16">
+            <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
+              PROFESSIONAL TEAM
             </p>
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
+              MEET OUR PROFESSIONAL DEDICATED
+              <br />
+              EXPERT TEAM
+            </h2>
+          </div>
+
+          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
+            {[
+              {
+                img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_one_name,
+                role: storeCustomizationSetting?.about_us?.founder_one_sub,
+              },
+              {
+                img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_two_name,
+                role: storeCustomizationSetting?.about_us?.founder_two_sub,
+              },
+              {
+                img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_three_name,
+                role: storeCustomizationSetting?.about_us?.founder_three_sub,
+              },
+              {
+                img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_four_name,
+                role: storeCustomizationSetting?.about_us?.founder_four_sub,
+              },
+              {
+                img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_five_name,
+                role: storeCustomizationSetting?.about_us?.founder_five_sub,
+              },
+              {
+                img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
+                name: storeCustomizationSetting?.about_us?.founder_six_name,
+                role: storeCustomizationSetting?.about_us?.founder_six_sub,
+              },
+            ].map((member, i) => (
+              <div
+                key={i}
+                className="bg-slate-100 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300"
+              >
+                <div className="aspect-square bg-slate-200 flex items-center justify-center">
+                  <Image
+                    src={member.img}
+                    alt={member.name || "Team Member"}
+                    width={300}
+                    height={300}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="p-5 text-center">
+                  <h5 className="text-base font-bold text-[#0891b2] mb-1">
+                    {member.name || "Team Member"}
+                  </h5>
+                  <p className="text-sm text-[#b52228]">
+                    {member.role || "Specialist"}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-      ))}
-    </div>
-  </div>
-</div>
+      </div>
     </Layout>
   )
 }
