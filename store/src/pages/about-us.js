@@ -142,7 +142,7 @@ const AboutUs = () => {
                     <span className="text-2xl">❤️</span>
                   </div>
                 </div>
-                <h5 className="text-lg font-bold text-slate-900 mb-3 uppercase">
+                <h5 className="text-lg font-bold text-[#0891b2] mb-3 uppercase">
                   {safeText(step.title)}
                 </h5>
                 <p className="text-sm text-slate-600 leading-relaxed">
