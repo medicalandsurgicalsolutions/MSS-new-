@@ -65,22 +65,12 @@ const AboutUs = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center">
               {[
-                { number: "11,000+", label: "HAPPY CUSTOMERS" },
-                { number: "15,000+", label: "PREMIUM PRODUCTS" },
-                { number: "150+", label: "SUPPORT TEAM" },
-                { number: "750+", label: "GLOBAL CLIENTS" },
+                { number: 11000, label: "HAPPY CUSTOMERS" },
+                { number: 15000, label: "PREMIUM PRODUCTS" },
+                { number: 150, label: "SUPPORT TEAM" },
+                { number: 750, label: "TRUSTED PARTNERS" },
               ].map((item, i) => (
-                <div
-                  key={i}
-                  className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg"
-                >
-                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 hover:text-[#0891b2] transition-colors duration-300">
-                    {item.number}
-                  </h4>
-                  <p className="text-[10px] sm:text-xs hover:text-[#0891b2] transition-colors duration-300 font-bold tracking-wide uppercase">
-                    {item.label}
-                  </p>
-                </div>
+                <CounterCard key={i} target={item.number} label={item.label} />
               ))}
             </div>
 
@@ -132,7 +122,6 @@ const AboutUs = () => {
           </div>
         </div>
       </section>
-
       {/* Section 3: Progress Bars */}
       <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
@@ -264,6 +253,43 @@ const AboutUs = () => {
         </div>
       </section>
     </Layout>
+  );
+};
+
+const CounterCard = ({ target, label }) => {
+  const [count, setCount] = useState(0);
+  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.4 });
+
+  useEffect(() => {
+    if (inView) {
+      let start = 0;
+      const duration = 2000; // total duration (2 seconds)
+      const stepTime = 16; // ~60fps
+      const increment = target / (duration / stepTime);
+
+      const counter = setInterval(() => {
+        start += increment;
+        if (start >= target) {
+          start = target;
+          clearInterval(counter);
+        }
+        setCount(Math.floor(start));
+      }, stepTime);
+    }
+  }, [inView, target]);
+
+  return (
+    <div
+      ref={ref}
+      className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg group transition-all duration-300 hover:bg-slate-800"
+    >
+      <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 text-[#0891b2] group-hover:text-[#b52228] transition-colors duration-300">
+        {count.toLocaleString()}+
+      </h4>
+      <p className="text-[10px] sm:text-xs text-white group-hover:text-[#0891b2] transition-colors duration-300 font-bold tracking-wide uppercase">
+        {label}
+      </p>
+    </div>
   );
 };
 
