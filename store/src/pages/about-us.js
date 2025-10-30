@@ -115,7 +115,7 @@ const AboutUs = () => {
         </p>
 
         {/* Features Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left p-12">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left">
           {[
             { icon: <FaUsers />, title: "Worldwide Clients" },
             { icon: <FaGift />, title: "Special Discounts" },
@@ -126,7 +126,7 @@ const AboutUs = () => {
           ].map((item, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 group transition-all duration-300"
+              className="flex items-center gap-4 group transition-all duration-300 p-12 rounded-xl hover:bg-gray-50"
             >
               {/* Icon with border box */}
               <div className="w-14 h-14 flex items-center justify-center border-2 border-[#0891b2] rounded-lg text-black text-3xl group-hover:border-[#b52228] transition-colors duration-300">
