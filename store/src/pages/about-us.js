@@ -235,11 +235,14 @@ const AboutUs = () => {
       {/* Section 5: Info Banner */}
       <section className="bg-[#b52228] py-10 px-6 sm:px-10 lg:px-16 text-white">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center">
-          <div className="flex flex-col items-center justify-center py-6 px-4 space-y-3">
-            <FaMapMarkerAlt className="text-4xl md:text-5xl flex-shrink-0" />
-            <span className="text-xs sm:text-sm md:text-base font-medium">
-              402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
-            </span>
+
+           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <FaMapMarkerAlt className="text-xl sm:text-2xl md:text-3xl" />
+              <span className="text-sm sm:text-base font-semibold uppercase">Location</span>
+            </div>
+            <span className="text-xs sm:text-sm md:text-base font-medium"> 402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 
+                (India)</span>
           </div>
 
           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
