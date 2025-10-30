@@ -294,21 +294,21 @@ const AboutUs = () => {
         {/* Column 1 */}
         <div className="flex flex-col items-center justify-center py-6 px-4">
           <div className="flex items-center gap-3 text-center">
-            <span className="text-base md:text-lg font-semibold tracking-wide uppercase">
+           <FaMapMarkerAlt className="text-4xl md:text-4xl" />  
+            <span className="text-base md:text-lg font-medium tracking-wide uppercase">
               402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
             </span>
-            <FaMapMarkerAlt className="text-2xl md:text-3xl" />
           </div>
         </div>
 
         {/* Column 2 */}
         <div className="flex flex-col items-center justify-center py-6 px-4">
           <div className="flex flex-col items-center gap-2">
+          <FaPhoneAlt className="text-2xl md:text-3xl" />
             <div className="flex items-center gap-3">
               <span className="text-base md:text-lg font-semibold uppercase">
                 Call Us Now
               </span>
-              <FaPhoneAlt className="text-2xl md:text-3xl" />
             </div>
             <span className="text-sm md:text-base font-medium mt-1">
               +91 9643344588
