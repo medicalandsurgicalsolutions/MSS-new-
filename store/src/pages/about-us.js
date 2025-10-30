@@ -35,6 +35,7 @@ const AboutUs = () => {
       <PageHeader
         headerBg={about?.header_bg}
         title={safeText(showingTranslateValue(about?.title))}
+        className="text-white"
       />
 
       {/* Section 1: About Section */}
