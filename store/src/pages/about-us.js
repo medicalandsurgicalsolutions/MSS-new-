@@ -73,12 +73,13 @@ const AboutUs = () => {
                   key={i}
                   className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg"
                 >
-                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 hover:text-[#b52228] transition-colors duration-300">
+                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 hover:text-[#0891b2] transition-colors duration-300">
                     {item.number}
                   </h4>
-                  <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase">
+                  <p className="text-[10px] sm:text-xs group-hover:text-[#0891b2] transition-colors duration-300 font-bold tracking-wide uppercase">
                     {item.label}
                   </p>
+
                 </div>
               ))}
             </div>
