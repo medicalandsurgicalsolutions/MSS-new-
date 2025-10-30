@@ -7,6 +7,7 @@ import PageHeader from "@components/header/PageHeader";
 import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { FaMapMarkerAlt, FaPhoneAlt, FaHeartbeat } from "react-icons/fa";
+import { FaUsers, FaGift, FaTag, FaGlobe, FaLeaf, FaCog } from "react-icons/fa";
 
 const AboutUs = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
@@ -102,60 +103,40 @@ const AboutUs = () => {
       </div>
       {/* Section 1: About Section end */}
 
-      {/* Section 2: Heart Care Step by Step */}
-      <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
-              Cardiology Steps
-            </p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
-              HEART CARE CARDIOLOGY
-              <br />
-              STEP BY STEP
-            </h2>
-          </div>
+      {/* Section 2: section two */}
+       <section className=" bg-white py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto text-center">
+        {/* Heading */}
+        <h2 className="text-4xl lg:text-5xl font-bold text-white mb-3">
+          A record-breaking discovery
+        </h2>
+        <p className="text-gray-300 mb-16">
+          Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.
+        </p>
 
-          <div className="grid sm:grid-cols-3 gap-10 max-w-5xl mx-auto">
-            {[
-              {
-                number: "01",
-                title: "Surf Medipulse Website",
-                desc: "Search our site to explore the best facilities and services we offer.",
-              },
-              {
-                number: "02",
-                title: "Expert Treatment",
-                desc: "Receive expert care from experienced professionals for faster recovery.",
-              },
-              {
-                number: "03",
-                title: "Book an Appointment",
-                desc: "Schedule an appointment online to connect with our specialists.",
-              },
-            ].map((step, i) => (
-              <div key={i} className="text-center">
-                <div className="flex justify-center mb-4">
-                  <div className="w-12 h-1 bg-red-600 rounded-full"></div>
-                </div>
-                <p className="text-red-600 text-sm font-bold mb-4">{step.number}</p>
-                <div className="flex justify-center mb-6">
-                  <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center">
-                    <span className="text-2xl">❤️</span>
-                  </div>
-                </div>
-                <h5 className="text-lg font-bold text-[#0891b2] mb-3 uppercase">
-                  {safeText(step.title)}
-                </h5>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {safeText(step.desc)}
-                </p>
+        {/* Features Grid */}
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left">
+          {[
+            { icon: <FaUsers />, title: "Worldwide Clients" },
+            { icon: <FaGift />, title: "Special Discounts" },
+            { icon: <FaTag />, title: "Seasonal Offers" },
+            { icon: <FaGlobe />, title: "International Supply" },
+            { icon: <FaLeaf />, title: "Eco Friendly" },
+            { icon: <FaCog />, title: "24/7 Support" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center space-x-5">
+              <div className="bg-[#0891b2] p-4 rounded-lg text-white text-3xl flex items-center justify-center w-14 h-14">
+                {item.icon}
               </div>
-            ))}
-          </div>
+              <h4 className="text-[#b52228] font-semibold text-lg">
+                {item.title}
+              </h4>
+            </div>
+          ))}
         </div>
       </div>
- {/* Section 2: Heart Care Step by Step end */}
+    </section>
+ {/* Section 2: section two end */}
 
       {/* Section 3: Progress Bars */}
       <div className="bg-slate-50 py-20 px-4 sm:px-6 lg:px-8">
@@ -288,13 +269,13 @@ const AboutUs = () => {
   {/* Section 4: teams secton end */}
 
      {/* Section 5: Info Banner */}
-        <section className="bg-[#b52228] py-5 md:py-6 px-16">
-      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center text-white">
+      <section className="bg-[#b52228] py-5 md:py-6 px-16">
+        <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center text-white">
         
         {/* Column 1 */}
         <div className="flex flex-col items-center justify-center py-6 px-4">
-          <div className="flex items-center gap-3 text-center">
-          <FaMapMarkerAlt className="text-2xl md:text-3xl" />
+          <div className="flex items-center gap-4 text-center">
+           <FaMapMarkerAlt className="text-4xl md:text-5xl flex-shrink-0" />
             <span className="text-base md:text-lg font-semibold tracking-wide uppercase">
               402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
             </span>
