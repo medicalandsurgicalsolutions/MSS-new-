@@ -64,16 +64,16 @@ const AboutUs = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center">
               {[
-                { number: "1100+", label: "HAPPY CUSTOMERS" },
-                { number: "1500+", label: "PREMIUM PRODUCTS" },
-                { number: "150+", label: "CUSTOMER TEAM" },
+                { number: "11,000+", label: "HAPPY CUSTOMERS" },
+                { number: "15,000+", label: "PREMIUM PRODUCTS" },
+                { number: "150+", label: "SUPPORT TEAM" },
                 { number: "750+", label: "SUPPORT TEAM" },
               ].map((item, i) => (
                 <div
                   key={i}
                   className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg"
                 >
-                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1">
+                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 hover:text-[#b52228] transition-colors duration-300">
                     {item.number}
                   </h4>
                   <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase">
