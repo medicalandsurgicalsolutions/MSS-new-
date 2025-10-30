@@ -107,11 +107,11 @@ const AboutUs = () => {
        <section className=" bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
         {/* Heading */}
-        <h2 className="text-4xl lg:text-5xl font-bold text-white mb-3">
-          A record-breaking discovery
+        <h2 className="text-4xl lg:text-5xl font-bold text-[#b52228] mb-3">
+         Medical & Surgical Solutions –
         </h2>
-        <p className="text-gray-300 mb-16">
-          Dolor sed viverra ipsum nunc aliquet bibendum enim facilisis gravida.
+        <p className="text-[#0891b2] mb-16">
+         India’s #1 Online Platform for Medical Equipment, Surgical Instruments, and Healthcare Products.
         </p>
 
         {/* Features Grid */}
@@ -125,7 +125,7 @@ const AboutUs = () => {
             { icon: <FaCog />, title: "24/7 Support" },
           ].map((item, i) => (
             <div key={i} className="flex items-center space-x-5">
-              <div className="bg-[#0891b2] p-4 rounded-lg text-white text-3xl flex items-center justify-center w-14 h-14">
+              <div className="bg-[#0891b2] text-white rounded-xl shadow-md flex items-center gap-5 py-8 px-16 transition-all duration-300 hover:bg-[#ffffff]">
                 {item.icon}
               </div>
               <h4 className="text-[#b52228] font-semibold text-lg">
