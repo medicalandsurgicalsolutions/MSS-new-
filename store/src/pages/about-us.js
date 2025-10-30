@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { useInView } from "react-intersection-observer"
 
 // internal imports
 import Layout from "@layout/Layout";
@@ -39,7 +38,7 @@ const AboutUs = () => {
       />
 
       {/* Section 1: About Section */}
-       <div className="bg-slate-50">
+      <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
@@ -66,12 +65,22 @@ const AboutUs = () => {
             {/* Stats */}
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center">
               {[
-                { number: 11000, label: "HAPPY CUSTOMERS" },
-                { number: 15000, label: "PREMIUM PRODUCTS" },
-                { number: 150, label: "SUPPORT TEAM" },
-                { number: 750, label: "TRUSTED PARTNERS" },
+                { number: "11,000+", label: "HAPPY CUSTOMERS" },
+                { number: "15,000+", label: "PREMIUM PRODUCTS" },
+                { number: "150+", label: "SUPPORT TEAM" },
+                { number: "750+", label: "GLOBAL CLIENTS" },
               ].map((item, i) => (
-                <CounterCard key={i} target={item.number} label={item.label} />
+                <div
+                  key={i}
+                  className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg"
+                >
+                  <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 hover:text-[#0891b2] transition-colors duration-300">
+                    {item.number}
+                  </h4>
+                  <p className="text-[10px] sm:text-xs hover:text-[#0891b2] transition-colors duration-300 font-bold tracking-wide uppercase">
+                    {item.label}
+                  </p>
+                </div>
               ))}
             </div>
 
@@ -227,14 +236,14 @@ const AboutUs = () => {
       {/* Section 5: Info Banner */}
       <section className="bg-[#b52228] py-10 px-6 sm:px-10 lg:px-16 text-white">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center">
-
-           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
+          <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
             <div className="flex items-center gap-2 sm:gap-3">
               <FaMapMarkerAlt className="text-xl sm:text-2xl md:text-3xl" />
               <span className="text-sm sm:text-base font-semibold uppercase">Location</span>
             </div>
-            <span className="text-xs sm:text-sm md:text-base font-medium"> 402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 
-                (India)</span>
+            <span className="text-xs sm:text-sm md:text-base font-medium">
+              402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
@@ -255,46 +264,6 @@ const AboutUs = () => {
         </div>
       </section>
     </Layout>
-  );
-};
-
-/* ------------------------------
-   Counter Component with Animation
------------------------------- */
-const CounterCard = ({ target, label }) => {
-  const [count, setCount] = useState(0);
-  const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.4 });
-
-  useEffect(() => {
-    if (inView) {
-      let start = 0;
-      const duration = 2000; // total duration (2 seconds)
-      const stepTime = 16; // ~60fps
-      const increment = target / (duration / stepTime);
-
-      const counter = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-          start = target;
-          clearInterval(counter);
-        }
-        setCount(Math.floor(start));
-      }, stepTime);
-    }
-  }, [inView, target]);
-
-  return (
-    <div
-      ref={ref}
-      className="bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg group transition-all duration-300 hover:bg-slate-800"
-    >
-      <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 text-[#0891b2] group-hover:text-[#b52228] transition-colors duration-300">
-        {count.toLocaleString()}+
-      </h4>
-      <p className="text-[10px] sm:text-xs text-white group-hover:text-[#0891b2] transition-colors duration-300 font-bold tracking-wide uppercase">
-        {label}
-      </p>
-    </div>
   );
 };
 
