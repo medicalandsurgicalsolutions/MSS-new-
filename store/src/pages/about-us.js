@@ -126,7 +126,7 @@ const AboutUs = () => {
           ].map((item, i) => (
             <div
               key={i}
-              className="flex items-center gap-4 group transition-all duration-300 p-12 rounded-xl hover:bg-gray-50"
+              className="flex items-center gap-4 group transition-all duration-300 p-8 rounded-xl hover:bg-gray-50"
             >
               {/* Icon with border box */}
               <div className="w-14 h-14 flex items-center justify-center border-2 border-[#0891b2] rounded-lg text-black text-3xl group-hover:border-[#b52228] transition-colors duration-300">
