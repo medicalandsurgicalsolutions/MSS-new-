@@ -104,7 +104,7 @@ const AboutUs = () => {
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-16">
-            <p className="text-[#0891b2] text-sm font-semibold uppercase tracking-widest mb-2">
+            <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
               Cardiology Steps
             </p>
             <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
