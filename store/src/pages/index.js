@@ -269,10 +269,10 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
           <div className="bg-white py-12">
             <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: <FaTruck />, title: "FREE & FAST SHIPPING", desc: "Orders All Over $100" },
-                { icon: <FaMoneyBillWave />, title: "MONEY BACK GUARANTEE", desc: "With a 30 Day Minimum" },
-                { icon: <FaShieldAlt />, title: "ALL SECURE PAYMENT", desc: "Up to 12 months installments" },
-                { icon: <FaPercent />, title: "SPECIAL OFFER", desc: "Up to 12 months installments" },
+                { icon: <FaTruck />, title: "WORLDWIDE SHIPPING"},
+                { icon: <FaMoneyBillWave />, title: "SECURE PAYMENTS" },
+                { icon: <FaShieldAlt />, title: "ONLINE CUSTOMER SUPPORT" },
+                { icon: <FaPercent />, title: "SPECIAL OFFERS"},
               ].map((item, idx) => (
                 <div
                   key={idx}
