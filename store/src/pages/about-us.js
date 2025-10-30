@@ -99,6 +99,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+      {/* Section 1: About Section end */}
 
       {/* Section 2: Heart Care Step by Step */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
@@ -153,6 +154,7 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+ {/* Section 2: Heart Care Step by Step end */}
 
       {/* Section 3: Progress Bars */}
       <div className="bg-slate-50 py-20 px-4 sm:px-6 lg:px-8">
@@ -207,8 +209,9 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+ {/* Section 3: Progress Bars end */}
 
-      {/* Section 4: Team Section */}
+      {/* Section 4: Team Section start */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-16">
@@ -281,6 +284,95 @@ const AboutUs = () => {
           </div>
         </div>
       </div>
+  {/* Section 4: teams secton end */}
+
+     {/* Section 5: Info Banner */}
+      <section className="bg-[#b52228] py-10 md:py-14">
+        <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center text-white">
+          {/* Column 1 */}
+          <div className="flex flex-col items-center justify-center py-6 px-4">
+            <div className="flex items-center gap-3">
+              <span className="text-lg md:text-xl font-extrabold tracking-wide uppercase">
+                402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
+              </span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8 md:w-10 md:h-10"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5 9 6.343 9 8s1.343 3 3 3z"
+                />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 22s8-6.5 8-13a8 8 0 10-16 0c0 6.5 8 13 8 13z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          {/* Column 2 */}
+          <div className="flex flex-col items-center justify-center py-6 px-4">
+            <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-3">
+                <span className="text-lg md:text-xl font-extrabold uppercase">
+                 Call Us Now 
+                </span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-8 h-8 md:w-10 md:h-10"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.517 4.55a1 1 0 01-.272.987l-2.12 2.12a16 16 0 006.364 6.364l2.12-2.12a1 1 0 01.987-.272l4.55 1.517a1 1 0 01.684.948V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                  />
+                </svg>
+              </div>
+              <span className="text-sm md:text-base font-medium mt-1">
+                +91 9643344588
+              </span>
+            </div>
+          </div>
+
+          {/* Column 3 */}
+          <div className="flex flex-col items-center justify-center py-6 px-4">
+            <div className="flex items-center gap-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-8 h-8 md:w-10 md:h-10"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M20.24 8.24a6 6 0 10-8.48 8.48L12 18l.24-.24a6 6 0 008.48-8.48z"
+                />
+              </svg>
+              <span className="text-lg md:text-xl font-extrabold uppercase">
+                24x7 Our Help Line:
+              </span>
+            </div>
+              <span className="text-sm md:text-base font-medium mt-1">
+                +91 9643344588
+              </span>
+          </div>
+        </div>
+      </section>
+      {/*  Section 5: Info Banner end */}
     </Layout>
   );
 };
