@@ -104,7 +104,7 @@ const AboutUs = () => {
       {/* Section 1: About Section end */}
 
       {/* Section 2: section two */}
-     <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+    <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto text-center">
         {/* Heading */}
         <h2 className="text-4xl lg:text-5xl font-bold text-[#b52228] mb-3">
@@ -115,7 +115,7 @@ const AboutUs = () => {
         </p>
 
         {/* Features Grid */}
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-10 text-left p-12">
           {[
             { icon: <FaUsers />, title: "Worldwide Clients" },
             { icon: <FaGift />, title: "Special Discounts" },
@@ -128,8 +128,10 @@ const AboutUs = () => {
               key={i}
               className="flex items-center gap-4 group transition-all duration-300"
             >
-              {/* Icon */}
-              <div className="text-black text-3xl">{item.icon}</div>
+              {/* Icon with border box */}
+              <div className="w-14 h-14 flex items-center justify-center border-2 border-[#0891b2] rounded-lg text-black text-3xl group-hover:border-[#b52228] transition-colors duration-300">
+                {item.icon}
+              </div>
 
               {/* Text */}
               <h4 className="text-[#0891b2] font-semibold text-lg group-hover:text-[#b52228] transition-colors duration-300">
