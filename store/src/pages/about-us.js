@@ -11,23 +11,35 @@ const AboutUs = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
 
-  // ✅ Handle loading & error
+  // ✅ Prevent rendering object instead of string
+  const safeText = (val) => {
+    if (!val) return "";
+    if (typeof val === "string") return val;
+    if (typeof val === "object") {
+      // handle translation objects like {en: "...", de: "..."}
+      return val.en || Object.values(val)[0] || "";
+    }
+    return String(val);
+  };
+
+  // ✅ Handle loading and errors safely
   if (loading) return <CMSkeleton />;
   if (error) return <div>Error loading About Us page.</div>;
   if (!storeCustomizationSetting) return null;
+
+  const about = storeCustomizationSetting?.about_us || {};
 
   return (
     <Layout
       title="Buy Surgical Instruments & Products in Bulk | Medical & Surgical Solutions"
       description="Buy top-quality surgical instruments and medical products in bulk from Medical & Surgical Solutions. Trusted by hospitals and clinics for reliable, sterile, and affordable healthcare supplies."
     >
-      {/* Page Header */}
       <PageHeader
-        headerBg={storeCustomizationSetting?.about_us?.header_bg}
-        title={showingTranslateValue(storeCustomizationSetting?.about_us?.title)}
+        headerBg={about?.header_bg}
+        title={safeText(showingTranslateValue(about?.title))}
       />
 
-      {/* Section 1: About Intro + Stats */}
+      {/* Section 1: About Section */}
       <div className="bg-slate-50">
         <div className="max-w-screen-xl mx-auto py-20 px-4 sm:px-6 lg:px-8">
           {/* Top: Label, Heading, and Description */}
@@ -36,16 +48,16 @@ const AboutUs = () => {
               <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
                 About Medical & Surgical Solutions
               </p>
-              <h2 className="text-3xl lg:text-4xl font-bold text-[#0891b2] text-slate-900 mb-6 leading-tight">
+              <h2 className="text-3xl lg:text-4xl font-bold text-[#0891b2] mb-6 leading-tight">
                 OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
               </h2>
             </div>
             <div>
               <p className="text-slate-600 text-base leading-relaxed pt-5">
-                Medical & Surgical Solutions delivers trusted, high-quality medical equipment and
-                products to healthcare professionals. Our innovative range ensures precision,
-                reliability, and safety, empowering excellence in patient care across hospitals and
-                institutions.
+                Medical & Surgical Solutions delivers trusted, high-quality medical
+                equipment and products to healthcare professionals. Our innovative
+                range ensures precision, reliability, and safety, empowering
+                excellence in patient care across hospitals and institutions.
               </p>
             </div>
           </div>
@@ -76,7 +88,7 @@ const AboutUs = () => {
               {/* Right: Image */}
               <div className="flex justify-end">
                 <Image
-                  src={storeCustomizationSetting?.about_us?.content_right_img || "/about-us.jpg"}
+                  src={about?.content_right_img || "/about-us.jpg"}
                   alt="About our company"
                   width={600}
                   height={500}
@@ -95,7 +107,7 @@ const AboutUs = () => {
             <p className="text-[#0891b2] text-sm font-semibold uppercase tracking-widest mb-2">
               Cardiology Steps
             </p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] text-slate-900 mb-4 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
               HEART CARE CARDIOLOGY
               <br />
               STEP BY STEP
@@ -130,8 +142,12 @@ const AboutUs = () => {
                     <span className="text-2xl">❤️</span>
                   </div>
                 </div>
-                <h5 className="text-lg font-bold text-slate-900 mb-3 uppercase">{step.title}</h5>
-                <p className="text-sm text-slate-600 leading-relaxed">{step.desc}</p>
+                <h5 className="text-lg font-bold text-slate-900 mb-3 uppercase">
+                  {safeText(step.title)}
+                </h5>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {safeText(step.desc)}
+                </p>
               </div>
             ))}
           </div>
@@ -147,12 +163,12 @@ const AboutUs = () => {
               <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
                 Trust Medipulse
               </p>
-              <h3 className="text-4xl lg:text-5xl font-bold text-[#0891b2] text-slate-900 mb-6 leading-tight">
+              <h3 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-6 leading-tight">
                 TRUST MEDIPULSE FOR YOUR LOVED ONES
               </h3>
               <p className="text-slate-600 text-base leading-relaxed mb-10">
-                Medipulse has established a reputation for providing excellent healthcare with
-                advanced surgical and rehabilitation support.
+                Medipulse has established a reputation for providing excellent healthcare
+                with advanced surgical and rehabilitation support.
               </p>
 
               <div className="space-y-6">
@@ -181,10 +197,7 @@ const AboutUs = () => {
             {/* Right Image */}
             <div className="flex justify-center">
               <Image
-                src={
-                  storeCustomizationSetting?.about_us?.content_middle_Img ||
-                  "/about-banner.jpg"
-                }
+                src={about?.content_middle_Img || "/about-banner.jpg"}
                 alt="Company banner"
                 width={500}
                 height={400}
@@ -195,14 +208,14 @@ const AboutUs = () => {
         </div>
       </div>
 
-      {/* Section 4: Professional Team */}
+      {/* Section 4: Team Section */}
       <div className="bg-white py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
               PROFESSIONAL TEAM
             </p>
-            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] text-slate-900 mb-4 leading-tight">
+            <h2 className="text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4 leading-tight">
               MEET OUR PROFESSIONAL DEDICATED
               <br />
               EXPERT TEAM
@@ -212,34 +225,34 @@ const AboutUs = () => {
           <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
             {[
               {
-                img: storeCustomizationSetting?.about_us?.founder_one_img || "/team/team-1.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_one_name,
-                role: storeCustomizationSetting?.about_us?.founder_one_sub,
+                img: about?.founder_one_img || "/team/team-1.jpg",
+                name: about?.founder_one_name,
+                role: about?.founder_one_sub,
               },
               {
-                img: storeCustomizationSetting?.about_us?.founder_two_img || "/team/team-2.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_two_name,
-                role: storeCustomizationSetting?.about_us?.founder_two_sub,
+                img: about?.founder_two_img || "/team/team-2.jpg",
+                name: about?.founder_two_name,
+                role: about?.founder_two_sub,
               },
               {
-                img: storeCustomizationSetting?.about_us?.founder_three_img || "/team/team-3.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_three_name,
-                role: storeCustomizationSetting?.about_us?.founder_three_sub,
+                img: about?.founder_three_img || "/team/team-3.jpg",
+                name: about?.founder_three_name,
+                role: about?.founder_three_sub,
               },
               {
-                img: storeCustomizationSetting?.about_us?.founder_four_img || "/team/team-4.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_four_name,
-                role: storeCustomizationSetting?.about_us?.founder_four_sub,
+                img: about?.founder_four_img || "/team/team-4.jpg",
+                name: about?.founder_four_name,
+                role: about?.founder_four_sub,
               },
               {
-                img: storeCustomizationSetting?.about_us?.founder_five_img || "/team/team-5.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_five_name,
-                role: storeCustomizationSetting?.about_us?.founder_five_sub,
+                img: about?.founder_five_img || "/team/team-5.jpg",
+                name: about?.founder_five_name,
+                role: about?.founder_five_sub,
               },
               {
-                img: storeCustomizationSetting?.about_us?.founder_six_img || "/team/team-6.jpg",
-                name: storeCustomizationSetting?.about_us?.founder_six_name,
-                role: storeCustomizationSetting?.about_us?.founder_six_sub,
+                img: about?.founder_six_img || "/team/team-6.jpg",
+                name: about?.founder_six_name,
+                role: about?.founder_six_sub,
               },
             ].map((member, i) => (
               <div
@@ -249,18 +262,18 @@ const AboutUs = () => {
                 <div className="aspect-square bg-slate-200 flex items-center justify-center">
                   <Image
                     src={member.img}
-                    alt={member.name || "Team Member"}
+                    alt={safeText(member.name) || "Team Member"}
                     width={300}
                     height={300}
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="p-5 text-center">
-                  <h5 className="text-base font-bold text-[#0891b2] text-slate-900 mb-1">
-                    {member.name || "Team Member"}
+                  <h5 className="text-base font-bold text-[#0891b2] mb-1">
+                    {safeText(member.name) || "Team Member"}
                   </h5>
                   <p className="text-sm text-[#b52228]">
-                    {member.role || "Specialist"}
+                    {safeText(member.role) || "Specialist"}
                   </p>
                 </div>
               </div>
