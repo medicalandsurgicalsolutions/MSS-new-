@@ -125,7 +125,7 @@ const AboutUs = () => {
             { icon: <FaCog />, title: "24/7 Support" },
           ].map((item, i) => (
             <div key={i} className="flex items-center space-x-5">
-              <div className="bg-[#0891b2] text-white rounded-xl shadow-md flex items-center gap-5 py-8 px-16 transition-all duration-300 hover:bg-[#ffffff]">
+              <div className="bg-[#0891b2] p-4 rounded-lg text-white text-3xl flex items-center justify-center w-14 h-14">
                 {item.icon}
               </div>
               <h4 className="text-[#b52228] font-semibold text-lg">
