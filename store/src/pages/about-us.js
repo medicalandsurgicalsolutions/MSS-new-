@@ -288,18 +288,16 @@ const AboutUs = () => {
   {/* Section 4: teams secton end */}
 
      {/* Section 5: Info Banner */}
-      <section className="bg-[#b52228] py-5 md:py-6">
-      <div className="container mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center text-white">
+        <section className="bg-[#b52228] py-5 md:py-6 px-16">
+      <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center text-white">
         
         {/* Column 1 */}
         <div className="flex flex-col items-center justify-center py-6 px-4">
           <div className="flex items-center gap-3 text-center">
-           <FaMapMarkerAlt className="text-4xl md:text-4xl" />  
-            <span className="text-base md:text-lg font-medium tracking-wide uppercase">
-              402, Ground Floor, Near Bagga Link, Patparganj Industrial Area,
-               Delhi-110092 (India)
+          <FaMapMarkerAlt className="text-2xl md:text-3xl" />
+            <span className="text-base md:text-lg font-semibold tracking-wide uppercase">
+              402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 (India)
             </span>
-         
           </div>
         </div>
 
@@ -307,10 +305,11 @@ const AboutUs = () => {
         <div className="flex flex-col items-center justify-center py-6 px-4">
           <div className="flex flex-col items-center gap-2">
             <div className="flex items-center gap-3">
-             <FaPhoneAlt className="text-2xl md:text-3xl" />
+           <FaPhoneAlt className="text-2xl md:text-3xl" />
               <span className="text-base md:text-lg font-semibold uppercase">
                 Call Us Now
               </span>
+             
             </div>
             <span className="text-sm md:text-base font-medium mt-1">
               +91 9643344588
@@ -332,6 +331,7 @@ const AboutUs = () => {
         </div>
       </div>
     </section>
+
       {/*  Section 5: Info Banner end */}
     </Layout>
   );
