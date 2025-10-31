@@ -65,160 +65,134 @@ const ContactUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.contact_us?.title)}
       />
 
-      {/* 🌈 Next-Gen Contact Section */}
-      <section className="relative overflow-hidden">
-        {/* Background Glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-cyan-100" />
-        <div className="absolute w-[600px] h-[600px] bg-cyan-200/40 rounded-full blur-3xl -top-40 -left-40" />
-        <div className="absolute w-[700px] h-[700px] bg-cyan-400/30 rounded-full blur-3xl bottom-0 right-0" />
+     {/* 🌈 Modern Split Hero Contact Section */}
+<section className="relative overflow-hidden py-20 bg-gradient-to-br from-cyan-50 via-white to-cyan-100">
+  {/* Background Orbs */}
+  <div className="absolute w-[500px] h-[500px] bg-cyan-300/20 rounded-full blur-3xl -top-32 -left-40"></div>
+  <div className="absolute w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-3xl bottom-0 right-0"></div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-20 flex flex-col lg:flex-row items-center gap-16">
-          {/* Left side — Form & Info */}
-          <div className="flex-1 w-full">
-            <div className="mb-10">
-              <h2 className="text-5xl font-extrabold tracking-tight text-gray-800 leading-tight">
-                Get in{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-700">
-                  Touch With Us
-                </span>
-              </h2>
-              <p className="mt-4 text-gray-600 text-lg max-w-md">
-                We’d love to hear from you! Whether you’re curious about our
-                products, need a quote, or want support — we’re ready to answer
-                all your questions.
-              </p>
-            </div>
+  <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 flex flex-col-reverse lg:flex-row items-center gap-16">
+    
+    {/* ✉️ Left side — Contact Form */}
+    <div className="flex-1 w-full">
+      <h2 className="text-5xl font-extrabold text-gray-800 leading-tight mb-6">
+        Let’s{" "}
+        <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-700">
+          Connect
+        </span>
+      </h2>
+      <p className="text-gray-600 text-lg mb-10 max-w-md">
+        Have a question, need help, or want to collaborate?  
+        Send us a message — we’re always ready to assist.
+      </p>
 
-            {/* Floating contact badges */}
-            <div className="flex items-center gap-4 mb-10">
-              <a
-                href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
-              >
-                <FiMail className="text-cyan-600 text-xl" />
-                <span className="text-gray-700 text-sm">
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.contact_us?.email_box_email
-                  )}
-                </span>
-              </a>
-              <a
-                href={`tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
-              >
-                <FiBell className="text-cyan-600 text-xl" />
-                <span className="text-gray-700 text-sm">
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.contact_us?.call_box_phone
-                  )}
-                </span>
-              </a>
-            </div>
-
-            {/* Glass Form Card */}
-            <div className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-cyan-100">
-              <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-name")}
-                      name="name"
-                      type="text"
-                      placeholder={t("common:contact-page-form-plaholder-name")}
-                    />
-                    <Error errorName={errors.name} />
-                  </div>
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-email")}
-                      name="email"
-                      type="email"
-                      placeholder={t("common:contact-page-form-plaholder-email")}
-                    />
-                    <Error errorName={errors.email} />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={"Enter Number"}
-                      name="number"
-                      type="number"
-                      placeholder={"Enter Number"}
-                    />
-                    <Error errorName={errors.number} />
-                  </div>
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-subject")}
-                      name="subject"
-                      type="text"
-                      placeholder={t("common:contact-page-form-plaholder-subject")}
-                    />
-                    <Error errorName={errors.subject} />
-                  </div>
-                </div>
-
-                <div>
-                  <Label label={t("common:contact-page-form-input-message")} />
-                  <textarea
-                    {...register("message", { required: "Message is required!" })}
-                    rows="4"
-                    className="px-4 py-3 w-full rounded-lg text-sm border border-gray-300 bg-gray-50 focus:bg-white focus:border-cyan-500 transition-all duration-300 outline-none"
-                    placeholder={t("common:contact-page-form-plaholder-message")}
-                  ></textarea>
-                  <Error errorName={errors.message} />
-                </div>
-
-                <div>
-                  {mailLoading ? (
-                    <button
-                      disabled
-                      className="w-full flex items-center justify-center py-3 rounded-lg bg-cyan-500 text-white font-medium shadow-md"
-                    >
-                      <img
-                        src="/loader/spinner.gif"
-                        alt="Loading"
-                        width={20}
-                        height={10}
-                        className="mr-2"
-                      />
-                      Processing...
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow-lg hover:shadow-cyan-300/60 hover:scale-[1.02] transition-all duration-300"
-                    >
-                      {t("common:contact-page-form-send-btn")}
-                    </button>
-                  )}
-                </div>
-              </form>
-            </div>
-          </div>
-
-          {/* Right side — Background Blended Illustration */}
-          <div className="flex-1 hidden lg:flex justify-center relative">
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
-              <Image
-                width={700}
-                height={700}
-                src={
-                  storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-                  "/contact-us.png"
-                }
-                alt="Contact Illustration"
-                className="absolute right-0 top-1/2 -translate-y-1/2 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
+      <div className="bg-white/80 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-cyan-100">
+        <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <InputArea
+                register={register}
+                label={t("common:contact-page-form-input-name")}
+                name="name"
+                type="text"
+                placeholder={t("common:contact-page-form-plaholder-name")}
               />
+              <Error errorName={errors.name} />
+            </div>
+            <div>
+              <InputArea
+                register={register}
+                label={t("common:contact-page-form-input-email")}
+                name="email"
+                type="email"
+                placeholder={t("common:contact-page-form-plaholder-email")}
+              />
+              <Error errorName={errors.email} />
+            </div>
           </div>
-        </div>
-      </section>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <InputArea
+                register={register}
+                label={"Enter Number"}
+                name="number"
+                type="number"
+                placeholder={"Enter Number"}
+              />
+              <Error errorName={errors.number} />
+            </div>
+            <div>
+              <InputArea
+                register={register}
+                label={t("common:contact-page-form-input-subject")}
+                name="subject"
+                type="text"
+                placeholder={t("common:contact-page-form-plaholder-subject")}
+              />
+              <Error errorName={errors.subject} />
+            </div>
+          </div>
+
+          <div>
+            <Label label={t("common:contact-page-form-input-message")} />
+            <textarea
+              {...register("message", { required: "Message is required!" })}
+              rows="4"
+              className="px-4 py-3 w-full rounded-lg text-sm border border-gray-300 bg-gray-50 focus:bg-white focus:border-cyan-500 transition-all duration-300 outline-none"
+              placeholder={t("common:contact-page-form-plaholder-message")}
+            ></textarea>
+            <Error errorName={errors.message} />
+          </div>
+
+          <div>
+            {mailLoading ? (
+              <button
+                disabled
+                className="w-full flex items-center justify-center py-3 rounded-lg bg-cyan-500 text-white font-medium shadow-md"
+              >
+                <img
+                  src="/loader/spinner.gif"
+                  alt="Loading"
+                  width={20}
+                  height={10}
+                  className="mr-2"
+                />
+                Processing...
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow-lg hover:shadow-cyan-300/60 hover:scale-[1.02] transition-all duration-300"
+              >
+                {t("common:contact-page-form-send-btn")}
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {/* 🎨 Right side — Floating Background Illustration */}
+    <div className="flex-1 relative w-full h-[600px] flex items-center justify-center">
+      {/* Soft Gradient Orb */}
+      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
+
+      {/* Main Image */}
+      <Image
+        width={750}
+        height={750}
+        src={
+          storeCustomizationSetting?.contact_us?.midLeft_col_img ||
+          "/contact-us.png"
+        }
+        alt="Contact Illustration"
+        className="absolute right-0 top-1/2 -translate-y-1/2 w-[700px] h-auto object-contain opacity-95 hover:scale-105 transition-transform duration-700"
+      />
+    </div>
+  </div>
+</section>
+
 
       {/* ✅ Contact Info Cards */}
       <div className="max-w-screen-2xl mx-auto px-6 sm:px-10 lg:px-16 mt-20 mb-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
