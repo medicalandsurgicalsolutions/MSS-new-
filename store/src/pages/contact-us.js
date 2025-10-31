@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Mail, Phone, MapPin, ArrowRight, CheckCircle2, Sparkles } from "lucide-react"
 
-const ContactUs = () => {
+export default function ContactUs() {
   const [mailLoading, setMailLoading] = useState(false)
   const [loading, setLoading] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -21,7 +21,7 @@ const ContactUs = () => {
     formState: { errors },
   } = useForm()
 
-  const submitHandler = async (data: any) => {
+  const submitHandler = async (data) => {
     setMailLoading(true)
     try {
       await new Promise((resolve) => setTimeout(resolve, 1000))
