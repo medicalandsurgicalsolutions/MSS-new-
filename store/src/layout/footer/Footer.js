@@ -184,7 +184,7 @@ const Footer = () => {
                   mb-14 md:mb-6 lg:mb-0">
     <p>© {new Date().getFullYear()} All rights reserved by Medical & Surgical Solutions</p>
     <Image
-      src="/payment-method/razorpay.png"
+      src="/payment-method/razorpay_logo.png"
       alt="Secure Payment"
       width={220}
       height={40}
