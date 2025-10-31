@@ -220,9 +220,7 @@ const ContactUs = () => {
               className="absolute right-0 top-10 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
             />
           </div>
-          </div>
-        </div>
-      </section>
+         
 
       {/* ✅ Keep contact info cards below */}
       <div className="max-w-screen-2xl mx-auto px-6 sm:px-10 lg:px-16 mt-20 mb-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
