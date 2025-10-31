@@ -206,17 +206,16 @@ const ContactUs = () => {
           {/* Right side — Background Blended Illustration */}
           <div className="flex-1 hidden lg:flex justify-center relative">
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
-
-            <Image
-              width={700}
-              height={700}
-              src={
-                storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-                "/contact-us.png"
-              }
-              alt="Contact Illustration"
-              className="absolute right-0 top-10 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
-            />
+              <Image
+                width={700}
+                height={700}
+                src={
+                  storeCustomizationSetting?.contact_us?.midLeft_col_img ||
+                  "/contact-us.png"
+                }
+                alt="Contact Illustration"
+                className="absolute right-0 top-1/2 -translate-y-1/2 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
+              />
           </div>
         </div>
       </section>
