@@ -203,21 +203,23 @@ const ContactUs = () => {
             </div>
           </div>
 
-          {/* Right side — Curved visual block */}
+        {/* Right side — Background Blended Illustration */}
           <div className="flex-1 hidden lg:flex justify-center relative">
-            <div className="absolute w-[550px] h-[550px] bg-gradient-to-tr from-cyan-400 to-cyan-200 rounded-full blur-3xl opacity-30 -right-20 top-10" />
-            <div className="relative bg-gradient-to-br from-white/90 to-cyan-50/70 p-8 rounded-[3rem] shadow-2xl overflow-hidden">
-              <Image
-                width={600}
-                height={600}
-                src={
-                  storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-                  "/contact-us.png"
-                }
-                alt="Contact Illustration"
-                className="rounded-2xl hover:scale-105 transition-transform duration-500"
-              />
-            </div>
+            {/* Soft cyan gradient behind image */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
+          
+            {/* Main image as background visual */}
+            <Image
+              width={700}
+              height={700}
+              src={
+                storeCustomizationSetting?.contact_us?.midLeft_col_img ||
+                "/contact-us.png"
+              }
+              alt="Contact Illustration"
+              className="absolute right-0 top-10 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
+            />
+          </div>
           </div>
         </div>
       </section>
