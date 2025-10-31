@@ -68,7 +68,7 @@ const AboutUs = () => {
         {[
           { number: "11,000+", label: "HAPPY CUSTOMERS" },
           { number: "15,000+", label: "PREMIUM PRODUCTS" },
-          { number: "150+", label: "SUPPORT TEAM" },
+          { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
           { number: "750+", label: "GLOBAL CLIENTS" },
         ].map((item, i) => (
           <div
@@ -117,7 +117,7 @@ const AboutUs = () => {
               { icon: <FaTag />, title: "Seasonal Offers" },
               { icon: <FaGlobe />, title: "International Supply" },
               { icon: <FaLeaf />, title: "Eco Friendly" },
-              { icon: <FaCog />, title: "24/7 Support" },
+              { icon: <FaCog />, title: "24/7 Customer Support" },
             ].map((item, i) => (
               <div
                 key={i}
