@@ -65,32 +65,58 @@ const ContactUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.contact_us?.title)}
       />
 
-      {/* ✨ New Creative Contact Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-20">
-        {/* Floating Shapes */}
-        <div className="absolute inset-0 overflow-hidden">
-          <span className="absolute w-72 h-72 bg-cyan-200 rounded-full blur-3xl opacity-30 -top-10 -left-16 animate-pulse" />
-          <span className="absolute w-96 h-96 bg-cyan-300 rounded-full blur-3xl opacity-20 top-40 -right-20 animate-ping" />
-        </div>
+      {/* 🌈 Next-Gen Contact Section */}
+      <section className="relative overflow-hidden">
+        {/* Background Glow */}
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-cyan-100" />
+        <div className="absolute w-[600px] h-[600px] bg-cyan-200/40 rounded-full blur-3xl -top-40 -left-40" />
+        <div className="absolute w-[700px] h-[700px] bg-cyan-400/30 rounded-full blur-3xl bottom-0 right-0" />
 
-        <div className="relative max-w-7xl mx-auto px-6 md:px-10 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-16">
-          {/* Left Column - Text + Form */}
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-20 flex flex-col lg:flex-row items-center gap-16">
+          {/* Left side — Form & Info */}
           <div className="flex-1 w-full">
-            <div className="mb-8">
-              <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 leading-tight">
-                Let’s{" "}
+            <div className="mb-10">
+              <h2 className="text-5xl font-extrabold tracking-tight text-gray-800 leading-tight">
+                Get in{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-700">
-                  Connect & Collaborate
+                  Touch With Us
                 </span>
               </h2>
-              <p className="text-gray-600 mt-4 max-w-md">
-                Got a question or need help? Fill out the form and our team will
-                get back to you shortly. We’d love to hear from you!
+              <p className="mt-4 text-gray-600 text-lg max-w-md">
+                We’d love to hear from you! Whether you’re curious about our
+                products, need a quote, or want support — we’re ready to answer
+                all your questions.
               </p>
             </div>
 
-            {/* Contact Form Card */}
-            <div className="bg-white/80 backdrop-blur-xl rounded-2xl shadow-2xl border border-cyan-100 p-8 md:p-10 hover:shadow-cyan-100/70 transition-all duration-300">
+            {/* Floating contact badges */}
+            <div className="flex items-center gap-4 mb-10">
+              <a
+                href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
+              >
+                <FiMail className="text-cyan-600 text-xl" />
+                <span className="text-gray-700 text-sm">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.contact_us?.email_box_email
+                  )}
+                </span>
+              </a>
+              <a
+                href={`tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
+              >
+                <FiBell className="text-cyan-600 text-xl" />
+                <span className="text-gray-700 text-sm">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.contact_us?.call_box_phone
+                  )}
+                </span>
+              </a>
+            </div>
+
+            {/* Glass Form Card */}
+            <div className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-cyan-100">
               <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -142,7 +168,6 @@ const ContactUs = () => {
                   <Label label={t("common:contact-page-form-input-message")} />
                   <textarea
                     {...register("message", { required: "Message is required!" })}
-                    name="message"
                     rows="4"
                     className="px-4 py-3 w-full rounded-lg text-sm border border-gray-300 bg-gray-50 focus:bg-white focus:border-cyan-500 transition-all duration-300 outline-none"
                     placeholder={t("common:contact-page-form-plaholder-message")}
@@ -154,7 +179,6 @@ const ContactUs = () => {
                   {mailLoading ? (
                     <button
                       disabled
-                      type="submit"
                       className="w-full flex items-center justify-center py-3 rounded-lg bg-cyan-500 text-white font-medium shadow-md"
                     >
                       <img
@@ -169,7 +193,7 @@ const ContactUs = () => {
                   ) : (
                     <button
                       type="submit"
-                      className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow-md hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+                      className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow-lg hover:shadow-cyan-300/60 hover:scale-[1.02] transition-all duration-300"
                     >
                       {t("common:contact-page-form-send-btn")}
                     </button>
@@ -179,26 +203,27 @@ const ContactUs = () => {
             </div>
           </div>
 
-          {/* Right Column - Illustration */}
+          {/* Right side — Curved visual block */}
           <div className="flex-1 hidden lg:flex justify-center relative">
-            <div className="absolute w-80 h-80 bg-cyan-100 rounded-full blur-3xl opacity-40 -top-10 right-10 animate-pulse" />
-            <Image
-              width={600}
-              height={600}
-              src={
-                storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-                "/contact-us.png"
-              }
-              alt="Contact Illustration"
-              className="relative z-10 w-[500px] h-auto drop-shadow-2xl hover:scale-105 transition-transform duration-500"
-            />
+            <div className="absolute w-[550px] h-[550px] bg-gradient-to-tr from-cyan-400 to-cyan-200 rounded-full blur-3xl opacity-30 -right-20 top-10" />
+            <div className="relative bg-gradient-to-br from-white/90 to-cyan-50/70 p-8 rounded-[3rem] shadow-2xl overflow-hidden">
+              <Image
+                width={600}
+                height={600}
+                src={
+                  storeCustomizationSetting?.contact_us?.midLeft_col_img ||
+                  "/contact-us.png"
+                }
+                alt="Contact Illustration"
+                className="rounded-2xl hover:scale-105 transition-transform duration-500"
+              />
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Keep your existing contact info cards below */}
+      {/* ✅ Keep contact info cards below */}
       <div className="max-w-screen-2xl mx-auto px-6 sm:px-10 lg:px-16 mt-20 mb-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {/* Email */}
         <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
           <div className="flex justify-center text-4xl text-cyan-600 mb-4">
             <FiMail />
@@ -218,7 +243,6 @@ const ContactUs = () => {
           </p>
         </div>
 
-        {/* Call */}
         <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
           <div className="flex justify-center text-4xl text-cyan-600 mb-4">
             <FiBell />
@@ -240,7 +264,6 @@ const ContactUs = () => {
           </p>
         </div>
 
-        {/* Address */}
         <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
           <div className="flex justify-center text-4xl text-cyan-600 mb-4">
             <FiMapPin />
