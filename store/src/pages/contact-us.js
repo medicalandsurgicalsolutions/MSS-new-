@@ -17,13 +17,7 @@ import CustomerServices from "@services/CustomerServices";
 const ContactUs = () => {
   const { t } = useTranslation();
   const [mailLoading, setMailLoading] = useState(false);
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm();
-
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const { showingTranslateValue } = useUtilsFunction();
   const { storeCustomizationSetting } = useGetSetting();
 
@@ -35,14 +29,13 @@ const ContactUs = () => {
       subject: data.subject,
       message: data.message,
     };
-
     setMailLoading(true);
     try {
       const res = await CustomerServices.contactSupport(supportData);
-      ["email", "name", "number", "subject", "message"].forEach((f) => setValue(f, ""));
+      ["email", "name", "number", "subject", "message"].forEach(f => setValue(f, ""));
       notifySuccess(res.message);
     } catch (err) {
-      notifyError(err ? err?.response?.data?.message : err?.message);
+      notifyError(err?.response?.data?.message || err?.message);
     } finally {
       setMailLoading(false);
     }
@@ -51,223 +44,129 @@ const ContactUs = () => {
   return (
     <Layout
       title="Contact Medical & Surgical Solutions | Get in Touch"
-      description="Reach out to Medical & Surgical Solutions for inquiries, orders, or support. Trusted supplier of medical and surgical equipment for hospitals and clinics in India."
+      description="Reach out to Medical & Surgical Solutions for inquiries, orders, or support."
     >
       <PageHeader
         headerBg={storeCustomizationSetting?.contact_us?.header_bg}
         title={showingTranslateValue(storeCustomizationSetting?.contact_us?.title)}
       />
 
-      {/* 🌈 Responsive Contact Section */}
-      <section className="relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-cyan-100" />
-        <div className="absolute w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-cyan-200/40 rounded-full blur-3xl -top-40 -left-40" />
-        <div className="absolute w-[500px] md:w-[700px] h-[500px] md:h-[700px] bg-cyan-400/30 rounded-full blur-3xl bottom-0 right-0" />
+      {/* 🌟 Compact Contact Section */}
+      <section className="relative bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-16 lg:py-20">
+        <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
+          
+          {/* Left - Contact Form */}
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
+              Get in <span className="text-cyan-600">Touch</span>
+            </h2>
+            <p className="text-gray-600 mb-8 text-base">
+              We'd love to hear from you! Whether you’re curious about our products or need support, we’re here to help.
+            </p>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-16 md:py-20 flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-16">
-          {/* Left side — form */}
-          <div className="flex-1 w-full">
-            <div className="mb-8 md:mb-10 text-center lg:text-left">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-800 leading-tight">
-                Get in{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-700">
-                  Touch With Us
-                </span>
-              </h2>
-              <p className="mt-4 text-gray-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
-                We’d love to hear from you! Whether you’re curious about our
-                products, need a quote, or want support — we’re ready to answer
-                all your questions.
-              </p>
-            </div>
-
-            {/* Contact badges */}
-            <div className="flex flex-wrap justify-center lg:justify-start items-center gap-3 mb-8 md:mb-10">
-              <a
-                href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition text-sm md:text-base"
-              >
-                <FiMail className="text-cyan-600 text-lg md:text-xl" />
-                <span className="text-gray-700">
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.contact_us?.email_box_email
-                  )}
-                </span>
-              </a>
-              <a
-                href={`tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition text-sm md:text-base"
-              >
-                <FiBell className="text-cyan-600 text-lg md:text-xl" />
-                <span className="text-gray-700">
-                  {showingTranslateValue(
-                    storeCustomizationSetting?.contact_us?.call_box_phone
-                  )}
-                </span>
-              </a>
-            </div>
-
-            {/* Glass form */}
-            <div className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-xl p-6 sm:p-8 md:p-10 border border-cyan-100">
-              <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-name")}
-                      name="name"
-                      type="text"
-                      placeholder={t("common:contact-page-form-plaholder-name")}
-                    />
-                    <Error errorName={errors.name} />
-                  </div>
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-email")}
-                      name="email"
-                      type="email"
-                      placeholder={t("common:contact-page-form-plaholder-email")}
-                    />
-                    <Error errorName={errors.email} />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={"Enter Number"}
-                      name="number"
-                      type="number"
-                      placeholder={"Enter Number"}
-                    />
-                    <Error errorName={errors.number} />
-                  </div>
-                  <div>
-                    <InputArea
-                      register={register}
-                      label={t("common:contact-page-form-input-subject")}
-                      name="subject"
-                      type="text"
-                      placeholder={t("common:contact-page-form-plaholder-subject")}
-                    />
-                    <Error errorName={errors.subject} />
-                  </div>
-                </div>
-
+            <form onSubmit={handleSubmit(submitHandler)} className="bg-white/80 backdrop-blur-lg border border-cyan-100 p-6 rounded-2xl shadow-md space-y-5">
+              <div className="grid md:grid-cols-2 gap-5">
                 <div>
-                  <Label label={t("common:contact-page-form-input-message")} />
-                  <textarea
-                    {...register("message", { required: "Message is required!" })}
-                    rows="4"
-                    className="px-4 py-3 w-full rounded-lg text-sm border border-gray-300 bg-gray-50 focus:bg-white focus:border-cyan-500 transition-all duration-300 outline-none"
-                    placeholder={t("common:contact-page-form-plaholder-message")}
-                  ></textarea>
-                  <Error errorName={errors.message} />
+                  <InputArea register={register} name="name" label="Name" placeholder="Enter your name" />
+                  <Error errorName={errors.name} />
                 </div>
-
                 <div>
-                  {mailLoading ? (
-                    <button
-                      disabled
-                      className="w-full flex items-center justify-center py-3 rounded-lg bg-cyan-500 text-white font-medium shadow-md"
-                    >
-                      <img
-                        src="/loader/spinner.gif"
-                        alt="Loading"
-                        width={20}
-                        height={10}
-                        className="mr-2"
-                      />
-                      Processing...
-                    </button>
-                  ) : (
-                    <button
-                      type="submit"
-                      className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow-lg hover:shadow-cyan-300/60 hover:scale-[1.02] transition-all duration-300"
-                    >
-                      {t("common:contact-page-form-send-btn")}
-                    </button>
-                  )}
+                  <InputArea register={register} name="email" label="Email" type="email" placeholder="Enter your email" />
+                  <Error errorName={errors.email} />
                 </div>
-              </form>
-            </div>
+              </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div>
+                  <InputArea register={register} name="number" label="Phone" type="number" placeholder="Enter number" />
+                  <Error errorName={errors.number} />
+                </div>
+                <div>
+                  <InputArea register={register} name="subject" label="Subject" placeholder="Enter subject" />
+                  <Error errorName={errors.subject} />
+                </div>
+              </div>
+              <div>
+                <Label label="Message" />
+                <textarea
+                  {...register("message", { required: "Message is required!" })}
+                  rows="4"
+                  placeholder="Type your message..."
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-gray-50 focus:bg-white focus:border-cyan-500 transition-all outline-none"
+                ></textarea>
+                <Error errorName={errors.message} />
+              </div>
+
+              <button
+                type="submit"
+                disabled={mailLoading}
+                className="w-full py-3 rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold shadow hover:shadow-cyan-300/60 transition-all"
+              >
+                {mailLoading ? "Processing..." : t("common:contact-page-form-send-btn")}
+              </button>
+            </form>
           </div>
 
-          {/* Right side — image */}
-          <div className="flex-1 flex justify-center relative w-full">
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
+          {/* Right - Image */}
+          <div className="flex justify-center relative">
+            <div className="absolute inset-0 bg-cyan-100/40 rounded-full blur-3xl -z-10"></div>
             <Image
-              width={600}
-              height={600}
-              src={
-                storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-                "/contact-us.png"
-              }
+              width={500}
+              height={500}
+              src={storeCustomizationSetting?.contact_us?.midLeft_col_img || "/contact-us.png"}
               alt="Contact Illustration"
-              className="relative w-[80%] sm:w-[70%] md:w-[90%] lg:w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
+              className="w-[80%] md:w-[90%] h-auto object-contain"
             />
           </div>
         </div>
       </section>
 
-      {/* ✅ Info cards */}
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-16 mt-16 mb-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {[
-    {
-      icon: <FiMail />,
-      title: storeCustomizationSetting?.contact_us?.email_box_title,
-      text: storeCustomizationSetting?.contact_us?.email_box_text,
-      link: `mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`,
-      linkText: storeCustomizationSetting?.contact_us?.email_box_email,
-    },
-    {
-      icon: <FiBell />,
-      title: storeCustomizationSetting?.contact_us?.call_box_title,
-      text: storeCustomizationSetting?.contact_us?.call_box_text,
-      link: `tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`,
-      linkText: storeCustomizationSetting?.contact_us?.call_box_phone,
-    },
-    {
-      icon: <FiMapPin />,
-      title: storeCustomizationSetting?.contact_us?.address_box_title,
-      text: [
-        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one),
-        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two),
-        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three),
-      ]
-        .filter(Boolean) // remove undefined, null, empty values
-        .join("\n"),
-    },
-  ].map((item, idx) => (
-    <div
-      key={idx}
-      className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500"
-    >
-      <div className="flex justify-center text-4xl text-cyan-600 mb-4">
-        {item.icon}
+      {/* Info Cards */}
+      <div className="max-w-6xl mx-auto px-6 mt-14 mb-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+          {
+            icon: <FiMail />,
+            title: storeCustomizationSetting?.contact_us?.email_box_title,
+            text: storeCustomizationSetting?.contact_us?.email_box_text,
+            link: `mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`,
+            linkText: storeCustomizationSetting?.contact_us?.email_box_email,
+          },
+          {
+            icon: <FiBell />,
+            title: storeCustomizationSetting?.contact_us?.call_box_title,
+            text: storeCustomizationSetting?.contact_us?.call_box_text,
+            link: `tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`,
+            linkText: storeCustomizationSetting?.contact_us?.call_box_phone,
+          },
+          {
+            icon: <FiMapPin />,
+            title: storeCustomizationSetting?.contact_us?.address_box_title,
+            text: [
+              showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one),
+              showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two),
+              showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three),
+            ].filter(Boolean).join("\n"),
+          },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="bg-white shadow hover:shadow-lg rounded-2xl p-6 text-center border-t-4 border-cyan-500"
+          >
+            <div className="flex justify-center text-4xl text-cyan-600 mb-3">{item.icon}</div>
+            <h5 className="text-lg font-semibold text-gray-800 mb-1">{showingTranslateValue(item.title)}</h5>
+            {item.link ? (
+              <p className="text-gray-600">
+                <a href={item.link} className="text-cyan-600 font-medium">
+                  {showingTranslateValue(item.linkText)}
+                </a>
+                <br />
+                {showingTranslateValue(item.text)}
+              </p>
+            ) : (
+              <p className="text-gray-600 whitespace-pre-line">{item.text}</p>
+            )}
+          </div>
+        ))}
       </div>
-      <h5 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
-        {showingTranslateValue(item.title)}
-      </h5>
-
-      {item.link ? (
-        <p className="text-gray-600">
-          <a href={item.link} className="text-cyan-600 font-medium">
-            {showingTranslateValue(item.linkText)}
-          </a>
-          <br />
-          {showingTranslateValue(item.text)}
-        </p>
-      ) : (
-        <p className="text-gray-600 whitespace-pre-line">{item.text}</p>
-      )}
-    </div>
-  ))}
-</div>
-
     </Layout>
   );
 };
