@@ -52,10 +52,10 @@ const ContactUs = () => {
 
       {/* 🌟 Contact Section with Google Map */}
       <section className="relative bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-16 lg:py-20">
-        <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-stretch">
+        <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-start">
           
           {/* Left - Contact Form */}
-          <div>
+          <div ref={formRef}>
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-3">
               Get in <span className="text-cyan-600">Touch</span>
             </h2>
@@ -65,7 +65,7 @@ const ContactUs = () => {
 
             <form
               onSubmit={handleSubmit(submitHandler)}
-              className="bg-white/80 backdrop-blur-lg border border-cyan-100 p-6 rounded-2xl shadow-md space-y-5 h-full"
+              className="bg-white/80 backdrop-blur-lg border border-cyan-100 p-6 rounded-2xl shadow-md space-y-5"
             >
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
@@ -110,24 +110,20 @@ const ContactUs = () => {
             </form>
           </div>
 
-          {/* Right - Google Map */}
-          <div className="flex justify-center items-stretch h-full">
-            <div className="w-full h-full rounded-2xl overflow-hidden shadow-md border border-cyan-100">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1750.8290729681328!2d77.30574219839478!3d28.640006099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb3f3d95f0bb%3A0xd06142fa0b7860e5!2sMEDICAL%20%26%20SURGICAL%20SOLUTIONS!5e0!3m2!1sen!2sin!4v1761898356909!5m2!1sen!2sin"
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen=""
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="min-h-[450px] lg:min-h-[100%]"
-              ></iframe>
-            </div>
+          {/* Right - Map (Matches form height automatically) */}
+          <div ref={mapRef} className="w-full rounded-2xl overflow-hidden shadow-md border border-cyan-100">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1750.8290729681328!2d77.30574219839478!3d28.640006099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb3f3d95f0bb%3A0xd06142fa0b7860e5!2sMEDICAL%20%26%20SURGICAL%20SOLUTIONS!5e0!3m2!1sen!2sin!4v1761898356909!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>
-
       {/* Info Cards */}
       <div className="max-w-6xl mx-auto px-6 mt-14 mb-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {[
