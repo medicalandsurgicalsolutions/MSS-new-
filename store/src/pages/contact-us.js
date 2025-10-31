@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Image from "next/image";
 import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import { FiMail, FiMapPin, FiBell } from "react-icons/fi";
@@ -51,7 +50,7 @@ const ContactUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.contact_us?.title)}
       />
 
-      {/* 🌟 Compact Contact Section */}
+      {/* 🌟 Contact Section with Google Map */}
       <section className="relative bg-gradient-to-br from-cyan-50 via-white to-cyan-100 py-16 lg:py-20">
         <div className="max-w-6xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
           
@@ -106,16 +105,17 @@ const ContactUs = () => {
             </form>
           </div>
 
-          {/* Right - Image */}
-          <div className="flex justify-center relative">
-            <div className="absolute inset-0 bg-cyan-100/40 rounded-full blur-3xl -z-10"></div>
-            <Image
-              width={500}
-              height={500}
-              src={storeCustomizationSetting?.contact_us?.midLeft_col_img || "/contact-us.png"}
-              alt="Contact Illustration"
-              className="w-[80%] md:w-[90%] h-auto object-contain"
-            />
+          {/* Right - Google Map */}
+          <div className="w-full h-[400px] lg:h-[500px] rounded-2xl overflow-hidden shadow-md border border-cyan-100">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1750.8290729681328!2d77.30574219839478!3d28.640006099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb3f3d95f0bb%3A0xd06142fa0b7860e5!2sMEDICAL%20%26%20SURGICAL%20SOLUTIONS!5e0!3m2!1sen!2sin!4v1761898356909!5m2!1sen!2sin"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            ></iframe>
           </div>
         </div>
       </section>
