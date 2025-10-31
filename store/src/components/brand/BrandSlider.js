@@ -16,8 +16,10 @@ const BrandSlider = () => {
   ]);
 
   const sliderRef = useRef(null);
+  const sectionRef = useRef(null); // 👈 Reference for observing visibility
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
+  const [autoplay, setAutoplay] = useState(false); // 👈 Initially false
 
   const fetchBrands = async () => {
     const response = await BrandServices.getAll().catch((e) => e);
@@ -34,13 +36,34 @@ const BrandSlider = () => {
     setIsLoading(!isLoading);
   };
 
+  // 👇 Intersection Observer to detect visibility
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting) {
+          setAutoplay(true); // start autoplay when visible
+        } else {
+          setAutoplay(false); // pause autoplay when out of view
+        }
+      },
+      { threshold: 0.3 } // starts when 30% visible
+    );
+
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    return () => {
+      if (sectionRef.current) observer.unobserve(sectionRef.current);
+    };
+  }, []);
+
   const settings = {
     dots: false,
     infinite: false,
     speed: 500,
     slidesToShow: 10,
     slidesToScroll: 10,
-    autoplay: true,
+    autoplay: autoplay, // 👈 controlled by visibility
     autoplaySpeed: 5000,
     arrows: false,
     responsive: [
@@ -64,7 +87,7 @@ const BrandSlider = () => {
   };
 
   return (
-    <div className="relative">
+    <div ref={sectionRef} className="relative">
       {/* Hidden buttons for external arrow control */}
       <button
         type="button"
