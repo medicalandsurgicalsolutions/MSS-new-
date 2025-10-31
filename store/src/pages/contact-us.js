@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import useTranslation from "next-translate/useTranslation";
 import { FiMail, FiMapPin, FiBell } from "react-icons/fi";
 
-// internal imports
 import Layout from "@layout/Layout";
 import Label from "@components/form/Label";
 import Error from "@components/form/Error";
@@ -12,14 +11,12 @@ import InputArea from "@components/form/InputArea";
 import { notifyError, notifySuccess } from "@utils/toast";
 import PageHeader from "@components/header/PageHeader";
 import useGetSetting from "@hooks/useGetSetting";
-import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import CustomerServices from "@services/CustomerServices";
 
 const ContactUs = () => {
   const { t } = useTranslation();
   const [mailLoading, setMailLoading] = useState(false);
-
   const {
     register,
     handleSubmit,
@@ -28,7 +25,7 @@ const ContactUs = () => {
   } = useForm();
 
   const { showingTranslateValue } = useUtilsFunction();
-  const { storeCustomizationSetting, loading, error } = useGetSetting();
+  const { storeCustomizationSetting } = useGetSetting();
 
   const submitHandler = async (data) => {
     const supportData = {
@@ -42,15 +39,11 @@ const ContactUs = () => {
     setMailLoading(true);
     try {
       const res = await CustomerServices.contactSupport(supportData);
-      setValue("email", "");
-      setValue("name", "");
-      setValue("number", "");
-      setValue("subject", "");
-      setValue("message", "");
+      ["email", "name", "number", "subject", "message"].forEach((f) => setValue(f, ""));
       notifySuccess(res.message);
-      setMailLoading(false);
     } catch (err) {
       notifyError(err ? err?.response?.data?.message : err?.message);
+    } finally {
       setMailLoading(false);
     }
   };
@@ -65,38 +58,38 @@ const ContactUs = () => {
         title={showingTranslateValue(storeCustomizationSetting?.contact_us?.title)}
       />
 
-      {/* 🌈 Next-Gen Contact Section */}
+      {/* 🌈 Responsive Contact Section */}
       <section className="relative overflow-hidden">
-        {/* Background Glow */}
+        {/* Background glow */}
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-50 via-white to-cyan-100" />
-        <div className="absolute w-[600px] h-[600px] bg-cyan-200/40 rounded-full blur-3xl -top-40 -left-40" />
-        <div className="absolute w-[700px] h-[700px] bg-cyan-400/30 rounded-full blur-3xl bottom-0 right-0" />
+        <div className="absolute w-[400px] md:w-[600px] h-[400px] md:h-[600px] bg-cyan-200/40 rounded-full blur-3xl -top-40 -left-40" />
+        <div className="absolute w-[500px] md:w-[700px] h-[500px] md:h-[700px] bg-cyan-400/30 rounded-full blur-3xl bottom-0 right-0" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-20 flex flex-col lg:flex-row items-center gap-16">
-          {/* Left side — Form & Info */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-16 md:py-20 flex flex-col-reverse lg:flex-row items-center gap-10 lg:gap-16">
+          {/* Left side — form */}
           <div className="flex-1 w-full">
-            <div className="mb-10">
-              <h2 className="text-5xl font-extrabold tracking-tight text-gray-800 leading-tight">
+            <div className="mb-8 md:mb-10 text-center lg:text-left">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-gray-800 leading-tight">
                 Get in{" "}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-500 to-cyan-700">
                   Touch With Us
                 </span>
               </h2>
-              <p className="mt-4 text-gray-600 text-lg max-w-md">
+              <p className="mt-4 text-gray-600 text-base sm:text-lg max-w-xl mx-auto lg:mx-0">
                 We’d love to hear from you! Whether you’re curious about our
                 products, need a quote, or want support — we’re ready to answer
                 all your questions.
               </p>
             </div>
 
-            {/* Floating contact badges */}
-            <div className="flex items-center gap-4 mb-10">
+            {/* Contact badges */}
+            <div className="flex flex-wrap justify-center lg:justify-start items-center gap-3 mb-8 md:mb-10">
               <a
                 href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition text-sm md:text-base"
               >
-                <FiMail className="text-cyan-600 text-xl" />
-                <span className="text-gray-700 text-sm">
+                <FiMail className="text-cyan-600 text-lg md:text-xl" />
+                <span className="text-gray-700">
                   {showingTranslateValue(
                     storeCustomizationSetting?.contact_us?.email_box_email
                   )}
@@ -104,10 +97,10 @@ const ContactUs = () => {
               </a>
               <a
                 href={`tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`}
-                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition"
+                className="flex items-center gap-2 px-4 py-2 rounded-full bg-white shadow hover:shadow-md transition text-sm md:text-base"
               >
-                <FiBell className="text-cyan-600 text-xl" />
-                <span className="text-gray-700 text-sm">
+                <FiBell className="text-cyan-600 text-lg md:text-xl" />
+                <span className="text-gray-700">
                   {showingTranslateValue(
                     storeCustomizationSetting?.contact_us?.call_box_phone
                   )}
@@ -115,8 +108,8 @@ const ContactUs = () => {
               </a>
             </div>
 
-            {/* Glass Form Card */}
-            <div className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border border-cyan-100">
+            {/* Glass form */}
+            <div className="bg-white/90 backdrop-blur-2xl rounded-3xl shadow-xl p-6 sm:p-8 md:p-10 border border-cyan-100">
               <form onSubmit={handleSubmit(submitHandler)} className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -203,80 +196,73 @@ const ContactUs = () => {
             </div>
           </div>
 
-          {/* Right side — Background Blended Illustration */}
-          <div className="flex-1 hidden lg:flex justify-center relative">
+          {/* Right side — image */}
+          <div className="flex-1 flex justify-center relative w-full">
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
-           <Image
-            width={700}
-            height={700}
-            src={
-              storeCustomizationSetting?.contact_us?.midLeft_col_img ||
-              "/contact-us.png"
-            }
-            alt="Contact Illustration"
-            className="absolute right-0 top-1/2 -translate-y-1/2 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
-          />
+            <Image
+              width={600}
+              height={600}
+              src={
+                storeCustomizationSetting?.contact_us?.midLeft_col_img ||
+                "/contact-us.png"
+              }
+              alt="Contact Illustration"
+              className="relative w-[80%] sm:w-[70%] md:w-[90%] lg:w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
+            />
           </div>
         </div>
       </section>
 
-      {/* ✅ Contact Info Cards */}
-      <div className="max-w-screen-2xl mx-auto px-6 sm:px-10 lg:px-16 mt-20 mb-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-        <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
-          <div className="flex justify-center text-4xl text-cyan-600 mb-4">
-            <FiMail />
+      {/* ✅ Info cards */}
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-16 mt-16 mb-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+          {
+            icon: <FiMail />,
+            title: storeCustomizationSetting?.contact_us?.email_box_title,
+            text: storeCustomizationSetting?.contact_us?.email_box_text,
+            link: `mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`,
+            linkText:
+              storeCustomizationSetting?.contact_us?.email_box_email,
+          },
+          {
+            icon: <FiBell />,
+            title: storeCustomizationSetting?.contact_us?.call_box_title,
+            text: storeCustomizationSetting?.contact_us?.call_box_text,
+            link: `tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`,
+            linkText:
+              storeCustomizationSetting?.contact_us?.call_box_phone,
+          },
+          {
+            icon: <FiMapPin />,
+            title: storeCustomizationSetting?.contact_us?.address_box_title,
+            text: `${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one)} 
+            ${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two)} 
+            ${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three)}`,
+          },
+        ].map((item, idx) => (
+          <div
+            key={idx}
+            className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500"
+          >
+            <div className="flex justify-center text-4xl text-cyan-600 mb-4">{item.icon}</div>
+            <h5 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
+              {showingTranslateValue(item.title)}
+            </h5>
+            {item.link ? (
+              <p className="text-gray-600">
+                <a href={item.link} className="text-cyan-600 font-medium">
+                  {showingTranslateValue(item.linkText)}
+                </a>
+                <br />
+                {showingTranslateValue(item.text)}
+              </p>
+            ) : (
+              <p className="text-gray-600 whitespace-pre-line">
+                {item.text}
+              </p>
+            )}
           </div>
-          <h5 className="text-xl font-semibold mb-2 text-gray-800">
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.email_box_title)}
-          </h5>
-          <p className="text-gray-600">
-            <a
-              href={`mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`}
-              className="text-cyan-600 font-medium"
-            >
-              {showingTranslateValue(storeCustomizationSetting?.contact_us?.email_box_email)}
-            </a>
-            <br />
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.email_box_text)}
-          </p>
-        </div>
-
-        <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
-          <div className="flex justify-center text-4xl text-cyan-600 mb-4">
-            <FiBell />
-          </div>
-          <h5 className="text-xl font-semibold mb-2 text-gray-800">
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.call_box_title)}
-          </h5>
-          <p className="text-gray-600">
-            <a
-              href={`tel:${
-                storeCustomizationSetting?.contact_us?.call_box_phone || "+099949343"
-              }`}
-              className="text-cyan-600 font-medium"
-            >
-              {showingTranslateValue(storeCustomizationSetting?.contact_us?.call_box_phone)}
-            </a>
-            <br />
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.call_box_text)}
-          </p>
-        </div>
-
-        <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
-          <div className="flex justify-center text-4xl text-cyan-600 mb-4">
-            <FiMapPin />
-          </div>
-          <h5 className="text-xl font-semibold mb-2 text-gray-800">
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_title)}
-          </h5>
-          <p className="text-gray-600">
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one)}
-            <br />
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two)}
-            <br />
-            {showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three)}
-          </p>
-        </div>
+        ))}
       </div>
     </Layout>
   );
