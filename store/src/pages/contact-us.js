@@ -215,55 +215,59 @@ const ContactUs = () => {
 
       {/* ✅ Info cards */}
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-16 mt-16 mb-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {[
-          {
-            icon: <FiMail />,
-            title: storeCustomizationSetting?.contact_us?.email_box_title,
-            text: storeCustomizationSetting?.contact_us?.email_box_text,
-            link: `mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`,
-            linkText:
-              storeCustomizationSetting?.contact_us?.email_box_email,
-          },
-          {
-            icon: <FiBell />,
-            title: storeCustomizationSetting?.contact_us?.call_box_title,
-            text: storeCustomizationSetting?.contact_us?.call_box_text,
-            link: `tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`,
-            linkText:
-              storeCustomizationSetting?.contact_us?.call_box_phone,
-          },
-          {
-            icon: <FiMapPin />,
-            title: storeCustomizationSetting?.contact_us?.address_box_title,
-            text: `${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one)} 
-            ${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two)} 
-            ${showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three)}`,
-          },
-        ].map((item, idx) => (
-          <div
-            key={idx}
-            className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500"
-          >
-            <div className="flex justify-center text-4xl text-cyan-600 mb-4">{item.icon}</div>
-            <h5 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
-              {showingTranslateValue(item.title)}
-            </h5>
-            {item.link ? (
-              <p className="text-gray-600">
-                <a href={item.link} className="text-cyan-600 font-medium">
-                  {showingTranslateValue(item.linkText)}
-                </a>
-                <br />
-                {showingTranslateValue(item.text)}
-              </p>
-            ) : (
-              <p className="text-gray-600 whitespace-pre-line">
-                {item.text}
-              </p>
-            )}
-          </div>
-        ))}
+  {[
+    {
+      icon: <FiMail />,
+      title: storeCustomizationSetting?.contact_us?.email_box_title,
+      text: storeCustomizationSetting?.contact_us?.email_box_text,
+      link: `mailto:${storeCustomizationSetting?.contact_us?.email_box_email}`,
+      linkText: storeCustomizationSetting?.contact_us?.email_box_email,
+    },
+    {
+      icon: <FiBell />,
+      title: storeCustomizationSetting?.contact_us?.call_box_title,
+      text: storeCustomizationSetting?.contact_us?.call_box_text,
+      link: `tel:${storeCustomizationSetting?.contact_us?.call_box_phone}`,
+      linkText: storeCustomizationSetting?.contact_us?.call_box_phone,
+    },
+    {
+      icon: <FiMapPin />,
+      title: storeCustomizationSetting?.contact_us?.address_box_title,
+      text: [
+        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_one),
+        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_two),
+        showingTranslateValue(storeCustomizationSetting?.contact_us?.address_box_address_three),
+      ]
+        .filter(Boolean) // remove undefined, null, empty values
+        .join("\n"),
+    },
+  ].map((item, idx) => (
+    <div
+      key={idx}
+      className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500"
+    >
+      <div className="flex justify-center text-4xl text-cyan-600 mb-4">
+        {item.icon}
       </div>
+      <h5 className="text-lg sm:text-xl font-semibold mb-2 text-gray-800">
+        {showingTranslateValue(item.title)}
+      </h5>
+
+      {item.link ? (
+        <p className="text-gray-600">
+          <a href={item.link} className="text-cyan-600 font-medium">
+            {showingTranslateValue(item.linkText)}
+          </a>
+          <br />
+          {showingTranslateValue(item.text)}
+        </p>
+      ) : (
+        <p className="text-gray-600 whitespace-pre-line">{item.text}</p>
+      )}
+    </div>
+  ))}
+</div>
+
     </Layout>
   );
 };
