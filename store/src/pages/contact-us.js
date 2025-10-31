@@ -203,12 +203,10 @@ const ContactUs = () => {
             </div>
           </div>
 
-        {/* Right side — Background Blended Illustration */}
+          {/* Right side — Background Blended Illustration */}
           <div className="flex-1 hidden lg:flex justify-center relative">
-            {/* Soft cyan gradient behind image */}
             <div className="absolute inset-0 bg-gradient-to-tr from-cyan-100 via-white to-cyan-50 opacity-80 rounded-full blur-3xl"></div>
-          
-            {/* Main image as background visual */}
+
             <Image
               width={700}
               height={700}
@@ -220,9 +218,10 @@ const ContactUs = () => {
               className="absolute right-0 top-10 w-[650px] h-auto object-contain opacity-90 hover:opacity-100 transition-all duration-700"
             />
           </div>
-         
+        </div>
+      </section>
 
-      {/* ✅ Keep contact info cards below */}
+      {/* ✅ Contact Info Cards */}
       <div className="max-w-screen-2xl mx-auto px-6 sm:px-10 lg:px-16 mt-20 mb-12 grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         <div className="bg-white shadow-md hover:shadow-lg transition-shadow rounded-2xl p-8 text-center border-t-4 border-cyan-500">
           <div className="flex justify-center text-4xl text-cyan-600 mb-4">
