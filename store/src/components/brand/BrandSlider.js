@@ -16,10 +16,11 @@ const BrandSlider = () => {
   ]);
 
   const sliderRef = useRef(null);
-  const sectionRef = useRef(null); // 👈 Reference for observing visibility
+  const sectionRef = useRef(null);
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
-  const [autoplay, setAutoplay] = useState(false); // 👈 Initially false
+  const [autoplay, setAutoplay] = useState(false);
+  const [started, setStarted] = useState(false);
 
   const fetchBrands = async () => {
     const response = await BrandServices.getAll().catch((e) => e);
@@ -36,59 +37,48 @@ const BrandSlider = () => {
     setIsLoading(!isLoading);
   };
 
-  // 👇 Intersection Observer to detect visibility
+  // Start autoplay only once when visible
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         const [entry] = entries;
-        if (entry.isIntersecting) {
-          setAutoplay(true); // start autoplay when visible
-        } else {
-          setAutoplay(false); // pause autoplay when out of view
+        if (entry.isIntersecting && !started) {
+          setAutoplay(true);
+          setStarted(true);
         }
       },
-      { threshold: 0.3 } // starts when 30% visible
+      { threshold: 0.3 }
     );
 
     if (sectionRef.current) observer.observe(sectionRef.current);
-
     return () => {
       if (sectionRef.current) observer.unobserve(sectionRef.current);
     };
-  }, []);
+  }, [started]);
 
   const settings = {
     dots: false,
-    infinite: false,
-    speed: 500,
+    infinite: true, // 👈 Infinite loop for smooth one-by-one scroll
+    speed: 600,
     slidesToShow: 10,
-    slidesToScroll: 10,
-    autoplay: autoplay, // 👈 controlled by visibility
-    autoplaySpeed: 5000,
+    slidesToScroll: 1, // 👈 One image at a time
+    autoplay: autoplay,
+    autoplaySpeed: 2000, // 👈 Adjust for speed between slides
     arrows: false,
+    pauseOnHover: true,
     responsive: [
-      {
-        breakpoint: 1280,
-        settings: { slidesToShow: 6, slidesToScroll: 3 },
-      },
-      {
-        breakpoint: 1024,
-        settings: { slidesToShow: 4, slidesToScroll: 2 },
-      },
-      {
-        breakpoint: 768,
-        settings: { slidesToShow: 3, slidesToScroll: 1 },
-      },
-      {
-        breakpoint: 480,
-        settings: { slidesToShow: 2, slidesToScroll: 1 },
-      },
+      { breakpoint: 1536, settings: { slidesToShow: 8, slidesToScroll: 1 } },
+      { breakpoint: 1280, settings: { slidesToShow: 6, slidesToScroll: 1 } },
+      { breakpoint: 1024, settings: { slidesToShow: 5, slidesToScroll: 1 } },
+      { breakpoint: 768, settings: { slidesToShow: 4, slidesToScroll: 1 } },
+      { breakpoint: 640, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+      { breakpoint: 480, settings: { slidesToShow: 2, slidesToScroll: 1 } },
     ],
   };
 
   return (
     <div ref={sectionRef} className="relative">
-      {/* Hidden buttons for external arrow control */}
+      {/* Hidden external arrow buttons */}
       <button
         type="button"
         className="brand-slider-prev hidden"
