@@ -278,7 +278,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                   key={idx}
                   className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 bg-white"
                 >
-                  <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
+                   <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
                     {item.icon}
                   </div>
                   <div>
