@@ -975,9 +975,9 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                 </div>
               </div>
 
+             
               {/* related products */}
-              {/* related products */}
-{showProduct && showProduct.length >= 2 && (
+        {showProduct?.length >= 2 && (
   <div className="pt-10 lg:pt-20 lg:pb-10">
     <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
       {t("common:relatedProducts")}
@@ -996,11 +996,10 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
           gap-3
         "
       >
-        {showProduct.slice(1, 13).map((prod) => (
-          // Make sure ProductCard can handle missing props gracefully
+        {showProduct?.slice(1, 13).map((product, i) => (
           <ProductCard
-            key={prod?._id || prod?.id || Math.random()}
-            product={prod}
+            key={product._id}
+            product={product}
             attributes={attributes}
           />
         ))}
@@ -1009,15 +1008,20 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   </div>
 )}
 
-{/* reviews */}
-<section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
-  <Review product={product} customer={userInfo} order={order} ratings={ratings} />
-  <ReviewList reviews={ratings} />
-</section>
+{/* Reviews Section */}
+<>
+  <section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
+    <Review
+      product={product}
+      customer={userInfo}
+      order={order}
+      ratings={ratings}
+    />
+    <ReviewList reviews={ratings} />
+  </section>
+</>
 
-                </>
-              {/* )} */}
-            </div>
+             </div>
           </div>
         </Layout>
       )}
