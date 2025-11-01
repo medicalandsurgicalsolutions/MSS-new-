@@ -578,15 +578,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                           </p>
                         )}
                       </div>
-
-                      
-                        {product?.sku && (
-                          <p className="uppercase font-medium text-gray-500 text-sm">
-                            SKU:{" "}
-                            <span className="font-bold text-gray-600">{product?.sku}</span>
-                          </p>
-                        )}
-                      </div>
+                          
                         <div className="flex items-center space-x-4">
                           {/* <div className="text-green-500 font-bold leading-5">
                             <span>12</span>% off
