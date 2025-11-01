@@ -478,37 +478,45 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
           <div className="px-0 py-10 lg:py-10">
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
             
-            <div className="flex items-center pb-4">
-                <ol className="flex items-center w-full overflow-hidden ">
-                  <li className="text-sm pr-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
-                    <Link href="/">Home</Link>
-                  </li>
-                  <li className="text-sm mt-[1px]">
-                    {" "}
-                    <FiChevronRight />{" "}
-                  </li>
-                  <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold ">
-                    <Link
-                      href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                    >
-                      <button
-                        className="capitalize"
-                        type="button"
-                        onClick={() => setIsLoading(!isLoading)}
-                      >
-                        {category_name}
-                      </button>
-                    </Link>
-                  </li>
-                  <li className="text-sm mt-[1px]">
-                    {" "}
-                    <FiChevronRight />{" "}
-                  </li>
-                  <li className="text-sm capitalize px-1 transition duration-200 ease-in ">
-                    {showingTranslateValue(product?.title)}
-                  </li>
-                </ol>
-              </div>
+          <div className="flex items-center pb-4 w-full">
+  <ol className="flex flex-wrap items-center w-full text-sm sm:text-base overflow-hidden">
+    {/* Home */}
+    <li className="pr-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
+      <Link href="/">Home</Link>
+    </li>
+
+    {/* Chevron */}
+    <li className="mt-[1px] flex items-center text-gray-500 text-xs sm:text-sm">
+      <FiChevronRight />
+    </li>
+
+    {/* Category */}
+    <li className="pl-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
+      <Link
+        href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+      >
+        <button
+          className="capitalize truncate max-w-[100px] sm:max-w-[150px] md:max-w-[200px]"
+          type="button"
+          onClick={() => setIsLoading(!isLoading)}
+        >
+          {category_name}
+        </button>
+      </Link>
+    </li>
+
+    {/* Chevron */}
+    <li className="mt-[1px] flex items-center text-gray-500 text-xs sm:text-sm">
+      <FiChevronRight />
+    </li>
+
+    {/* Product Title */}
+    <li className="capitalize px-1 truncate max-w-[120px] sm:max-w-[200px] md:max-w-[300px] text-gray-700">
+      {showingTranslateValue(product?.title)}
+    </li>
+  </ol>
+</div>
+
 
               <div className="w-full rounded-lg p-2 lg:p-12 bg-white">
                 <div className="flex flex-col xl:flex-row">
