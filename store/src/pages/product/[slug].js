@@ -52,10 +52,6 @@ import DUMMY_IMAGE from "@components/constants";
 import useGetSetting from "@hooks/useGetSetting";
 import WatermarkedImage from "@components/WatermarkedImage";
 import OrderServices from "@services/OrderServices";
-import { FiChevronRight } from "react-icons/fi";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/navigation";
 
 const WalletIcon = () => (
   <svg
