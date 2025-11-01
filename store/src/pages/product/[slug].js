@@ -561,20 +561,24 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                   <div className="w-full">
                     <div className="flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                       <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
-                     <div className="border-b py-2 w-full overflow-visible block heading">
-                        <div className="w-full overflow-visible whitespace-normal break-words">
-                          <h1
-                            className="leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl my-2 sm:my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins"
-                            style={{
-                              whiteSpace: "normal",
-                              overflowWrap: "break-word",
-                              wordBreak: "break-word",
-                              textWrap: "wrap",
-                            }}
-                          >
-                            {lowercaser(showingTranslateValue(product?.title))}
-                          </h1>
-                        </div>
+                      <div
+                        className="border-b py-2 hidden md:block heading w-full"
+                        style={{ width: "100%", maxWidth: "100%" }}
+                      >
+                        <h1
+                          className="leading-7 text-lg md:text-xl lg:text-3xl my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins whitespace-normal break-words"
+                        >
+                          {lowercaser(showingTranslateValue(product?.title))}
+                        </h1>
+                      
+                        {product?.sku && (
+                          <p className="uppercase font-medium text-gray-500 text-sm">
+                            SKU:{" "}
+                            <span className="font-bold text-gray-600">{product?.sku}</span>
+                          </p>
+                        )}
+                      </div>
+
                       
                         {product?.sku && (
                           <p className="uppercase font-medium text-gray-500 text-sm">
