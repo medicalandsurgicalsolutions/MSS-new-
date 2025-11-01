@@ -562,11 +562,19 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                     <div className="flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                       <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
                         <div className="border-b py-2 hidden md:block heading">
-                        <h1 className="w-full break-words whitespace-normal leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl 
-                          my-2 sm:my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins"
-                           style={{ wordBreak: "break-word", overflowWrap: "break-word" }}>
-                            {lowercaser(showingTranslateValue(product?.title))}
+                      <div className="w-full overflow-visible whitespace-normal break-words">
+                        <h1
+                          className="block w-full text-gray-800 font-poppins font-semibold tracking-tight capitalize leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl my-2 sm:my-3"
+                          style={{
+                            whiteSpace: "normal",
+                            overflowWrap: "break-word",
+                            wordBreak: "break-word",
+                            textWrap: "wrap",
+                          }}
+                        >
+                          {lowercaser(showingTranslateValue(product?.title))}
                         </h1>
+                      </div>
 
 
                           {product?.sku && (
