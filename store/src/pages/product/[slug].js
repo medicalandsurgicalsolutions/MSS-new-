@@ -561,26 +561,28 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                   <div className="w-full">
                     <div className="flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                       <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
-                        <div className="border-b py-2 block heading">
-                            <h1
-                              className="w-full break-words whitespace-normal leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl my-2 sm:my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins"
-                              style={{
-                                whiteSpace: "normal",
-                                wordBreak: "break-word",
-                                overflowWrap: "break-word",
-                                textWrap: "wrap",
-                              }}
-                            >
-                              {lowercaser(showingTranslateValue(product?.title))}
-                            </h1>
-                          
-                            {product?.sku && (
-                              <p className="uppercase font-medium text-gray-500 text-sm">
-                                SKU:{" "}
-                                <span className="font-bold text-gray-600">{product?.sku}</span>
-                              </p>
-                            )}
-                          </div>
+                        <div className="border-b py-2 block heading w-full overflow-visible">
+                          <h1
+                            className="w-full break-words whitespace-normal leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl my-2 sm:my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins"
+                            style={{
+                              whiteSpace: "normal",
+                              wordBreak: "break-word",
+                              overflowWrap: "break-word",
+                              textWrap: "wrap",
+                              display: "block",
+                              width: "100%",
+                            }}
+                          >
+                            {lowercaser(showingTranslateValue(product?.title))}
+                          </h1>
+                        
+                          {product?.sku && (
+                            <p className="uppercase font-medium text-gray-500 text-sm">
+                              SKU:{" "}
+                              <span className="font-bold text-gray-600">{product?.sku}</span>
+                            </p>
+                          )}
+                        </div>
 
                         <div className="flex items-center space-x-4">
                           {/* <div className="text-green-500 font-bold leading-5">
