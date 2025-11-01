@@ -477,48 +477,48 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
         >
           <div className="px-0 py-10 lg:py-10">
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
-            
+
+     {/* top section */}
             <div className="flex items-center pb-4 w-full">
-  <ol className="flex flex-wrap items-center w-full text-sm sm:text-base gap-x-1 gap-y-1">
-    {/* Home */}
-    <li className="transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
-      <Link href="/">Home</Link>
-    </li>
-
-    {/* Chevron */}
-    <li className="flex items-center text-gray-500 text-xs sm:text-sm">
-      <FiChevronRight />
-    </li>
-
-    {/* Category */}
-    <li className="transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
-      <Link
-        href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-      >
-        <button
-          className="capitalize"
-          type="button"
-          onClick={() => setIsLoading(!isLoading)}
-        >
-          {category_name}
-        </button>
-      </Link>
-    </li>
-
-    {/* Chevron */}
-    <li className="flex items-center text-gray-500 text-xs sm:text-sm">
-      <FiChevronRight />
-    </li>
-
-    {/* Product Title */}
-    <li className="capitalize px-1 text-gray-700">
-      {showingTranslateValue(product?.title)}
-    </li>
-  </ol>
-</div>
-
-
-
+              <ol className="flex flex-wrap items-center w-full text-sm sm:text-base gap-x-1 gap-y-1">
+                {/* Home */}
+                <li className="transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
+                  <Link href="/">Home</Link>
+                </li>
+            
+                {/* Chevron */}
+                <li className="flex items-center text-gray-500 text-xs sm:text-sm">
+                  <FiChevronRight />
+                </li>
+            
+                {/* Category */}
+                <li className="transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
+                  <Link
+                    href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                  >
+                    <button
+                      className="capitalize"
+                      type="button"
+                      onClick={() => setIsLoading(!isLoading)}
+                    >
+                      {category_name}
+                    </button>
+                  </Link>
+                </li>
+            
+                {/* Chevron */}
+                <li className="flex items-center text-gray-500 text-xs sm:text-sm">
+                  <FiChevronRight />
+                </li>
+            
+                {/* Product Title */}
+                <li className="capitalize px-1 text-gray-700">
+                  {showingTranslateValue(product?.title)}
+                </li>
+              </ol>
+            </div>
+                   {/* top section end  */}
+                  
               <div className="w-full rounded-lg p-2 lg:p-12 bg-white">
                 <div className="flex flex-col xl:flex-row">
                   <div className="flex-shrink-0 xl:pr-10 lg:block w-full mx-auto md:w-6/12 lg:w-5/12 xl:w-3/12">
@@ -562,7 +562,8 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                     <div className="flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                       <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
                         <div className="border-b py-2 hidden md:block heading">
-                          <h1 className=" leading-7 text-lg md:text-xl lg:text-3xl my-3 font-semibold tracking-tight  text-gray-800 capitalize font-poppins">
+                         <h1 className="w-full break-words whitespace-normal leading-snug text-base sm:text-lg md:text-2xl lg:text-3xl xl:text-4xl my-2 
+                            sm:my-3 font-semibold tracking-tight text-gray-800 capitalize font-poppins">
                             {lowercaser(showingTranslateValue(product?.title))}
                           </h1>
 
