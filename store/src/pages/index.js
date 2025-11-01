@@ -267,28 +267,36 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
 
           {/* Info Feature Section */}
           <div className="bg-white py-12">
-            <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {[
-                { icon: <FaTruck />, title: "WORLDWIDE SHIPPING"},
-                { icon: <FaMoneyBillWave />, title: "SECURE PAYMENTS" },
-                { icon: <FaShieldAlt />, title: "ONLINE CUSTOMER SUPPORT" },
-                { icon: <FaPercent />, title: "SPECIAL OFFERS"},
-              ].map((item, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 bg-white"
-                >
-                   <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <h4 className="text-base font-semibold text-gray-900">{item.title}</h4>
-                    <p className="text-gray-600 text-xs">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+  <div className="max-w-screen-2xl mx-auto px-3 sm:px-6 lg:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    {[
+      { Icon: FaTruck, title: "WORLDWIDE SHIPPING" },
+      { Icon: FaMoneyBillWave, title: "SECURE PAYMENTS" },
+      { Icon: FaShieldAlt, title: "ONLINE CUSTOMER SUPPORT" },
+      { Icon: FaPercent, title: "SPECIAL OFFERS" },
+    ].map((item, idx) => {
+      const IconComp = item.Icon;
+      return (
+        <div
+          key={idx}
+          className="flex items-center border rounded-lg p-6 shadow-sm hover:shadow-md transition duration-200 bg-white group"
+        >
+          {/* icon receives color via currentColor and will change on group hover */}
+          <div className="text-[#0891B2] text-3xl mr-4 transition duration-300 group-hover:text-[#b52228]">
+            <IconComp />
           </div>
+
+          <div>
+            <h4 className="text-base font-semibold text-gray-900">
+              {item.title}
+            </h4>
+            <p className="text-gray-600 text-xs">{item.desc}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
         </Layout>
       )}
     </>
