@@ -976,32 +976,45 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
               </div>
 
               {/* related products */}
-              {showProduct?.length >= 2 && (
-                <div className="pt-10 lg:pt-20 lg:pb-10">
-                  <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold  hover:text-gray-600">
-                    {t("common:relatedProducts")}
-                  </h3>
-                  <div className="flex">
-                    <div className="w-full">
-                      <div className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6 gap-3">
-                        {showProduct?.slice(1, 13).map((product, i) => (
-                          <ProductCard
-                            key={product._id}
-                            product={product}
-                            attributes={attributes}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-              {/* {userInfo != null && ( */}
-              <>
-                <section id="reviews" className="mt-4">
-                  <Review product={product} customer={userInfo} order={order} ratings={ratings} />
-                  <ReviewList reviews={ratings}/>
-                </section>
+              {/* related products */}
+{showProduct && showProduct.length >= 2 && (
+  <div className="pt-10 lg:pt-20 lg:pb-10">
+    <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
+      {t("common:relatedProducts")}
+    </h3>
+
+    <div className="w-full">
+      <div
+        className="
+          grid
+          grid-cols-2
+          sm:grid-cols-3
+          md:grid-cols-4
+          lg:grid-cols-5
+          xl:grid-cols-5
+          2xl:grid-cols-5
+          gap-3
+        "
+      >
+        {showProduct.slice(1, 13).map((prod) => (
+          // Make sure ProductCard can handle missing props gracefully
+          <ProductCard
+            key={prod?._id || prod?.id || Math.random()}
+            product={prod}
+            attributes={attributes}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+{/* reviews */}
+<section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
+  <Review product={product} customer={userInfo} order={order} ratings={ratings} />
+  <ReviewList reviews={ratings} />
+</section>
+
                 </>
               {/* )} */}
             </div>
