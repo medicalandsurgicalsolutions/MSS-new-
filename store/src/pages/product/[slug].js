@@ -52,6 +52,11 @@ import DUMMY_IMAGE from "@components/constants";
 import useGetSetting from "@hooks/useGetSetting";
 import WatermarkedImage from "@components/WatermarkedImage";
 import OrderServices from "@services/OrderServices";
+import { FiChevronRight } from "react-icons/fi";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+
 const WalletIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -476,71 +481,45 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
         >
           <div className="px-0 py-10 lg:py-10">
             <div className="mx-auto px-3 lg:px-10 max-w-screen-2xl">
-              <div className="flex items-center pb-4">
-                <ol className="flex items-center w-full overflow-hidden ">
-                  <li className="text-sm pr-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold">
-                    <Link href="/">Home</Link>
-                  </li>
-                  <li className="text-sm mt-[1px]">
-                    {" "}
-                    <FiChevronRight />{" "}
-                  </li>
-                  <li className="text-sm pl-1 transition duration-200 ease-in cursor-pointer hover:text-cyan-600 font-semibold ">
-                    <Link
-                      href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                    >
-                      <button
-                        className="capitalize"
-                        type="button"
-                        onClick={() => setIsLoading(!isLoading)}
-                      >
-                        {category_name}
-                      </button>
-                    </Link>
-                  </li>
-                  <li className="text-sm mt-[1px]">
-                    {" "}
-                    <FiChevronRight />{" "}
-                  </li>
-                  <li className="text-sm capitalize px-1 transition duration-200 ease-in ">
-                    {showingTranslateValue(product?.title)}
-                  </li>
-                </ol>
-              </div>
+            
+{/* Product Image Carousel Section */}
+{product?.image?.length > 1 && (
+  <div className="relative flex flex-row flex-wrap mt-4 border-t">
+    <div className="w-full relative">
+      <Swiper
+        modules={[Navigation]}
+        spaceBetween={10}
+        slidesPerView={1}
+        navigation={{
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }}
+        className="relative"
+      >
+        {product.image.map((img, i) => (
+          <SwiperSlide key={i}>
+            <div className="flex justify-center">
+              <Image
+                src={img}
+                alt={`product-${i}`}
+                width={500}
+                height={500}
+                className="rounded-md object-contain"
+                onClick={() => handleChangeImage?.(img)}
+              />
+            </div>
+          </SwiperSlide>
+        ))}
 
-              <div className="w-full rounded-lg p-2 lg:p-12 bg-white">
-                <div className="flex flex-col xl:flex-row">
-                  <div className="flex-shrink-0 xl:pr-10 lg:block w-full mx-auto md:w-6/12 lg:w-5/12 xl:w-3/12">
-                    {/* <div className="flex justify-between">
-                      <Discount slug product={product} discount={discount} />
-                    </div> */}
+        {/* Prev Button */}
+        <div className="swiper-button-prev !left-[-25px] !top-1/2 !transform !-translate-y-1/2 !w-8 !h-8 !bg-white !rounded-full !shadow-md !flex !items-center !justify-center hover:!bg-cyan-600 hover:!text-white transition-all duration-200 text-gray-700"></div>
 
-                    {product.image[0] ? (
-                      <Image
-                        src={img || product.image[0]}
-                        alt="product"
-                        width={650}
-                        height={650}
-                        priority
-                      />
-                    ) : (
-                      <Image
-                        src={DUMMY_IMAGE}
-                        width={650}
-                        height={650}
-                        alt="product Image"
-                      />
-                    )}
-
-                    {product?.image?.length > 1 && (
-                      <div className="flex flex-row flex-wrap mt-4 border-t">
-                        <ImageCarousel
-                          images={product.image}
-                          handleChangeImage={handleChangeImage}
-                        />
-                      </div>
-                    )}
-                  </div>
+        {/* Next Button */}
+        <div className="swiper-button-next !right-[-25px] !top-1/2 !transform !-translate-y-1/2 !w-8 !h-8 !bg-white !rounded-full !shadow-md !flex !items-center !justify-center hover:!bg-cyan-600 hover:!text-white transition-all duration-200 text-gray-700"></div>
+      </Swiper>
+    </div>
+  </div>
+)}
 
                   {/* <WatermarkedImage
                       productImage={product.image[0]} // Replace with your image path
