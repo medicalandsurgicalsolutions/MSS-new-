@@ -563,14 +563,14 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                             
                   <div className="w-full">
                     <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
-                     <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
-                     <div className="border-b my-4 pb-2 md:hidden heading">
+                     <div className="xl:pr-6 md:pr-6 w-full md:w-2/3 mob-w-full">
+                     <div className="border-b my-4 pb-2 md:hidden overflow-hidden heading">
                           <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
                             {lowercaser(showingTranslateValue(product?.title))}
                           </h1>
 
                           {product?.sku && (
-                            <p className="uppercase  font-medium text-gray-500 text-sm">
+                            <p className="uppercase  font-medium text-gray-500 text-sm"> 
                               SKU :{" "}
                               <span className="font-bold text-gray-600">
                                 {product?.sku}
