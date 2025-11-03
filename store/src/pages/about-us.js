@@ -160,20 +160,6 @@ const AboutUs = () => {
       </section>
 
       {/* Section 3: FAQ Section strt */}
-        <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
-              <div className="max-w-screen-lg mx-auto">
-                {/* Header */}
-            <div className="text-center mb-12">
-              <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
-                FAQs
-              </p>
-              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
-                Frequently Asked Questions
-              </h3>
-            
-            </div>
-        
-            {/* FAQ Accordion */}
       <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-lg mx-auto">
           {/* Header */}
@@ -222,7 +208,8 @@ const AboutUs = () => {
         </div>
       </div>
 
-{/* Section 4: Faq section end */}
+
+      {/* Section 4: Faq section end */}
 
 
       {/* Section 4: Team Section */}
