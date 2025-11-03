@@ -565,7 +565,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                     <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                      <div className="xl:pr-6 md:pr-6 w-full md:w-2/3 mob-w-full">
                      <div className="border-b my-4 pb-2 md:hidden overflow-hidden heading">
-                          <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
+                          <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight  text-gray-800 capitalize">
                             {lowercaser(showingTranslateValue(product?.title))}
                           </h1>
 
