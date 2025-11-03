@@ -93,7 +93,7 @@ const CategoryDrawer = () => {
                 closeCategoryDrawer();
               }}
               href="/"
-              className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
+              className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
             >
               Home
             </Link>
@@ -103,7 +103,7 @@ const CategoryDrawer = () => {
               <div className="my-3">
                 <button
                   onClick={() => toggleDropdown("category")}
-                  className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
+                  className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
                 >
                   {showingTranslateValue(
                     storeCustomizationSetting?.navbar?.categories
@@ -124,14 +124,14 @@ const CategoryDrawer = () => {
             <hr />
 
             {/* Links Column */}
-            <div className="w-full flex flex-col gap-3 mt-3 links-column">
+            <div className="w-full flex flex-col gap-3 mt-3 links-column overflow-x-auto whitespace-nowrap">
               <Link
                 onClick={() => {
                   setIsLoading(!isLoading);
                   closeCategoryDrawer();
                 }}
                 href="/search"
-                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
+                className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
               >
                 Products
               </Link>
@@ -142,7 +142,7 @@ const CategoryDrawer = () => {
                   closeCategoryDrawer();
                 }}
                 href="/search?query=latest"
-                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
+                className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
               >
                 New Products Edition
               </Link>
@@ -153,7 +153,7 @@ const CategoryDrawer = () => {
                   closeCategoryDrawer();
                 }}
                 href={`${storeCustomizationSetting?.home?.promotion_button_link}`}
-                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
+                className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.home?.promotion_title
@@ -162,22 +162,20 @@ const CategoryDrawer = () => {
 
               {userInfo &&
                 storeCustomizationSetting?.navbar?.offers_menu_status && (
-                  <>
-                    <Link
-                      onClick={() => {
-                        setIsLoading(!isLoading);
-                        closeCategoryDrawer();
-                      }}
-                      href="/offer"
-                      className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
-                    >
-                      <span className="bg-emerald-300 text-white rounded-md px-4 py-1 whitespace-nowrap">
-                        {showingTranslateValue(
-                          storeCustomizationSetting?.navbar?.offers
-                        )}
-                      </span>
-                    </Link>
-                  </>
+                  <Link
+                    onClick={() => {
+                      setIsLoading(!isLoading);
+                      closeCategoryDrawer();
+                    }}
+                    href="/offer"
+                    className="w-full text-start font-bold transition-all focus:outline-none no-wrap-link"
+                  >
+                    <span className="bg-emerald-300 text-white rounded-md px-4 py-1 no-wrap-link">
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.navbar?.offers
+                      )}
+                    </span>
+                  </Link>
                 )}
             </div>
           </div>
@@ -188,13 +186,13 @@ const CategoryDrawer = () => {
           {userInfo?.email ? (
             <button
               onClick={handleLogOut}
-              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none whitespace-nowrap"
+              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none no-wrap-link"
             >
               {showingTranslateValue(storeCustomizationSetting?.navbar?.logout)}
             </button>
           ) : (
             <button
-              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none whitespace-nowrap"
+              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none no-wrap-link"
               onClick={(e) => handleLinkClick("/auth/login")}
             >
               {showingTranslateValue(storeCustomizationSetting?.navbar?.login)}
@@ -204,14 +202,24 @@ const CategoryDrawer = () => {
 
         {/* ✅ Scoped Styles */}
         <style jsx>{`
+          /* Make sure no link text wraps */
+          .no-wrap-link {
+            white-space: nowrap !important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
           @media (max-width: 1200px) {
             .category-drawer .links-column {
               gap: 10px;
             }
+
+            /* Remove unwanted spacing only here */
             .category-drawer :global(.lg\\:px-10) {
               padding-left: 1rem !important;
               padding-right: 1rem !important;
             }
+
             .category-drawer :global(.mx-4) {
               margin-left: 0 !important;
               margin-right: 0 !important;
