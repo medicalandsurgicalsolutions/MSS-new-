@@ -193,6 +193,7 @@ const AboutUs = () => {
     </div>
   </div>
 </div>
+{/* Section 4: Faq section end */}
 
 
       {/* Section 4: Team Section */}
