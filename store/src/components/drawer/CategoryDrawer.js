@@ -227,6 +227,11 @@ const CategoryDrawer = () => {
               padding-left: 1rem !important;
               padding-right: 1rem !important;
             }
+
+            .category-drawer :global(.mx-4) {
+              margin-left: 0 !important;
+              margin-right: 0 !important;
+            }
           }
         `}</style>
       </div>
