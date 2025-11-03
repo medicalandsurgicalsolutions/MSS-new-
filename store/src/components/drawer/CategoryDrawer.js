@@ -1,32 +1,27 @@
-import React, { Fragment, useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import dynamic from "next/dynamic";
 import Drawer from "rc-drawer";
-
-import Category from "@components/category/Category";
-import { SidebarContext } from "@context/SidebarContext";
-import { Popover, Transition } from "@headlessui/react";
-import useGetSetting from "@hooks/useGetSetting";
-import useUtilsFunction from "@hooks/useUtilsFunction";
-import { ChevronDownIcon } from "@heroicons/react/outline";
 import Link from "next/link";
-import { getUserSession } from "@lib/auth";
-import { FiUser } from "react-icons/fi";
+import Image from "next/image";
+import { IoChevronDown, IoChevronUp, IoClose } from "react-icons/io5";
 import { signOut } from "next-auth/react";
 import Cookies from "js-cookie";
 import { useRouter } from "next/router";
-import { IoChevronDown, IoChevronUp, IoClose } from "react-icons/io5";
-import Image from "next/image";
+import useAsync from "@hooks/useAsync";
+import useGetSetting from "@hooks/useGetSetting";
+import useUtilsFunction from "@hooks/useUtilsFunction";
 import CategoryServices from "@services/CategoryServices";
 import DepartmentServices from "@services/DepartmentServices";
-import useAsync from "@hooks/useAsync";
 import CategoryCard from "@components/category/CategoryCard";
+import { SidebarContext } from "@context/SidebarContext";
 import DUMMY_IMAGE from "@components/constants";
+import { getUserSession } from "@lib/auth";
 
 const CategoryDrawer = () => {
   const { categoryDrawerOpen, closeCategoryDrawer, setIsLoading, isLoading } =
     useContext(SidebarContext);
 
-  const { lang, storeCustomizationSetting } = useGetSetting();
+  const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
   const userInfo = getUserSession();
   const router = useRouter();
@@ -37,10 +32,7 @@ const CategoryDrawer = () => {
     router.push("/");
   };
 
-  const { data, loading, error } = useAsync(() =>
-    CategoryServices.getShowingCategory()
-  );
-
+  const { data } = useAsync(() => CategoryServices.getShowingCategory());
   const { data: departments } = useAsync(() =>
     DepartmentServices.getCategoriesFromDepartments()
   );
@@ -62,11 +54,6 @@ const CategoryDrawer = () => {
     router.push(url);
   };
 
-  const [expanded, setExpanded] = useState({});
-  const toggleExpand = (id) => {
-    setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
-  };
-
   return (
     <Drawer
       open={categoryDrawerOpen}
@@ -75,9 +62,8 @@ const CategoryDrawer = () => {
       level={null}
       placement={"left"}
     >
-      {/* ✅ Added wrapper class "category-drawer" for scoped styles */}
       <div className="category-drawer flex flex-col w-full h-full bg-white cursor-pointer scrollbar-hide">
-        {/* Header Section */}
+        {/* Header */}
         <div className="w-full flex justify-between items-center h-16 px-6 py-4 bg-cyan-500 text-white border-b border-gray-100">
           <h2 className="font-semibold text-lg m-0 text-heading flex align-center">
             <Link href="/" className="mr-10">
@@ -98,7 +84,7 @@ const CategoryDrawer = () => {
           </button>
         </div>
 
-        {/* Scrollable Content Section */}
+        {/* Scrollable Content */}
         <div className="flex-grow w-full overflow-y-auto m-4">
           <div className="flex-grow w-full mb-4">
             <Link
@@ -107,7 +93,7 @@ const CategoryDrawer = () => {
                 closeCategoryDrawer();
               }}
               href="/"
-              className="w-full text-start font-bold transition-all focus:outline-none"
+              className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
             >
               Home
             </Link>
@@ -117,7 +103,7 @@ const CategoryDrawer = () => {
               <div className="my-3">
                 <button
                   onClick={() => toggleDropdown("category")}
-                  className="w-full text-start font-bold transition-all focus:outline-none"
+                  className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
                 >
                   {showingTranslateValue(
                     storeCustomizationSetting?.navbar?.categories
@@ -137,7 +123,7 @@ const CategoryDrawer = () => {
             )}
             <hr />
 
-            {/* Three Links Aligned in a Column */}
+            {/* Links Column */}
             <div className="w-full flex flex-col gap-3 mt-3 links-column">
               <Link
                 onClick={() => {
@@ -145,7 +131,7 @@ const CategoryDrawer = () => {
                   closeCategoryDrawer();
                 }}
                 href="/search"
-                className="w-full text-start font-bold transition-all focus:outline-none"
+                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
               >
                 Products
               </Link>
@@ -156,7 +142,7 @@ const CategoryDrawer = () => {
                   closeCategoryDrawer();
                 }}
                 href="/search?query=latest"
-                className="w-full text-start font-bold transition-all focus:outline-none"
+                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
               >
                 New Products Edition
               </Link>
@@ -167,7 +153,7 @@ const CategoryDrawer = () => {
                   closeCategoryDrawer();
                 }}
                 href={`${storeCustomizationSetting?.home?.promotion_button_link}`}
-                className="w-full text-start font-bold transition-all focus:outline-none"
+                className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
               >
                 {showingTranslateValue(
                   storeCustomizationSetting?.home?.promotion_title
@@ -183,9 +169,9 @@ const CategoryDrawer = () => {
                         closeCategoryDrawer();
                       }}
                       href="/offer"
-                      className="w-full text-start font-bold transition-all focus:outline-none"
+                      className="w-full text-start font-bold transition-all focus:outline-none whitespace-nowrap"
                     >
-                      <span className="bg-emerald-300 text-white rounded-md px-4 py-1">
+                      <span className="bg-emerald-300 text-white rounded-md px-4 py-1 whitespace-nowrap">
                         {showingTranslateValue(
                           storeCustomizationSetting?.navbar?.offers
                         )}
@@ -197,18 +183,18 @@ const CategoryDrawer = () => {
           </div>
         </div>
 
-        {/* Sticky Footer Section */}
+        {/* Footer */}
         <div className="w-full px-4 py-3 border-t border-gray-200 text-center">
           {userInfo?.email ? (
             <button
               onClick={handleLogOut}
-              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none"
+              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none whitespace-nowrap"
             >
               {showingTranslateValue(storeCustomizationSetting?.navbar?.logout)}
             </button>
           ) : (
             <button
-              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none"
+              className="w-full px-8 text-center py-3 rounded bg-cyan-500 text-white hover:bg-cyan-600 transition-all focus:outline-none whitespace-nowrap"
               onClick={(e) => handleLinkClick("/auth/login")}
             >
               {showingTranslateValue(storeCustomizationSetting?.navbar?.login)}
@@ -216,18 +202,16 @@ const CategoryDrawer = () => {
           )}
         </div>
 
-        {/* ✅ Scoped Styles (only apply up to 1200px) */}
+        {/* ✅ Scoped Styles */}
         <style jsx>{`
           @media (max-width: 1200px) {
             .category-drawer .links-column {
               gap: 10px;
             }
-
             .category-drawer :global(.lg\\:px-10) {
               padding-left: 1rem !important;
               padding-right: 1rem !important;
             }
-
             .category-drawer :global(.mx-4) {
               margin-left: 0 !important;
               margin-right: 0 !important;
