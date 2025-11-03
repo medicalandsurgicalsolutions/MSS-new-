@@ -135,57 +135,65 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Section 3: Progress Bars */}
-      <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-screen-xl mx-auto grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-          {/* Text */}
-          <div>
-            <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
-              Trust Medipulse
-            </p>
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-6 leading-tight">
-              TRUST MEDIPULSE FOR YOUR LOVED ONES
-            </h3>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-10">
-              Medipulse has established a reputation for providing excellent healthcare
-              with advanced surgical and rehabilitation support
-            </p>
+      {/* Section 3: FAQ Section strt */}
+     <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-screen-lg mx-auto">
+    {/* Header */}
+    <div className="text-center mb-12">
+      <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
+        FAQs
+      </p>
+      <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
+        Frequently Asked Questions
+      </h3>
+      <p className="text-slate-600 text-sm sm:text-base">
+        Find answers to some of the most common questions about Medipulse and our services.
+      </p>
+    </div>
 
-            <div className="space-y-5">
-              {[
-                { label: "Heart Surgery", value: 90 },
-                { label: "Manage Treatment", value: 70 },
-                { label: "Rehabilitation", value: 80 },
-                { label: "Heart Transplant", value: 85 },
-              ].map((bar, i) => (
-                <div key={i}>
-                  <div className="flex justify-between text-xs sm:text-sm font-semibold text-slate-700 mb-2">
-                    <span>{bar.label}</span>
-                    <span>{bar.value}%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 rounded-full h-2 sm:h-3">
-                    <div
-                      className="h-2 sm:h-3 bg-[#b52228] rounded-full transition-all duration-500"
-                      style={{ width: `${bar.value}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
+    {/* FAQ Accordion */}
+    <div className="space-y-4">
+      {[
+        {
+          q: "What does Medical Surgical Solutions specialize in?",
+          a: "Medical Surgical Solutions is dedicated to providing high-quality surgical products and medical supplies to healthcare providers. We offer a wide range of solutions designed to support medical professionals in delivering optimal care in various surgical and clinical settings.",
+        },
+        {
+          q: "Who are the primary clients of Medical Surgical Solutions?",
+          a: "Our primary clients include hospitals, surgical centers, clinics, and healthcare professionals across the nation. We work closely with medical practitioners, providing them with top-tier surgical instruments, medical equipment, and supplies.",
+        },
+        {
+          q: "What sets Medical Surgical Solutions apart from other medical suppliers?",
+          a: " We differentiate ourselves by focusing on providing only the highest-quality products that meet rigorous standards. Our team is committed to excellent customer service, fast delivery, and personalized solutions tailored to the needs of each healthcare provider. Additionally, our expertise in surgical solutions ensures that our clients receive the best support and advice.",
+        },
+        {
+          q: "How can I place an order with Medical Surgical Solutions?",
+          a: "Ordering from Medical Surgical Solutions is simple. You can place orders through our website by browsing our online catalog or by contacting our sales team directly. For large or custom orders, we encourage reaching out to our customer service department for personalized assistance.",
+        },
+         {
+          q: " Can I request specific surgical products or equipment that are not listed on your website?",
+          a: "Yes, we can source a wide variety of medical products that may not be available on our website. If you are looking for a specific item, simply reach out to our team, and we will work with our network of suppliers to fulfill your request.",
+        },
+      ].map((item, i) => (
+        <details
+          key={i}
+          className="group bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all"
+        >
+          <summary className="cursor-pointer flex justify-between items-center p-4 sm:p-5 text-slate-800 font-semibold">
+            {item.q}
+            <span className="ml-2 text-[#0891b2] group-open:rotate-180 transition-transform duration-300">
+              ▼
+            </span>
+          </summary>
+          <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100">
+            {item.a}
           </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</div>
 
-          {/* Image */}
-          <div className="w-full h-64 sm:h-80 lg:h-[420px]">
-            <Image
-              src={about?.content_middle_Img || "/about-banner.jpg"}
-              alt="Company banner"
-              width={600}
-              height={400}
-              className="rounded-2xl shadow-lg w-full h-full object-cover"
-            />
-          </div>
-        </div>
-      </div>
 
       {/* Section 4: Team Section */}
       <div className="bg-white py-16 px-4 sm:px-6 lg:px-8">
