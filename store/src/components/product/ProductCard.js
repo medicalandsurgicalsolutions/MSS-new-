@@ -43,35 +43,45 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  const handleAddItems = (event, p) => {
-    event.stopPropagation();
-    if (p?.stock < 1) return notifyError("Insufficient stock!");
+const handleAddItems = async (event, p) => {
+  event.stopPropagation();
 
-    // if (p?.variants?.length > 0) {
-    //   setModalOpen(!modalOpen);
-    //   return;
-    // }
-    const { slug, variants, categories, description, ...updatedProduct } =
-      product;
-    const newItem = {
-      ...updatedProduct,
-      title: showingTranslateValue(p?.title),
-      id: p?._id,
-      slug: p?.slug,
-      variant: p?.prices,
-      gst: p?.gst,
-      hsn: p?.hsn,
-      price: p?.prices?.price,
-      originalPrice: product?.prices?.originalPrice,
-    };
-    if (!userInfo) {
-      // Redirect to login page with returnUrl query parameter
-      router.push(`/auth/login?redirectUrl=checkout`);
-    } else {
-      handleAddItem(newItem);
-      router.push("/checkout");
-    }
+  if (p?.stock < 1) return notifyError("Insufficient stock!");
+
+  const { slug, variants, categories, description, ...updatedProduct } = product;
+
+  const newItem = {
+    ...updatedProduct,
+    title: showingTranslateValue(p?.title),
+    id: p?._id,
+    slug: p?.slug,
+    variant: p?.prices,
+    gst: p?.gst,
+    hsn: p?.hsn,
+    price: p?.prices?.price,
+    originalPrice: product?.prices?.originalPrice,
+    quantity: 1, // ensure at least 1 quantity is added
   };
+
+  if (!userInfo) {
+    // Redirect to login page if not logged in
+    router.push(`/auth/login?redirectUrl=checkout`);
+  } else {
+    try {
+      // wait for the item to be added to the cart before redirect
+      await handleAddItem(newItem);
+
+      // small delay ensures cart context updates before navigating
+      setTimeout(() => {
+        router.push("/checkout");
+      }, 300);
+    } catch (error) {
+      console.error("Error adding item:", error);
+      notifyError("Something went wrong while adding to cart.");
+    }
+  }
+};
+
 
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
