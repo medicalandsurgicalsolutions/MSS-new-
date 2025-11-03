@@ -502,7 +502,7 @@ const Search = ({
                 <Loading loading={isLoading} />
               ) : (
                 <>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {showProduct?.slice(0, visibleProduct).map((product, i) => (
                       <ProductCard
                         key={i + 1}
