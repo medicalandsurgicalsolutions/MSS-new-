@@ -257,4 +257,4 @@ const handleAddItems = async (event, p) => {
   );
 };
 
-export default dynamic(() => Promise.resolve(ProductCard), { ssr: false });
+export default ProductCard;
