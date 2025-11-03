@@ -136,63 +136,61 @@ const AboutUs = () => {
       </section>
 
       {/* Section 3: FAQ Section strt */}
-     <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-screen-lg mx-auto">
-    {/* Header */}
-    <div className="text-center mb-12">
-      <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
-        FAQs
-      </p>
-      <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
-        Frequently Asked Questions
-      </h3>
-      <p className="text-slate-600 text-sm sm:text-base">
-        Find answers to some of the most common questions about Medipulse and our services.
-      </p>
-    </div>
-
-    {/* FAQ Accordion */}
-    <div className="space-y-4">
-      {[
-        {
-          q: "What does Medical Surgical Solutions specialize in?",
-          a: "Medical Surgical Solutions is dedicated to providing high-quality surgical products and medical supplies to healthcare providers. We offer a wide range of solutions designed to support medical professionals in delivering optimal care in various surgical and clinical settings.",
-        },
-        {
-          q: "Who are the primary clients of Medical Surgical Solutions?",
-          a: "Our primary clients include hospitals, surgical centers, clinics, and healthcare professionals across the nation. We work closely with medical practitioners, providing them with top-tier surgical instruments, medical equipment, and supplies.",
-        },
-        {
-          q: "What sets Medical Surgical Solutions apart from other medical suppliers?",
-          a: " We differentiate ourselves by focusing on providing only the highest-quality products that meet rigorous standards. Our team is committed to excellent customer service, fast delivery, and personalized solutions tailored to the needs of each healthcare provider. Additionally, our expertise in surgical solutions ensures that our clients receive the best support and advice.",
-        },
-        {
-          q: "How can I place an order with Medical Surgical Solutions?",
-          a: "Ordering from Medical Surgical Solutions is simple. You can place orders through our website by browsing our online catalog or by contacting our sales team directly. For large or custom orders, we encourage reaching out to our customer service department for personalized assistance.",
-        },
-         {
-          q: " Can I request specific surgical products or equipment that are not listed on your website?",
-          a: "Yes, we can source a wide variety of medical products that may not be available on our website. If you are looking for a specific item, simply reach out to our team, and we will work with our network of suppliers to fulfill your request.",
-        },
-      ].map((item, i) => (
-        <details
-          key={i}
-          className="group bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all"
-        >
-          <summary className="cursor-pointer flex justify-between items-center p-4 sm:p-5 text-slate-800 font-semibold">
-            {item.q}
-            <span className="ml-2 text-[#0891b2] group-open:rotate-180 transition-transform duration-300">
-              ▼
-            </span>
-          </summary>
-          <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100">
-            {item.a}
+        <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
+              <div className="max-w-screen-lg mx-auto">
+                {/* Header */}
+            <div className="text-center mb-12">
+              <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
+                FAQs
+              </p>
+              <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
+                Frequently Asked Questions
+              </h3>
+            
+            </div>
+        
+            {/* FAQ Accordion */}
+            <div className="space-y-4">
+              {[
+                {
+                  q: "What does Medical Surgical Solutions specialize in?",
+                  a: "Medical Surgical Solutions is dedicated to providing high-quality surgical products and medical supplies to healthcare providers. We offer a wide range of solutions designed to support medical professionals in delivering optimal care in various surgical and clinical settings.",
+                },
+                {
+                  q: "Who are the primary clients of Medical Surgical Solutions?",
+                  a: "Our primary clients include hospitals, surgical centers, clinics, and healthcare professionals across the nation. We work closely with medical practitioners, providing them with top-tier surgical instruments, medical equipment, and supplies.",
+                },
+                {
+                  q: "What sets Medical Surgical Solutions apart from other medical suppliers?",
+                  a: " We differentiate ourselves by focusing on providing only the highest-quality products that meet rigorous standards. Our team is committed to excellent customer service, fast delivery, and personalized solutions tailored to the needs of each healthcare provider. Additionally, our expertise in surgical solutions ensures that our clients receive the best support and advice.",
+                },
+                {
+                  q: "How can I place an order with Medical Surgical Solutions?",
+                  a: "Ordering from Medical Surgical Solutions is simple. You can place orders through our website by browsing our online catalog or by contacting our sales team directly. For large or custom orders, we encourage reaching out to our customer service department for personalized assistance.",
+                },
+                 {
+                  q: " Can I request specific surgical products or equipment that are not listed on your website?",
+                  a: "Yes, we can source a wide variety of medical products that may not be available on our website. If you are looking for a specific item, simply reach out to our team, and we will work with our network of suppliers to fulfill your request.",
+                },
+              ].map((item, i) => (
+                <details
+                  key={i}
+                  className="group bg-white border border-slate-200 rounded-xl shadow-sm hover:shadow-md transition-all"
+                >
+                  <summary className="cursor-pointer flex justify-between items-center p-4 sm:p-5 text-slate-800 font-semibold">
+                    {item.q}
+                    <span className="ml-2 text-[#0891b2] group-open:rotate-180 transition-transform duration-300">
+                      ▼
+                    </span>
+                  </summary>
+                  <div className="px-4 sm:px-5 pb-4 sm:pb-5 text-slate-600 text-sm sm:text-base leading-relaxed border-t border-slate-100">
+                    {item.a}
+                  </div>
+                </details>
+              ))}
+            </div>
           </div>
-        </details>
-      ))}
-    </div>
-  </div>
-</div>
+        </div>
 {/* Section 4: Faq section end */}
 
 
