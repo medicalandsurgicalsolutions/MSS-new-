@@ -63,7 +63,7 @@ const Footer = () => {
                   </a>
           
                   <p className="text-sm leading-6 mb-2 font-medium">
-                    Monday - Friday: 10:00 - 07:00
+                   Monday to Saturday: Available 24/7
                   </p>
 
                     <a
