@@ -10,7 +10,9 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
-import { AuthProvider } from "@context/AuthContext";
+import Script from "next/script";
+
+// internal imports
 import store from "@redux/store";
 import useAsync from "@hooks/useAsync";
 import { handlePageView } from "@lib/analytics";
@@ -18,16 +20,6 @@ import { UserProvider } from "@context/UserContext";
 import DefaultSeo from "@components/common/DefaultSeo";
 import { SidebarProvider } from "@context/SidebarContext";
 import SettingServices from "@services/SettingServices";
-import Script from "next/script";
-
-// ✅ Add Google Font (Montserrat)
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
 
 let persistor = persistStore(store);
 
@@ -49,12 +41,16 @@ function MyApp({ Component, pageProps }) {
       handlePageView();
 
       // Track page view on route change
-      const handleRouteChange = () => {
+      const handleRouteChange = (url) => {
         handlePageView(`/${router.pathname}`, "Medical&SurgicalSolutions");
       };
 
+      // Set up event listeners
       router.events.on("routeChangeComplete", handleRouteChange);
-      return () => router.events.off("routeChangeComplete", handleRouteChange);
+
+      return () => {
+        router.events.off("routeChangeComplete", handleRouteChange);
+      };
     }
   }, [storeSetting]);
 
@@ -86,7 +82,6 @@ function MyApp({ Component, pageProps }) {
         />
       </noscript>
 
-      {/* Tawk Chat */}
       {!loading && !error && storeSetting?.tawk_chat_status && (
         <TawkMessengerReact
           propertyId={storeSetting?.tawk_chat_property_id || ""}
@@ -94,25 +89,21 @@ function MyApp({ Component, pageProps }) {
         />
       )}
 
-      {/* ✅ Apply Montserrat font globally */}
-      <main className={montserrat.className}>
-        <AuthProvider>
-          <SessionProvider>
-            <UserProvider>
-              <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                  <SidebarProvider>
-                    <CartProvider>
-                      <DefaultSeo />
-                      <Component {...pageProps} />
-                    </CartProvider>
-                  </SidebarProvider>
-                </PersistGate>
-              </Provider>
-            </UserProvider>
-          </SessionProvider>
-        </AuthProvider>
-      </main>
+      {/* ✅ Correct Provider Order */}
+      <CartProvider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <SessionProvider>
+              <UserProvider>
+                <SidebarProvider>
+                  <DefaultSeo />
+                  <Component {...pageProps} />
+                </SidebarProvider>
+              </UserProvider>
+            </SessionProvider>
+          </PersistGate>
+        </Provider>
+      </CartProvider>
     </>
   );
 }
