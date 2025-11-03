@@ -45,44 +45,44 @@ const ProductCard = ({ product, attributes }) => {
 
 const handleAddItems = async (event, p) => {
   event.stopPropagation();
-
   if (p?.stock < 1) return notifyError("Insufficient stock!");
 
   const { slug, variants, categories, description, ...updatedProduct } = product;
-
   const newItem = {
     ...updatedProduct,
-    title: showingTranslateValue(p?.title),
     id: p?._id,
+    title: showingTranslateValue(p?.title),
     slug: p?.slug,
     variant: p?.prices,
     gst: p?.gst,
     hsn: p?.hsn,
     price: p?.prices?.price,
-    originalPrice: product?.prices?.originalPrice,
-    quantity: 1, // ensure at least 1 quantity is added
+    originalPrice: p?.prices?.originalPrice,
+    quantity: 1,
   };
 
   if (!userInfo) {
-    // Redirect to login page if not logged in
     router.push(`/auth/login?redirectUrl=checkout`);
-  } else {
-    try {
-      // wait for the item to be added to the cart before redirect
-      await handleAddItem(newItem);
+    return;
+  }
 
-      // small delay ensures cart context updates before navigating
-      setTimeout(() => {
-        router.push("/checkout");
-      }, 300);
-    } catch (error) {
-      console.error("Error adding item:", error);
-      notifyError("Something went wrong while adding to cart.");
-    }
+  try {
+    // ✅ Clear existing cart to simulate single product checkout (optional)
+    localStorage.removeItem("react-use-cart");
+
+    // ✅ Add item to cart
+    handleAddItem(newItem);
+
+    // ✅ Small delay to allow react-use-cart to update its localStorage
+    setTimeout(() => {
+      router.push("/checkout");
+    }, 400);
+  } catch (error) {
+    console.error("Buy Now Error:", error);
+    notifyError("Something went wrong while adding to cart.");
   }
 };
-
-
+  
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
   };
@@ -257,4 +257,4 @@ const handleAddItems = async (event, p) => {
   );
 };
 
-export default ProductCard;
+export default dynamic(() => Promise.resolve(ProductCard), { ssr: false });
