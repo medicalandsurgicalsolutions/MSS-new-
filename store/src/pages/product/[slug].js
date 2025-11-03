@@ -558,8 +558,13 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                       watermarkImage={storeCustomizationSetting?.navbar?.logo} // Replace with your logo path
                   /> */}
                   
-                      <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12  overflow-hidden h-max md:sticky md:top-28">
-                        <div className="border-b my-4 pb-2 md:hidden heading">
+                    
+
+                            
+                  <div className="w-full">
+                    <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
+                     <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
+                     <div className="border-b my-4 pb-2 md:hidden heading">
                           <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
                             {lowercaser(showingTranslateValue(product?.title))}
                           </h1>
@@ -573,11 +578,6 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                             </p>
                           )}
                         </div>
-
-                            
-                  <div className="w-full">
-                    <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
-                     <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
                       <div className="hidden md:block border-b py-2 heading">
                         <h1 className="leading-7 text-base sm:text-lg md:text-xl lg:text-3xl my-3 font-semibold tracking-tight text-gray-800 capitalize break-words whitespace-normal">
                           {product?.title
@@ -794,7 +794,8 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                       </div>
 
                       {/* shipping description card */}
-
+                      <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12  overflow-hidden h-max md:sticky md:top-28">
+                       
                         <div className="md:rounded-xl border-dashed border-cyan-300 md:border-2">
                           <div className="flex flex-col-reverse md:flex-col">
                             <div className="mt-1 price_wagera text-gray-600 text-base space-y-3 pb-2 rounded-xl">
