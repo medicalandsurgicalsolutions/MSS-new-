@@ -562,7 +562,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                     <div className="flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                      <div className="xl:pr-6 md:pr-6  md:w-2/3 mob-w-full">
                       <div className="border-b py-2 heading">
-                        <h1 className="leading-7 text-base sm:text-sm md:text-xl lg:text-3xl my-3 font-semibold tracking-tight text-gray-800 capitalize break-words whitespace-normal">
+                        <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
                           {product?.title
                             ? lowercaser(showingTranslateValue(product?.title))
                             : "Loading..."}
