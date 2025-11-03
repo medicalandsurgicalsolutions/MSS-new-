@@ -5,10 +5,9 @@ import { IoAdd, IoBagAddSharp, IoRemove } from "react-icons/io5";
 import { useCart } from "react-use-cart";
 
 //internal import
-
 import Price from "@components/common/Price";
 import Stock from "@components/common/Stock";
-import { notifyError } from "@utils/toast";
+import { notifyError, notifySuccess } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
 import useGetSetting from "@hooks/useGetSetting";
 import Discount from "@components/common/Discount";
@@ -43,49 +42,51 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-const handleAddItems = async (event, p) => {
-  event.stopPropagation();
+  // ✅ Updated Buy Now Logic (adds item to react-use-cart + navigates)
+  const handleAddItems = async (event, p) => {
+    event.stopPropagation();
 
-  if (p?.stock < 1) {
-    notifyError("Insufficient stock!");
-    return;
-  }
+    if (p?.stock < 1) {
+      notifyError("Insufficient stock!");
+      return;
+    }
 
-  const { slug, variants, categories, description, ...updatedProduct } = product;
+    const { slug, variants, categories, description, ...updatedProduct } = product;
 
-  const newItem = {
-    ...updatedProduct,
-    id: p?._id,
-    title: showingTranslateValue(p?.title),
-    slug: p?.slug,
-    variant: p?.prices,
-    gst: p?.gst,
-    hsn: p?.hsn,
-    price: p?.prices?.price,
-    originalPrice: product?.prices?.originalPrice,
-    quantity: 1,
+    const newItem = {
+      ...updatedProduct,
+      id: p?._id,
+      title: showingTranslateValue(p?.title),
+      slug: p?.slug,
+      variant: p?.prices,
+      gst: p?.gst,
+      hsn: p?.hsn,
+      price: p?.prices?.price,
+      originalPrice: product?.prices?.originalPrice,
+      quantity: 1,
+    };
+
+    // 🟢 If user not logged in → redirect to login with redirectUrl
+    if (!userInfo) {
+      router.push(`/auth/login?redirectUrl=checkout`);
+      return;
+    }
+
+    try {
+      // Add to cart first
+      addItem(newItem);
+      notifySuccess(`${p?.title} added to cart! Redirecting...`);
+
+      // wait for react-use-cart localStorage update
+      setTimeout(() => {
+        router.push("/checkout");
+      }, 400);
+    } catch (error) {
+      console.error("Buy Now Error:", error);
+      notifyError("Something went wrong while adding to cart.");
+    }
   };
 
-  if (!userInfo) {
-    router.push(`/auth/login?redirectUrl=checkout`);
-    return;
-  }
-
-  try {
-    // ✅ use the real react-use-cart addItem
-    addItem(newItem);
-
-    // wait a short time to ensure it's persisted
-    setTimeout(() => {
-      console.log("react-use-cart after Buy Now:", localStorage.getItem('react-use-cart'));
-      router.push("/checkout");
-    }, 400);
-  } catch (error) {
-    console.error("Buy Now Error:", error);
-    notifyError("Something went wrong while adding to cart.");
-  }
-};
-  
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
   };
@@ -103,10 +104,6 @@ const handleAddItems = async (event, p) => {
       )}
 
       <div className="group box-border overflow-hidden flex rounded-md shadow-sm border-2 border-cyan-100 pe-0 flex-col items-center bg-gray-50 relative">
-        {/* <div className="w-full flex justify-between"> */}
-          {/* <Stock product={product} stock={product.stock} card /> */}
-          {/* <Discount product={product} /> */}
-        {/* </div> */}
         <div
           onClick={() => {
             handleModalOpen(!modalOpen, product._id);
@@ -134,19 +131,18 @@ const handleAddItems = async (event, p) => {
             )}
           </div>
         </div>
+
         <div className="w-full h-44 lg:h-28 relative px-1 lg:px-4 pb-4 overflow-hidden">
           <div className="relative mb-1">
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
               {product.unit}
             </span>
             <h2 className="mb-0 font-poppins block text-[13px] lg:text-xs font-medium text-gray-800">
-                {showingTranslateValue(product?.title)?.length >= sliceLimit ? showingTranslateValue(product?.title).slice(0, sliceLimit) + "..." : showingTranslateValue(product?.title)} {product?.sku ? ` (${product?.sku})` : ""}
+              {showingTranslateValue(product?.title)?.length >= sliceLimit
+                ? showingTranslateValue(product?.title).slice(0, sliceLimit) + "..."
+                : showingTranslateValue(product?.title)}{" "}
+              {product?.sku ? ` (${product?.sku})` : ""}
             </h2>
-            <div>
-              {/* <span className="text-yellow-500">{Array.from({ length: 5 }, (_, i) => (
-                  <span key={i}>{i < product.rating ? '★' : '☆'}</span>
-              ))}</span> */}
-            </div>
           </div>
 
           <div className="flex justify-between items-center text-heading text-sm sm:text-base space-s-2 md:text-base lg:text-xl">
@@ -165,79 +161,12 @@ const handleAddItems = async (event, p) => {
                   : product?.prices?.originalPrice
               }
             />
-            {/* <div class="h-[26px] border-2 border-dotted px-1 border-green-500 rounded flex items-start justify-start">
-              <span class="text-green-600 text-[10px]">{`${(((product?.prices?.originalPrice - product?.prices?.price) / product?.prices?.originalPrice) * 100).toFixed(2)}%`}</span>
-              <span class="text-green-600 text-[10px]">OFF</span>
-            </div> */}
-
-            {/* <button
-              onClick={() => {
-                handleModalOpen(!modalOpen, product._id);
-                handleLogEvent(
-                  "product",
-                  `opened ${showingTranslateValue(product?.title)} product modal`
-                );
-              }}
-              aria-label="cart"
-              className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
-            >
-              {" "}
-              <span className="text-xl">
-                <IoBagAddSharp />
-              </span>{" "}
-            </button> */}
-
-            {/* {inCart(product._id) ? (
-              <div>
-                {items.map(
-                  (item) =>
-                    item.id === product._id && (
-                      <div
-                        key={item.id}
-                        className="h-9 w-auto flex flex-wrap items-center justify-evenly py-1 px-2 bg-emerald-500 text-white rounded"
-                      >
-                        <button
-                          onClick={() =>
-                            updateItemQuantity(item.id, item.quantity - 1)
-                          }
-                        >
-                          <span className="text-dark text-base">
-                            <IoRemove />
-                          </span>
-                        </button>
-                        <p className="text-sm text-dark px-1  font-semibold">
-                          {item.quantity}
-                        </p>
-                        <button
-                          onClick={() =>
-                            item?.variants?.length > 0
-                              ? handleAddItem(item)
-                              : handleIncreaseQuantity(item)
-                          }
-                        >
-                          <span className="text-dark text-base">
-                            <IoAdd />
-                          </span>
-                        </button>
-                      </div>
-                    )
-                )}{" "}
-              </div>
-            ) : (
-              <button
-                onClick={() => handleAddItem(product)}
-                aria-label="cart"
-                className="h-9 w-9 flex items-center justify-center border border-gray-200 rounded text-emerald-500 hover:border-emerald-500 hover:bg-emerald-500 hover:text-white transition-all"
-              >
-                {" "}
-                <span className="text-xl">
-                  <IoBagAddSharp />
-                </span>{" "}
-              </button>
-            )} */}
           </div>
+
+          {/* 🟢 Add to Cart & Buy Now Buttons */}
           <div className="absolute bottom-2 w-full lg:w-auto flex flex-col items-center lg:flex-row gap-2 mt-2 lg:mt-4 lg:justify-between">
-              <div className="text-cyan-600 border cursor-pointer border-cyan-600 w-full lg:w-auto hover:text-white hover:bg-cyan-600 mb-1 me-2 lg:me-0 lg:mb-0 px-3 py-1 text-center"
+            <div
+              className="text-cyan-600 border cursor-pointer border-cyan-600 w-full lg:w-auto hover:text-white hover:bg-cyan-600 mb-1 me-2 lg:me-0 lg:mb-0 px-3 py-1 text-center"
               onClick={() => {
                 handleModalOpen(!modalOpen, product._id);
                 handleLogEvent(
@@ -245,14 +174,16 @@ const handleAddItems = async (event, p) => {
                   `opened ${showingTranslateValue(product?.title)} product modal`
                 );
               }}
-              >
-                  Add to cart
-              </div>
-              <div className="text-green-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 me-2 lg:me-0 px-3 py-1"
+            >
+              Add to cart
+            </div>
+
+            <div
+              className="text-green-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 me-2 lg:me-0 px-3 py-1"
               onClick={(event) => handleAddItems(event, product)}
-              >
-                  Buy now
-              </div>
+            >
+              Buy now
+            </div>
           </div>
         </div>
       </div>
