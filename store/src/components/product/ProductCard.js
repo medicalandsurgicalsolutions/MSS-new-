@@ -45,9 +45,14 @@ const ProductCard = ({ product, attributes }) => {
 
 const handleAddItems = async (event, p) => {
   event.stopPropagation();
-  if (p?.stock < 1) return notifyError("Insufficient stock!");
+
+  if (p?.stock < 1) {
+    notifyError("Insufficient stock!");
+    return;
+  }
 
   const { slug, variants, categories, description, ...updatedProduct } = product;
+
   const newItem = {
     ...updatedProduct,
     id: p?._id,
@@ -57,7 +62,7 @@ const handleAddItems = async (event, p) => {
     gst: p?.gst,
     hsn: p?.hsn,
     price: p?.prices?.price,
-    originalPrice: p?.prices?.originalPrice,
+    originalPrice: product?.prices?.originalPrice,
     quantity: 1,
   };
 
@@ -67,14 +72,12 @@ const handleAddItems = async (event, p) => {
   }
 
   try {
-    // ✅ Clear existing cart to simulate single product checkout (optional)
-    localStorage.removeItem("react-use-cart");
+    // ✅ use the real react-use-cart addItem
+    addItem(newItem);
 
-    // ✅ Add item to cart
-    handleAddItem(newItem);
-
-    // ✅ Small delay to allow react-use-cart to update its localStorage
+    // wait a short time to ensure it's persisted
     setTimeout(() => {
+      console.log("react-use-cart after Buy Now:", localStorage.getItem('react-use-cart'));
       router.push("/checkout");
     }, 400);
   } catch (error) {
