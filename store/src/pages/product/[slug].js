@@ -778,21 +778,21 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
 
                       {/* shipping description card */}
 
-                      // <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12  overflow-hidden h-max md:sticky md:top-28">
-                      //   <div className="border-b my-4 pb-2 md:hidden heading">
-                      //     <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
-                      //       {lowercaser(showingTranslateValue(product?.title))}
-                      //     </h1>
+                      <div className="w-full xl:w-5/12 lg:w-6/12 md:w-5/12  overflow-hidden h-max md:sticky md:top-28">
+                        <div className="border-b my-4 pb-2 md:hidden heading">
+                          <h1 className=" leading-7 text-xl sm:text-2xl md:text-3xl lg:text-4xl w-max mx-auto font-semibold tracking-tight  text-gray-800 capitalize">
+                            {lowercaser(showingTranslateValue(product?.title))}
+                          </h1>
 
-                      //     {product?.sku && (
-                      //       <p className="uppercase  font-medium text-gray-500 text-sm">
-                      //         SKU :{" "}
-                      //         <span className="font-bold text-gray-600">
-                      //           {product?.sku}
-                      //         </span>
-                      //       </p>
-                      //     )}
-                      //   </div>
+                          {product?.sku && (
+                            <p className="uppercase  font-medium text-gray-500 text-sm">
+                              SKU :{" "}
+                              <span className="font-bold text-gray-600">
+                                {product?.sku}
+                              </span>
+                            </p>
+                          )}
+                        </div>
                         <div className="md:rounded-xl border-dashed border-cyan-300 md:border-2">
                           <div className="flex flex-col-reverse md:flex-col">
                             <div className="mt-1 price_wagera text-gray-600 text-base space-y-3 pb-2 rounded-xl">
