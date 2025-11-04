@@ -93,40 +93,44 @@ const NavbarPromo = () => {
 
   return (
     <>
-      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 flex justify-between items-center">
+     return (
+  <>
+    {/* Desktop Navbar */}
+    <div className="hidden md:flex bg-gray-100 border-b text-sm text-black">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center flex-wrap">
+        {/* Home */}
+        <div>
+          <Link
+            onClick={() => setIsLoading(!isLoading)}
+            href="/"
+            className="mx-2 py-2 hover:text-emerald-600 block"
+          >
+            Home
+          </Link>
+        </div>
+
+        {/* Quick Delivery */}
+        {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
           <div>
             <Link
               onClick={() => setIsLoading(!isLoading)}
-              href="/"
-              className="mx-4 py-2 hover:text-emerald-600"
+              href="/search?query=latest"
+              className="mx-2 py-2 hover:text-emerald-600 block"
             >
-              Home
+              {
+                storeCustomizationSetting?.home?.quick_delivery_subtitle
+                  ?.en
+              }
             </Link>
           </div>
+        )}
 
-          <div>
-            {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-              <>
-                <Link
-                  onClick={() => setIsLoading(!isLoading)}
-                  href="/search?query=latest"
-                >
-                  <div className="mx-4 py-2 hover:text-emerald-600">
-                    {
-                      storeCustomizationSetting?.home?.quick_delivery_subtitle
-                        ?.en
-                    }
-                  </div>
-                </Link>
-              </>
-            )}
-          </div>
-
+        {/* Categories */}
+        <div className="flex flex-wrap justify-center">
           {data[0]?.children?.slice(0, 6)?.map((category, index) => (
             <div
               key={index}
-              className="relative cursor-pointer group py-2"
+              className="relative cursor-pointer group py-2 mx-2"
               onClick={() =>
                 handleSubCategory(
                   category?._id,
@@ -134,74 +138,129 @@ const NavbarPromo = () => {
                 )
               }
             >
-              <div className="mx-4 group hover:text-emerald-600 flex items-center space-x-2">
-                <div>{capitalizeWords(category?.name?.en)}</div>
+              <div className="group hover:text-emerald-600 flex items-center space-x-1">
+                <div className="text-sm font-medium">
+                  {capitalizeWords(category?.name?.en)}
+                </div>
                 {category?.children && (
-                  <div className="group-hover:rotate-180 duration-200 py-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
+                  <div className="group-hover:rotate-180 duration-200">
+                    <ChevronDownIcon className="w-3 h-3" />
                   </div>
                 )}
               </div>
 
+              {/* Dropdown */}
               {category?.children && (
-                <div className="absolute left-0 w-60 top-full hidden group-hover:block shadow-lg">
-                  {category?.children && (
-                    <div
-                      className="absolute left-0 w-auto top-full rounded-md hidden group-hover:block bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6"
-                      style={{
-                        display: "grid",
-                        gridTemplateColumns: `repeat(${Math.ceil(
-                          category.children.length / 8
-                        )}, auto)`,
-                      }}
-                    >
-                      {category?.children?.map((subCategory, subIndex) => (
-                        <div className="border-b" key={subIndex}>
-                          <div
-                            className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleSubNestedCategory(
-                                subCategory?._id,
-                                showingTranslateValue(subCategory?.name)
-                              );
-                            }}
-                          >
-                            {subCategory?.name?.en}
-                          </div>
+                <div className="absolute left-0 w-56 top-full hidden group-hover:block shadow-lg z-50">
+                  <div
+                    className="rounded-md bg-cyan-500 text-white shadow-lg p-3 grid gap-2"
+                    style={{
+                      gridTemplateColumns: `repeat(${Math.ceil(
+                        category.children.length / 8
+                      )}, auto)`,
+                    }}
+                  >
+                    {category?.children?.map((subCategory, subIndex) => (
+                      <div key={subIndex}>
+                        <div
+                          className="block text-sm cursor-pointer hover:translate-x-1 duration-100 whitespace-nowrap border-b border-cyan-400 pb-1"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleSubNestedCategory(
+                              subCategory?._id,
+                              showingTranslateValue(subCategory?.name)
+                            );
+                          }}
+                        >
+                          {subCategory?.name?.en}
                         </div>
-                      ))}
-                    </div>
-                  )}
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
           ))}
+        </div>
 
-          {/* ✅ map closed properly before next JSX */}
-          <div>
-            <Link
-              onClick={() => setIsLoading(!isLoading)}
-              href="/contact-us"
-            >
-              <div className="mx-4 py-2 hover:text-emerald-600">Buy In Bulk</div>
-            </Link>
-          </div>
+        {/* Buy In Bulk */}
+        <div>
+          <Link
+            onClick={() => setIsLoading(!isLoading)}
+            href="/contact-us"
+            className="mx-2 py-2 hover:text-emerald-600 block"
+          >
+            Buy In Bulk
+          </Link>
         </div>
       </div>
+    </div>
+
+    {/* ✅ Mobile Navbar */}
+    <div className="md:hidden bg-gray-100 border-b text-sm text-black">
+      <div className="px-4 py-3 flex justify-between items-center">
+        <Link
+          href="/"
+          onClick={() => setIsLoading(!isLoading)}
+          className="text-emerald-700 font-semibold"
+        >
+          Home
+        </Link>
+
+        <Popover className="relative">
+          {({ open }) => (
+            <>
+              <Popover.Button className="flex items-center text-sm font-medium focus:outline-none">
+                Categories
+                <ChevronDownIcon
+                  className={`ml-1 h-4 w-4 transition-transform ${
+                    open ? "rotate-180" : ""
+                  }`}
+                />
+              </Popover.Button>
+
+              <Transition
+                enter="transition duration-100 ease-out"
+                enterFrom="transform scale-95 opacity-0"
+                enterTo="transform scale-100 opacity-100"
+                leave="transition duration-75 ease-out"
+                leaveFrom="transform scale-100 opacity-100"
+                leaveTo="transform scale-95 opacity-0"
+              >
+                <Popover.Panel className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
+                  <div className="py-2">
+                    {data[0]?.children?.slice(0, 6)?.map((category, i) => (
+                      <div
+                        key={i}
+                        onClick={() =>
+                          handleSubCategory(
+                            category?._id,
+                            showingTranslateValue(category?.name)
+                          )
+                        }
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                      >
+                        {capitalizeWords(category?.name?.en)}
+                      </div>
+                    ))}
+                    <Link
+                      href="/contact-us"
+                      onClick={() => setIsLoading(!isLoading)}
+                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                    >
+                      Buy In Bulk
+                    </Link>
+                  </div>
+                </Popover.Panel>
+              </Transition>
+            </>
+          )}
+        </Popover>
+      </div>
+    </div>
+  </>
+);
+
     </>
   );
 };
