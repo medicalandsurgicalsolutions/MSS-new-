@@ -257,6 +257,8 @@ return (
     </div>
   </>
 );
+};
+
 
 
 export default NavbarPromo;
