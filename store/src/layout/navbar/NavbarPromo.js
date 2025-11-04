@@ -92,172 +92,148 @@ const NavbarPromo = () => {
   };
 return (
   <>
-    {/* Desktop Navbar */}
-    <div className="hidden md:flex bg-gray-100 border-b text-sm text-black">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center flex-wrap">
-        {/* Home */}
-        <div>
-          <Link
-            onClick={() => setIsLoading(!isLoading)}
-            href="/"
-            className="mx-2 py-2 hover:text-emerald-600 block"
-          >
-            Home
-          </Link>
-        </div>
-
-        {/* Quick Delivery */}
-        {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-          <div>
-            <Link
-              onClick={() => setIsLoading(!isLoading)}
-              href="/search?query=latest"
-              className="mx-2 py-2 hover:text-emerald-600 block"
-            >
-              {
-                storeCustomizationSetting?.home?.quick_delivery_subtitle
-                  ?.en
-              }
-            </Link>
-          </div>
-        )}
-
-        {/* Categories */}
-        <div className="flex flex-wrap justify-center">
-          {data[0]?.children?.slice(0, 6)?.map((category, index) => (
-            <div
-              key={index}
-              className="relative cursor-pointer group py-2 mx-2"
-              onClick={() =>
-                handleSubCategory(
-                  category?._id,
-                  showingTranslateValue(category?.name)
-                )
-              }
-            >
-              <div className="group hover:text-emerald-600 flex items-center space-x-1">
-                <div className="text-sm font-medium">
-                  {capitalizeWords(category?.name?.en)}
-                </div>
-                {category?.children && (
-                  <div className="group-hover:rotate-180 duration-200">
-                    <ChevronDownIcon className="w-3 h-3" />
-                  </div>
-                )}
-              </div>
-
-              {/* Dropdown */}
-              {category?.children && (
-                <div className="absolute left-0 w-56 top-full hidden group-hover:block shadow-lg z-50">
-                  <div
-                    className="rounded-md bg-cyan-500 text-white shadow-lg p-3 grid gap-2"
-                    style={{
-                      gridTemplateColumns: `repeat(${Math.ceil(
-                        category.children.length / 8
-                      )}, auto)`,
-                    }}
-                  >
-                    {category?.children?.map((subCategory, subIndex) => (
-                      <div key={subIndex}>
-                        <div
-                          className="block text-sm cursor-pointer hover:translate-x-1 duration-100 whitespace-nowrap border-b border-cyan-400 pb-1"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleSubNestedCategory(
-                              subCategory?._id,
-                              showingTranslateValue(subCategory?.name)
-                            );
-                          }}
-                        >
-                          {subCategory?.name?.en}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        {/* Buy In Bulk */}
-        <div>
-          <Link
-            onClick={() => setIsLoading(!isLoading)}
-            href="/contact-us"
-            className="mx-2 py-2 hover:text-emerald-600 block"
-          >
-            Buy In Bulk
-          </Link>
-        </div>
-      </div>
-    </div>
-
-    {/* ✅ Mobile Navbar */}
-    <div className="md:hidden bg-gray-100 border-b text-sm text-black">
-      <div className="px-4 py-3 flex justify-between items-center">
+    {/* ✅ Desktop Navbar (unchanged) */}
+    <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
+      <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 flex justify-between items-center">
         <Link
-          href="/"
           onClick={() => setIsLoading(!isLoading)}
-          className="text-emerald-700 font-semibold"
+          href="/"
+          className="mx-4 py-2 hover:text-emerald-600"
         >
           Home
         </Link>
 
-        <Popover className="relative">
-          {({ open }) => (
-            <>
-              <Popover.Button className="flex items-center text-sm font-medium focus:outline-none">
-                Categories
-                <ChevronDownIcon
-                  className={`ml-1 h-4 w-4 transition-transform ${
-                    open ? "rotate-180" : ""
-                  }`}
-                />
-              </Popover.Button>
+        {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
+          <Link
+            onClick={() => setIsLoading(!isLoading)}
+            href="/search?query=latest"
+          >
+            <div className="mx-4 py-2 hover:text-emerald-600">
+              {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
+            </div>
+          </Link>
+        )}
 
-              <Transition
-                enter="transition duration-100 ease-out"
-                enterFrom="transform scale-95 opacity-0"
-                enterTo="transform scale-100 opacity-100"
-                leave="transition duration-75 ease-out"
-                leaveFrom="transform scale-100 opacity-100"
-                leaveTo="transform scale-95 opacity-0"
-              >
-                <Popover.Panel className="absolute right-0 mt-2 w-48 bg-white shadow-md rounded-md z-50">
-                  <div className="py-2">
-                    {data[0]?.children?.slice(0, 6)?.map((category, i) => (
+        {data[0]?.children?.slice(0, 6)?.map((category, index) => (
+          <div
+            key={index}
+            className="relative cursor-pointer group py-2"
+            onClick={() =>
+              handleSubCategory(
+                category?._id,
+                showingTranslateValue(category?.name)
+              )
+            }
+          >
+            <div className="mx-4 group hover:text-emerald-600 flex items-center space-x-2">
+              <div>{capitalizeWords(category?.name?.en)}</div>
+              {category?.children && (
+                <div className="group-hover:rotate-180 duration-200 py-2">
+                  <ChevronDownIcon className="w-3 h-3" />
+                </div>
+              )}
+            </div>
+
+            {category?.children && (
+              <div className="absolute left-0 w-60 top-full hidden group-hover:block shadow-lg">
+                <div
+                  className="absolute left-0 w-auto top-full rounded-md hidden group-hover:block bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6"
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: `repeat(${Math.ceil(
+                      category.children.length / 8
+                    )}, auto)`,
+                  }}
+                >
+                  {category?.children?.map((subCategory, subIndex) => (
+                    <div className="border-b" key={subIndex}>
                       <div
-                        key={i}
-                        onClick={() =>
-                          handleSubCategory(
-                            category?._id,
-                            showingTranslateValue(category?.name)
-                          )
-                        }
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                        className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          handleSubNestedCategory(
+                            subCategory?._id,
+                            showingTranslateValue(subCategory?.name)
+                          );
+                        }}
                       >
-                        {capitalizeWords(category?.name?.en)}
+                        {subCategory?.name?.en}
                       </div>
-                    ))}
-                    <Link
-                      href="/contact-us"
-                      onClick={() => setIsLoading(!isLoading)}
-                      className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                    >
-                      Buy In Bulk
-                    </Link>
-                  </div>
-                </Popover.Panel>
-              </Transition>
-            </>
-          )}
-        </Popover>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        <Link
+          onClick={() => setIsLoading(!isLoading)}
+          href="/contact-us"
+        >
+          <div className="mx-4 py-2 hover:text-emerald-600">Buy In Bulk</div>
+        </Link>
       </div>
     </div>
+
+    {/* ✅ Tablet & Mobile Navbar */}
+    <div className="block lg:hidden bg-gray-100 border-b text-sm text-black">
+      <div className="flex items-center space-x-4 overflow-x-auto flex-nowrap px-4 py-2 scrollbar-hide">
+        <Link
+          href="/"
+          onClick={() => setIsLoading(!isLoading)}
+          className="whitespace-nowrap hover:text-emerald-600 flex-shrink-0"
+        >
+          Home
+        </Link>
+
+        {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
+          <Link
+            href="/search?query=latest"
+            onClick={() => setIsLoading(!isLoading)}
+            className="whitespace-nowrap hover:text-emerald-600 flex-shrink-0"
+          >
+            {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
+          </Link>
+        )}
+
+        {data[0]?.children?.slice(0, 6)?.map((category, index) => (
+          <div
+            key={index}
+            className="whitespace-nowrap flex-shrink-0 cursor-pointer hover:text-emerald-600"
+            onClick={() =>
+              handleSubCategory(
+                category?._id,
+                showingTranslateValue(category?.name)
+              )
+            }
+          >
+            {capitalizeWords(category?.name?.en)}
+          </div>
+        ))}
+
+        <Link
+          href="/contact-us"
+          onClick={() => setIsLoading(!isLoading)}
+          className="whitespace-nowrap hover:text-emerald-600 flex-shrink-0"
+        >
+          Buy In Bulk
+        </Link>
+      </div>
+    </div>
+
+    {/* ✅ Local Style */}
+    <style jsx>{`
+      .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+      }
+      .scrollbar-hide {
+        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none; /* Firefox */
+      }
+    `}</style>
   </>
 );
-};
 
 
 
