@@ -90,14 +90,11 @@ const NavbarPromo = () => {
       ?.toLowerCase()
       ?.replace(/\b\w/g, (char) => char.toUpperCase());
   };
-
   return (
     <>
-     return (
-  <>
-    {/* Desktop Navbar */}
-    <div className="hidden md:flex bg-gray-100 border-b text-sm text-black">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center flex-wrap">
+      {/* Desktop Navbar */}
+      <div className="hidden md:flex bg-gray-100 border-b text-sm text-black">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-10 flex justify-between items-center flex-wrap">
         {/* Home */}
         <div>
           <Link
