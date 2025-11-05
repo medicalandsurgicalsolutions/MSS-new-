@@ -208,7 +208,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
 
             {/* Popular Products */}
             {storeCustomizationSetting?.home?.popular_products_status && (
-              <div className="bg-gray-50 py-10 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
+              <div className="bg-gray-50 py-8 mx-auto max-w-screen-2xl px-4 sm:px-8 lg:px-10">
                 <div className="mb-8 text-left w-full">
                   <h2 className="text-xl lg:text-3xl text-gray-800">
                     <CMSkeleton
@@ -237,7 +237,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             {/* Discounted Products */}
             {storeCustomizationSetting?.home?.discount_product_status &&
               DisProduct?.length > 0 && (
-                <div className="bg-white py-10 mx-auto max-w-screen-2xl px-3 sm:px-10">
+                <div className="bg-white py-8 mx-auto max-w-screen-2xl px-3 sm:px-10">
                   <div className="mb-10">
                     <h2 className="text-xl lg:text-3xl text-gray-800">
                       <CMSkeleton
