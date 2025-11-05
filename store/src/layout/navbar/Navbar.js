@@ -124,7 +124,7 @@ const Navbar = () => {
                         onChange={(e) => searchTerm(e.target.value)} 
                         value={searchText} 
                         className="form-input w-full pl-5 text-sm h-10 bg-white outline-none border-none placeholder-gray-500 placeholder-opacity-75" 
-                         placeholder={t("common:search-placeholder)} 
+                         placeholder={t("common:search-placeholder")} 
                            /> 
                        </label> 
                 <button aria-label="Search" type="submit" 
