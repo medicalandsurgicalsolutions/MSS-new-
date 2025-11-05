@@ -164,9 +164,7 @@ const AboutUs = () => {
         <div className="max-w-screen-lg mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
-              FAQs
-            </p>
+           
             <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
               Frequently Asked Questions
             </h3>
