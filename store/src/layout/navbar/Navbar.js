@@ -120,9 +120,12 @@ const Navbar = () => {
                  <div className="flex flex-col justify-center relative w-full max-w-[550px]"> 
                    <form onSubmit={handleSubmit} className="relative pr-12 bg-white overflow-hidden shadow-sm rounded-md w-full" > 
                     <label className="flex items-center"> 
-                     <input ref={inputRef} onChange={(e) => searchTerm(e.target.value)} value={searchText} 
-                      className="form-input w-full pl-5 text-sm h-10 bg-white outline-none border-none placeholder-gray-500 placeholder-opacity-75" 
-                         placeholder={t(common:search-placeholder)} /> 
+                     <input ref={inputRef}
+                        onChange={(e) => searchTerm(e.target.value)} 
+                        value={searchText} 
+                        className="form-input w-full pl-5 text-sm h-10 bg-white outline-none border-none placeholder-gray-500 placeholder-opacity-75" 
+                         placeholder={t("common:search-placeholder)} 
+                           /> 
                        </label> 
                 <button aria-label="Search" type="submit" 
                     className="absolute top-0 right-0 w-12 h-full flex items-center justify-center text-xl text-gray-400 hover:text-cyan-600" >
