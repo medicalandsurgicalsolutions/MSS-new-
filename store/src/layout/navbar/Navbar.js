@@ -106,122 +106,123 @@ const Navbar = () => {
   <>
     <CartDrawer />
       <div className="bg-cyan-500 sticky top-0 z-20 lg:pt-[30px]">
-        <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
-          <div className="top-bar h-16 lg:h-auto flex items-center justify-between mx-auto">
-            {/* Logo */}
-            <Link
-              href="/"
-              className="mr-3 lg:mr-12 xl:mr-12 hidden md:hidden lg:block"
-            >
-              <div className="relative w-32 h-16">
-                <Image
-                  src={storeCustomizationSetting?.navbar?.logo || logo}
-                  alt="Company Logo"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </Link>
-
-            {/* Search Bar + Contact Info */}
-            <div className="w-full py-4 lg:flex items-center justify-center gap-6">
-              {/* Search Bar */}
-              <div className="flex flex-col justify-center relative w-full max-w-[550px]">
-                <form
-                  onSubmit={handleSubmit}
-                  className="relative pr-12 bg-white overflow-hidden shadow-sm rounded-md w-full"
-                >
-                  <label className="flex items-center">
-                    <input
-                      ref={inputRef}
-                      onChange={(e) => searchTerm(e.target.value)}
-                      value={searchText}
-                      className="form-input w-full pl-5 text-sm h-10 bg-white outline-none border-none placeholder-gray-500 placeholder-opacity-75"
-                      placeholder={t(`common:search-placeholder`)}
-                    />
-                  </label>
-                  <button
-                    aria-label="Search"
-                    type="submit"
-                    className="absolute top-0 right-0 w-12 h-full flex items-center justify-center text-xl text-gray-400 hover:text-cyan-600"
-                  >
-                    <IoSearchOutline />
-                  </button>
-                </form>
-
-                {filteredProducts?.length > 0 && (
-                  <ul
-                    ref={dropdownRef}
-                    className="absolute w-full bg-white shadow-md rounded-md mt-12 max-h-60 overflow-y-auto z-20"
-                  >
-                    {filteredProducts.map((item, index) => (
-                      <li
-                        key={index}
-                        onClick={() => handleSuggestionClick(item?.slug)}
-                        className="px-4 py-2 cursor-pointer hover:bg-gray-100"
-                      >
-                        {item?.title?.en}
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-
-              {/* Phone Info Section */}
-              <div className="hidden lg:flex items-center text-white text-sm font-normal">
-                <FiPhoneCall className="mr-2 text-white" />
-                {showingTranslateValue(
-                  storeCustomizationSetting?.navbar?.help_text
-                )}
-                <a
-                  href={`tel:${
-                    storeCustomizationSetting?.navbar?.phone || "+099949343"
-                  }`}
-                  className="font-bold text-white ml-1 underline hover:text-[#b52228]"
-                >
-                  {storeCustomizationSetting?.navbar?.phone || "+099949343"}
-                </a>
-              </div>
-            </div>
-
-            {/* Right Section (Cart + User) */}
-            <div className="hidden md:hidden lg:flex items-center">
-              <button
-                aria-label="Total"
-                onClick={toggleCartDrawer}
-                className="relative px-5 text-white text-2xl"
-              >
-                <span className="absolute top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-medium text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
-                  {totalItems}
-                </span>
-                <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
-              </button>
-
-              <button className="pl-5 text-white text-2xl" aria-label="Login">
-                {userInfo?.image ? (
-                  <Link href="/user/dashboard" className="relative w-6 h-6">
-                    <Image
-                      width={29}
-                      height={29}
-                      src={userInfo?.image}
-                      alt="user"
-                      className="bg-white rounded-full"
-                    />
-                  </Link>
-                ) : userInfo?.phone ? (
-                  <Link href="/user/dashboard">
-                    <FiUser className="w-6 h-6 drop-shadow-xl" />
-                  </Link>
-                ) : (
-                  <Link href="/auth/login">
-                    <FiUser className="w-6 h-6 drop-shadow-xl" />
-                  </Link>
-                )}
-              </button>
-            </div>
-          </div>
+  <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10">
+    <div className="top-bar h-16 lg:h-auto flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      
+      {/* Logo */}
+      <Link
+        href="/"
+        className="flex justify-center lg:justify-start mr-0 lg:mr-12 xl:mr-12"
+      >
+        <div className="relative w-28 sm:w-32 h-12 sm:h-16">
+          <Image
+            src={storeCustomizationSetting?.navbar?.logo || logo}
+            alt="Company Logo"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
+      </Link>
+
+      {/* Search Bar + Contact Info */}
+      <div className="w-full flex flex-col md:flex-row items-center justify-center gap-4">
+        {/* Search Bar */}
+        <div className="flex flex-col justify-center relative w-full max-w-[550px] mx-auto">
+          <form
+            onSubmit={handleSubmit}
+            className="relative pr-12 bg-white overflow-hidden shadow-sm rounded-md w-full"
+          >
+            <label className="flex items-center">
+              <input
+                ref={inputRef}
+                onChange={(e) => searchTerm(e.target.value)}
+                value={searchText}
+                className="form-input w-full pl-5 text-sm h-10 bg-white outline-none border-none placeholder-gray-500 placeholder-opacity-75"
+                placeholder={t(`common:search-placeholder`)}
+              />
+            </label>
+            <button
+              aria-label="Search"
+              type="submit"
+              className="absolute top-0 right-0 w-12 h-full flex items-center justify-center text-xl text-gray-400 hover:text-cyan-600"
+            >
+              <IoSearchOutline />
+            </button>
+          </form>
+
+          {filteredProducts?.length > 0 && (
+            <ul
+              ref={dropdownRef}
+              className="absolute w-full bg-white shadow-md rounded-md mt-12 max-h-60 overflow-y-auto z-20"
+            >
+              {filteredProducts.map((item, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleSuggestionClick(item?.slug)}
+                  className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+                >
+                  {item?.title?.en}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+
+        {/* Phone Info Section */}
+        <div className="hidden md:flex items-center justify-center text-white text-xs sm:text-sm font-normal">
+          <FiPhoneCall className="mr-2 text-white" />
+          {showingTranslateValue(
+            storeCustomizationSetting?.navbar?.help_text
+          )}
+          <a
+            href={`tel:${
+              storeCustomizationSetting?.navbar?.phone || "+099949343"
+            }`}
+            className="font-bold text-white ml-1 underline hover:text-[#b52228]"
+          >
+            {storeCustomizationSetting?.navbar?.phone || "+099949343"}
+          </a>
+        </div>
+      </div>
+
+      {/* Right Section (Cart + User) */}
+      <div className="hidden lg:flex items-center justify-center">
+        <button
+          aria-label="Total"
+          onClick={toggleCartDrawer}
+          className="relative px-5 text-white text-2xl"
+        >
+          <span className="absolute top-0 right-0 inline-flex items-center justify-center p-1 h-5 w-5 text-xs font-medium text-red-100 transform -translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full">
+            {totalItems}
+          </span>
+          <FiShoppingCart className="w-6 h-6 drop-shadow-xl" />
+        </button>
+
+        <button className="pl-5 text-white text-2xl" aria-label="Login">
+          {userInfo?.image ? (
+            <Link href="/user/dashboard" className="relative w-6 h-6">
+              <Image
+                width={29}
+                height={29}
+                src={userInfo?.image}
+                alt="user"
+                className="bg-white rounded-full"
+              />
+            </Link>
+          ) : userInfo?.phone ? (
+            <Link href="/user/dashboard">
+              <FiUser className="w-6 h-6 drop-shadow-xl" />
+            </Link>
+          ) : (
+            <Link href="/auth/login">
+              <FiUser className="w-6 h-6 drop-shadow-xl" />
+            </Link>
+          )}
+        </button>
+      </div>
+    </div>
+  </div>
 
         {/* Second Header */}
         <NavbarPromo />
