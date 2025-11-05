@@ -103,8 +103,8 @@ const Navbar = () => {
   };
 
   return (
-    <>
-      <CartDrawer />
+  <>
+    <CartDrawer />
       <div className="bg-cyan-500 sticky top-0 z-20 lg:pt-[30px]">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="top-bar h-16 lg:h-auto flex items-center justify-between mx-auto">
@@ -169,7 +169,7 @@ const Navbar = () => {
               </div>
 
               {/* Phone Info Section */}
-              <div className="hidden lg:flex items-center text-white font-small">
+              <div className="hidden lg:flex items-center text-white text-sm font-normal">
                 <FiPhoneCall className="mr-2 text-white" />
                 {showingTranslateValue(
                   storeCustomizationSetting?.navbar?.help_text
@@ -178,7 +178,7 @@ const Navbar = () => {
                   href={`tel:${
                     storeCustomizationSetting?.navbar?.phone || "+099949343"
                   }`}
-                  className="font-bold text-white ml-1 underline hover:text-gray-200"
+                  className="font-bold text-white ml-1 underline hover:text-[#b52228]"
                 >
                   {storeCustomizationSetting?.navbar?.phone || "+099949343"}
                 </a>
