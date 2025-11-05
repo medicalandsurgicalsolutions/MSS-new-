@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { SessionProvider } from "next-auth/react";
 import TawkMessengerReact from "@tawk.to/tawk-messenger-react";
 import Script from "next/script";
+import Head from "next/head"; 
 
 // internal imports
 import store from "@redux/store";
@@ -56,6 +57,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
+     {/* ✅ Google Fonts Import (Montserrat) */}
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       {/* Meta Pixel Script */}
       <Script id="facebook-pixel" strategy="afterInteractive">
         {`
