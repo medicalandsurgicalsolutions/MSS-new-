@@ -59,14 +59,11 @@ function MyApp({ Component, pageProps }) {
     <>
      {/* ✅ Google Fonts Import (Montserrat) */}
       <Head>
-       
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Doppio+One&display=swap"
-        rel="stylesheet"
-      />
-
-        <style>{`
+        <link
+           href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+         />
+            <style>{`
           /* Apply Doppio One to all headings */
           h1, h2, h3, h4, h5, h6 {
             font-family: 'Doppio One', sans-serif !important;
