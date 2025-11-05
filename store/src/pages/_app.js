@@ -66,7 +66,7 @@ function MyApp({ Component, pageProps }) {
             <style>{`
           /* Apply Doppio One to all headings */
           h1, h2, h3, h4, h5, h6 {
-            font-family: 'Doppio One', sans-serif !important;
+            font-family: 'Windsor', sans-serif !important;
           }
         `}</style>
       </Head>
