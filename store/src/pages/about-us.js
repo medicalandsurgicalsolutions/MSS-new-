@@ -168,7 +168,7 @@ const AboutUs = () => {
            
          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
               Frequently Asked Questions
-            </h3>
+            </h2>
           </div>
 
           {/* FAQ Accordion */}
