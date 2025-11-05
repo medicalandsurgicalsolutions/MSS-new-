@@ -68,9 +68,10 @@ const AboutUs = () => {
     {/* Header */}
     <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
       <div>
-        <p className="text-[#b52228] text-base sm:text-lg font-shortheading tracking-widest mb-2">
+        <p className="text-[#b52228] text-lg sm:text-xl font-shortheading font-bold tracking-widest mb-2">
           About Medical & Surgical Solutions
         </p>
+
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
           OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
         </h2>
@@ -216,9 +217,10 @@ const AboutUs = () => {
       <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <p className="text-[#b52228] text-base sm:text-lg  font-shortheading tracking-widest mb-2">
+           <p className="text-[#b52228] text-xl sm:text-2xl font-shortheading font-bold tracking-widest mb-2">
               Professional Team
             </p>
+
            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
               MEET OUR PROFESSIONAL DEDICATED EXPERT TEAM
             </h2>
