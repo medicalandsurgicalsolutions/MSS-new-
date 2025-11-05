@@ -259,7 +259,7 @@ const AboutUs = () => {
       </div>
 
       {/* Section 5: Info Banner */}
-      <section className="bg-[#b52228] py-10 px-6 sm:px-10 lg:px-16 text-white">
+      <section className="bg-[#b52228] py-8 px-6 sm:px-10 lg:px-16 text-white">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center">
 
            <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
