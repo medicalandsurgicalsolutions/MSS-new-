@@ -125,7 +125,7 @@ const AboutUs = () => {
 
 
       {/* Section 2 */}
-      <section className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#b52228] mb-3">
             Medical & Surgical Solutions –
@@ -160,7 +160,7 @@ const AboutUs = () => {
       </section>
 
       {/* Section 3: FAQ Section strt */}
-      <div className="bg-slate-50 py-16 px-4 sm:px-6 lg:px-8">
+      <div className="bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-lg mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
@@ -211,7 +211,7 @@ const AboutUs = () => {
 
 
       {/* Section 4: Team Section */}
-      <div className="bg-white py-16 px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
             <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
