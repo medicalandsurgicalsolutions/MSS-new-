@@ -72,7 +72,7 @@ const AboutUs = () => {
           About Medical & Surgical Solutions
         </p>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+          Our Trusted Partner In Healthcare Excellence
         </h2>
       </div>
       <div>
@@ -129,7 +129,7 @@ const AboutUs = () => {
         <div className="max-w-6xl mx-auto text-center">
           
          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#b52228] mb-4 leading-snug">
-            MEDICAL & SURGICAL SOLUTIONS - 
+            Medical & Surgical Solutions - 
           </h2>
           <p className="text-[#0891b2] text-sm sm:text-base mb-10 sm:mb-16">
             India’s #1 Online Platform for Medical Equipment, Surgical Instruments, and Healthcare Products.
@@ -167,7 +167,7 @@ const AboutUs = () => {
           <div className="text-center mb-12">
            
          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-              FREQUENTLY ASKED QUESTIONS
+           Frequently Asked Questions
           </h2>
         
           </div>
@@ -220,7 +220,7 @@ const AboutUs = () => {
               Professional Team
             </p>
            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-              MEET OUR PROFESSIONAL DEDICATED EXPERT TEAM
+              Meet Our Professional Dedicated Expert Team
             </h2>
           </div>
 
