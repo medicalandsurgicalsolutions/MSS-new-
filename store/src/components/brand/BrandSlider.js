@@ -58,12 +58,12 @@ const BrandSlider = () => {
 
   const settings = {
     dots: false,
-    infinite: true, // 👈 Infinite loop for smooth one-by-one scroll
+    infinite: true,
     speed: 600,
     slidesToShow: 10,
-    slidesToScroll: 1, // 👈 One image at a time
+    slidesToScroll: 1,
     autoplay: autoplay,
-    autoplaySpeed: 2000, // 👈 Adjust for speed between slides
+    autoplaySpeed: 2000,
     arrows: false,
     pauseOnHover: true,
     responsive: [
@@ -75,6 +75,18 @@ const BrandSlider = () => {
       { breakpoint: 480, settings: { slidesToShow: 2, slidesToScroll: 1 } },
     ],
   };
+
+  // Array of border colors to rotate
+  const borderColors = [
+    "border-red-500",
+    "border-blue-500",
+    "border-green-500",
+    "border-yellow-500",
+    "border-purple-500",
+    "border-pink-500",
+    "border-indigo-500",
+    "border-orange-500",
+  ];
 
   return (
     <div ref={sectionRef} className="relative">
@@ -92,10 +104,10 @@ const BrandSlider = () => {
 
       {/* Slider Section */}
       <Slider ref={sliderRef} {...settings} className="brand-slider">
-        {brands?.map((brand) => (
+        {brands?.map((brand, index) => (
           <div key={brand._id || brand.id} className="px-1 lg:px-2">
             <div
-              className="bg-white h-20 w-20 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto cursor-pointer hover:shadow-lg transition"
+              className={`bg-white h-20 w-20 lg:h-24 lg:w-24 rounded-full shadow-md flex items-center justify-center mx-auto cursor-pointer hover:shadow-lg transition border-2 ${borderColors[index % borderColors.length]} hover:scale-105`}
               onClick={() => handleBrandClick(brand._id)}
             >
               <div className="relative h-full w-full rounded-full overflow-hidden p-2">
