@@ -16,7 +16,7 @@ export default function ClientSection() {
   }, []);
 
   return (
-    <div className="w-full overflow-hidden bg-grey-100 py-10 flex flex-col items-center">
+    <div className="w-full overflow-hidden bg-grey-100 py-8 flex flex-col items-center">
       <h3 className="text-center text-2xl lg:text-4xl font-bold mb-8 text-[#000000]">
         Our Clients
       </h3>
