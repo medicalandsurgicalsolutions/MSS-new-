@@ -144,8 +144,11 @@ const Navbar = () => {
                 <div className="hidden lg:flex items-center text-white text-sm font-normal"> 
                     <FiPhoneCall className="mr-2 text-white" /> 
                 {showingTranslateValue( storeCustomizationSetting?.navbar?.help_text )} 
-            <a href={tel:${ storeCustomizationSetting?.navbar?.phone || "+099949343" }} className="font-bold text-white ml-1 underline hover:text-[#b52228]" >
-              {storeCustomizationSetting?.navbar?.phone || "+099949343"} </a> 
+                    <a
+                      href={`tel:${storeCustomizationSetting?.navbar?.phone || "+099949343"}`}
+                      className="font-bold text-white ml-1 underline hover:text-[#b52228]">
+                      {storeCustomizationSetting?.navbar?.phone || "+099949343"}
+                    </a>
                 </div> 
               </div> 
             
