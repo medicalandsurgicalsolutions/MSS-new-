@@ -8,10 +8,9 @@ module.exports = {
 
   theme: {
     fontFamily: {
-    sans: ["Montserrat", "sans-serif"], 
-      serif: ["Montserrat", "sans-serif"],
-      DejaVu: ["DejaVu Sans", "Arial", "sans-serif"],
-      montserrat: ["Montserrat", "sans-serif"],
+      sans: ["Montserrat", "sans-serif"],            
+      heading: ["Doppio One", "sans-serif"],      
+      shortheading: ["Allura", "Delius", "cursive"],  
     },
     extend: {
       colors: {
