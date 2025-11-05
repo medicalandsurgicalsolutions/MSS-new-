@@ -68,9 +68,10 @@ const AboutUs = () => {
     {/* Header */}
     <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
       <div>
-        <p className="text-[#b52228] text-lg sm:text-xl font-shortheading font-bold tracking-widest mb-2">
-          About Medical & Surgical Solutions
-        </p>
+       <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
+        About Medical & Surgical Solutions
+      </p>
+
 
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
           OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
@@ -129,9 +130,10 @@ const AboutUs = () => {
       <section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           
-         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-shortheading text-[#b52228] mb-4 leading-snug">
-            Medical & Surgical Solutions - 
-          </h2>
+        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-shortheading font-bold text-[#b52228] mb-4 leading-snug">
+          Medical & Surgical Solutions -
+        </h2>
+
           <p className="text-[#0891b2] text-sm sm:text-base mb-10 sm:mb-16">
             India’s #1 Online Platform for Medical Equipment, Surgical Instruments, and Healthcare Products.
           </p>
@@ -217,7 +219,7 @@ const AboutUs = () => {
       <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-           <p className="text-[#b52228] text-xl sm:text-2xl font-shortheading font-bold tracking-widest mb-2">
+            <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
               Professional Team
             </p>
 
