@@ -128,7 +128,7 @@ const AboutUs = () => {
       <section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           
-         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
+         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#b52228] mb-4 leading-snug">
             Medical & Surgical Solutions –
           </h2>
           <p className="text-[#0891b2] text-sm sm:text-base mb-10 sm:mb-16">
@@ -166,7 +166,7 @@ const AboutUs = () => {
           {/* Header */}
           <div className="text-center mb-12">
            
-            <h3 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-4">
+         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
               Frequently Asked Questions
             </h3>
           </div>
