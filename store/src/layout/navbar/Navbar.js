@@ -105,7 +105,7 @@ const Navbar = () => {
   return (
     <>
       <CartDrawer />
-      <div className="bg-cyan-500 sticky top-0 z-20 pt-30">
+      <div className="bg-cyan-500 sticky top-0 z-20 pt-[30px]">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="top-bar h-16 lg:h-auto flex items-center justify-between mx-auto">
             {/* Logo */}
