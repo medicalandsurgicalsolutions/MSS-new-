@@ -68,11 +68,11 @@ const AboutUs = () => {
     {/* Header */}
     <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
       <div>
-        <p className="text-[#b52228] text-sm font-semibold uppercase tracking-widest mb-2">
+        <p className="text-[#b52228] text-sm font-shortheading uppercase tracking-widest mb-2">
           About Medical & Surgical Solutions
         </p>
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          Our Trusted Partner In Healthcare Excellence
+          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
         </h2>
       </div>
       <div>
@@ -128,7 +128,7 @@ const AboutUs = () => {
       <section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
           
-         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#b52228] mb-4 leading-snug">
+         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-shortheading text-[#b52228] mb-4 leading-snug">
             Medical & Surgical Solutions - 
           </h2>
           <p className="text-[#0891b2] text-sm sm:text-base mb-10 sm:mb-16">
@@ -167,7 +167,7 @@ const AboutUs = () => {
           <div className="text-center mb-12">
            
          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-           Frequently Asked Questions
+          FREQUENTLY ASKED QUESTIONS
           </h2>
         
           </div>
@@ -216,11 +216,11 @@ const AboutUs = () => {
       <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <p className="text-[#b52228] text-xs sm:text-sm font-semibold uppercase tracking-widest mb-2">
+            <p className="text-[#b52228] text-xs sm:text-sm font-shortheading uppercase tracking-widest mb-2">
               Professional Team
             </p>
            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-              Meet Our Professional Dedicated Expert Team
+              MEET OUR PROFESSIONAL DEDICATED EXPERT TEAM
             </h2>
           </div>
 
