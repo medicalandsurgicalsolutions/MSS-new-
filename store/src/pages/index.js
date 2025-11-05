@@ -63,7 +63,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
 
             {/* Feature Category */}
             {storeCustomizationSetting?.home?.featured_status && (
-              <div className="bg-gray-100 py-10">
+              <div className="bg-gray-100 py-8">
                 <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                   <div className="mb-10">
                     <h2 className="text-xl lg:text-3xl">
@@ -81,7 +81,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             )}
 
             {/* Brands Section */}
-            <div className="bg-white lg:py-10">
+            <div className="bg-white lg:py-8">
               <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="mb-2 lg:mb-10 flex items-center justify-between">
                   <h2 className="text-xl lg:text-3xl text-gray-800">
