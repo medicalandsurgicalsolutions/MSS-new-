@@ -54,7 +54,7 @@ const NavBarTop = () => {
 
   return (
     <>
-      <div className="hidden lg:block bg-gray-100">
+      <div className="hidden lg:block bg-gray-100 sticky top-0 z-50 shadow-sm">
         <div className="max-w-screen-2xl mx-auto px-3 sm:px-10">
           <div className="text-gray-700 py-2 text-xs font-medium border-b flex justify-end items-center">
             {/* 
