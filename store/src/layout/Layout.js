@@ -60,10 +60,11 @@ const Layout = ({ title, description, children }) => {
       </div>
 
       {/* Floating WhatsApp button */}
-      <div
-        className="fixed bottom-20 right-2 bg-green-500 text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-green-600 transition duration-300"
-        style={{ zIndex: 1000 }}
-      >
+     <div
+      className="
+        fixed bottom-24 sm:bottom-28 md:bottom-28 lg:bottom-20 right-3 
+        bg-green-500 text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-green-600 transition duration-300"
+        style={{ zIndex: 1000 }}>
         <a
           href={`https://wa.me/${storeCustomizationSetting?.footer?.block4_phone?.replace(/\D/g, '')}`}
           target="_blank"
@@ -75,11 +76,10 @@ const Layout = ({ title, description, children }) => {
 
       {/* Scroll to top button (below WhatsApp) */}
       {showScroll && (
-        <div
-          onClick={scrollToTop}
-          className="fixed bottom-4 right-2 bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-[#b52228] transition duration-300"
-          style={{ zIndex: 1000 }}
-        >
+      <div onClick={scrollToTop}
+        className="fixed bottom-8 sm:bottom-12 md:bottom-12 lg:bottom-4 right-3 
+          bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-[#b52228] transition duration-300"
+        style={{ zIndex: 1000 }}>
           <FaArrowUp size={20} />
         </div>
       )}
