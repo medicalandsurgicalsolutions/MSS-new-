@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import Link from "next/link";
 import SettingServices from "@services/SettingServices";
 import Cookies from "js-cookie";
@@ -10,17 +10,17 @@ import { getUserSession } from "@lib/auth";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
 import { useRouter } from "next/router";
+import { createPortal } from "react-dom";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [dropdownStyle, setDropdownStyle] = useState({});
+  const navRefs = useRef([]);
   const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
-
   const { showingTranslateValue } = useUtilsFunction();
-  const currentLanguage = Cookies.get("_curr_lang") || null;
-
   const { data } = useAsync(() => CategoryServices.getShowingCategory());
   const userInfo = getUserSession();
 
@@ -58,11 +58,29 @@ const NavbarPromo = () => {
   const capitalizeWords = (string) =>
     string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
 
+  const handleMouseEnter = (index) => {
+    const el = navRefs.current[index];
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      setDropdownStyle({
+        position: "absolute",
+        top: rect.bottom + window.scrollY + "px",
+        left: rect.left + "px",
+        width: rect.width + "px",
+      });
+    }
+    setHoveredCategory(index);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCategory(null);
+  };
+
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black relative">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10">
-          {/* ✅ scrollable bar */}
+          {/* ✅ scrollable navbar, no wrap */}
           <div className="flex flex-nowrap items-center whitespace-nowrap overflow-x-auto scrollbar-hide w-full relative z-30">
             <div>
               <Link
@@ -93,9 +111,10 @@ const NavbarPromo = () => {
             {data[0]?.children?.slice(0, 6)?.map((category, index) => (
               <div
                 key={index}
+                ref={(el) => (navRefs.current[index] = el)}
                 className="relative cursor-pointer group py-2"
-                onMouseEnter={() => setHoveredCategory(index)}
-                onMouseLeave={() => setHoveredCategory(null)}
+                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseLeave={handleMouseLeave}
                 onClick={() =>
                   handleSubCategory(
                     category?._id,
@@ -103,7 +122,7 @@ const NavbarPromo = () => {
                   )
                 }
               >
-                <div className="mx-4 group-hover:text-emerald-600 flex items-center space-x-2">
+                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2">
                   <div>{capitalizeWords(category?.name?.en)}</div>
                   {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
@@ -138,45 +157,49 @@ const NavbarPromo = () => {
               </Link>
             </div>
           </div>
-
-          {/* ✅ dropdowns rendered outside scroll area */}
-          {data[0]?.children?.slice(0, 6)?.map(
-            (category, index) =>
-              hoveredCategory === index &&
-              category?.children && (
-                <div
-                  key={`dropdown-${index}`}
-                  className="absolute left-0 top-full bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-50 rounded-md"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: `repeat(${Math.ceil(
-                      category.children.length / 8
-                    )}, auto)`,
-                  }}
-                  onMouseEnter={() => setHoveredCategory(index)}
-                  onMouseLeave={() => setHoveredCategory(null)}
-                >
-                  {category?.children?.map((subCategory, subIndex) => (
-                    <div className="border-b" key={subIndex}>
-                      <div
-                        className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          handleSubNestedCategory(
-                            subCategory?._id,
-                            showingTranslateValue(subCategory?.name)
-                          );
-                        }}
-                      >
-                        {subCategory?.name?.en}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )
-          )}
         </div>
       </div>
+
+      {/* ✅ Dropdown rendered outside scroll, under each hovered category */}
+      {hoveredCategory !== null &&
+        data[0]?.children?.[hoveredCategory]?.children &&
+        createPortal(
+          <div
+            style={dropdownStyle}
+            className="bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md"
+            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
+            onMouseLeave={handleMouseLeave}
+          >
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: `repeat(${Math.ceil(
+                  data[0].children[hoveredCategory].children.length / 8
+                )}, auto)`,
+              }}
+            >
+              {data[0].children[hoveredCategory].children.map(
+                (subCategory, subIndex) => (
+                  <div className="border-b" key={subIndex}>
+                    <div
+                      className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        handleSubNestedCategory(
+                          subCategory?._id,
+                          showingTranslateValue(subCategory?.name)
+                        );
+                      }}
+                    >
+                      {subCategory?.name?.en}
+                    </div>
+                  </div>
+                )
+              )}
+            </div>
+          </div>,
+          document.body
+        )}
     </>
   );
 };
