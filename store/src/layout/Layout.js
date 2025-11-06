@@ -63,7 +63,7 @@ const Layout = ({ title, description, children }) => {
     <div
         className="
           fixed 
-          bottom-24 lg:bottom-20 right-3 
+          bottom-24 lg:bottom-18 right-3 
           bg-green-500 text-white rounded-full p-3 cursor-pointer shadow-lg 
           hover:bg-green-600 transition duration-300
         "
@@ -81,18 +81,19 @@ const Layout = ({ title, description, children }) => {
 
       {/* Scroll to top button (below WhatsApp) */}
       {showScroll && (
-    <div
-      onClick={scrollToTop}
-      className="
-        fixed 
-        bottom-4 sm:bottom-[3.5rem] lg:bottom-4 right-2 
-        bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg 
-        hover:bg-[#b52228] transition duration-300
-      "
-      style={{ zIndex: 1000 }}
-    >
-      <FaArrowUp size={20} />
-    </div>
+        <div
+        onClick={scrollToTop}
+        className="
+          fixed 
+          bottom-[3.5rem] lg:bottom-4 right-2 
+          bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg 
+          hover:bg-[#b52228] transition duration-300
+        "
+        style={{ zIndex: 1000 }}
+      >
+        <FaArrowUp size={18} />
+      </div>
+
 
       )}
     </>
