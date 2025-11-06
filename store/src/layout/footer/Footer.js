@@ -70,12 +70,16 @@ const Footer = () => {
                   Monday to Saturday: Available 24/7
                 </p>
 
-                <a
-                  href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
-                  className="text-sm block font-medium"
-                >
-                  {storeCustomizationSetting?.footer?.block4_email}
-                </a>
+                <p className="text-sm font-medium">
+                  <span className="font-semibold">Email: </span>
+                  <a
+                    href={`mailto:${storeCustomizationSetting?.footer?.block4_email}`}
+                    className="underline hover:text-gray-200 ml-1"
+                  >
+                    {storeCustomizationSetting?.footer?.block4_email}
+                  </a>
+                </p>
+                    
               </div>
             </div>
           )}
