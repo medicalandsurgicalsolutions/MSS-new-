@@ -143,7 +143,7 @@ const NavbarPromo = () => {
                 }
               >
                 <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2">
-                  <div>{capitalizeWords(category?.name?.en)}</div>
+                  <div className="font-semibold">{capitalizeWords(category?.name?.en)}</div>
                   {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
                       <svg
@@ -199,7 +199,7 @@ const NavbarPromo = () => {
                 (subCategory, subIndex) => (
                   <div className="border-b" key={subIndex}>
                     <div
-                      className="block px-1 text-sm cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
+                      className="block px-1 text-sm font-semibold cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
                       onClick={(event) => {
                         event.stopPropagation();
                         handleSubNestedCategory(
