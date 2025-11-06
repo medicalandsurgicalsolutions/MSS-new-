@@ -17,13 +17,10 @@ const NavbarPromo = () => {
   const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
-
   const { showingTranslateValue } = useUtilsFunction();
   const currentLanguage = Cookies.get("_curr_lang") || null;
 
-  const { data, loading, error } = useAsync(() =>
-    CategoryServices.getShowingCategory()
-  );
+  const { data } = useAsync(() => CategoryServices.getShowingCategory());
 
   let currentLang = {};
   if (currentLanguage && currentLanguage !== "undefined") {
@@ -33,8 +30,6 @@ const NavbarPromo = () => {
       console.error("Invalid JSON format:", error);
     }
   }
-
-  const userInfo = getUserSession();
 
   const handleSubNestedCategory = (id, categoryName) => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
@@ -67,36 +62,40 @@ const NavbarPromo = () => {
     })();
   }, []);
 
-  const capitalizeWords = (string) => {
-    return string
-      ?.toLowerCase()
-      ?.replace(/\b\w/g, (char) => char.toUpperCase());
-  };
+  const capitalizeWords = (string) =>
+    string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
 
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black relative z-30">
-        {/* ✅ Wrapper div scrolls, inner container is overflow-visible */}
+        {/* ✅ Outer scroll container - keeps items in one line */}
         <div className="overflow-x-auto scrollbar-hide">
-          <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 flex items-center justify-start flex-nowrap space-x-2 overflow-visible relative">
+          {/* ✅ Inner container allows dropdowns to overflow outside */}
+          <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 flex items-center justify-start flex-nowrap overflow-visible relative">
+            
             {/* Home */}
-            <Link
-              onClick={() => setIsLoading(!isLoading)}
-              href="/"
-              className="mx-2 py-2 hover:text-emerald-600 whitespace-nowrap"
-            >
-              Home
-            </Link>
+            <div>
+              <Link
+                onClick={() => setIsLoading(!isLoading)}
+                href="/"
+                className="mx-4 py-2 hover:text-emerald-600 whitespace-nowrap"
+              >
+                Home
+              </Link>
+            </div>
 
             {/* New Arrivals */}
             {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-              <Link
-                onClick={() => setIsLoading(!isLoading)}
-                href="/search?query=latest"
-                className="mx-2 py-2 hover:text-emerald-600 whitespace-nowrap"
-              >
-                {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
-              </Link>
+              <div>
+                <Link
+                  onClick={() => setIsLoading(!isLoading)}
+                  href="/search?query=latest"
+                >
+                  <div className="mx-4 py-2 hover:text-emerald-600 whitespace-nowrap">
+                    {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
+                  </div>
+                </Link>
+              </div>
             )}
 
             {/* Categories */}
@@ -104,28 +103,42 @@ const NavbarPromo = () => {
               <div
                 key={index}
                 className="relative cursor-pointer group py-2 whitespace-nowrap overflow-visible"
+                onClick={() =>
+                  handleSubCategory(
+                    category?._id,
+                    showingTranslateValue(category?.name)
+                  )
+                }
               >
-                <div
-                  className="mx-2 flex items-center space-x-2 hover:text-emerald-600"
-                  onClick={() =>
-                    handleSubCategory(
-                      category?._id,
-                      showingTranslateValue(category?.name)
-                    )
-                  }
-                >
-                  <span>{capitalizeWords(category?.name?.en)}</span>
+                <div className="mx-4 group hover:text-emerald-600 flex items-center space-x-2">
+                  <div>{capitalizeWords(category?.name?.en)}</div>
                   {category?.children && (
-                    <ChevronDownIcon className="w-3 h-3 transition-transform duration-200 group-hover:rotate-180" />
+                    <div className="group-hover:rotate-180 duration-200 py-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-3"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                        />
+                      </svg>
+                    </div>
                   )}
                 </div>
 
-                {/* ✅ Dropdown now appears OUTSIDE */}
+                {/* ✅ Dropdown visible outside navbar */}
                 {category?.children && (
-                  <div className="absolute left-0 top-full hidden group-hover:block shadow-lg z-[9999]">
+                  <div className="absolute left-0 w-60 top-full hidden group-hover:block shadow-lg z-[9999]">
                     <div
                       className="absolute left-0 w-auto top-full rounded-md bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 grid overflow-visible"
                       style={{
+                        display: "grid",
                         gridTemplateColumns: `repeat(${Math.ceil(
                           category.children.length / 8
                         )}, auto)`,
@@ -154,13 +167,13 @@ const NavbarPromo = () => {
             ))}
 
             {/* Buy In Bulk */}
-            <Link
-              onClick={() => setIsLoading(!isLoading)}
-              href="/contact-us"
-              className="mx-2 py-2 hover:text-emerald-600 whitespace-nowrap"
-            >
-              Buy In Bulk
-            </Link>
+            <div>
+              <Link onClick={() => setIsLoading(!isLoading)} href="/contact-us">
+                <div className="mx-4 py-2 hover:text-emerald-600 whitespace-nowrap">
+                  Buy In Bulk
+                </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
