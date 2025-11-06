@@ -250,7 +250,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                   </div>
 
                   <div
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-4"
                   >
                     {DisProduct.slice(
                       0,
@@ -286,7 +286,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                       </div>
             
                       <div>
-                        <h4 className="text-base font-semibold text-gray-900">
+                        <h4 className="text-sm font-semibold text-gray-900">
                           {item.title}
                         </h4>
                         <p className="text-gray-600 text-[11px]">{item.desc}</p>
