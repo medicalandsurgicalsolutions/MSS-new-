@@ -63,7 +63,7 @@ const Layout = ({ title, description, children }) => {
     <div
         className="
           fixed 
-          bottom-24 lg:bottom-18 right-3 
+          bottom-24 lg:bottom-22 right-3 
           bg-green-500 text-white rounded-full p-3 cursor-pointer shadow-lg 
           hover:bg-green-600 transition duration-300
         "
@@ -85,7 +85,7 @@ const Layout = ({ title, description, children }) => {
         onClick={scrollToTop}
         className="
           fixed 
-          bottom-[3.5rem] lg:bottom-4 right-2 
+          bottom-[3.5rem] lg:bottom-4 right-3 
           bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg 
           hover:bg-[#b52228] transition duration-300
         "
