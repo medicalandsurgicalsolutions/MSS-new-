@@ -69,18 +69,18 @@ const NavbarPromo = () => {
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
-          <div className="flex items-center justify-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
+          <div className="flex items-center justify-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide scroll-smooth px-4 snap-x snap-mandatory">
             
             {/* ✅ Home */}
             <Link
-              href="/"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
-            >
-              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                Home
-              </span>
-            </Link>
+                href="/"
+                onClick={() => setIsLoading(!isLoading)}
+                className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600 snap-start"
+              >
+                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                  Home
+                </span>
+              </Link>
 
             {/* ✅ Subtitle (New Arrivals / Quick Delivery) */}
             {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
