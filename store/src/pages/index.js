@@ -221,7 +221,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                 </div>
 
                 <div
-                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-4"
                 >
                   {showProduct
                     ?.slice(0, storeCustomizationSetting?.home?.popular_product_limit)
