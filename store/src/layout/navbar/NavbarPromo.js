@@ -106,7 +106,7 @@ const NavbarPromo = () => {
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
-          <div className="flex items-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
+          <div className="flex items-center justify-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
             {/* Home link */}
             <Link
               onClick={() => setIsLoading(!isLoading)}
