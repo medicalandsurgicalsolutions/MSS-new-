@@ -78,10 +78,10 @@ const Layout = ({ title, description, children }) => {
       {showScroll && (
      <div
         onClick={scrollToTop}
-        className="fixed bottom-[3.5rem] right-2 bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-[#b52228] transition duration-300"
+        className="fixed bottom-[3.5rem] right-3 bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg hover:bg-[#b52228] transition duration-300"
         style={{ zIndex: 1000 }}
       >
-        <FaArrowUp size={20} />
+        <FaArrowUp size={18} />
       </div>
 
       )}
