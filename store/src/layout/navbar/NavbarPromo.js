@@ -1,5 +1,6 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import { Fragment, useState, useEffect, useContext } from "react";
 import Link from "next/link";
+import { createPortal } from "react-dom";
 import SettingServices from "@services/SettingServices";
 import Cookies from "js-cookie";
 import { notifyError } from "@utils/toast";
@@ -8,20 +9,35 @@ import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { getUserSession } from "@lib/auth";
 import useAsync from "@hooks/useAsync";
+import Image from "next/image";
 import CategoryServices from "@services/CategoryServices";
 import { useRouter } from "next/router";
-import { createPortal } from "react-dom";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
-  const [hoveredCategory, setHoveredCategory] = useState(null);
-  const [dropdownStyle, setDropdownStyle] = useState({});
-  const navRefs = useRef([]);
   const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
+
   const { showingTranslateValue } = useUtilsFunction();
-  const { data } = useAsync(() => CategoryServices.getShowingCategory());
+  const currentLanguage = Cookies.get("_curr_lang") || null;
+  const { data, loading, error } = useAsync(() =>
+    CategoryServices.getShowingCategory()
+  );
+
+  const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [dropdownStyle, setDropdownStyle] = useState({});
+
+  let currentLang = {};
+  if (currentLanguage && currentLanguage !== "undefined") {
+    try {
+      currentLang = JSON.parse(currentLanguage);
+    } catch (error) {
+      console.error("Invalid JSON format:", error);
+      currentLang = {};
+    }
+  }
+
   const userInfo = getUserSession();
 
   const handleSubNestedCategory = (id, categoryName) => {
@@ -34,6 +50,17 @@ const NavbarPromo = () => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
     router.push(`/search?category=${name}&_id=${id}`);
     setIsLoading(!isLoading);
+  };
+
+  const handleLanguage = (lang) => {
+    Cookies.set("_lang", lang?.iso_code, {
+      sameSite: "None",
+      secure: true,
+    });
+    Cookies.set("_curr_lang", JSON.stringify(lang), {
+      sameSite: "None",
+      secure: true,
+    });
   };
 
   useEffect(() => {
@@ -55,21 +82,20 @@ const NavbarPromo = () => {
     })();
   }, []);
 
-  const capitalizeWords = (string) =>
-    string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
+  const capitalizeWords = (string) => {
+    return string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
 
-  const handleMouseEnter = (index) => {
-    const el = navRefs.current[index];
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      setDropdownStyle({
-        position: "absolute",
-        top: rect.bottom + window.scrollY + "px",
-        left: rect.left + "px",
-        width: rect.width + "px",
-      });
-    }
+  const handleMouseEnter = (index, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
     setHoveredCategory(index);
+    setDropdownStyle({
+      position: "absolute",
+      top: rect.bottom + window.scrollY + "px",
+      left: rect.left + "px",
+      minWidth: rect.width + "px",
+      width: "auto",
+    });
   };
 
   const handleMouseLeave = () => {
@@ -78,42 +104,36 @@ const NavbarPromo = () => {
 
   return (
     <>
-      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black relative">
-        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10">
-          {/* ✅ scrollable navbar, no wrap */}
-          <div className="flex flex-nowrap items-center whitespace-nowrap overflow-x-auto scrollbar-hide w-full relative z-30">
-            <div>
+      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
+        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
+          <div className="flex items-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
+            {/* Home link */}
+            <Link
+              onClick={() => setIsLoading(!isLoading)}
+              href="/"
+              className="mx-4 py-2 hover:text-emerald-600"
+            >
+              Home
+            </Link>
+
+            {/* Subtitle link */}
+            {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
               <Link
                 onClick={() => setIsLoading(!isLoading)}
-                href="/"
-                className="mx-4 py-2 hover:text-emerald-600"
+                href="/search?query=latest"
               >
-                Home
+                <div className="mx-4 py-2 hover:text-emerald-600">
+                  {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
+                </div>
               </Link>
-            </div>
+            )}
 
-            <div>
-              {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-                <Link
-                  onClick={() => setIsLoading(!isLoading)}
-                  href="/search?query=latest"
-                >
-                  <div className="mx-4 py-2 hover:text-emerald-600">
-                    {
-                      storeCustomizationSetting?.home
-                        ?.quick_delivery_subtitle?.en
-                    }
-                  </div>
-                </Link>
-              )}
-            </div>
-
+            {/* Categories */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => (
               <div
                 key={index}
-                ref={(el) => (navRefs.current[index] = el)}
                 className="relative cursor-pointer group py-2"
-                onMouseEnter={() => handleMouseEnter(index)}
+                onMouseEnter={(e) => handleMouseEnter(index, e)}
                 onMouseLeave={handleMouseLeave}
                 onClick={() =>
                   handleSubCategory(
@@ -146,27 +166,25 @@ const NavbarPromo = () => {
               </div>
             ))}
 
-            <div>
-              <Link
-                onClick={() => setIsLoading(!isLoading)}
-                href="/contact-us"
-              >
-                <div className="mx-4 py-2 hover:text-emerald-600">
-                  Buy In Bulk
-                </div>
-              </Link>
-            </div>
+            {/* Buy in Bulk */}
+            <Link
+              onClick={() => setIsLoading(!isLoading)}
+              href="/contact-us"
+              className="mx-4 py-2 hover:text-emerald-600"
+            >
+              Buy In Bulk
+            </Link>
           </div>
         </div>
       </div>
 
-      {/* ✅ Dropdown rendered outside scroll, under each hovered category */}
+      {/* ✅ Dropdown via portal - positioned below hovered category */}
       {hoveredCategory !== null &&
         data[0]?.children?.[hoveredCategory]?.children &&
         createPortal(
           <div
             style={dropdownStyle}
-            className="bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md"
+            className="bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md inline-block"
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
             onMouseLeave={handleMouseLeave}
           >
