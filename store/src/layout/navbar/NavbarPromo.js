@@ -70,7 +70,7 @@ const NavbarPromo = () => {
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
           
-    <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[14px] lg:text-[15px] xl:text-[16px]">
+    <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[8px] md:text-[14px] lg:text-[15px] xl:text-[16px]">
             {/* ✅ Home */}
             <Link
                 href="/"
