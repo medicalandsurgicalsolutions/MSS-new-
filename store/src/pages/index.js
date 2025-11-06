@@ -115,7 +115,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             <div className="p-4 bg-gray-100 px-2 sm:px-8 md:px-12 lg:px-10 pt-8">
               <h2 className="text-2xl lg:text-3xl mb-4">Offer Deals</h2>
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-4"
               >
                 {DisProduct.sort((a, b) => {
                   const discountA =
@@ -177,7 +177,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
               </div>
 
               <div
-                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4"
+                className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 gap-4"
               >
                 {allProduct
                   ?.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
