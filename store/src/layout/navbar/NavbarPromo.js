@@ -1,4 +1,4 @@
-import { Fragment, useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import SettingServices from "@services/SettingServices";
@@ -9,7 +9,6 @@ import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { getUserSession } from "@lib/auth";
 import useAsync from "@hooks/useAsync";
-import Image from "next/image";
 import CategoryServices from "@services/CategoryServices";
 import { useRouter } from "next/router";
 
@@ -18,27 +17,12 @@ const NavbarPromo = () => {
   const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
-
   const { showingTranslateValue } = useUtilsFunction();
   const currentLanguage = Cookies.get("_curr_lang") || null;
-  const { data, loading, error } = useAsync(() =>
-    CategoryServices.getShowingCategory()
-  );
+  const { data } = useAsync(() => CategoryServices.getShowingCategory());
 
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
-
-  let currentLang = {};
-  if (currentLanguage && currentLanguage !== "undefined") {
-    try {
-      currentLang = JSON.parse(currentLanguage);
-    } catch (error) {
-      console.error("Invalid JSON format:", error);
-      currentLang = {};
-    }
-  }
-
-  const userInfo = getUserSession();
 
   const handleSubNestedCategory = (id, categoryName) => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
@@ -52,30 +36,11 @@ const NavbarPromo = () => {
     setIsLoading(!isLoading);
   };
 
-  const handleLanguage = (lang) => {
-    Cookies.set("_lang", lang?.iso_code, {
-      sameSite: "None",
-      secure: true,
-    });
-    Cookies.set("_curr_lang", JSON.stringify(lang), {
-      sameSite: "None",
-      secure: true,
-    });
-  };
-
   useEffect(() => {
     (async () => {
       try {
         const res = await SettingServices.getShowingLanguage();
         setLanguages(res);
-        const currentLanguage = Cookies.get("_curr_lang");
-        if (!currentLanguage) {
-          const result = res?.find((language) => language?.iso_code === lang);
-          Cookies.set("_curr_lang", JSON.stringify(result || res[0]), {
-            sameSite: "None",
-            secure: true,
-          });
-        }
       } catch (err) {
         notifyError(err);
       }
@@ -98,37 +63,39 @@ const NavbarPromo = () => {
     });
   };
 
-  const handleMouseLeave = () => {
-    setHoveredCategory(null);
-  };
+  const handleMouseLeave = () => setHoveredCategory(null);
 
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
           <div className="flex items-center justify-center flex-nowrap overflow-x-auto whitespace-nowrap scrollbar-hide">
-            {/* Home link */}
+            
+            {/* ✅ Home */}
             <Link
-              onClick={() => setIsLoading(!isLoading)}
               href="/"
-              className="mx-4 py-2 hover:text-emerald-600"
+              onClick={() => setIsLoading(!isLoading)}
+              className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
             >
-              Home
+              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                Home
+              </span>
             </Link>
 
-            {/* Subtitle link */}
+            {/* ✅ Subtitle (New Arrivals / Quick Delivery) */}
             {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
               <Link
-                onClick={() => setIsLoading(!isLoading)}
                 href="/search?query=latest"
+                onClick={() => setIsLoading(!isLoading)}
+                className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
               >
-                <div className="mx-4 py-2 hover:text-emerald-600">
+                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
-                </div>
+                </span>
               </Link>
             )}
 
-            {/* Categories */}
+            {/* ✅ Categories */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => (
               <div
                 key={index}
@@ -142,8 +109,10 @@ const NavbarPromo = () => {
                   )
                 }
               >
-                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2">
-                  <div className="font-semibold">{capitalizeWords(category?.name?.en)}</div>
+                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+                  <div className="font-semibold relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                    {capitalizeWords(category?.name?.en)}
+                  </div>
                   {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
                       <svg
@@ -166,28 +135,31 @@ const NavbarPromo = () => {
               </div>
             ))}
 
-            {/* Buy in Bulk */}
+            {/* ✅ Buy in Bulk */}
             <Link
-              onClick={() => setIsLoading(!isLoading)}
               href="/contact-us"
-              className="mx-4 py-2 hover:text-emerald-600"
+              onClick={() => setIsLoading(!isLoading)}
+              className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
             >
-              Buy In Bulk
+              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                Buy In Bulk
+              </span>
             </Link>
           </div>
         </div>
       </div>
 
-      {/* ✅ Dropdown via portal - positioned below hovered category */}
+      {/* ✅ Dropdown */}
       {hoveredCategory !== null &&
         data[0]?.children?.[hoveredCategory]?.children &&
         createPortal(
           <div
             style={dropdownStyle}
-            className="bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md inline-block"
+            className="bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md inline-block"
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-            onMouseLeave={handleMouseLeave}>
-           <div
+            onMouseLeave={handleMouseLeave}
+          >
+            <div
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${Math.ceil(
@@ -197,9 +169,10 @@ const NavbarPromo = () => {
             >
               {data[0].children[hoveredCategory].children.map(
                 (subCategory, subIndex) => (
-                  <div className="border-b" key={subIndex}>
+                  <div className="border-b border-white/30" key={subIndex}>
                     <div
-                      className="block px-1 text-sm font-semibold cursor-pointer py-1 hover:translate-x-1.5 duration-100 whitespace-nowrap"
+                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
+                      transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
                       onClick={(event) => {
                         event.stopPropagation();
                         handleSubNestedCategory(
@@ -214,7 +187,6 @@ const NavbarPromo = () => {
                 )
               )}
             </div>
-
           </div>,
           document.body
         )}
