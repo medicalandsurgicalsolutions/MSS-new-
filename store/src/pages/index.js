@@ -289,7 +289,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
                         <h4 className="text-base font-semibold text-gray-900">
                           {item.title}
                         </h4>
-                        <p className="text-gray-600 text-xs">{item.desc}</p>
+                        <p className="text-gray-600 text-[11px]">{item.desc}</p>
                       </div>
                     </div>
                   );
