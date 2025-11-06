@@ -63,7 +63,7 @@ const Layout = ({ title, description, children }) => {
     <div
         className="
           fixed 
-          bottom-24 lg:bottom-22 right-3 
+          bottom-24 lg:bottom-20 right-3 
           bg-green-500 text-white rounded-full p-3 cursor-pointer shadow-lg 
           hover:bg-green-600 transition duration-300
         "
