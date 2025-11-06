@@ -186,9 +186,8 @@ const NavbarPromo = () => {
             style={dropdownStyle}
             className="bg-cyan-500 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md inline-block"
             onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div
+            onMouseLeave={handleMouseLeave}>
+           <div
               style={{
                 display: "grid",
                 gridTemplateColumns: `repeat(${Math.ceil(
@@ -215,6 +214,7 @@ const NavbarPromo = () => {
                 )
               )}
             </div>
+
           </div>,
           document.body
         )}
