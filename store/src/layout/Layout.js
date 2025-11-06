@@ -81,12 +81,11 @@ const Layout = ({ title, description, children }) => {
 
       {/* Scroll to top button (below WhatsApp) */}
       {showScroll && (
-     <div
+    <div
       onClick={scrollToTop}
       className="
         fixed 
-        bottom-4 sm:bottom-[3.5rem] md:bottom-[3.5rem] 
-        right-2 
+        bottom-4 sm:bottom-[3.5rem] lg:bottom-4 right-2 
         bg-[#0891b2] text-white rounded-full p-3 cursor-pointer shadow-lg 
         hover:bg-[#b52228] transition duration-300
       "
@@ -94,7 +93,6 @@ const Layout = ({ title, description, children }) => {
     >
       <FaArrowUp size={20} />
     </div>
-
 
       )}
     </>
