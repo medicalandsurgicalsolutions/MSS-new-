@@ -89,7 +89,7 @@ const AboutUs = () => {
    {/* Stats + Image */}
   <div className="grid lg:grid-cols-2 gap-8 items-stretch">
       {/* Stats */}
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-4 sm:p-6 lg:p-8 h-full">
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-3 items-center h-full">
     {[
       { number: "11,000+", label: "HAPPY CUSTOMERS" },
       { number: "15,000+", label: "PREMIUM PRODUCTS" },
