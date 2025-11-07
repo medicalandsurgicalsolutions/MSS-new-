@@ -59,10 +59,16 @@ function MyApp({ Component, pageProps }) {
     <>
      {/* ✅ Google Fonts Import (Montserrat) */}
       <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Doppio+One&family=Allura&family=Delius&display=swap"
+         <link
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
           rel="stylesheet"
-          />
+        />
+      
+        {/* ✅ CDN Font: Bellevue */}
+        <link
+          href="https://fonts.cdnfonts.com/css/bellevue"
+          rel="stylesheet"
+        />
       </Head>
 
       {/* Meta Pixel Script */}
