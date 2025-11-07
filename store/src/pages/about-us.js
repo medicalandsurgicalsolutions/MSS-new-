@@ -102,7 +102,7 @@ const AboutUs = () => {
           key={i}
           className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
         >
-          <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
+          <h4 className="text-2xl sm:text-3xl md:text-3xl font-bold mb-1 transition-colors duration-300">
             {item.number}
           </h4>
           <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
