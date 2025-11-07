@@ -62,7 +62,6 @@ const AboutUs = () => {
         className="text-white"
       />
 
-      {/* Section 1: About Section */}
      {/* Section 1: About Section */}
 <div className="bg-slate-50">
   <div className="max-w-screen-xl mx-auto py-10 sm:py-14 lg:py-20 px-4 sm:px-6 lg:px-8">
@@ -73,13 +72,13 @@ const AboutUs = () => {
         <p className="text-[#b52228] text-lg sm:text-xl md:text-2xl font-shortheading font-bold tracking-widest mb-2">
           About Medical & Surgical Solutions
         </p>
-        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-3 sm:mb-4 leading-tight">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-3xl font-bold text-[#0891b2] mb-3 sm:mb-4 leading-tight">
           OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
         </h2>
       </div>
 
       <div>
-        <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
+        <p className="text-slate-600 text-sm sm:text-base md:text-sm leading-relaxed">
           Medical & Surgical Solutions delivers trusted, high-quality medical
           equipment and products to healthcare professionals. Our innovative
           range ensures precision, reliability, and safety, empowering
@@ -103,12 +102,13 @@ const AboutUs = () => {
             key={i}
             className="group bg-slate-900 text-white py-4 sm:py-6 px-3 sm:px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
           >
-            <h4 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 transition-colors duration-300">
+            <h4 className="text-xl sm:text-2xl md:text-2xl font-bold mb-1 transition-colors duration-300">
               {item.number}
             </h4>
-            <p className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wide uppercase transition-colors duration-300">
+           <p className="text-[10px] sm:text-xs md:text-[11px] lg:text-sm font-bold tracking-wide uppercase transition-colors duration-300">
               {item.label}
             </p>
+
           </div>
         ))}
       </div>
