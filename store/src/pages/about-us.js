@@ -66,26 +66,29 @@ const AboutUs = () => {
       <div className="bg-slate-50">
   <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
     {/* Header */}
-    <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
-      <div>
-       <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
-        About Medical & Surgical Solutions
-      </p>
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12 items-start text-center lg:text-left">
+  <div>
+    {/* Subheading */}
+    <p className="text-[#b52228] text-lg sm:text-xl md:text-[22px] lg:text-[25px] font-shortheading font-bold tracking-widest mb-2">
+      About Medical & Surgical Solutions
+    </p>
 
+    {/* Main heading */}
+    <h2 className="text-2xl sm:text-3xl md:text-[30px] lg:text-4xl xl:text-5xl font-bold text-[#0891b2] mb-3 sm:mb-4 leading-tight">
+      OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+    </h2>
+  </div>
 
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
-        </h2>
-      </div>
-      <div>
-        <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
-          Medical & Surgical Solutions delivers trusted, high-quality medical
-          equipment and products to healthcare professionals. Our innovative
-          range ensures precision, reliability, and safety, empowering
-          excellence in patient care across hospitals and institutions.
-        </p>
-      </div>
-    </div>
+  <div>
+    <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
+      Medical & Surgical Solutions delivers trusted, high-quality medical
+      equipment and products to healthcare professionals. Our innovative
+      range ensures precision, reliability, and safety, empowering
+      excellence in patient care across hospitals and institutions.
+    </p>
+  </div>
+</div>
+
 
     {/* Stats + Image */}
     <div className="grid lg:grid-cols-2 gap-8 items-center">
@@ -112,7 +115,7 @@ const AboutUs = () => {
       </div>
 
       {/* Image */}
-      <div className="w-full h-64 sm:h-80 lg:h-96 overflow-hidden rounded-xl">
+      <div className="w-full h-[17rem] overflow-hidden rounded-xl">
         <Image
           src={about?.content_right_img || "/about-us.jpg"}
           alt="About our company"
