@@ -88,40 +88,42 @@ const AboutUs = () => {
     </div>
 
     {/* Stats + Image */}
-    <div className="grid lg:grid-cols-2 gap-8 items-center">
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center">
-        {[
-          { number: "11,000+", label: "HAPPY CUSTOMERS" },
-          { number: "15,000+", label: "PREMIUM PRODUCTS" },
-          { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
-          { number: "750+", label: "GLOBAL CLIENTS" },
-        ].map((item, i) => (
-          <div
-            key={i}
-            className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
-          >
-            <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
-              {item.number}
-            </h4>
-            <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
-              {item.label}
-            </p>
-          </div>
-        ))}
+   {/* Stats + Image */}
+<div className="grid lg:grid-cols-2 gap-8 items-stretch">
+  {/* Stats */}
+  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-4 sm:p-6 lg:p-8 h-full">
+    {[
+      { number: "11,000+", label: "HAPPY CUSTOMERS" },
+      { number: "15,000+", label: "PREMIUM PRODUCTS" },
+      { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
+      { number: "750+", label: "GLOBAL CLIENTS" },
+    ].map((item, i) => (
+      <div
+        key={i}
+        className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
+      >
+        <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
+          {item.number}
+        </h4>
+        <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
+          {item.label}
+        </p>
       </div>
+    ))}
+  </div>
 
-      {/* Image */}
-      <div className="w-full h-64 sm:h-80 lg:h-96 overflow-hidden rounded-xl">
-        <Image
-          src={about?.content_right_img || "/about-us.jpg"}
-          alt="About our company"
-          width={600}
-          height={500}
-          className="w-full h-full object-cover"
-        />
-      </div>
-    </div>
+  {/* Image */}
+  <div className="w-full h-full overflow-hidden rounded-xl">
+    <Image
+      src={about?.content_right_img || "/about-us.jpg"}
+      alt="About our company"
+      width={600}
+      height={500}
+      className="w-full h-full object-cover"
+    />
+  </div>
+</div>
+
   </div>
 </div>
 
