@@ -111,7 +111,7 @@ const AboutUs = () => {
       </div>
 
       {/* Image */}
-     <div className="w-full h-[17rem] sm:h-[18rem] lg:h-[22rem] overflow-hidden rounded-xl">
+     <div className="w-full h-[17rem] sm:h-[18rem] lg:h-[21rem] overflow-hidden rounded-xl">
       <Image
         src={about?.content_right_img || "/about-us.jpg"}
         alt="About our company"
