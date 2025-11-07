@@ -98,17 +98,18 @@ const AboutUs = () => {
                   { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
                   { number: "750+", label: "GLOBAL CLIENTS" },
                 ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
-                  >
-                    <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
-                      {item.number}
-                    </h4>
-                    <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
-                      {item.label}
-                    </p>
-                  </div>
+                 <div
+                  key={i}
+                  className="group bg-slate-900 text-white py-3 sm:py-4 px-3 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
+                >
+                  <h4 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 transition-colors duration-300">
+                    {item.number}
+                  </h4>
+                  <p className="text-[9px] sm:text-[10px] font-semibold tracking-wide uppercase transition-colors duration-300">
+                    {item.label}
+                  </p>
+                </div>
+
                 ))}
               </div>
             </div>
