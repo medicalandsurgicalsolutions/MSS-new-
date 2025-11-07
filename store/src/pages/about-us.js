@@ -66,7 +66,7 @@ const AboutUs = () => {
       <div className="bg-slate-50">
   <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
     {/* Header */}
-    <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
+    <div className="grid lg:grid-cols-2 gap-10 mb-6 items-start">
       <div>
        <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
         About Medical & Surgical Solutions
