@@ -71,10 +71,12 @@ const AboutUs = () => {
        <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
         About Medical & Surgical Solutions
       </p>
-
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
-        </h2>
+       <h2
+        className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug 
+        [@media(min-width:768px)and(max-width:1080px)]:text-[30px]"
+      >
+        OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+      </h2>
       </div>
       <div>
         <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
