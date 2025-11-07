@@ -68,7 +68,7 @@ const NavbarPromo = () => {
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-6 sm:px-8 lg:px-10 relative">
+        <div className="max-w-screen-2xl mx-auto px-6 sm:px-4 lg:px-10 relative">
           
     <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[15px] xl:text-[16px]">
             {/* ✅ Home */}
