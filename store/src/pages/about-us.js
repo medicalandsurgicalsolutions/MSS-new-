@@ -111,15 +111,16 @@ const AboutUs = () => {
       </div>
 
       {/* Image */}
-      <div className="w-full  h-[17rem] sm:h-80 lg:h-96 overflow-hidden rounded-xl">
-        <Image
-          src={about?.content_right_img || "/about-us.jpg"}
-          alt="About our company"
-          width={600}
-          height={500}
-          className="w-full h-full object-cover"
-        />
-      </div>
+     <div className="w-full h-[17rem] sm:h-[18rem] lg:h-[22rem] overflow-hidden rounded-xl">
+      <Image
+        src={about?.content_right_img || "/about-us.jpg"}
+        alt="About our company"
+        width={600}
+        height={500}
+        className="w-full h-full object-cover"
+      />
+    </div>
+
     </div>
   </div>
 </div>
