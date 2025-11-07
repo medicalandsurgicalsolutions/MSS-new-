@@ -63,21 +63,23 @@ const AboutUs = () => {
       />
 
       {/* Section 1: About Section */}
-      <div className="bg-slate-50">
-    <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="grid lg:grid-cols-2 gap-10 mb-6 items-start">
-        <div>
-         <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
+     {/* Section 1: About Section */}
+<div className="bg-slate-50">
+  <div className="max-w-screen-xl mx-auto py-10 sm:py-14 lg:py-20 px-4 sm:px-6 lg:px-8">
+    
+    {/* Header */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-8 lg:mb-12 items-start text-center lg:text-left">
+      <div>
+        <p className="text-[#b52228] text-lg sm:text-xl md:text-2xl font-shortheading font-bold tracking-widest mb-2">
           About Medical & Surgical Solutions
         </p>
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#0891b2] mb-3 sm:mb-4 leading-tight">
+          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+        </h2>
+      </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-            OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
-          </h2>
-        </div>
-        <div>
-        <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
+      <div>
+        <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed">
           Medical & Surgical Solutions delivers trusted, high-quality medical
           equipment and products to healthcare professionals. Our innovative
           range ensures precision, reliability, and safety, empowering
@@ -86,44 +88,45 @@ const AboutUs = () => {
       </div>
     </div>
 
-   {/* Stats + Image */}
-  <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+    {/* Stats + Image */}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+      
       {/* Stats */}
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-3 items-center h-full">
-    {[
-      { number: "11,000+", label: "HAPPY CUSTOMERS" },
-      { number: "15,000+", label: "PREMIUM PRODUCTS" },
-      { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
-      { number: "750+", label: "GLOBAL CLIENTS" },
-    ].map((item, i) => (
-      <div
-        key={i}
-        className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
-      >
-        <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
-          {item.number}
-        </h4>
-        <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
-          {item.label}
-        </p>
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-3 sm:p-4 md:p-6 items-center h-full">
+        {[
+          { number: "11,000+", label: "HAPPY CUSTOMERS" },
+          { number: "15,000+", label: "PREMIUM PRODUCTS" },
+          { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
+          { number: "750+", label: "GLOBAL CLIENTS" },
+        ].map((item, i) => (
+          <div
+            key={i}
+            className="group bg-slate-900 text-white py-4 sm:py-6 px-3 sm:px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
+          >
+            <h4 className="text-xl sm:text-2xl md:text-3xl font-bold mb-1 transition-colors duration-300">
+              {item.number}
+            </h4>
+            <p className="text-[10px] sm:text-xs md:text-sm font-bold tracking-wide uppercase transition-colors duration-300">
+              {item.label}
+            </p>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
 
-  {/* Image */}
-  <div className="w-full h-full overflow-hidden rounded-xl">
-    <Image
-      src={about?.content_right_img || "/about-us.jpg"}
-      alt="About our company"
-      width={600}
-      height={500}
-      className="w-full h-full object-cover"
-    />
+      {/* Image */}
+      <div className="w-full h-full overflow-hidden rounded-xl">
+        <Image
+          src={about?.content_right_img || "/about-us.jpg"}
+          alt="About our company"
+          width={600}
+          height={500}
+          className="w-full h-full object-cover"
+        />
+      </div>
+    </div>
   </div>
 </div>
 
-  </div>
-</div>
 
 
       {/* Section 2 */}
