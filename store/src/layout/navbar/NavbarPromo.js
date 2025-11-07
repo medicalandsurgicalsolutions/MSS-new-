@@ -75,7 +75,7 @@ const NavbarPromo = () => {
             <Link
                 href="/"
                 onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600 snap-start"
+                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
               >
                 <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   Home
@@ -87,7 +87,7 @@ const NavbarPromo = () => {
               <Link
                 href="/search?query=latest"
                 onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
+                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
               >
                 <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
@@ -110,7 +110,7 @@ const NavbarPromo = () => {
                 }
               >
                 <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                  <div className="font-semibold relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                  <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                     {capitalizeWords(category?.name?.en)}
                   </div>
                   {category?.children && (
@@ -139,7 +139,7 @@ const NavbarPromo = () => {
             <Link
               href="/contact-us"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-semibold text-gray-800 relative group hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
               <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                 Buy In Bulk
