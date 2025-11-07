@@ -10,7 +10,7 @@ module.exports = {
     fontFamily: {
         sans: ["Montserrat", "sans-serif"],            
         heading: ["Doppio One", "sans-serif"],      
-        shortheading: ["BELLEVUE", "sans-serif"],  // ← replaced Allura, Delius, cursive
+        shortheading: ["Allura", "Delius", "cursive"], 
       },
 
     extend: {
