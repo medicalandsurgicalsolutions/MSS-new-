@@ -8,10 +8,11 @@ module.exports = {
 
   theme: {
     fontFamily: {
-      sans: ["Montserrat", "sans-serif"],            
-      heading: ["Doppio One", "sans-serif"],      
-      shortheading: ["Allura", "Delius", "cursive"],  
-    },
+        sans: ["Montserrat", "sans-serif"],            
+        heading: ["Doppio One", "sans-serif"],      
+        shortheading: ["BELLEVUE", "sans-serif"],  // ← replaced Allura, Delius, cursive
+      },
+
     extend: {
       colors: {
         'emerald': {
