@@ -72,7 +72,7 @@ const AboutUs = () => {
         About Medical & Surgical Solutions
       </p>
        <h2
-        className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug 
+        className="text-2xl sm:text-3xl lg:text-3xl font-bold text-[#0891b2] mb-4 leading-snug 
         [@media(min-width:768px)and(max-width:1080px)]:text-[30px]"
       >
         OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
