@@ -64,20 +64,19 @@ const AboutUs = () => {
 
       {/* Section 1: About Section */}
       <div className="bg-slate-50">
-  <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-    {/* Header */}
-    <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
-      <div>
-       <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
-        About Medical & Surgical Solutions
-      </p>
+    <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+      {/* Header */}
+      <div className="grid lg:grid-cols-2 gap-10 mb-6 items-start">
+        <div>
+         <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
+          About Medical & Surgical Solutions
+        </p>
 
-
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
-        </h2>
-      </div>
-      <div>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
+            OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+          </h2>
+        </div>
+        <div>
         <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
           Medical & Surgical Solutions delivers trusted, high-quality medical
           equipment and products to healthcare professionals. Our innovative
@@ -87,11 +86,10 @@ const AboutUs = () => {
       </div>
     </div>
 
-    {/* Stats + Image */}
    {/* Stats + Image */}
-<div className="grid lg:grid-cols-2 gap-8 items-stretch">
-  {/* Stats */}
-  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-4 sm:p-6 lg:p-8 h-full">
+  <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+      {/* Stats */}
+    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center bg-white rounded-xl p-4 sm:p-6 lg:p-8 h-full">
     {[
       { number: "11,000+", label: "HAPPY CUSTOMERS" },
       { number: "15,000+", label: "PREMIUM PRODUCTS" },
