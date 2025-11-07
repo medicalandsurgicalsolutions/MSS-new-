@@ -27,7 +27,7 @@ const AboutUs = () => {
   if (!storeCustomizationSetting) return null;
 
   const about = storeCustomizationSetting?.about_us || {};
-  
+
   const faqs = [
     {
       q: "What does Medical Surgical Solutions specialize in?",
@@ -64,78 +64,79 @@ const AboutUs = () => {
 
       {/* Section 1: About Section */}
       <div className="bg-slate-50">
-  <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-    {/* Header */}
-    <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
-      <div>
-       <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
-        About Medical & Surgical Solutions
-      </p>
+        <div className="max-w-screen-xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="grid lg:grid-cols-2 gap-10 mb-12 items-start">
+            <div>
+              <p className="text-[#b52228] text-2xl sm:text-3xl font-shortheading font-bold tracking-widest mb-2">
+                About Medical & Surgical Solutions
+              </p>
 
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
-        </h2>
-      </div>
-      <div>
-        <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
-          Medical & Surgical Solutions delivers trusted, high-quality medical
-          equipment and products to healthcare professionals. Our innovative
-          range ensures precision, reliability, and safety, empowering
-          excellence in patient care across hospitals and institutions.
-        </p>
-      </div>
-    </div>
-
-    {/* Stats + Image */}
-    <div className="grid lg:grid-cols-2 gap-8 items-center">
-      {/* Stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center">
-        {[
-          { number: "11,000+", label: "HAPPY CUSTOMERS" },
-          { number: "15,000+", label: "PREMIUM PRODUCTS" },
-          { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
-          { number: "750+", label: "GLOBAL CLIENTS" },
-        ].map((item, i) => (
-          <div
-            key={i}
-            className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
-          >
-            <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
-              {item.number}
-            </h4>
-            <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
-              {item.label}
-            </p>
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
+                OUR TRUSTED PARTNER IN HEALTHCARE EXCELLENCE
+              </h2>
+            </div>
+            <div>
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed pt-2">
+                Medical & Surgical Solutions delivers trusted, high-quality
+                medical equipment and products to healthcare professionals. Our
+                innovative range ensures precision, reliability, and safety,
+                empowering excellence in patient care across hospitals and
+                institutions.
+              </p>
+            </div>
           </div>
-        ))}
+
+          {/* Stats + Image */}
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            {/* Stats */}
+            <div className="flex flex-col justify-center h-full">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 gap-4 text-center h-full">
+                {[
+                  { number: "11,000+", label: "HAPPY CUSTOMERS" },
+                  { number: "15,000+", label: "PREMIUM PRODUCTS" },
+                  { number: "150+", label: "CUSTOMER SUPPORT TEAM" },
+                  { number: "750+", label: "GLOBAL CLIENTS" },
+                ].map((item, i) => (
+                  <div
+                    key={i}
+                    className="group bg-slate-900 text-white py-6 sm:py-8 px-4 border border-slate-800 rounded-lg transition-all duration-300 hover:bg-[#0891b2]"
+                  >
+                    <h4 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-1 transition-colors duration-300">
+                      {item.number}
+                    </h4>
+                    <p className="text-[10px] sm:text-xs font-bold tracking-wide uppercase transition-colors duration-300">
+                      {item.label}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Image */}
+            <div className="w-full h-full overflow-hidden rounded-xl">
+              <Image
+                src={about?.content_right_img || "/about-us.jpg"}
+                alt="About our company"
+                width={600}
+                height={500}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        </div>
       </div>
-
-      {/* Image */}
-     <div className="w-full h-[17rem] sm:h-[18rem] lg:h-[21rem] overflow-hidden rounded-xl">
-      <Image
-        src={about?.content_right_img || "/about-us.jpg"}
-        alt="About our company"
-        width={600}
-        height={500}
-        className="w-full h-full object-cover"
-      />
-    </div>
-
-    </div>
-  </div>
-</div>
-
 
       {/* Section 2 */}
       <section className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto text-center">
-          
-        <h2 className="text-4xl sm:text-5xl lg:text-6xl font-shortheading font-bold text-[#b52228] mb-4 leading-snug">
-          Medical & Surgical Solutions -
-        </h2>
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-shortheading font-bold text-[#b52228] mb-4 leading-snug">
+            Medical & Surgical Solutions -
+          </h2>
 
           <p className="text-[#0891b2] text-sm sm:text-base mb-10 sm:mb-16">
-            India’s #1 Online Platform for Medical Equipment, Surgical Instruments, and Healthcare Products.
+            India’s #1 Online Platform for Medical Equipment, Surgical
+            Instruments, and Healthcare Products.
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-left">
@@ -163,19 +164,15 @@ const AboutUs = () => {
         </div>
       </section>
 
-      {/* Section 3: FAQ Section strt */}
+      {/* Section 3: FAQ Section */}
       <div className="bg-slate-50 py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-lg mx-auto">
-          {/* Header */}
           <div className="text-center mb-12">
-           
-         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
-          FREQUENTLY ASKED QUESTIONS
-          </h2>
-        
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
+              FREQUENTLY ASKED QUESTIONS
+            </h2>
           </div>
 
-          {/* FAQ Accordion */}
           <div className="space-y-4">
             {faqs.map((item, i) => (
               <div
@@ -211,10 +208,6 @@ const AboutUs = () => {
         </div>
       </div>
 
-
-      {/* Section 4: Faq section end */}
-
-
       {/* Section 4: Team Section */}
       <div className="bg-white py-8 px-4 sm:px-6 lg:px-8">
         <div className="max-w-screen-xl mx-auto">
@@ -223,7 +216,7 @@ const AboutUs = () => {
               Professional Team
             </p>
 
-           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#0891b2] mb-4 leading-snug">
               MEET OUR PROFESSIONAL DEDICATED EXPERT TEAM
             </h2>
           </div>
@@ -267,30 +260,41 @@ const AboutUs = () => {
       {/* Section 5: Info Banner */}
       <section className="bg-[#b52228] py-8 px-6 sm:px-10 lg:px-16 text-white">
         <div className="max-w-screen-xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#d52727] text-center">
-
-           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
+          <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
             <div className="flex items-center gap-2 sm:gap-3">
               <FaMapMarkerAlt className="text-xl sm:text-2xl md:text-3xl" />
-              <span className="text-sm sm:text-base font-semibold uppercase">Location</span>
+              <span className="text-sm sm:text-base font-semibold uppercase">
+                Location
+              </span>
             </div>
-            <span className="text-xs sm:text-sm md:text-base font-medium"> 402, Ground Floor, Near Bagga Link, Patparganj Industrial Area, Delhi-110092 
-                (India)</span>
+            <span className="text-xs sm:text-sm md:text-base font-medium">
+              402, Ground Floor, Near Bagga Link, Patparganj Industrial Area,
+              Delhi-110092 (India)
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
             <div className="flex items-center gap-2 sm:gap-3">
               <FaPhoneAlt className="text-xl sm:text-2xl md:text-3xl" />
-              <span className="text-sm sm:text-base font-semibold uppercase">Call Us Now</span>
+              <span className="text-sm sm:text-base font-semibold uppercase">
+                Call Us Now
+              </span>
             </div>
-            <span className="text-xs sm:text-sm md:text-base font-medium">+91 9643344588</span>
+            <span className="text-xs sm:text-sm md:text-base font-medium">
+              +91 9643344588
+            </span>
           </div>
 
           <div className="flex flex-col items-center justify-center py-6 px-4 space-y-2">
             <div className="flex items-center gap-2 sm:gap-3">
               <FaHeartbeat className="text-xl sm:text-2xl md:text-3xl" />
-              <span className="text-sm sm:text-base font-semibold uppercase">24x7 Our Help Line:</span>
+              <span className="text-sm sm:text-base font-semibold uppercase">
+                24x7 Our Help Line:
+              </span>
             </div>
-            <span className="text-xs sm:text-sm md:text-base font-medium">+91 9643344588</span>
+            <span className="text-xs sm:text-sm md:text-base font-medium">
+              +91 9643344588
+            </span>
           </div>
         </div>
       </section>
