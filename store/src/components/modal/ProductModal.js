@@ -121,7 +121,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
           {/* LEFT COLUMN */}
           <div className="bg-gray-50 p-6 flex flex-col justify-start items-start border-r border-gray-100">
-            <div className="relative flex justify-start mb-4 sticky top-0">
+            <div className="relative flex justify-center mb-4 sticky top-0">
               <Discount product={product} discount={discount} modal />
               <Image
                 src={img || product.image[0] || DUMMY_IMAGE}
