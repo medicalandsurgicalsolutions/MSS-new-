@@ -27,7 +27,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const { lang, showingTranslateValue, getNumber } = useUtilsFunction();
   const { globalSetting } = useGetSetting();
 
-  // states
   const [value, setValue] = useState("");
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
@@ -40,7 +39,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [variants, setVariants] = useState([]);
   const [descOpen, setDescOpen] = useState(false);
 
-  // price & variant handling
   useEffect(() => {
     if (value) {
       const result = product?.variants?.filter((variant) =>
@@ -93,7 +91,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
     setVariantTitle(varTitle?.sort());
   }, [variants, attributes]);
 
-  // Add to cart logic
   const handleAddToCart = (p) => {
     if (item < p?.moq) return notifyError(`Minimum order quantity is ${p?.moq}`);
     if (stock <= 0) return notifyError("Insufficient stock");
@@ -146,24 +143,25 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
 
   return (
     <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-      <div className="inline-block bg-white w-full max-w-3xl md:max-w-4xl rounded-2xl shadow-xl overflow-hidden transition-all">
+      <div className="inline-block bg-white w-full max-w-3xl md:max-w-4xl rounded-2xl shadow-lg overflow-hidden transition-all">
         <div className="flex flex-col md:flex-row">
+          
           {/* Left: Image */}
-          <div className="flex-shrink-0 bg-gray-50 p-4 flex items-center justify-center">
+          <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 relative">
             <Discount product={product} discount={discount} modal />
             <Image
               src={img || product.image[0] || DUMMY_IMAGE}
               width={360}
               height={360}
               alt="product"
-              className="rounded-lg object-contain"
+              className="rounded-xl object-contain max-h-72"
             />
           </div>
 
           {/* Right: Details */}
-          <div className="flex-1 p-5 md:p-6 flex flex-col justify-between">
+          <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 leading-snug mb-1">
+              <h2 className="text-xl font-semibold text-gray-800 mb-1 leading-snug">
                 {showingTranslateValue(product?.title)}
               </h2>
 
@@ -171,19 +169,16 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 {stock > 0 ? "In Stock" : "Sold Out"}
               </p>
 
-              {/* Price */}
               <div className="my-3">
                 <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
               </div>
 
               {/* Variants */}
               {variantTitle?.length > 0 && (
-                <div className="mb-2">
+                <div className="mb-3">
                   {variantTitle?.map((a) => (
-                    <div key={a._id} className="mb-1">
-                      <p className="text-sm font-medium text-gray-700 mb-1">
-                        {showingTranslateValue(a?.name)}:
-                      </p>
+                    <div key={a._id} className="mb-1.5">
+                      <p className="text-sm font-medium text-gray-700 mb-1">{showingTranslateValue(a?.name)}:</p>
                       <VariantList
                         att={a._id}
                         lang={lang}
@@ -200,16 +195,16 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 </div>
               )}
 
-              {/* MOQ Buttons */}
+              {/* MOQ buttons */}
               {product?.moq > 1 && (
-                <div className="mb-2 flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 mb-3">
                   {Array.from({ length: 5 }, (_, i) => {
                     const moq = product?.moq * (i + 1);
                     return (
                       <button
                         key={i}
                         onClick={() => setItem(moq)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
                           item == moq
                             ? "bg-cyan-600 text-white"
                             : "bg-gray-100 text-gray-600 hover:bg-cyan-600 hover:text-white"
@@ -223,7 +218,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               )}
 
               {/* Quantity + Add to Cart */}
-              <div className="flex items-center gap-3 mt-3">
+              <div className="flex items-center gap-3 mt-2">
                 <div className="flex border border-gray-300 rounded-md overflow-hidden">
                   <button
                     onClick={() => setItem(item - 1)}
@@ -260,11 +255,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                   className="flex items-center text-sm font-medium text-gray-700"
                 >
                   Description
-                  {descOpen ? (
-                    <FiChevronUp className="ml-2" />
-                  ) : (
-                    <FiChevronDown className="ml-2" />
-                  )}
+                  {descOpen ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
                 </button>
                 {descOpen && (
                   <div
