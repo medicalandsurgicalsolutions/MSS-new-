@@ -37,14 +37,18 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
 
-  // Lock scroll when modal open
+  // Scroll lock fix + reset scroll on open
   useEffect(() => {
-    if (modalOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+      const modal = document.getElementById("product-modal-container");
+      if (modal) modal.scrollTop = 0;
+    } else {
+      document.body.style.overflow = "";
+    }
     return () => (document.body.style.overflow = "");
   }, [modalOpen]);
 
-  // Handle variants and prices
   useEffect(() => {
     if (product?.variants?.length > 0) {
       const first = product.variants[0];
@@ -105,108 +109,103 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
     <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
       <div
         id="product-modal-container"
-        className="bg-white rounded-2xl shadow-xl max-w-6xl w-full mx-auto transition-all h-[90vh] flex flex-col"
+        className="bg-white rounded-2xl shadow-xl max-w-6xl w-full mx-auto transition-all overflow-hidden"
       >
-        {/* Two Equal Columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 flex-1 overflow-hidden">
-          {/* LEFT COLUMN */}
-          <div className="bg-gray-50 p-5 flex flex-col justify-between items-center border-r border-gray-100 overflow-hidden">
-            {/* Upper Section */}
-            <div className="flex flex-col items-center">
-              {/* Product Image */}
-              <div className="relative flex justify-center mb-3">
-                <Discount product={product} discount={discount} modal />
-                <Image
-                  src={img || product.image[0] || DUMMY_IMAGE}
-                  width={280}
-                  height={280}
-                  alt="product"
-                  className="rounded-lg object-contain"
-                />
-              </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
+          {/* LEFT COLUMN (Fixed Image) */}
+          <div className="bg-gray-50 p-6 flex flex-col justify-start items-center border-r border-gray-100">
+            <div className="relative flex justify-center mb-4 sticky top-0">
+              <Discount product={product} discount={discount} modal />
+              <Image
+                src={img || product.image[0] || DUMMY_IMAGE}
+                width={320}
+                height={320}
+                alt="product"
+                className="rounded-lg object-contain"
+              />
+            </div>
 
-              {/* Product Title */}
-              <h2 className="text-lg font-semibold text-gray-800 text-center leading-tight">
-                {showingTranslateValue(product?.title)}
-              </h2>
+            <h2 className="text-xl font-semibold text-gray-800 text-center">
+              {showingTranslateValue(product?.title)}
+            </h2>
 
-              {/* Stock Status */}
-              <p
-                className={`text-sm mt-1 font-medium ${
-                  stock > 0 ? "text-green-600" : "text-red-500"
-                }`}
-              >
-                {stock > 0 ? "In Stock" : "Out of Stock"}
-              </p>
+            <p
+              className={`text-sm mt-1 font-medium ${
+                stock > 0 ? "text-green-600" : "text-red-500"
+              }`}
+            >
+              {stock > 0 ? "In Stock" : "Out of Stock"}
+            </p>
 
-              {/* Price */}
-              <div className="mt-2 mb-3">
-                <Price
-                  product={product}
-                  price={price}
-                  currency={currency}
-                  originalPrice={originalPrice}
-                />
-              </div>
+            <div className="mt-2 mb-4">
+              <Price
+                product={product}
+                price={price}
+                currency={currency}
+                originalPrice={originalPrice}
+              />
+            </div>
 
-              {/* Quantity + Add to Cart */}
-              <div className="flex items-center gap-3 justify-center mb-3">
-                <div className="flex border border-gray-300 rounded-md overflow-hidden">
-                  <button
-                    onClick={() => setItem(item - 1)}
-                    disabled={item === 1}
-                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
-                  >
-                    <FiMinus />
-                  </button>
-                  <span className="px-4 py-2 font-semibold">{item}</span>
-                  <button
-                    onClick={() => setItem(item + 1)}
-                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
-                  >
-                    <FiPlus />
-                  </button>
-                </div>
-
+            {/* Quantity + Add to Cart */}
+            <div className="flex items-center gap-3 justify-center mb-4">
+              <div className="flex border border-gray-300 rounded-md overflow-hidden">
                 <button
-                  onClick={() => handleAddToCart(product)}
-                  disabled={stock <= 0}
-                  className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-5 rounded-md text-sm"
+                  onClick={() => setItem(item - 1)}
+                  disabled={item === 1}
+                  className="px-3 py-2 hover:bg-gray-100 text-gray-700"
                 >
-                  {t("common:addToCart")}
+                  <FiMinus />
+                </button>
+                <span className="px-4 py-2 font-semibold">{item}</span>
+                <button
+                  onClick={() => setItem(item + 1)}
+                  className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+                >
+                  <FiPlus />
                 </button>
               </div>
 
-              {/* Available Options */}
-              {variantTitle?.length > 0 && (
-                <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-3">
-                  <h3 className="text-base font-semibold text-gray-800 mb-2">
-                    Available Options
-                  </h3>
-                  {variantTitle.map((a) => (
-                    <div key={a._id} className="mb-3">
-                      <p className="text-sm font-medium text-gray-700 mb-1">
-                        {showingTranslateValue(a?.name)}:
-                      </p>
-                      <VariantList
-                        att={a._id}
-                        lang={lang}
-                        option={a.option}
-                        setValue={setValue}
-                        varTitle={variantTitle}
-                        variants={product?.variants}
-                        setSelectVa={setSelectVa}
-                        selectVariant={selectVariant}
-                        setSelectVariant={setSelectVariant}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <button
+                onClick={() => handleAddToCart(product)}
+                disabled={stock <= 0}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-5 rounded-md text-sm"
+              >
+                {t("common:addToCart")}
+              </button>
             </div>
 
-            {/* Info Box */}
-            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
+            {/* Available Options */}
+            {variantTitle?.length > 0 && (
+              <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
+                <h3 className="text-base font-semibold text-gray-800 mb-2">
+                  Available Options
+                </h3>
+                {variantTitle.map((a) => (
+                  <div key={a._id} className="mb-3">
+                    <p className="text-sm font-medium text-gray-700 mb-1">
+                      {showingTranslateValue(a?.name)}:
+                    </p>
+                    <VariantList
+                      att={a._id}
+                      lang={lang}
+                      option={a.option}
+                      setValue={setValue}
+                      varTitle={variantTitle}
+                      variants={product?.variants}
+                      setSelectVa={setSelectVa}
+                      selectVariant={selectVariant}
+                      setSelectVariant={setSelectVariant}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT COLUMN (Scrollable) */}
+          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+            {/* INFO BOX */}
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
               <p>
                 <span className="font-semibold">Category:</span>{" "}
                 <Link
@@ -245,11 +244,9 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 {t("common:moreInfo")}
               </button>
             </div>
-          </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="bg-white p-6 flex flex-col justify-between overflow-hidden">
-            <div className="overflow-y-auto pr-2">
+            {/* Product Description */}
+            <div>
               <h3 className="text-base font-semibold text-gray-800 mb-2">
                 Product Details
               </h3>
@@ -264,7 +261,8 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               />
             </div>
 
-            <div className="mt-4 border-t pt-3">
+            {/* Tags */}
+            <div className="mt-4">
               <Tags product={product} />
             </div>
           </div>
