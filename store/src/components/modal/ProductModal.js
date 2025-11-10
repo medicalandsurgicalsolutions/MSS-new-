@@ -140,13 +140,12 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               {stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
 
-            <div className="mt-2 mb-4 w-full">
+            <div className="mt-2 mb-4 w-full flex justify-start">
               <Price
                 product={product}
                 price={price}
                 currency={currency}
                 originalPrice={originalPrice}
-                className="text-left"
               />
             </div>
 
