@@ -129,8 +129,8 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
 
   return (
     <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-      <div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full mx-auto overflow-hidden">
-        <div className="flex flex-col md:flex-row">
+     <div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full mx-auto transition-all overflow-y-auto md:overflow-hidden max-h-[90vh]">
+        <div className="flex flex-col md:flex-row h-full">
           
           {/* LEFT SIDE */}
           <div className="md:w-1/2 bg-gray-50 p-5 flex flex-col items-center border-r border-gray-100">
