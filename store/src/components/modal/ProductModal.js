@@ -37,18 +37,25 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
 
-  // Scroll lock fix + reset scroll on open
+  // Lock background scroll
   useEffect(() => {
     if (modalOpen) {
       document.body.style.overflow = "hidden";
-      const modal = document.getElementById("product-modal-container");
-      if (modal) modal.scrollTop = 0;
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
     } else {
       document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     }
-    return () => (document.body.style.overflow = "");
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    };
   }, [modalOpen]);
 
+  // Initialize product data
   useEffect(() => {
     if (product?.variants?.length > 0) {
       const first = product.variants[0];
@@ -112,9 +119,9 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
         className="bg-white rounded-2xl shadow-xl max-w-6xl w-full mx-auto transition-all overflow-hidden"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {/* LEFT COLUMN (Fixed Image) */}
-          <div className="bg-gray-50 p-6 flex flex-col justify-start items-center border-r border-gray-100">
-            <div className="relative flex justify-center mb-4 sticky top-0">
+          {/* LEFT COLUMN */}
+          <div className="bg-gray-50 p-6 flex flex-col justify-start items-start border-r border-gray-100">
+            <div className="relative flex justify-start mb-4 sticky top-0">
               <Discount product={product} discount={discount} modal />
               <Image
                 src={img || product.image[0] || DUMMY_IMAGE}
@@ -125,29 +132,26 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               />
             </div>
 
-            <h2 className="text-xl font-semibold text-gray-800 text-center">
+            <h2 className="text-xl font-semibold text-gray-800 text-left">
               {showingTranslateValue(product?.title)}
             </h2>
 
-            <p
-              className={`text-sm mt-1 font-medium ${
-                stock > 0 ? "text-green-600" : "text-red-500"
-              }`}
-            >
+            <p className={`text-sm mt-1 font-medium ${stock > 0 ? "text-green-600" : "text-red-500"}`}>
               {stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
 
-            <div className="mt-2 mb-4">
+            <div className="mt-2 mb-4 w-full">
               <Price
                 product={product}
                 price={price}
                 currency={currency}
                 originalPrice={originalPrice}
+                className="text-left"
               />
             </div>
 
             {/* Quantity + Add to Cart */}
-            <div className="flex items-center gap-3 justify-center mb-4">
+            <div className="flex items-center gap-3 mb-4">
               <div className="flex border border-gray-300 rounded-md overflow-hidden">
                 <button
                   onClick={() => setItem(item - 1)}
@@ -174,15 +178,15 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               </button>
             </div>
 
-            {/* Available Options */}
+            {/* Variant Options */}
             {variantTitle?.length > 0 && (
               <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
-                <h3 className="text-base font-semibold text-gray-800 mb-2">
+                <h3 className="text-base font-semibold text-gray-800 mb-2 text-left">
                   Available Options
                 </h3>
                 {variantTitle.map((a) => (
                   <div key={a._id} className="mb-3">
-                    <p className="text-sm font-medium text-gray-700 mb-1">
+                    <p className="text-sm font-medium text-gray-700 mb-1 text-left">
                       {showingTranslateValue(a?.name)}:
                     </p>
                     <VariantList
@@ -202,15 +206,15 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             )}
           </div>
 
-          {/* RIGHT COLUMN (Scrollable) */}
-          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+          {/* RIGHT COLUMN */}
+          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh] items-start text-left">
             {/* Product Description */}
             <div>
-              <h3 className="text-base font-semibold text-gray-800 mb-2">
+              <h3 className="text-base font-semibold text-gray-800 mb-2 text-left">
                 Product Details
               </h3>
               <div
-                className="text-sm text-gray-600 leading-relaxed"
+                className="text-sm text-gray-600 leading-relaxed text-left"
                 dangerouslySetInnerHTML={{
                   __html:
                     showingTranslateValue(product?.description) ||
@@ -220,8 +224,8 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               />
             </div>
 
-            {/* INFO BOX */}
-            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
+            {/* Info Box */}
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4 mt-4 text-left">
               <p>
                 <span className="font-semibold">Category:</span>{" "}
                 <Link
@@ -237,32 +241,26 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               </p>
               <p className="mt-1">
                 <span className="font-semibold">Reference No:</span>{" "}
-                <span className="text-cyan-700">
-                  {product?.productRefrenceNo}
-                </span>
+                <span className="text-cyan-700">{product?.productRefrenceNo}</span>
               </p>
               <p className="mt-1">
                 <span className="font-semibold">Brand:</span>{" "}
-                <span className="text-cyan-700">
-                  {showingTranslateValue(product?.brand?.name)}
-                </span>
+                <span className="text-cyan-700">{showingTranslateValue(product?.brand?.name)}</span>
               </p>
               <p className="mt-1">
                 <span className="font-semibold">Call to order:</span>{" "}
-                <span className="text-cyan-700 font-semibold">
-                  {globalSetting.contact}
-                </span>
+                <span className="text-cyan-700 font-semibold">{globalSetting.contact}</span>
               </p>
               <button
                 onClick={() => handleMoreInfo(product?.slug)}
-                className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition"
+                className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition text-left"
               >
                 {t("common:moreInfo")}
               </button>
             </div>
 
             {/* Tags */}
-            <div className="mt-4">
+            <div className="mt-4 w-full text-left">
               <Tags product={product} />
             </div>
           </div>
