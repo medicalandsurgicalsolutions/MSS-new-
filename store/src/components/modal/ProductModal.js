@@ -143,180 +143,197 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
     ?.toLowerCase()
     ?.replace(/[^A-Z0-9]+/gi, "-");
 
-  return (
-    <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-      <div className="bg-white w-full max-w-4xl rounded-2xl shadow-xl overflow-hidden">
-        {/* Header Section */}
-        <div className="px-6 py-4 border-b border-gray-200 text-center">
-          <h1 className="text-2xl font-semibold text-gray-800">
-            {showingTranslateValue(product?.title)}
-          </h1>
-          <div className="mt-1 flex justify-center items-center gap-3">
-            <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
-            <p
-              className={`text-sm font-semibold ${
-                stock > 0 ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {stock > 0 ? "In Stock" : "Sold Out"}
-            </p>
-          </div>
-        </div>
-
-        {/* Content Section */}
-        <div className="flex flex-col md:flex-row items-start md:items-stretch">
-          {/* Left: Image */}
-          <div className="flex-shrink-0 w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 relative">
+ return (
+  <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+    <div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full overflow-hidden mx-auto transition-all">
+      {/* Wrapper */}
+      <div className="flex flex-col md:flex-row">
+        
+        {/* LEFT SIDE */}
+        <div className="md:w-1/2 w-full bg-gray-50 p-4 flex flex-col items-center justify-start border-r border-gray-100">
+          <div className="relative w-full flex justify-center">
             <Discount product={product} discount={discount} modal />
             <Image
               src={img || product.image[0] || DUMMY_IMAGE}
-              width={380}
-              height={380}
+              width={350}
+              height={350}
               alt="product"
-              className="rounded-lg object-contain"
+              className="rounded-xl object-contain"
             />
           </div>
 
-          {/* Right: Details */}
-          <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
-            <div>
-              {/* Variants */}
-              {variantTitle?.length > 0 && (
-                <div className="mb-3">
-                  {variantTitle?.map((a) => (
-                    <div key={a._id} className="mb-2">
-                      <p className="text-sm font-medium text-gray-700 mb-1">
-                        {showingTranslateValue(a?.name)}:
-                      </p>
-                      <VariantList
-                        att={a._id}
-                        lang={lang}
-                        option={a.option}
-                        setValue={setValue}
-                        varTitle={variantTitle}
-                        variants={product?.variants}
-                        setSelectVa={setSelectVa}
-                        selectVariant={selectVariant}
-                        setSelectVariant={setSelectVariant}
-                      />
-                    </div>
-                  ))}
-                </div>
-              )}
+          {/* Product Title */}
+          <h2 className="text-lg md:text-xl font-semibold text-gray-800 mt-3 text-center px-2 leading-snug">
+            {showingTranslateValue(product?.title)}
+          </h2>
 
-              {/* MOQ */}
-              {product?.moq > 1 && (
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {Array.from({ length: 5 }, (_, i) => {
-                    const moq = product?.moq * (i + 1);
-                    return (
-                      <button
-                        key={i}
-                        onClick={() => setItem(moq)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
-                          item == moq
-                            ? "bg-cyan-600 text-white"
-                            : "bg-gray-100 text-gray-600 hover:bg-cyan-600 hover:text-white"
-                        }`}
-                      >
-                        {moq}
-                      </button>
-                    );
-                  })}
-                </div>
-              )}
+          {/* Stock Status */}
+          <p
+            className={`text-sm font-medium mt-1 ${
+              stock > 0 ? "text-green-600" : "text-red-500"
+            }`}
+          >
+            {stock > 0 ? "In Stock" : "Sold Out"}
+          </p>
 
-              {/* Quantity + Add to Cart */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex border border-gray-300 rounded-md overflow-hidden">
+          {/* Price */}
+          <div className="mt-2 mb-3">
+            <Price
+              product={product}
+              price={price}
+              currency={currency}
+              originalPrice={originalPrice}
+            />
+          </div>
+
+          {/* MOQ Buttons */}
+          {product?.moq > 1 && (
+            <div className="flex flex-wrap gap-2 justify-center mb-3">
+              {Array.from({ length: 4 }, (_, i) => {
+                const moq = product?.moq * (i + 1);
+                return (
                   <button
-                    onClick={() => setItem(item - 1)}
-                    disabled={item === 1}
-                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+                    key={i}
+                    onClick={() => setItem(moq)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                      item === moq
+                        ? "bg-cyan-600 text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-cyan-600 hover:text-white"
+                    }`}
                   >
-                    <FiMinus />
+                    {moq}
                   </button>
-                  <span className="px-4 py-2 font-semibold">{item}</span>
-                  <button
-                    onClick={() => setItem(item + 1)}
-                    disabled={product.quantity <= item}
-                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
-                  >
-                    <FiPlus />
-                  </button>
-                </div>
-                <button
-                  onClick={() => handleAddToCart(product)}
-                  disabled={stock <= 0}
-                  className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 rounded-md text-sm flex items-center justify-center"
-                >
-                  {t("common:addToCart")}
-                  <span className="ml-2 bg-white text-cyan-700 rounded px-2 py-1 text-xs font-bold">
-                    {`${currency}${(item * price).toFixed(2)}`}
-                  </span>
-                </button>
-              </div>
-
-              {/* Description */}
-              <div className="border-t border-gray-200 pt-3 text-sm text-gray-700">
-                <p className="font-semibold mb-1">Description:</p>
-                <div
-                  className="leading-relaxed"
-                  dangerouslySetInnerHTML={{
-                    __html:
-                      showingTranslateValue(product?.description) ||
-                      product?.description ||
-                      "",
-                  }}
-                />
-              </div>
-
-              {/* Category, Brand, etc */}
-              <div className="mt-4 border-t border-gray-200 pt-3 text-sm text-gray-700 space-y-1">
-                <p>
-                  <span className="font-semibold">Category:</span>{" "}
-                  <Link
-                    href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                    className="text-cyan-600 hover:underline"
-                    onClick={() => setIsLoading(!isLoading)}
-                  >
-                    {category_name}
-                  </Link>
-                </p>
-                <p>
-                  <span className="font-semibold">Reference No:</span>{" "}
-                  <span className="text-cyan-600">{product?.productRefrenceNo}</span>
-                </p>
-                <p>
-                  <span className="font-semibold">Brand:</span>{" "}
-                  <span className="text-cyan-600">
-                    {showingTranslateValue(product?.brand?.name)}
-                  </span>
-                </p>
-                <Tags product={product} />
-              </div>
+                );
+              })}
             </div>
+          )}
 
-            {/* Footer */}
-            <div className="mt-4 border-t border-gray-200 pt-3 text-xs text-gray-600 flex justify-between items-center">
-              <p>
-                Call to order:{" "}
-                <span className="text-cyan-600 font-semibold">
-                  {globalSetting.contact}
-                </span>
-              </p>
+          {/* Quantity + Add to Cart */}
+          <div className="flex items-center gap-3 w-full justify-center">
+            <div className="flex border border-gray-300 rounded-md overflow-hidden">
               <button
-                onClick={() => handleMoreInfo(product?.slug)}
-                className="text-orange-500 hover:text-orange-600 font-semibold text-sm"
+                onClick={() => setItem(item - 1)}
+                disabled={item === 1}
+                className="px-3 py-2 hover:bg-gray-100 text-gray-700"
               >
-                {t("common:moreInfo")}
+                <FiMinus />
+              </button>
+              <span className="px-4 py-2 font-semibold">{item}</span>
+              <button
+                onClick={() => setItem(item + 1)}
+                disabled={product.quantity <= item}
+                className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+              >
+                <FiPlus />
               </button>
             </div>
+
+            <button
+              onClick={() => handleAddToCart(product)}
+              disabled={stock <= 0}
+              className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-md text-sm flex items-center justify-center max-w-[160px]"
+            >
+              {t("common:addToCart")}
+              <span className="ml-2 bg-white text-cyan-700 rounded px-2 py-0.5 text-xs font-semibold">
+                {`${currency}${(item * price).toFixed(2)}`}
+              </span>
+            </button>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="md:w-1/2 w-full p-5 flex flex-col justify-between">
+          <div>
+            {/* Variants */}
+            {variantTitle?.length > 0 && (
+              <div className="mb-4">
+                {variantTitle?.map((a) => (
+                  <div key={a._id} className="mb-2">
+                    <p className="text-sm font-medium text-gray-700 mb-1">
+                      {showingTranslateValue(a?.name)}:
+                    </p>
+                    <VariantList
+                      att={a._id}
+                      lang={lang}
+                      option={a.option}
+                      setValue={setValue}
+                      varTitle={variantTitle}
+                      variants={product?.variants}
+                      setSelectVa={setSelectVa}
+                      selectVariant={selectVariant}
+                      setSelectVariant={setSelectVariant}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* Description */}
+            <div className="border-t border-gray-200 pt-3 mt-2 text-sm text-gray-600 leading-relaxed">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    showingTranslateValue(product?.description) ||
+                    product?.description ||
+                    "",
+                }}
+              />
+            </div>
+
+            {/* Category / Brand / Reference */}
+            <div className="border-t border-gray-200 pt-3 mt-4 text-sm text-gray-700 space-y-1">
+              <p>
+                <span className="font-semibold">Category:</span>{" "}
+                <Link
+                  href={`/search?category=${showingTranslateValue(
+                    product?.category?.name
+                  )
+                    ?.toLowerCase()
+                    ?.replace(/[^A-Z0-9]+/gi, "-")}&_id=${
+                    product?.category?._id
+                  }`}
+                  className="text-cyan-600 hover:underline"
+                >
+                  {showingTranslateValue(product?.category?.name)}
+                </Link>
+              </p>
+              <p>
+                <span className="font-semibold">Reference No:</span>{" "}
+                <span className="text-cyan-700">
+                  {product?.productRefrenceNo}
+                </span>
+              </p>
+              <p>
+                <span className="font-semibold">Brand:</span>{" "}
+                <span className="text-cyan-700">
+                  {showingTranslateValue(product?.brand?.name)}
+                </span>
+              </p>
+              <Tags product={product} />
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="mt-6 flex justify-between items-center border-t border-gray-200 pt-3 text-xs text-gray-600">
+            <p>
+              Call to order:{" "}
+              <span className="text-cyan-600 font-semibold">
+                {globalSetting.contact}
+              </span>
+            </p>
+            <button
+              onClick={() => handleMoreInfo(product?.slug)}
+              className="text-orange-500 hover:text-orange-600 font-semibold text-sm"
+            >
+              {t("common:moreInfo")}
+            </button>
           </div>
         </div>
       </div>
-    </MainModal>
-  );
+    </div>
+  </MainModal>
+);
+
 };
 
 export default ProductModal;
