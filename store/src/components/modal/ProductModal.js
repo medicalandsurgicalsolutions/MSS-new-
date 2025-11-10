@@ -180,7 +180,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             </div>
 
             {/* INFO BOX */}
-            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
               <p>
                 <span className="font-semibold">Category:</span>{" "}
                 <Link
@@ -219,12 +219,10 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 {t("common:moreInfo")}
               </button>
             </div>
-          </div>
 
-          {/* RIGHT COLUMN */}
-          <div className="bg-white p-6 flex flex-col justify-start">
+            {/* Available Options moved here */}
             {variantTitle?.length > 0 && (
-              <div className="mb-5">
+              <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
                 <h3 className="text-base font-semibold text-gray-800 mb-2">
                   Available Options
                 </h3>
@@ -248,7 +246,10 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 ))}
               </div>
             )}
+          </div>
 
+          {/* RIGHT COLUMN */}
+          <div className="bg-white p-6 flex flex-col justify-start">
             {/* Product Description */}
             <div>
               <h3 className="text-base font-semibold text-gray-800 mb-2">
