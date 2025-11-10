@@ -202,70 +202,69 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             )}
           </div>
 
-        
-        {/* RIGHT COLUMN (Scrollable) */}
-        <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto h-screen">
-          {/* Product Description */}
-          <div>
-            <h3 className="text-base font-semibold text-gray-800 mb-2">
-              Product Details
-            </h3>
-            <div
-              className="text-sm text-gray-600 leading-relaxed"
-              dangerouslySetInnerHTML={{
-                __html:
-                  showingTranslateValue(product?.description) ||
-                  product?.description ||
-                  "",
-              }}
-            />
-          </div>
-        
-          {/* INFO BOX */}
-          <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4 mt-4">
-            <p>
-              <span className="font-semibold">Category:</span>{" "}
-              <Link
-                href={`/search?category=${showingTranslateValue(
-                  product?.category?.name
-                )
-                  ?.toLowerCase()
-                  ?.replace(/[^A-Z0-9]+/gi, "-")}&_id=${product?.category?._id}`}
-                className="text-cyan-600 hover:underline"
+          {/* RIGHT COLUMN (Scrollable) */}
+          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+            {/* Product Description */}
+            <div>
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                Product Details
+              </h3>
+              <div
+                className="text-sm text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    showingTranslateValue(product?.description) ||
+                    product?.description ||
+                    "",
+                }}
+              />
+            </div>
+            {/* INFO BOX */}
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
+              <p>
+                <span className="font-semibold">Category:</span>{" "}
+                <Link
+                  href={`/search?category=${showingTranslateValue(
+                    product?.category?.name
+                  )
+                    ?.toLowerCase()
+                    ?.replace(/[^A-Z0-9]+/gi, "-")}&_id=${product?.category?._id}`}
+                  className="text-cyan-600 hover:underline"
+                >
+                  {showingTranslateValue(product?.category?.name)}
+                </Link>
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold">Reference No:</span>{" "}
+                <span className="text-cyan-700">
+                  {product?.productRefrenceNo}
+                </span>
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold">Brand:</span>{" "}
+                <span className="text-cyan-700">
+                  {showingTranslateValue(product?.brand?.name)}
+                </span>
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold">Call to order:</span>{" "}
+                <span className="text-cyan-700 font-semibold">
+                  {globalSetting.contact}
+                </span>
+              </p>
+              <button
+                onClick={() => handleMoreInfo(product?.slug)}
+                className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition"
               >
-                {showingTranslateValue(product?.category?.name)}
-              </Link>
-            </p>
-            <p className="mt-1">
-              <span className="font-semibold">Reference No:</span>{" "}
-              <span className="text-cyan-700">{product?.productRefrenceNo}</span>
-            </p>
-            <p className="mt-1">
-              <span className="font-semibold">Brand:</span>{" "}
-              <span className="text-cyan-700">
-                {showingTranslateValue(product?.brand?.name)}
-              </span>
-            </p>
-            <p className="mt-1">
-              <span className="font-semibold">Call to order:</span>{" "}
-              <span className="text-cyan-700 font-semibold">
-                {globalSetting.contact}
-              </span>
-            </p>
-            <button
-              onClick={() => handleMoreInfo(product?.slug)}
-              className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition"
-            >
-              {t("common:moreInfo")}
-            </button>
-          </div>
-        
-          {/* Tags */}
-          <div className="mt-4">
-            <Tags product={product} />
-          </div>
-        </div>
+                {t("common:moreInfo")}
+              </button>
+            </div>
 
+            {/* Tags */}
+            <div className="mt-4">
+              <Tags product={product} />
+            </div>
+          </div>
         </div>
       </div>
     </MainModal>
