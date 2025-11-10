@@ -36,34 +36,14 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [selectVariant, setSelectVariant] = useState({});
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
-  const [variants, setVariants] = useState([]);
 
   useEffect(() => {
-    if (value) {
-      const result = product?.variants?.filter((variant) =>
-        Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
-      );
-      const result2 = result?.find((v) =>
-        Object.keys(selectVa).every((k) => selectVa[k] === v[k])
-      );
-      if (!result2) return setStock(0);
-      setVariants(result);
-      setSelectVariant(result2);
-      setSelectVa(result2);
-      setImg(result2?.image);
-      setStock(result2?.quantity);
-
-      const price = getNumber(result2?.price);
-      const originalPrice = getNumber(result2?.originalPrice);
-      setDiscount(getNumber(((originalPrice - price) / originalPrice) * 100));
-      setPrice(price);
-      setOriginalPrice(originalPrice);
-    } else if (product?.variants?.length > 0) {
+    if (product?.variants?.length > 0) {
       const first = product.variants[0];
       setStock(first?.quantity);
       setSelectVariant(first);
       setSelectVa(first);
-      setImg(first?.image);
+      setImg(first?.image || product.image[0]);
       const price = getNumber(first?.price);
       const originalPrice = getNumber(first?.originalPrice);
       setDiscount(getNumber(((originalPrice - price) / originalPrice) * 100));
@@ -78,44 +58,30 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
       setPrice(price);
       setOriginalPrice(originalPrice);
     }
-  }, [product, selectVa, selectVariant, value]);
+  }, [product]);
 
   useEffect(() => {
     const res = Object.keys(Object.assign({}, ...product?.variants));
     const varTitle = attributes?.filter((att) => res.includes(att?._id));
     setVariantTitle(varTitle?.sort());
-  }, [variants, attributes]);
+  }, [product, attributes]);
 
   const handleAddToCart = (p) => {
     if (item < p?.moq) return notifyError(`Minimum order quantity is ${p?.moq}`);
     if (stock <= 0) return notifyError("Insufficient stock");
 
-    const { variants, categories, description, ...updatedProduct } = product;
+    const { variants, description, ...updatedProduct } = product;
     const newItem = {
       ...updatedProduct,
       id:
         p?.variants.length <= 0
           ? p._id
           : p._id + "-" + variantTitle?.map((att) => selectVariant[att._id]).join("-"),
-      title:
-        p?.variants.length <= 0
-          ? showingTranslateValue(p.title)
-          : showingTranslateValue(p.title) +
-            "-" +
-            variantTitle
-              ?.map((att) =>
-                att.variants?.find((v) => v._id === selectVariant[att._id])
-              )
-              .map((el) => showingTranslateValue(el?.name)),
+      title: showingTranslateValue(p.title),
       image: img,
       variant: selectVariant || {},
-      gst: product?.gst,
-      hsn: product?.hsn,
-      price: p.variants.length === 0 ? getNumber(p.prices.price) : getNumber(price),
-      originalPrice:
-        p.variants.length === 0
-          ? getNumber(p.prices.originalPrice)
-          : getNumber(originalPrice),
+      price: getNumber(price),
+      originalPrice: getNumber(originalPrice),
     };
     handleAddItem(newItem);
   };
@@ -129,44 +95,35 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
 
   return (
     <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-<div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full mx-auto transition-all max-h-[90vh] overflow-y-auto md:overflow-hidden">
-       <div className="flex flex-col md:flex-row h-full min-h-full">          
-          {/* LEFT SIDE */}
-          <div className="md:w-1/2 bg-gray-50 p-5 flex flex-col items-center border-r border-gray-100">
-            <div className="relative w-full flex justify-center">
+      <div className="bg-white rounded-2xl shadow-xl max-w-5xl w-full mx-auto transition-all overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          {/* LEFT SECTION */}
+          <div className="bg-gray-50 p-6 flex flex-col justify-start items-center border-r border-gray-100">
+            <div className="relative flex justify-center mb-4">
               <Discount product={product} discount={discount} modal />
               <Image
                 src={img || product.image[0] || DUMMY_IMAGE}
-                width={350}
-                height={350}
+                width={320}
+                height={320}
                 alt="product"
-                className="rounded-xl object-contain"
+                className="rounded-lg object-contain"
               />
             </div>
 
-            <h2 className="text-lg md:text-xl font-semibold text-gray-800 mt-4 text-center">
+            <h2 className="text-xl font-semibold text-gray-800 text-center">
               {showingTranslateValue(product?.title)}
             </h2>
 
-            <p
-              className={`text-sm font-medium mt-1 ${
-                stock > 0 ? "text-green-600" : "text-red-500"
-              }`}
-            >
-              {stock > 0 ? "In Stock" : "Sold Out"}
+            <p className={`text-sm mt-1 font-medium ${stock > 0 ? "text-green-600" : "text-red-500"}`}>
+              {stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
 
-            <div className="mt-2 mb-3">
-              <Price
-                product={product}
-                price={price}
-                currency={currency}
-                originalPrice={originalPrice}
-              />
+            <div className="mt-2 mb-4">
+              <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
             </div>
 
-            {/* Quantity + Add to Cart */}
-            <div className="flex items-center gap-3 justify-center mb-3">
+            {/* Qty + Add to Cart */}
+            <div className="flex items-center gap-3 justify-center mb-4">
               <div className="flex border border-gray-300 rounded-md overflow-hidden">
                 <button
                   onClick={() => setItem(item - 1)}
@@ -178,7 +135,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 <span className="px-4 py-2 font-semibold">{item}</span>
                 <button
                   onClick={() => setItem(item + 1)}
-                  disabled={product.quantity <= item}
                   className="px-3 py-2 hover:bg-gray-100 text-gray-700"
                 >
                   <FiPlus />
@@ -188,17 +144,14 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               <button
                 onClick={() => handleAddToCart(product)}
                 disabled={stock <= 0}
-                className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 rounded-md text-sm flex items-center justify-center max-w-[160px]"
+                className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-5 rounded-md text-sm"
               >
                 {t("common:addToCart")}
-                <span className="ml-2 bg-white text-cyan-700 rounded px-2 py-0.5 text-xs font-semibold">
-                  {`${currency}${(item * price).toFixed(2)}`}
-                </span>
               </button>
             </div>
 
-            {/* Info Box */}
-            <div className="w-full mt-3 border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
+            {/* INFO BOX */}
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
               <p>
                 <span className="font-semibold">Category:</span>{" "}
                 <Link
@@ -216,15 +169,11 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               </p>
               <p className="mt-1">
                 <span className="font-semibold">Brand:</span>{" "}
-                <span className="text-cyan-700">
-                  {showingTranslateValue(product?.brand?.name)}
-                </span>
+                <span className="text-cyan-700">{showingTranslateValue(product?.brand?.name)}</span>
               </p>
               <p className="mt-1">
                 <span className="font-semibold">Call to order:</span>{" "}
-                <span className="text-cyan-700 font-semibold">
-                  {globalSetting.contact}
-                </span>
+                <span className="text-cyan-700 font-semibold">{globalSetting.contact}</span>
               </p>
               <button
                 onClick={() => handleMoreInfo(product?.slug)}
@@ -235,11 +184,12 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="md:w-1/2 w-full p-6 flex flex-col justify-between">
+          {/* RIGHT SECTION */}
+          <div className="bg-white p-6 flex flex-col justify-start">
             {variantTitle?.length > 0 && (
-              <div className="mb-4">
-                {variantTitle?.map((a) => (
+              <div className="mb-5">
+                <h3 className="text-base font-semibold text-gray-800 mb-2">Available Options</h3>
+                {variantTitle.map((a) => (
                   <div key={a._id} className="mb-3">
                     <p className="text-sm font-medium text-gray-700 mb-1">
                       {showingTranslateValue(a?.name)}:
@@ -260,19 +210,19 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               </div>
             )}
 
-            {/* Description */}
-            <div className="border-t border-gray-200 pt-3 mt-3 text-sm text-gray-600 leading-relaxed">
+            <div>
+              <h3 className="text-base font-semibold text-gray-800 mb-2">Product Details</h3>
               <div
+                className="text-sm text-gray-600 leading-relaxed"
                 dangerouslySetInnerHTML={{
-                  __html:
-                    showingTranslateValue(product?.description) ||
-                    product?.description ||
-                    "",
+                  __html: showingTranslateValue(product?.description) || product?.description || "",
                 }}
               />
             </div>
 
-            <Tags product={product} />
+            <div className="mt-4">
+              <Tags product={product} />
+            </div>
           </div>
         </div>
       </div>
