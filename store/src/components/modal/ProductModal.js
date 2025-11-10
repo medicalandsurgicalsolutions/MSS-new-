@@ -3,11 +3,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { FiMinus, FiPlus } from "react-icons/fi";
+import { FiMinus, FiPlus, FiChevronDown, FiChevronUp } from "react-icons/fi";
 
-//internal import
+// Internal imports
 import Price from "@components/common/Price";
-import Stock from "@components/common/Stock";
 import Tags from "@components/common/Tags";
 import { notifyError } from "@utils/toast";
 import useAddToCart from "@hooks/useAddToCart";
@@ -20,23 +19,15 @@ import { handleLogEvent } from "src/lib/analytics";
 import DUMMY_IMAGE from "@components/constants";
 import useGetSetting from "@hooks/useGetSetting";
 
-const ProductModal = ({
-  modalOpen,
-  setModalOpen,
-  product,
-  attributes,
-  currency,
-}) => {
+const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }) => {
   const router = useRouter();
   const { setIsLoading, isLoading } = useContext(SidebarContext);
   const { t } = useTranslation("ns1");
-
   const { handleAddItem, setItem, item } = useAddToCart();
-  const { lang, showingTranslateValue, getNumber, getNumberTwo } =
-    useUtilsFunction();
+  const { lang, showingTranslateValue, getNumber } = useUtilsFunction();
   const { globalSetting } = useGetSetting();
 
-  // react hook
+  // states
   const [value, setValue] = useState("");
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
@@ -47,78 +38,41 @@ const ProductModal = ({
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
   const [variants, setVariants] = useState([]);
+  const [descOpen, setDescOpen] = useState(false);
 
-  // console.log("Model Product ", product);
-
+  // price & variant handling
   useEffect(() => {
     if (value) {
       const result = product?.variants?.filter((variant) =>
         Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
       );
-
-      const res = result?.map(
-        ({
-          originalPrice,
-          price,
-          discount,
-          quantity,
-          barcode,
-          sku,
-          productId,
-          image,
-          ...rest
-        }) => ({
-          ...rest,
-        })
-      );
-
-      const filterKey = Object.keys(Object.assign({}, ...res));
-      const selectVar = filterKey?.reduce(
-        (obj, key) => ({ ...obj, [key]: selectVariant[key] }),
-        {}
-      );
-      const newObj = Object.entries(selectVar).reduce(
-        (a, [k, v]) => (v ? ((a[k] = v), a) : a),
-        {}
-      );
-
       const result2 = result?.find((v) =>
-        Object.keys(newObj).every((k) => newObj[k] === v[k])
+        Object.keys(selectVa).every((k) => selectVa[k] === v[k])
       );
-
-      // console.log("result2", result2);
 
       if (result.length <= 0 || result2 === undefined) return setStock(0);
-
       setVariants(result);
       setSelectVariant(result2);
       setSelectVa(result2);
       setImg(result2?.image);
       setStock(result2?.quantity);
+
       const price = getNumber(result2?.price);
       const originalPrice = getNumber(result2?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
+      const discountPercentage = getNumber(((originalPrice - price) / originalPrice) * 100);
+      setDiscount(discountPercentage);
       setPrice(price);
       setOriginalPrice(originalPrice);
     } else if (product?.variants?.length > 0) {
-      const result = product?.variants?.filter((variant) =>
-        Object.keys(selectVa).every((k) => selectVa[k] === variant[k])
-      );
-
-      setVariants(result);
-      setStock(product.variants[0]?.quantity);
-      setSelectVariant(product.variants[0]);
-      setSelectVa(product.variants[0]);
-      setImg(product.variants[0]?.image);
-      const price = getNumber(product.variants[0]?.price);
-      const originalPrice = getNumber(product.variants[0]?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
+      const firstVariant = product.variants[0];
+      setStock(firstVariant?.quantity);
+      setSelectVariant(firstVariant);
+      setSelectVa(firstVariant);
+      setImg(firstVariant?.image);
+      const price = getNumber(firstVariant?.price);
+      const originalPrice = getNumber(firstVariant?.originalPrice);
+      const discountPercentage = getNumber(((originalPrice - price) / originalPrice) * 100);
+      setDiscount(discountPercentage);
       setPrice(price);
       setOriginalPrice(originalPrice);
     } else {
@@ -126,100 +80,61 @@ const ProductModal = ({
       setImg(product?.image[0]);
       const price = getNumber(product?.prices?.price);
       const originalPrice = getNumber(product?.prices?.originalPrice);
-      const discountPercentage = getNumber(
-        ((originalPrice - price) / originalPrice) * 100
-      );
-      setDiscount(getNumber(discountPercentage));
+      const discountPercentage = getNumber(((originalPrice - price) / originalPrice) * 100);
+      setDiscount(discountPercentage);
       setPrice(price);
       setOriginalPrice(originalPrice);
     }
-  }, [
-    product?.prices?.discount,
-    product?.prices?.originalPrice,
-    product?.prices?.price,
-    product?.stock,
-    product.variants,
-    selectVa,
-    selectVariant,
-    value,
-  ]);
-  // console.log("product", product);
+  }, [product, selectVa, selectVariant, value]);
 
   useEffect(() => {
     const res = Object.keys(Object.assign({}, ...product?.variants));
-
     const varTitle = attributes?.filter((att) => res.includes(att?._id));
-
     setVariantTitle(varTitle?.sort());
   }, [variants, attributes]);
 
+  // Add to cart logic
   const handleAddToCart = (p) => {
-    if (item < p?.moq) {
-      return notifyError(`Minimum order quantity is ${p?.moq}`);
-    }
-    if (p.variants.length === 1 && p.variants[0].quantity < 1)
-      return notifyError("Insufficient stock");
-
+    if (item < p?.moq) return notifyError(`Minimum order quantity is ${p?.moq}`);
     if (stock <= 0) return notifyError("Insufficient stock");
 
-    if (
-      product?.variants.map(
-        (variant) =>
-          Object.entries(variant).sort().toString() ===
-          Object.entries(selectVariant).sort().toString()
-      )
-    ) {
-      const { variants, categories, description, ...updatedProduct } = product;
-      const newItem = {
-        ...updatedProduct,
-        id: `${
-          p?.variants.length <= 0
-            ? p._id
-            : p._id +
-              "-" +
-              variantTitle?.map((att) => selectVariant[att._id]).join("-")
-        }`,
-        title: `${
-          p?.variants.length <= 0
-            ? showingTranslateValue(p.title)
-            : showingTranslateValue(p.title) +
-              "-" +
-              variantTitle
-                ?.map((att) =>
-                  att.variants?.find((v) => v._id === selectVariant[att._id])
-                )
-                .map((el) => showingTranslateValue(el?.name))
-        }`,
-        image: img,
-        variant: selectVariant || {},
-        gst: product?.gst,
-        hsn: product?.hsn,
-        price:
-          p.variants.length === 0
-            ? getNumber(p.prices.price)
-            : getNumber(price),
-        originalPrice:
-          p.variants.length === 0
-            ? getNumber(p.prices.originalPrice)
-            : getNumber(originalPrice),
-      };
-
-      // console.log("newItem", newItem);
-
-      handleAddItem(newItem);
-    } else {
-      return notifyError("Please select all variant first!");
-    }
+    const { variants, categories, description, ...updatedProduct } = product;
+    const newItem = {
+      ...updatedProduct,
+      id:
+        p?.variants.length <= 0
+          ? p._id
+          : p._id + "-" + variantTitle?.map((att) => selectVariant[att._id]).join("-"),
+      title:
+        p?.variants.length <= 0
+          ? showingTranslateValue(p.title)
+          : showingTranslateValue(p.title) +
+            "-" +
+            variantTitle
+              ?.map((att) =>
+                att.variants?.find((v) => v._id === selectVariant[att._id])
+              )
+              .map((el) => showingTranslateValue(el?.name)),
+      image: img,
+      variant: selectVariant || {},
+      gst: product?.gst,
+      hsn: product?.hsn,
+      price: p.variants.length === 0 ? getNumber(p.prices.price) : getNumber(price),
+      originalPrice:
+        p.variants.length === 0
+          ? getNumber(p.prices.originalPrice)
+          : getNumber(originalPrice),
+    };
+    handleAddItem(newItem);
   };
 
   const handleMoreInfo = (slug) => {
     setModalOpen(false);
-    // Save scroll position with an expiry date of 5 minutes
     const scrollData = {
       position: window.scrollY,
-      expiry: new Date().getTime() + 10 * 60 * 1000, // Current time + 10 minutes
+      expiry: new Date().getTime() + 10 * 60 * 1000,
     };
-    localStorage.setItem('mssscrollPosition', JSON.stringify(scrollData));
+    localStorage.setItem("mssscrollPosition", JSON.stringify(scrollData));
     router.push(`/product/${slug}`);
     setIsLoading(!isLoading);
     handleLogEvent("product", `opened ${slug} product details`);
@@ -229,81 +144,46 @@ const ProductModal = ({
     ?.toLowerCase()
     ?.replace(/[^A-Z0-9]+/gi, "-");
 
-  // console.log("product", product, "stock", stock);
-
   return (
-    <>
-      <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-        <div className="inline-block overflow-y-auto h-full align-middle transition-all transform bg-white shadow-xl rounded-2xl">
-          <div className="flex flex-col lg:flex-row md:flex-row w-full max-w-4xl overflow-hidden">
-            <Link href={`/product/${product.slug}`} passHref>
-              <div
-                onClick={() => setModalOpen(false)}
-                className="flex-shrink-0 flex items-center justify-center h-auto cursor-pointer"
-              >
-                <Discount product={product} discount={discount} modal />
-                {product.image[0] ? (
-                  <Image
-                    src={img || product.image[0]}
-                    width={420}
-                    height={420}
-                    alt="product"
-                  />
-                ) : (
-                  <Image
-                    src={DUMMY_IMAGE}
-                    width={420}
-                    height={420}
-                    alt="product Image"
-                  />
-                )}
-              </div>
-            </Link>
+    <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
+      <div className="inline-block bg-white w-full max-w-3xl md:max-w-4xl rounded-2xl shadow-xl overflow-hidden transition-all">
+        <div className="flex flex-col md:flex-row">
+          {/* Left: Image */}
+          <div className="flex-shrink-0 bg-gray-50 p-4 flex items-center justify-center">
+            <Discount product={product} discount={discount} modal />
+            <Image
+              src={img || product.image[0] || DUMMY_IMAGE}
+              width={360}
+              height={360}
+              alt="product"
+              className="rounded-lg object-contain"
+            />
+          </div>
 
-            <div className="w-full flex flex-col p-5 md:p-8 text-left">
-              <div className="mb-2 md:mb-2.5 block -mt-1.5">
-                <Link href={`/product/${product.slug}`} passHref>
-                  <h1
-                    onClick={() => setModalOpen(false)}
-                    className="text-heading text-lg md:text-xl lg:text-2xl font-semibold  hover:text-black cursor-pointer"
-                  >
-                    {showingTranslateValue(product?.title)}
-                  </h1>
-                </Link>
-                <div
-                  className={`${
-                    stock <= 0 ? "relative py-1 mb-2" : "relative"
-                  }`}
-                >
-                  <div className="relative">
-                            { stock > 0 ? (
-                              <p className="text-green-600 font-bold">In Stock</p>
-                            ) : (
-                              <p className="text-red-600 font-bold">Sold Out</p>
-                            )}
-                            {/* <Stock stock={stock} /> */}
-                  </div>
-                </div>
-              </div>
-              {/* <p className="text-sm leading-6 text-gray-500 md:leading-6">
-                {showingTranslateValue(product?.description)}
-              </p> */}
-              <div className="flex items-center my-4">
-                <Price
-                  product={product}
-                  price={price}
-                  currency={currency}
-                  originalPrice={originalPrice}
-                />
+          {/* Right: Details */}
+          <div className="flex-1 p-5 md:p-6 flex flex-col justify-between">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800 leading-snug mb-1">
+                {showingTranslateValue(product?.title)}
+              </h2>
+
+              <p className={`text-sm font-semibold ${stock > 0 ? "text-green-600" : "text-red-600"}`}>
+                {stock > 0 ? "In Stock" : "Sold Out"}
+              </p>
+
+              {/* Price */}
+              <div className="my-3">
+                <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
               </div>
 
-              <div className="mb-1">
-                {variantTitle?.map((a, i) => (
-                  <span key={a._id}>
-                    <h4 className="text-sm py-1  text-gray-700 font-bold">
-                      {showingTranslateValue(a?.name)}:
-                    </h4>
-                    <div className="flex flex-row mb-3">
+              {/* Variants */}
+              {variantTitle?.length > 0 && (
+                <div className="mb-2">
+                  {variantTitle?.map((a) => (
+                    <div key={a._id} className="mb-1">
+                      <p className="text-sm font-medium text-gray-700 mb-1">
+                        {showingTranslateValue(a?.name)}:
+                      </p>
                       <VariantList
                         att={a._id}
                         lang={lang}
@@ -316,18 +196,25 @@ const ProductModal = ({
                         setSelectVariant={setSelectVariant}
                       />
                     </div>
-                  </span>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
+
+              {/* MOQ Buttons */}
               {product?.moq > 1 && (
-                <div className="w-full">
+                <div className="mb-2 flex flex-wrap gap-2">
                   {Array.from({ length: 5 }, (_, i) => {
                     const moq = product?.moq * (i + 1);
                     return (
-                      <button 
+                      <button
                         key={i}
-                        onClick={e => {setItem(moq)}}
-                        className={`${item == moq ? "bg-cyan-600 text-white" : "bg-gray-100 text-gray-600"} mr-2 border-0  hover:bg-cyan-600 hover:text-white rounded-full inline-flex items-center justify-center px-2 py-1 text-xs font-semibold  mt-2`}>
+                        onClick={() => setItem(moq)}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
+                          item == moq
+                            ? "bg-cyan-600 text-white"
+                            : "bg-gray-100 text-gray-600 hover:bg-cyan-600 hover:text-white"
+                        }`}
+                      >
                         {moq}
                       </button>
                     );
@@ -335,124 +222,106 @@ const ProductModal = ({
                 </div>
               )}
 
-              <div className="flex items-center mt-4">
-                <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
-                  <div className="group flex items-center justify-between rounded-md overflow-hidden flex-shrink-0 border h-11 md:h-12 border-gray-300">
-                    <button
-                      onClick={() => setItem(item - 1)}
-                      disabled={item === 1}
-                      className="flex items-center justify-center flex-shrink-0 h-full transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-e border-gray-300 hover:text-gray-500"
-                    >
-                      <span className="text-dark text-base">
-                        <FiMinus />
-                      </span>
-                    </button>
-                    <p className="font-semibold flex items-center justify-center h-full  transition-colors duration-250 ease-in-out cursor-default flex-shrink-0 text-base text-heading w-8  md:w-20 xl:w-24">
-                      {item}
-                    </p>
-                    <button
-                      onClick={() => setItem(item + 1)}
-                      disabled={
-                        product.quantity < item || product.quantity === item
-                      }
-                      className="flex items-center justify-center h-full flex-shrink-0 transition ease-in-out duration-300 focus:outline-none w-8 md:w-12 text-heading border-s border-gray-300 hover:text-gray-500"
-                    >
-                      <span className="text-dark text-base">
-                        <FiPlus />
-                      </span>
-                    </button>
-                  </div>
+              {/* Quantity + Add to Cart */}
+              <div className="flex items-center gap-3 mt-3">
+                <div className="flex border border-gray-300 rounded-md overflow-hidden">
                   <button
-                    onClick={() => handleAddToCart(product)}
-                    disabled={product.quantity < 1}
-                    className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-between border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none text-white px-4 ml-4 md:px-6 lg:px-8 py-4 md:py-3.5 lg:py-4 hover:text-white bg-cyan-600 hover:bg-cyan-600 w-full h-12"
+                    onClick={() => setItem(item - 1)}
+                    disabled={item === 1}
+                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
                   >
-                    {t("common:addToCart")}
-                    <span className="ml-1 rounded-lg font-bold py-2 px-3 bg-white text-cyan-600">
-                    {`${currency}${(item * price).toFixed(2)}`}
-                    </span>
+                    <FiMinus />
+                  </button>
+                  <span className="px-4 py-2 font-semibold">{item}</span>
+                  <button
+                    onClick={() => setItem(item + 1)}
+                    disabled={product.quantity <= item}
+                    className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+                  >
+                    <FiPlus />
                   </button>
                 </div>
+                <button
+                  onClick={() => handleAddToCart(product)}
+                  disabled={stock <= 0}
+                  className="flex-1 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold py-3 rounded-md text-sm flex items-center justify-center"
+                >
+                  {t("common:addToCart")}
+                  <span className="ml-2 bg-white text-cyan-700 rounded px-2 py-1 text-xs font-bold">
+                    {`${currency}${(item * price).toFixed(2)}`}
+                  </span>
+                </button>
               </div>
 
-              <div className="text-md leading-6 text-gray-700 md:leading-7">
-                            <p className="mt-2 mb-2 text-2xl font-bold tracking-wider text-black font-serif">Description</p>
-                                {/* <div className="leading-5" dangerouslySetInnerHTML={{ __html: showingTranslateValue(product?.description) ? showingTranslateValue(product?.description) : (product?.description) }} /> */}
-                                <div
-                                    className="leading-5 your-component"
-                                    dangerouslySetInnerHTML={{
-                                        __html: showingTranslateValue(product?.description) || product?.description || '',
-                                    }}
-                                />
-                            <br />
-                          </div>
-
-              <div className="flex items-center mt-4">
-                <div className="flex items-center justify-between space-s-3 sm:space-s-4 w-full">
-                  <div>
-                    <span className=" font-semibold py-1 text-sm d-block">
-                      <span className="text-gray-700">
-                        {t("common:category")}:
-                      </span>{" "}
-                      <Link
-                        href={`/search?category=${category_name}&_id=${product?.category?._id}`}
-                      >
-                        <button
-                          type="button"
-                          className="text-gray-600  font-medium underline ml-2 hover:text-teal-600"
-                          onClick={() => setIsLoading(!isLoading)}
-                        >
-                          {category_name}
-                        </button>
-                      </Link>
-                    </span>
-                    <div>
-                      <span className=" font-semibold py-1 text-sm d-block">
-                        <span className="text-gray-700">
-                          {"Product Refrence No"}:
-                        </span>{" "}
-                        <span className="text-cyan-600  font-medium">
-                          { product?.productRefrenceNo || "" }
-                        </span>
-                      </span>
-                    </div>
-                    <div>
-                      <span className=" font-semibold py-1 text-sm d-block">
-                        <span className="text-gray-700">
-                          {"Brand"}:
-                        </span>{" "}
-                        <span className="text-cyan-600  font-medium">
-                          { showingTranslateValue(product?.brand?.name) }
-                        </span>
-                      </span>
-                    </div>
-                      
-                    <Tags product={product} />
-                  </div>
-
-                  <div>
-                    <button
-                      onClick={() => handleMoreInfo(product?.slug)}
-                      className="font-sans font-medium text-sm text-orange-500"
-                    >
-                      {t("common:moreInfo")}
-                    </button>
-                  </div>
-                </div>
+              {/* Description (Collapsible) */}
+              <div className="mt-4 border-t pt-3">
+                <button
+                  onClick={() => setDescOpen(!descOpen)}
+                  className="flex items-center text-sm font-medium text-gray-700"
+                >
+                  Description
+                  {descOpen ? (
+                    <FiChevronUp className="ml-2" />
+                  ) : (
+                    <FiChevronDown className="ml-2" />
+                  )}
+                </button>
+                {descOpen && (
+                  <div
+                    className="mt-2 text-sm text-gray-600 leading-relaxed"
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        showingTranslateValue(product?.description) || product?.description || "",
+                    }}
+                  />
+                )}
               </div>
-              <div className="flex justify-end mt-2">
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Call Us To Order By Mobile Number :{" "}
-                  <span className="text-cyan-600 font-semibold">
-                    {globalSetting.contact}
-                  </span>{" "}
+
+              {/* Category + Brand */}
+              <div className="mt-4 border-t pt-3 text-sm text-gray-700 space-y-1">
+                <p>
+                  <span className="font-semibold">Category:</span>{" "}
+                  <Link
+                    href={`/search?category=${category_name}&_id=${product?.category?._id}`}
+                    className="text-cyan-600 hover:underline"
+                    onClick={() => setIsLoading(!isLoading)}
+                  >
+                    {category_name}
+                  </Link>
                 </p>
+                <p>
+                  <span className="font-semibold">Reference No:</span>{" "}
+                  <span className="text-cyan-600">{product?.productRefrenceNo}</span>
+                </p>
+                <p>
+                  <span className="font-semibold">Brand:</span>{" "}
+                  <span className="text-cyan-600">
+                    {showingTranslateValue(product?.brand?.name)}
+                  </span>
+                </p>
+                <Tags product={product} />
               </div>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-4 flex justify-between items-center border-t pt-3 text-xs text-gray-600">
+              <p>
+                Call to order:{" "}
+                <span className="text-cyan-600 font-semibold">
+                  {globalSetting.contact}
+                </span>
+              </p>
+              <button
+                onClick={() => handleMoreInfo(product?.slug)}
+                className="text-orange-500 hover:text-orange-600 font-semibold text-sm"
+              >
+                {t("common:moreInfo")}
+              </button>
             </div>
           </div>
         </div>
-      </MainModal>
-    </>
+      </div>
+    </MainModal>
   );
 };
 
