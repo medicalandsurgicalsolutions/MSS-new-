@@ -203,7 +203,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
           </div>
 
           {/* RIGHT COLUMN (Scrollable) */}
-          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto">
             {/* INFO BOX */}
             <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
               <p>
