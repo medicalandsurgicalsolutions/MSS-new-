@@ -204,6 +204,22 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
 
           {/* RIGHT COLUMN (Scrollable) */}
           <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+            {/* Product Description */}
+            <div>
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                Product Details
+              </h3>
+              <div
+                className="text-sm text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    showingTranslateValue(product?.description) ||
+                    product?.description ||
+                    "",
+                }}
+              />
+            </div>
+
             {/* INFO BOX */}
             <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
               <p>
@@ -243,22 +259,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               >
                 {t("common:moreInfo")}
               </button>
-            </div>
-
-            {/* Product Description */}
-            <div>
-              <h3 className="text-base font-semibold text-gray-800 mb-2">
-                Product Details
-              </h3>
-              <div
-                className="text-sm text-gray-600 leading-relaxed"
-                dangerouslySetInnerHTML={{
-                  __html:
-                    showingTranslateValue(product?.description) ||
-                    product?.description ||
-                    "",
-                }}
-              />
             </div>
 
             {/* Tags */}
