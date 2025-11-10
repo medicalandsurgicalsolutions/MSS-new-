@@ -3,9 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
-import { FiMinus, FiPlus, FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { FiMinus, FiPlus } from "react-icons/fi";
 
-// Internal imports
+// internal imports
 import Price from "@components/common/Price";
 import Tags from "@components/common/Tags";
 import { notifyError } from "@utils/toast";
@@ -27,6 +27,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const { lang, showingTranslateValue, getNumber } = useUtilsFunction();
   const { globalSetting } = useGetSetting();
 
+  // states
   const [value, setValue] = useState("");
   const [price, setPrice] = useState(0);
   const [img, setImg] = useState("");
@@ -37,8 +38,8 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
   const [variants, setVariants] = useState([]);
-  const [descOpen, setDescOpen] = useState(false);
 
+  // Price & Variant logic
   useEffect(() => {
     if (value) {
       const result = product?.variants?.filter((variant) =>
@@ -47,7 +48,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
       const result2 = result?.find((v) =>
         Object.keys(selectVa).every((k) => selectVa[k] === v[k])
       );
-
       if (result.length <= 0 || result2 === undefined) return setStock(0);
       setVariants(result);
       setSelectVariant(result2);
@@ -85,12 +85,14 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
     }
   }, [product, selectVa, selectVariant, value]);
 
+  // Variant titles
   useEffect(() => {
     const res = Object.keys(Object.assign({}, ...product?.variants));
     const varTitle = attributes?.filter((att) => res.includes(att?._id));
     setVariantTitle(varTitle?.sort());
   }, [variants, attributes]);
 
+  // Add to Cart logic
   const handleAddToCart = (p) => {
     if (item < p?.moq) return notifyError(`Minimum order quantity is ${p?.moq}`);
     if (stock <= 0) return notifyError("Insufficient stock");
@@ -143,42 +145,49 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
 
   return (
     <MainModal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-      <div className="inline-block bg-white w-full max-w-3xl md:max-w-4xl rounded-2xl shadow-lg overflow-hidden transition-all">
-        <div className="flex flex-col md:flex-row">
-          
+      <div className="bg-white w-full max-w-4xl rounded-2xl shadow-xl overflow-hidden">
+        {/* Header Section */}
+        <div className="px-6 py-4 border-b border-gray-200 text-center">
+          <h1 className="text-2xl font-semibold text-gray-800">
+            {showingTranslateValue(product?.title)}
+          </h1>
+          <div className="mt-1 flex justify-center items-center gap-3">
+            <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
+            <p
+              className={`text-sm font-semibold ${
+                stock > 0 ? "text-green-600" : "text-red-600"
+              }`}
+            >
+              {stock > 0 ? "In Stock" : "Sold Out"}
+            </p>
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="flex flex-col md:flex-row items-start md:items-stretch">
           {/* Left: Image */}
-          <div className="w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 relative">
+          <div className="flex-shrink-0 w-full md:w-1/2 bg-gray-50 flex items-center justify-center p-6 relative">
             <Discount product={product} discount={discount} modal />
             <Image
               src={img || product.image[0] || DUMMY_IMAGE}
-              width={360}
-              height={360}
+              width={380}
+              height={380}
               alt="product"
-              className="rounded-xl object-contain max-h-72"
+              className="rounded-lg object-contain"
             />
           </div>
 
           {/* Right: Details */}
           <div className="w-full md:w-1/2 p-6 flex flex-col justify-between">
             <div>
-              <h2 className="text-xl font-semibold text-gray-800 mb-1 leading-snug">
-                {showingTranslateValue(product?.title)}
-              </h2>
-
-              <p className={`text-sm font-semibold ${stock > 0 ? "text-green-600" : "text-red-600"}`}>
-                {stock > 0 ? "In Stock" : "Sold Out"}
-              </p>
-
-              <div className="my-3">
-                <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
-              </div>
-
               {/* Variants */}
               {variantTitle?.length > 0 && (
                 <div className="mb-3">
                   {variantTitle?.map((a) => (
-                    <div key={a._id} className="mb-1.5">
-                      <p className="text-sm font-medium text-gray-700 mb-1">{showingTranslateValue(a?.name)}:</p>
+                    <div key={a._id} className="mb-2">
+                      <p className="text-sm font-medium text-gray-700 mb-1">
+                        {showingTranslateValue(a?.name)}:
+                      </p>
                       <VariantList
                         att={a._id}
                         lang={lang}
@@ -195,7 +204,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 </div>
               )}
 
-              {/* MOQ buttons */}
+              {/* MOQ */}
               {product?.moq > 1 && (
                 <div className="flex flex-wrap gap-2 mb-3">
                   {Array.from({ length: 5 }, (_, i) => {
@@ -204,7 +213,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                       <button
                         key={i}
                         onClick={() => setItem(moq)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold ${
                           item == moq
                             ? "bg-cyan-600 text-white"
                             : "bg-gray-100 text-gray-600 hover:bg-cyan-600 hover:text-white"
@@ -218,7 +227,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               )}
 
               {/* Quantity + Add to Cart */}
-              <div className="flex items-center gap-3 mt-2">
+              <div className="flex items-center gap-3 mb-4">
                 <div className="flex border border-gray-300 rounded-md overflow-hidden">
                   <button
                     onClick={() => setItem(item - 1)}
@@ -248,28 +257,22 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 </button>
               </div>
 
-              {/* Description (Collapsible) */}
-              <div className="mt-4 border-t pt-3">
-                <button
-                  onClick={() => setDescOpen(!descOpen)}
-                  className="flex items-center text-sm font-medium text-gray-700"
-                >
-                  Description
-                  {descOpen ? <FiChevronUp className="ml-2" /> : <FiChevronDown className="ml-2" />}
-                </button>
-                {descOpen && (
-                  <div
-                    className="mt-2 text-sm text-gray-600 leading-relaxed"
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        showingTranslateValue(product?.description) || product?.description || "",
-                    }}
-                  />
-                )}
+              {/* Description */}
+              <div className="border-t border-gray-200 pt-3 text-sm text-gray-700">
+                <p className="font-semibold mb-1">Description:</p>
+                <div
+                  className="leading-relaxed"
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      showingTranslateValue(product?.description) ||
+                      product?.description ||
+                      "",
+                  }}
+                />
               </div>
 
-              {/* Category + Brand */}
-              <div className="mt-4 border-t pt-3 text-sm text-gray-700 space-y-1">
+              {/* Category, Brand, etc */}
+              <div className="mt-4 border-t border-gray-200 pt-3 text-sm text-gray-700 space-y-1">
                 <p>
                   <span className="font-semibold">Category:</span>{" "}
                   <Link
@@ -295,7 +298,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             </div>
 
             {/* Footer */}
-            <div className="mt-4 flex justify-between items-center border-t pt-3 text-xs text-gray-600">
+            <div className="mt-4 border-t border-gray-200 pt-3 text-xs text-gray-600 flex justify-between items-center">
               <p>
                 Call to order:{" "}
                 <span className="text-cyan-600 font-semibold">
