@@ -37,26 +37,18 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
   const [selectVa, setSelectVa] = useState({});
   const [variantTitle, setVariantTitle] = useState([]);
 
-  // --- LOCK BACKGROUND SCROLL ---
+  // Scroll lock fix + reset scroll on open
   useEffect(() => {
-    const body = document.body;
     if (modalOpen) {
-      body.style.overflow = "hidden";
-      body.style.position = "fixed";
-      body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      const modal = document.getElementById("product-modal-container");
+      if (modal) modal.scrollTop = 0;
     } else {
-      body.style.overflow = "";
-      body.style.position = "";
-      body.style.width = "";
+      document.body.style.overflow = "";
     }
-    return () => {
-      body.style.overflow = "";
-      body.style.position = "";
-      body.style.width = "";
-    };
+    return () => (document.body.style.overflow = "");
   }, [modalOpen]);
 
-  // --- INITIALIZE PRODUCT DATA ---
   useEffect(() => {
     if (product?.variants?.length > 0) {
       const first = product.variants[0];
@@ -86,7 +78,6 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
     setVariantTitle(varTitle?.sort());
   }, [product, attributes]);
 
-  // --- ADD TO CART ---
   const handleAddToCart = (p) => {
     if (item < p?.moq) return notifyError(`Minimum order quantity is ${p?.moq}`);
     if (stock <= 0) return notifyError("Insufficient stock");
@@ -121,9 +112,9 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
         className="bg-white rounded-2xl shadow-xl max-w-6xl w-full mx-auto transition-all overflow-hidden"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-          {/* LEFT COLUMN (Sticky Image) */}
-          <div className="bg-gray-50 p-6 flex flex-col justify-start items-center border-r border-gray-100 sticky top-0 h-screen overflow-hidden">
-            <div className="relative flex justify-center mb-4">
+          {/* LEFT COLUMN (Fixed Image) */}
+          <div className="bg-gray-50 p-6 flex flex-col justify-start items-center border-r border-gray-100">
+            <div className="relative flex justify-center mb-4 sticky top-0">
               <Discount product={product} discount={discount} modal />
               <Image
                 src={img || product.image[0] || DUMMY_IMAGE}
@@ -138,36 +129,62 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
               {showingTranslateValue(product?.title)}
             </h2>
 
-            <p className={`text-sm mt-1 font-medium ${stock > 0 ? "text-green-600" : "text-red-500"}`}>
+            <p
+              className={`text-sm mt-1 font-medium ${
+                stock > 0 ? "text-green-600" : "text-red-500"
+              }`}
+            >
               {stock > 0 ? "In Stock" : "Out of Stock"}
             </p>
 
             <div className="mt-2 mb-4">
-              <Price product={product} price={price} currency={currency} originalPrice={originalPrice} />
+              <Price
+                product={product}
+                price={price}
+                currency={currency}
+                originalPrice={originalPrice}
+              />
             </div>
 
+            {/* Quantity + Add to Cart */}
             <div className="flex items-center gap-3 justify-center mb-4">
               <div className="flex border border-gray-300 rounded-md overflow-hidden">
-                <button onClick={() => setItem(item - 1)} disabled={item === 1} className="px-3 py-2 hover:bg-gray-100 text-gray-700">
+                <button
+                  onClick={() => setItem(item - 1)}
+                  disabled={item === 1}
+                  className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+                >
                   <FiMinus />
                 </button>
                 <span className="px-4 py-2 font-semibold">{item}</span>
-                <button onClick={() => setItem(item + 1)} className="px-3 py-2 hover:bg-gray-100 text-gray-700">
+                <button
+                  onClick={() => setItem(item + 1)}
+                  className="px-3 py-2 hover:bg-gray-100 text-gray-700"
+                >
                   <FiPlus />
                 </button>
               </div>
 
-              <button onClick={() => handleAddToCart(product)} disabled={stock <= 0} className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-5 rounded-md text-sm">
+              <button
+                onClick={() => handleAddToCart(product)}
+                disabled={stock <= 0}
+                className="bg-cyan-600 hover:bg-cyan-700 text-white font-medium py-3 px-5 rounded-md text-sm"
+              >
                 {t("common:addToCart")}
               </button>
             </div>
 
+            {/* Available Options */}
             {variantTitle?.length > 0 && (
               <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700">
-                <h3 className="text-base font-semibold text-gray-800 mb-2">Available Options</h3>
+                <h3 className="text-base font-semibold text-gray-800 mb-2">
+                  Available Options
+                </h3>
                 {variantTitle.map((a) => (
                   <div key={a._id} className="mb-3">
-                    <p className="text-sm font-medium text-gray-700 mb-1">{showingTranslateValue(a?.name)}:</p>
+                    <p className="text-sm font-medium text-gray-700 mb-1">
+                      {showingTranslateValue(a?.name)}:
+                    </p>
                     <VariantList
                       att={a._id}
                       lang={lang}
@@ -185,30 +202,66 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             )}
           </div>
 
-          {/* RIGHT COLUMN (Scrollable Content) */}
-          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-screen">
-            <div>
-              <h3 className="text-base font-semibold text-gray-800 mb-2">Product Details</h3>
-              <div
-                className="text-sm text-gray-600 leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: showingTranslateValue(product?.description) || product?.description || "" }}
-              />
-            </div>
-
-            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4 mt-4">
-              <p><span className="font-semibold">Category:</span>{" "}
-                <Link href={`/search?category=${showingTranslateValue(product?.category?.name)?.toLowerCase()?.replace(/[^A-Z0-9]+/gi, "-")}&_id=${product?.category?._id}`} className="text-cyan-600 hover:underline">
+          {/* RIGHT COLUMN (Scrollable) */}
+          <div className="bg-white p-6 flex flex-col justify-start overflow-y-auto max-h-[80vh]">
+            {/* INFO BOX */}
+            <div className="w-full border border-gray-200 rounded-lg p-4 bg-white shadow-sm text-sm text-gray-700 mb-4">
+              <p>
+                <span className="font-semibold">Category:</span>{" "}
+                <Link
+                  href={`/search?category=${showingTranslateValue(
+                    product?.category?.name
+                  )
+                    ?.toLowerCase()
+                    ?.replace(/[^A-Z0-9]+/gi, "-")}&_id=${product?.category?._id}`}
+                  className="text-cyan-600 hover:underline"
+                >
                   {showingTranslateValue(product?.category?.name)}
                 </Link>
               </p>
-              <p className="mt-1"><span className="font-semibold">Reference No:</span> <span className="text-cyan-700">{product?.productRefrenceNo}</span></p>
-              <p className="mt-1"><span className="font-semibold">Brand:</span> <span className="text-cyan-700">{showingTranslateValue(product?.brand?.name)}</span></p>
-              <p className="mt-1"><span className="font-semibold">Call to order:</span> <span className="text-cyan-700 font-semibold">{globalSetting.contact}</span></p>
-              <button onClick={() => handleMoreInfo(product?.slug)} className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition">
+              <p className="mt-1">
+                <span className="font-semibold">Reference No:</span>{" "}
+                <span className="text-cyan-700">
+                  {product?.productRefrenceNo}
+                </span>
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold">Brand:</span>{" "}
+                <span className="text-cyan-700">
+                  {showingTranslateValue(product?.brand?.name)}
+                </span>
+              </p>
+              <p className="mt-1">
+                <span className="font-semibold">Call to order:</span>{" "}
+                <span className="text-cyan-700 font-semibold">
+                  {globalSetting.contact}
+                </span>
+              </p>
+              <button
+                onClick={() => handleMoreInfo(product?.slug)}
+                className="mt-3 w-full bg-cyan-50 hover:bg-cyan-100 text-cyan-700 font-medium py-2 rounded-md transition"
+              >
                 {t("common:moreInfo")}
               </button>
             </div>
 
+            {/* Product Description */}
+            <div>
+              <h3 className="text-base font-semibold text-gray-800 mb-2">
+                Product Details
+              </h3>
+              <div
+                className="text-sm text-gray-600 leading-relaxed"
+                dangerouslySetInnerHTML={{
+                  __html:
+                    showingTranslateValue(product?.description) ||
+                    product?.description ||
+                    "",
+                }}
+              />
+            </div>
+
+            {/* Tags */}
             <div className="mt-4">
               <Tags product={product} />
             </div>
