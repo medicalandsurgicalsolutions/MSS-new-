@@ -90,9 +90,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
             <div className="bg-white lg:py-8">
               <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
                 <div className="mb-2 lg:mb-10 flex items-center justify-between">
-                  <h2 className="text-xl lg:text-3xl text-gray-800">
-                    <CMSkeleton count={1} height={30} loading={loading} data={{ en: "Brands" }} />
-                  </h2>
+                  
 
                   <div className="flex items-center bg-white border border-gray-200 rounded-full shadow-md overflow-hidden w-[95px] h-[48px] mr-1 sm:mr-3 lg:mr-5">
                     <button
