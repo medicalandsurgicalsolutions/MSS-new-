@@ -24,6 +24,8 @@ import DUMMY_IMAGE from "@components/constants";
 import { FaTruck, FaMoneyBillWave, FaShieldAlt, FaPercent } from "react-icons/fa";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
+import Head from "next/head";
+
 const Home = ({ popularProducts, discountProducts, attributes, allProducts }) => {
   const router = useRouter();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
@@ -49,6 +51,10 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
 
   return (
     <>
+     <Head>
+      <meta name="google-site-verification" content="IBBg0v-nPS4AjAlu_2W3k_nnDeTEvt2dmccu43vojiQ" />
+    </Head>
+  
       {isLoading ? (
         <Loading loading={isLoading} />
       ) : (
