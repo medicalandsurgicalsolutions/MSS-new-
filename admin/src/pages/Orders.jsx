@@ -308,7 +308,7 @@ const Orders = () => {
                 <TableCell>{t("MethodTbl")}</TableCell>
                 <TableCell>{t("AmountTbl")}</TableCell>
                 <TableCell>{t("Delivery Date")}</TableCell>
-                <TableCell>{"Shipping Partners"}</TableCell>
+                <TableCell>{"Shipping Partner"}</TableCell>
                 <TableCell>{"Tracking Link"}</TableCell>
                 <TableCell>{"Tracking Id"}</TableCell>
                 <TableCell>{t("OderStatusTbl")}</TableCell>
