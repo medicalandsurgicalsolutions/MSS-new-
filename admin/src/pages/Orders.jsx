@@ -243,7 +243,7 @@ const Orders = () => {
                 </div>
                 <div className="mt-2 md:mt-0 flex items-center xl:gap-x-4 gap-x-1 flex-grow-0 md:flex-grow lg:flex-grow xl:flex-grow">
                   <div className="w-full mx-1">
-                    <Label style={{ visibility: "hidden" }}>Filter</Label>
+                    <Label style={{ visibility: "hidden" }}>Filters</Label>
                     <Button
                       type="submit"
                       className="h-12 w-full bg-emerald-700"
@@ -302,7 +302,7 @@ const Orders = () => {
           <Table>
             <TableHeader>
               <tr>
-                <TableCell>{t("InvoiceNoss")}</TableCell>
+                <TableCell>{t("InvoiceNo")}</TableCell>
                 <TableCell>{t("TimeTbl")}</TableCell>
                 <TableCell>{t("CustomerName")}</TableCell>
                 <TableCell>{t("MethodTbl")}</TableCell>
