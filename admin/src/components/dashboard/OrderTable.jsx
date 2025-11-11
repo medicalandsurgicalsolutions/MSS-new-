@@ -1,3 +1,4 @@
+
 import React from "react";
 import { TableCell, TableBody, TableRow } from "@windmill/react-ui";
 
@@ -10,100 +11,38 @@ const OrderTable = ({ orders }) => {
   const { currency, showDateTimeFormat, getNumberTwo } = useUtilsFunction();
   return (
     <>
-      <TableBody className="dark:bg-gray-900">
-        {orders?.map((order, i) => (
-          <TableRow key={i + 1}>
-            <TableCell>
-              <span className="font-semibold uppercase text-xs">
-                {order?.invoice}
-              </span>
-            </TableCell>
-
+      <TableBody>
+        {orders?.map((order) => (
+          <TableRow key={order._id}>
             <TableCell>
               <span className="text-sm">
-                {showDateTimeFormat(order?.createdAt)}
+                {showDateTimeFormat(order.createdAt)}
               </span>
             </TableCell>
 
-            <TableCell className="text-xs">
-              <span className="text-sm">{order?.user_info?.name}</span>{" "}
+            <TableCell>
+              <span className="text-sm ">{order?.user_info?.name}</span>
             </TableCell>
 
             <TableCell>
               <span className="text-sm font-semibold">
-                {order?.paymentMethod}
+                {order.paymentMethod}
               </span>
             </TableCell>
 
             <TableCell>
+              {" "}
               <span className="text-sm font-semibold">
                 {currency}
-                {getNumberTwo(Math.floor(order?.total) + (order?.total % 1 >= 0.5 ? 1 : 0))}
-              </span>
+                {getNumberTwo(order.total)}
+              </span>{" "}
             </TableCell>
-
             <TableCell>
-                <span className="text-sm font-semibold">
-                    <SelectDate id={order._id} order={order} />
-                </span>
+              {" "}
+              <span className="text-sm">{order?.user_info?.email}</span>{" "}
             </TableCell>
-
             <TableCell>
-                <span className="text-sm font-semibold">
-                    <SelectPartner id={order._id} order={order} />
-                </span>
-            </TableCell>
-
-            <TableCell>
-                <span className="text-sm font-semibold">
-                    <SelectInput id={order._id} order={order} />
-                </span>
-            </TableCell>
-
-            <TableCell>
-                <span className="text-sm font-semibold">
-                    <TrackInput id={order._id} order={order} />
-                </span>
-            </TableCell>
-
-            <TableCell className="text-xs">
-              <Status status={order?.status} />
-            </TableCell>
-
-            <TableCell className="text-center">
-            {order.isCancelByCustomer ? (
-              order.paymentMethod == "RazorPay" ? (
-                <Badge type="success">Refunded</Badge>
-              ): (
-                <Badge type="success">Cancelled</Badge>
-              )
-            ) : (
-              <SelectStatus id={order._id} order={order} />
-            )}
-            </TableCell>
-
-           
-            <TableCell className="text-center">
-                <Link to={`/shipping/${order._id}`}>
-                  View
-                </Link>
-            </TableCell>
-
-            <TableCell className="text-right flex justify-end">
-              <div className="flex justify-between items-center">
-                <PrintReceipt orderId={order._id} />
-
-                <span className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600">
-                  <Link to={`/order/${order._id}`}>
-                    <Tooltip
-                      id="view"
-                      Icon={FiZoomIn}
-                      title={t("ViewInvoice")}
-                      bgColor="#059669"
-                    />
-                  </Link>
-                </span>
-              </div>
+              <Status status={order.status} />
             </TableCell>
           </TableRow>
         ))}
