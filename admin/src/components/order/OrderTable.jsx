@@ -98,6 +98,22 @@ const OrderTable = ({ orders }) => {
             </TableCell>
 
             <TableCell className="text-center">
+              {order?.prescriptionUrl ? (
+                  <a
+                    href={order.prescriptionUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-emerald-600 hover:underline"
+                  >
+                    View
+                  </a>
+                ) : (
+                  <span className="text-gray-400 text-sm">No file</span>
+                )}
+              </TableCell>
+
+              
+            <TableCell className="text-center">
                   <Link to={`/shipping/${order._id}`}>
                     View
                   </Link>
