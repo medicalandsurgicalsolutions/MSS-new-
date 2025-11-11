@@ -97,6 +97,7 @@ const OrderTable = ({ orders }) => {
             )}
             </TableCell>
 
+            {console.log("Prescription column rendering for order:", order?._id, order?.prescriptionUrl)}
             <TableCell className="text-center">
               {order?.prescriptionUrl ? (
                   <a
