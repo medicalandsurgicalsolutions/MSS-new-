@@ -73,7 +73,7 @@ const Orders = () => {
 
   const { dataTable, serviceData } = useFilter(data?.orders);
 
-  // console.log("First Orders ", dataTable);
+  console.log("First Orders ", dataTable);
 
   const handleDownloadOrders = async () => {
     try {
