@@ -135,7 +135,7 @@ const Orders = () => {
 
   return (
     <>
-      <PageTitle>{t("Orders")}</PageTitle>
+      {/* <PageTitle>{t("Orders")}</PageTitle> */}
 
       <AnimatedContent>
         <Card className="min-w-0 shadow-xs overflow-hidden bg-white dark:bg-gray-800 mb-5">
