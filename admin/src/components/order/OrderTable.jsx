@@ -96,29 +96,29 @@ const OrderTable = ({ orders }) => {
               <SelectStatus id={order._id} order={order} />
             )}
             </TableCell>
-
-            {console.log("Prescription column rendering for order:", order?._id, order?.prescriptionUrl)}
-            <TableCell className="text-center">
-              {order?.prescriptionUrl ? (
-                  <a
-                    href={order.prescriptionUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-emerald-600 hover:underline"
-                  >
-                    View
-                  </a>
-                ) : (
-                  <span className="text-gray-400 text-sm">No file</span>
-                )}
-              </TableCell>
-
               
             <TableCell className="text-center">
                   <Link to={`/shipping/${order._id}`}>
                     View
                   </Link>
             </TableCell>
+
+            {/* Prescription Column */}
+          {console.log("Prescription URL:", order?.prescriptionUrl)}
+          <TableCell className="text-center">
+            {order?.prescriptionUrl ? (
+              <a
+                href={order.prescriptionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-600 hover:underline"
+              >
+                View
+              </a>
+            ) : (
+              <span className="text-gray-400 text-sm">No file</span>
+            )}
+          </TableCell>
 
             <TableCell className="text-right flex justify-end">
               <div className="flex justify-between items-center">
