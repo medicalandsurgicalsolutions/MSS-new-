@@ -313,8 +313,8 @@ const Orders = () => {
                 <TableCell>{"Tracking Id"}</TableCell>
                 <TableCell>{t("OderStatusTbl")}</TableCell>
                 <TableCell className="text-center">{t("ActionTbl")}</TableCell>
-                <TableCell className="text-center">{"Prescription"}</TableCell>
                 <TableCell className="text-center">{"Shipping Label"}</TableCell>
+                <TableCell className="text-center">{"Prescription"}</TableCell>
                 <TableCell className="text-right">{t("InvoiceTbl")}</TableCell>
               </tr>
             </TableHeader>
