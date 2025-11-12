@@ -302,7 +302,7 @@ const Orders = () => {
           <Table>
             <TableHeader>
               <tr>
-                <TableCell>{t("InvoiceNo")}</TableCell>
+                <TableCell>{t("InvoiceNos")}</TableCell>
                 <TableCell>{t("TimeTbl")}</TableCell>
                 <TableCell>{t("CustomerName")}</TableCell>
                 <TableCell>{t("MethodTbl")}</TableCell>
