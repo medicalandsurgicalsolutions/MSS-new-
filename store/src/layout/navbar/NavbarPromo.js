@@ -142,7 +142,7 @@ const NavbarPromo = () => {
             className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
           >
             <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-              Medicine
+              Medicines
             </span>
           </Link>
 
