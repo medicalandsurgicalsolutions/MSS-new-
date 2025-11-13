@@ -4,9 +4,10 @@ import { useState } from "react"
 import { Upload, FileText, CheckCircle } from "lucide-react"
 
 export default function PrescriptionPage() {
-  const [uploadedFiles, setUploadedFiles] = useState<File[]>([])
+  const [uploadedFiles, setUploadedFiles] = useState([])
   const [dragActive, setDragActive] = useState(false)
-  const [savedPrescriptions, setSavedPrescriptions] = useState<string[]>([])
+  const [savedPrescriptions, setSavedPrescriptions] = useState([])
+
 
   const handleDrag = (e: React.DragEvent) => {
     e.preventDefault()
