@@ -3,6 +3,8 @@
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Upload, FileText, CheckCircle } from "lucide-react";
+import __i18nConfig from '@next-translate-root/i18n'
+import __appWithI18n from 'next-translate/appWithI18n'
 
 const PrescriptionPage = () => {
   const [uploadedFiles, setUploadedFiles] = useState([]);
