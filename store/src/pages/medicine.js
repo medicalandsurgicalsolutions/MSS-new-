@@ -64,8 +64,8 @@ const MedicinePage = () => {
             <div className="space-y-6">
               {/* Upload Prescription Card */}
               <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Prescription</h2>
-                <p className="text-slate-600 mb-6">Please attach a prescription to proceed</p>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your Prescription</h2>
+                <p className="text-slate-600 mb-6">Please upload your prescription to continue the process</p>
 
                 {/* Upload Area */}
                 <div
@@ -90,10 +90,10 @@ const MedicinePage = () => {
                   <label htmlFor="fileInput" className="cursor-pointer block">
                     <div className="flex items-center justify-center gap-3 mb-3">
                       <FaUpload className="w-8 h-8 text-cyan-600" />
-                      <span className="text-lg font-semibold text-slate-900">UPLOAD NEW</span>
+                      <span className="text-lg font-semibold text-slate-900"> UPLOAD NEW PRESCRIPTION</span>
                     </div>
                     <p className="text-sm text-slate-600">
-                      Drag and drop or click to select
+                     Drag and drop your prescription file, or click to select it from your computer
                     </p>
                   </label>
                 </div>
@@ -103,7 +103,7 @@ const MedicinePage = () => {
                   <div className="flex items-center justify-center gap-3">
                     <FaFileAlt className="w-8 h-8 text-cyan-600" />
                     <span className="text-lg font-semibold text-slate-900">
-                      SAVED PRESCRIPTIONS
+                      YOUR SAVED PRESCRIPTIONS
                     </span>
                   </div>
                 </div>
@@ -117,7 +117,7 @@ const MedicinePage = () => {
                   <div className="bg-slate-100 rounded-lg p-8 flex items-center gap-4">
                     <FaFileAlt className="w-12 h-12 text-slate-400" />
                     <p className="text-slate-600">
-                      Uploaded prescriptions will be shown here
+                      This section displays all prescriptions you have uploaded
                     </p>
                   </div>
                 ) : (
@@ -183,7 +183,7 @@ const MedicinePage = () => {
 
                 <div className="relative bg-slate-100 rounded-lg p-6 mb-8 border-2 border-slate-200">
                     <Image
-                      src="/payment-method/prescription-form.jpg"
+                      src="https://www.medicalsurgicalsolutions.com/payment-method/prescription-form.jpg"
                       alt="Prescription"
                       width={600}
                       height={400}
@@ -192,15 +192,15 @@ const MedicinePage = () => {
                   </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-slate-900 text-lg">Requirements:</h3>
+                  <h3 className="font-semibold text-slate-900 text-lg">Prescription Upload Requirements:</h3>
                   <ul className="space-y-3">
                     {[
-                      "Don't crop out any part of the image",
-                      "Avoid blurred image",
-                      "Include details of doctor and patient + clinic visit date",
-                      "Medicines will be dispensed as per prescription",
-                      "Supported file types: jpeg, jpg, png, pdf",
-                      "Maximum allowed file size: 5MB",
+                      "Do not crop any part of the image",
+                      "Ensure the image is clear and not blurred",
+                      "Include doctor and patient details along with the clinic visit date",
+                      "Medicines will be dispensed exactly as per the prescription",
+                      "Supported file types: JPEG, JPG, PNG, PDF",
+                      "Maximum allowed file size: 5 MB",
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3">
                         <span className="text-cyan-600 font-bold mt-0.5">•</span>
