@@ -1,8 +1,5 @@
-
 "use client"
-
-import type React from "react"
-
+import React from "react"
 import { useState } from "react"
 import { Upload, FileText, CheckCircle } from "lucide-react"
 
