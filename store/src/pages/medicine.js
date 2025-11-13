@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import dynamic from "next/dynamic";
 import { Upload, FileText, CheckCircle } from "lucide-react";
@@ -29,20 +27,20 @@ const MedicinePage = () => {
   };
 
   // Handle file upload via input
-  const handleFileChange = (e) => {
+  const handleFileUpload = (e) => {
     const files = Array.from(e.target.files);
     setUploadedFiles((prev) => [...prev, ...files]);
   };
 
-  // Save a single prescription
-  const handleSavePrescription = (fileName) => {
+  // Save prescription files
+  const handleSave = (fileName) => {
     setSavedPrescriptions((prev) => [...prev, fileName]);
     setUploadedFiles((prev) => prev.filter((f) => f.name !== fileName));
   };
 
-  // Continue to next step (placeholder)
+  // Continue button action
   const handleContinue = () => {
-    alert("Proceeding to the next step!");
+    alert("Proceeding with saved prescriptions...");
   };
 
   return (
@@ -51,15 +49,12 @@ const MedicinePage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* LEFT SECTION */}
           <div className="space-y-6">
-            {/* Upload Prescription */}
+            {/* Upload Prescription Card */}
             <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                Upload Prescription
-              </h2>
-              <p className="text-slate-600 mb-6">
-                Please attach a prescription to proceed
-              </p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Prescription</h2>
+              <p className="text-slate-600 mb-6">Please attach a prescription to proceed</p>
 
+              {/* Upload Area */}
               <div
                 onDragEnter={handleDrag}
                 onDragLeave={handleDrag}
@@ -76,15 +71,13 @@ const MedicinePage = () => {
                   id="fileInput"
                   multiple
                   accept=".jpeg,.jpg,.png,.pdf"
-                  onChange={handleFileChange}
+                  onChange={handleFileUpload}
                   className="hidden"
                 />
                 <label htmlFor="fileInput" className="cursor-pointer block">
                   <div className="flex items-center justify-center gap-3 mb-3">
                     <Upload className="w-8 h-8 text-blue-600" />
-                    <span className="text-lg font-semibold text-slate-900">
-                      UPLOAD NEW
-                    </span>
+                    <span className="text-lg font-semibold text-slate-900">UPLOAD NEW</span>
                   </div>
                   <p className="text-sm text-slate-600">
                     Drag and drop or click to select
@@ -92,6 +85,7 @@ const MedicinePage = () => {
                 </label>
               </div>
 
+              {/* Saved Prescriptions Button */}
               <div className="border-2 border-slate-300 rounded-lg p-6 text-center bg-slate-50 hover:bg-slate-100 transition-colors">
                 <div className="flex items-center justify-center gap-3">
                   <FileText className="w-8 h-8 text-blue-600" />
@@ -102,11 +96,9 @@ const MedicinePage = () => {
               </div>
             </div>
 
-            {/* Attached Prescriptions */}
+            {/* Attached Prescription Card */}
             <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">
-                Attached Prescription
-              </h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-6">Attached Prescription</h3>
 
               {uploadedFiles.length === 0 && savedPrescriptions.length === 0 ? (
                 <div className="bg-slate-100 rounded-lg p-8 flex items-center gap-4">
@@ -125,16 +117,14 @@ const MedicinePage = () => {
                       <div className="flex items-center gap-3">
                         <FileText className="w-6 h-6 text-blue-600" />
                         <div>
-                          <p className="font-medium text-slate-900 text-sm">
-                            {file.name}
-                          </p>
+                          <p className="font-medium text-slate-900 text-sm">{file.name}</p>
                           <p className="text-xs text-slate-600">
                             {(file.size / 1024).toFixed(2)} KB
                           </p>
                         </div>
                       </div>
                       <button
-                        onClick={() => handleSavePrescription(file.name)}
+                        onClick={() => handleSave(file.name)}
                         className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
                       >
                         Save
@@ -148,12 +138,8 @@ const MedicinePage = () => {
                     >
                       <CheckCircle className="w-6 h-6 text-green-600" />
                       <div>
-                        <p className="font-medium text-slate-900 text-sm">
-                          {name}
-                        </p>
-                        <p className="text-xs text-green-600">
-                          Saved successfully
-                        </p>
+                        <p className="font-medium text-slate-900 text-sm">{name}</p>
+                        <p className="text-xs text-green-600">Saved successfully</p>
                       </div>
                     </div>
                   ))}
@@ -191,16 +177,14 @@ const MedicinePage = () => {
               </div>
 
               <div className="space-y-4">
-                <h3 className="font-semibold text-slate-900 text-lg">
-                  Requirements:
-                </h3>
+                <h3 className="font-semibold text-slate-900 text-lg">Requirements:</h3>
                 <ul className="space-y-3">
                   {[
                     "Don't crop out any part of the image",
                     "Avoid blurred image",
                     "Include details of doctor and patient + clinic visit date",
                     "Medicines will be dispensed as per prescription",
-                    "Supported files type: jpeg, jpg, png, pdf",
+                    "Supported file types: jpeg, jpg, png, pdf",
                     "Maximum allowed file size: 5MB",
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-3">
@@ -222,4 +206,5 @@ const MedicinePage = () => {
   );
 };
 
+// ✅ export as client-only without "use client"
 export default dynamic(() => Promise.resolve(MedicinePage), { ssr: false });
