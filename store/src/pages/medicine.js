@@ -183,7 +183,7 @@ const MedicinePage = () => {
 
                 <div className="relative w-full h-64"> {/* h-64 sets height */}
                   <Image
-                    src="/payment-method/prescription-image.png"
+                    src="/payment-method/prescription-form.jpg"
                     alt="Prescription"
                     fill
                     className="rounded object-contain"
