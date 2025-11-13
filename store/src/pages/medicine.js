@@ -181,11 +181,12 @@ const MedicinePage = () => {
                   Guide for a valid prescription
                 </h2>
 
-                <div className="relative bg-slate-100 rounded-lg p-6 mb-8 border-2 border-slate-200">
+                <div className="relative w-full h-64"> {/* h-64 sets height */}
                   <Image
                     src="/payment-method/prescription-image.png"
                     alt="Prescription"
-                    className="rounded w-full"
+                    fill
+                    className="rounded object-contain"
                   />
                 </div>
 
