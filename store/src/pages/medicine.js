@@ -183,7 +183,7 @@ const MedicinePage = () => {
 
                 <div className="relative bg-slate-100 rounded-lg p-6 mb-8 border-2 border-slate-200">
                   <img
-                    src="/payment-method/prescription-image.jpg"
+                    src="/payment-method/prescription-image.png"
                     alt="Prescription"
                     className="rounded w-full"
                   />
