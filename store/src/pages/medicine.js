@@ -63,9 +63,13 @@ const MedicinePage = () => {
             {/* LEFT SECTION */}
             <div className="space-y-6">
               {/* Upload Prescription Card */}
-              <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Upload Your Prescription</h2>
-                <p className="text-slate-600 mb-6">Please upload your prescription to continue the process</p>
+              <div className="bg-white rounded-lg shadow-sm p-6 border border-slate-200">
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">
+                  Upload Your Prescription
+                </h2>
+                <p className="text-slate-600 mb-6">
+                  Please upload your prescription to continue the process
+                </p>
 
                 {/* Upload Area */}
                 <div
@@ -73,7 +77,7 @@ const MedicinePage = () => {
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={handleDrop}
-                  className={`border-2 border-dashed rounded-lg p-8 text-center mb-4 transition-colors ${
+                  className={`border-2 border-dashed rounded-lg p-6 text-center mb-4 transition-colors ${
                     dragActive
                       ? "border-cyan-500 bg-cyan-50"
                       : "border-slate-300 bg-slate-50 hover:border-slate-400"
@@ -90,10 +94,13 @@ const MedicinePage = () => {
                   <label htmlFor="fileInput" className="cursor-pointer block">
                     <div className="flex items-center justify-center gap-3 mb-3">
                       <FaUpload className="w-8 h-8 text-cyan-600" />
-                      <span className="text-lg font-semibold text-slate-900"> UPLOAD NEW PRESCRIPTION</span>
+                      <span className="text-lg font-semibold text-slate-900">
+                        UPLOAD NEW PRESCRIPTION
+                      </span>
                     </div>
                     <p className="text-sm text-slate-600">
-                     Drag and drop your prescription file, or click to select it from your computer
+                      Drag and drop your prescription file, or click to select
+                      it from your computer
                     </p>
                   </label>
                 </div>
@@ -110,11 +117,13 @@ const MedicinePage = () => {
               </div>
 
               {/* Attached Prescription Card */}
-              <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
-                <h3 className="text-xl font-bold text-slate-900 mb-6">Attached Prescription</h3>
+              <div className="bg-white rounded-lg shadow-sm p-6 border border-slate-200">
+                <h3 className="text-xl font-bold text-slate-900 mb-6">
+                  Attached Prescription
+                </h3>
 
                 {uploadedFiles.length === 0 && savedPrescriptions.length === 0 ? (
-                  <div className="bg-slate-100 rounded-lg p-8 flex items-center gap-4">
+                  <div className="bg-slate-100 rounded-lg p-6 flex items-center gap-4">
                     <FaFileAlt className="w-12 h-12 text-slate-400" />
                     <p className="text-slate-600">
                       This section displays all prescriptions you have uploaded
@@ -130,7 +139,9 @@ const MedicinePage = () => {
                         <div className="flex items-center gap-3">
                           <FaFileAlt className="w-6 h-6 text-cyan-600" />
                           <div>
-                            <p className="font-medium text-slate-900 text-sm">{file.name}</p>
+                            <p className="font-medium text-slate-900 text-sm">
+                              {file.name}
+                            </p>
                             <p className="text-xs text-slate-600">
                               {(file.size / 1024).toFixed(2)} KB
                             </p>
@@ -151,8 +162,12 @@ const MedicinePage = () => {
                       >
                         <FaCheckCircle className="w-6 h-6 text-green-600" />
                         <div>
-                          <p className="font-medium text-slate-900 text-sm">{name}</p>
-                          <p className="text-xs text-green-600">Saved successfully</p>
+                          <p className="font-medium text-slate-900 text-sm">
+                            {name}
+                          </p>
+                          <p className="text-xs text-green-600">
+                            Saved successfully
+                          </p>
                         </div>
                       </div>
                     ))}
@@ -176,23 +191,25 @@ const MedicinePage = () => {
 
             {/* RIGHT SECTION */}
             <div className="space-y-6">
-              <div className="bg-white rounded-lg shadow-sm p-8 border border-slate-200">
+              <div className="bg-white rounded-lg shadow-sm p-6 border border-slate-200">
                 <h2 className="text-2xl font-bold text-slate-900 mb-6">
                   Guide for a valid prescription
                 </h2>
 
                 <div className="relative bg-slate-100 rounded-lg p-6 mb-8 border-2 border-slate-200">
-                    <Image
-                      src="https://www.medicalsurgicalsolutions.com/payment-method/prescription-form.jpg"
-                      alt="Prescription"
-                      width={600}
-                      height={400}
-                      className="rounded w-full object-contain"
-                    />
-                  </div>
+                  <Image
+                    src="/payment-method/prescription-form.jpg"
+                    alt="Prescription"
+                    width={500}
+                    height={300}
+                    className="rounded w-full object-contain"
+                  />
+                </div>
 
                 <div className="space-y-4">
-                  <h3 className="font-semibold text-slate-900 text-lg">Prescription Upload Requirements:</h3>
+                  <h3 className="font-semibold text-slate-900 text-lg">
+                    Prescription Upload Requirements:
+                  </h3>
                   <ul className="space-y-3">
                     {[
                       "Do not crop any part of the image",
@@ -203,7 +220,9 @@ const MedicinePage = () => {
                       "Maximum allowed file size: 5 MB",
                     ].map((item, idx) => (
                       <li key={idx} className="flex items-start gap-3">
-                        <span className="text-cyan-600 font-bold mt-0.5">•</span>
+                        <span className="text-cyan-600 font-bold mt-0.5">
+                          •
+                        </span>
                         <span className="text-slate-700">{item}</span>
                       </li>
                     ))}
