@@ -34,6 +34,21 @@ const Layout = ({ title, description, children }) => {
 
   return (
     <>
+    <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-FQFCKJZ2DF"
+      />
+
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-FQFCKJZ2DF');
+          `,
+        }}
+      />
       <ToastContainer />
 
       <div className="font-serif">
