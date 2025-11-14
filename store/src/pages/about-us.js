@@ -54,17 +54,6 @@ const AboutUs = () => {
 
   return (
     <>
-      <Head>
-      
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQFCKJZ2DF"></script>
-          <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-          
-            gtag('config', 'G-FQFCKJZ2DF');
-          </script>
-    </Head>
     <Layout
       title="Buy Surgical Instruments & Products in Bulk | Medical & Surgical Solutions"
       description="Buy top-quality surgical instruments and medical products in bulk from Medical & Surgical Solutions. Trusted by hospitals and clinics for reliable, sterile, and affordable healthcare supplies."
