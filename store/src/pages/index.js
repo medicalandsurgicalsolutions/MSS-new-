@@ -53,7 +53,7 @@ const Home = ({ popularProducts, discountProducts, attributes, allProducts }) =>
     <>
      <Head>
       <meta name="google-site-verification" content="IBBg0v-nPS4AjAlu_2W3k_nnDeTEvt2dmccu43vojiQ" />
-     <!-- Google tag (gtag.js) -->
+   
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQFCKJZ2DF"></script>
         <script>
           window.dataLayer = window.dataLayer || [];
