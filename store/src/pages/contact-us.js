@@ -12,8 +12,6 @@ import PageHeader from "@components/header/PageHeader";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import CustomerServices from "@services/CustomerServices";
-import Head from "next/head";
-
 
 const ContactUs = () => {
   const { t } = useTranslation();
@@ -43,8 +41,7 @@ const ContactUs = () => {
   };
 
   return (
-    <>
-
+  
     <Layout
       title="Contact Medical & Surgical Solutions | Get in Touch"
       description="Reach out to Medical & Surgical Solutions for inquiries, orders, or support."
@@ -147,7 +144,7 @@ const ContactUs = () => {
         ))}
       </div>
     </Layout>
-<>
+
   );
 };
 
