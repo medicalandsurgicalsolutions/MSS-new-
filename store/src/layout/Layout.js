@@ -36,16 +36,16 @@ const Layout = ({ title, description, children }) => {
     <>
     <script
         async
-        src="https://www.googletagmanager.com/gtag/js?id=G-FQFCKJZ2DF"
+        src="https://www.googletagmanager.com/gtag/js?id=G-W67B1V1N77"
       />
-
+      
       <script
         dangerouslySetInnerHTML={{
           __html: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'G-FQFCKJZ2DF');
+            gtag('config', 'G-W67B1V1N77');
           `,
         }}
       />
@@ -60,6 +60,8 @@ const Layout = ({ title, description, children }) => {
           </title>
           {description && <meta name="description" content={description} />}
           <link rel="icon" href="/favicon.png" />
+
+            
         </Head>
 
         <NavBarTop />
