@@ -12,6 +12,8 @@ import PageHeader from "@components/header/PageHeader";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import CustomerServices from "@services/CustomerServices";
+import Head from "next/head";
+
 
 const ContactUs = () => {
   const { t } = useTranslation();
@@ -41,6 +43,25 @@ const ContactUs = () => {
   };
 
   return (
+    <>
+     <Head>
+        <script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-FQFCKJZ2DF"
+        />
+      
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-FQFCKJZ2DF');
+            `,
+          }}
+        />
+      </Head>
+
     <Layout
       title="Contact Medical & Surgical Solutions | Get in Touch"
       description="Reach out to Medical & Surgical Solutions for inquiries, orders, or support."
@@ -143,6 +164,7 @@ const ContactUs = () => {
         ))}
       </div>
     </Layout>
+<>
   );
 };
 
