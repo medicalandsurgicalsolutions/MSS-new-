@@ -9,7 +9,7 @@ import CMSkeleton from "@components/preloader/CMSkeleton";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import { FaMapMarkerAlt, FaPhoneAlt, FaHeartbeat } from "react-icons/fa";
 import { FaUsers, FaGift, FaTag, FaGlobe, FaLeaf, FaCog } from "react-icons/fa";
-import Head from "next/head";
+
 
 const AboutUs = () => {
   const { storeCustomizationSetting, loading, error } = useGetSetting();
@@ -53,7 +53,7 @@ const AboutUs = () => {
   ];
 
   return (
-    <>
+   
     <Layout
       title="Buy Surgical Instruments & Products in Bulk | Medical & Surgical Solutions"
       description="Buy top-quality surgical instruments and medical products in bulk from Medical & Surgical Solutions. Trusted by hospitals and clinics for reliable, sterile, and affordable healthcare supplies."
@@ -302,7 +302,6 @@ const AboutUs = () => {
         </div>
       </section>
     </Layout>
-<>
   );
 };
 
