@@ -173,16 +173,20 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   const [order, setOrder] = useState();
 
   const showPrescriptionBtn = (() => {
-  const categories = Array.isArray(product?.category)
+  if (!product?.category) return false;
+
+  const categories = Array.isArray(product.category)
     ? product.category
     : [product.category];
 
-  return categories.some((cat) =>
-    cat?.slug?.toLowerCase().includes("medicine") ||
-    cat?.name?.toLowerCase().includes("medicine")
-  );
+  return categories.some((cat) => {
+    const slug = cat?.slug?.toLowerCase() || "";
+    const name = cat?.name?.toLowerCase() || "";
+    return slug.includes("medicine") || name.includes("medicine");
+  });
 })();
 
+  console.log("CATEGORY => ", product.category);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -963,19 +967,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                       </button>
                                     </div>
                                     <div className="flex gap-3 md:flex-col">
-                                            {/* Upload Prescription — show only in MEDICINE category */}
-                                              {showPrescriptionBtn && (
-                                                <button
-                                                  className="text-sm leading-4 inline-flex items-center cursor-pointer transition
-                                                    ease-in-out duration-300 font-semibold text-center justify-center rounded-md
-                                                    focus-visible:outline-none focus:outline-none px-2 bg-red-600 border border-red-600
-                                                      hover:bg-white hover:text-red-600 text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
-                                                        
-                                                  onClick={() => console.log("Upload prescription modal open")}
-                                                >
-                                                  Upload Prescription
-                                                </button>
-                                              )}
+                                           
                                       <button
                                         onClick={() => handleAddToCart(product)}
                                         className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
@@ -1001,6 +993,18 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                       >
                                         {t("Buy Now")}
                                       </button>
+
+                                        {showPrescriptionBtn && (
+                                            <button
+                                              className="text-sm leading-4 inline-flex items-center cursor-pointer transition
+                                                ease-in-out duration-300 font-semibold text-center justify-center rounded-md
+                                                focus-visible:outline-none focus:outline-none px-2 bg-red-600 border border-red-600
+                                                hover:bg-white hover:text-red-600 text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                              onClick={() => console.log("Upload prescription modal open")}
+                                            >
+                                              Upload Prescription
+                                            </button>
+                                          )}
                                     </div>
                                   </div>
                                 </div>
