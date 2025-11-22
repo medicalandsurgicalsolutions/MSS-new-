@@ -13,7 +13,7 @@ import CategoryCarousel from "@components/carousel/CategoryCarousel";
 import useUtilsFunction from "@hooks/useUtilsFunction"; 
 import DepartmentServices from "@services/DepartmentServices"; 
 import CategoryServices from "@services/CategoryServices";
-import { useRouter } from "next/router"; 
+import { useRouter } from "next/router";
 import { IoFunnelSharp } from "react-icons/io5";
 import { useParams } from "next/navigation";
 const Search = ({ products, attributes, brands, categories, departments, nextPage, prevPage, totalProduct, }) => {
