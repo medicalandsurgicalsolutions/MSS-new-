@@ -956,6 +956,19 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                       </button>
                                     </div>
                                     <div className="flex gap-3 md:flex-col">
+                                            {/* Upload Prescription — show only in MEDICINE category */}
+                                              {showPrescriptionBtn && (
+                                                <button
+                                                  className="text-sm leading-4 inline-flex items-center cursor-pointer transition
+                                                    ease-in-out duration-300 font-semibold text-center justify-center rounded-md
+                                                    focus-visible:outline-none focus:outline-none px-2 bg-red-600 border border-red-600
+                                                      hover:bg-white hover:text-red-600 text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                                        
+                                                  onClick={() => console.log("Upload prescription modal open")}
+                                                >
+                                                  Upload Prescription
+                                                </button>
+                                              )}
                                       <button
                                         onClick={() => handleAddToCart(product)}
                                         className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
@@ -981,20 +994,6 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                       >
                                         {t("Buy Now")}
                                       </button>
-
-                                         {/* Upload Prescription — show only in MEDICINE category */}
-                                              {showPrescriptionBtn && (
-                                                <button
-                                                  className="text-sm leading-4 inline-flex items-center cursor-pointer transition
-                                                    ease-in-out duration-300 font-semibold text-center justify-center rounded-md
-                                                    focus-visible:outline-none focus:outline-none px-2 bg-red-600 border border-red-600
-                                                      hover:bg-white hover:text-red-600 text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
-                                                        
-                                                  onClick={() => console.log("Upload prescription modal open")}
-                                                >
-                                                  Upload Prescription
-                                                </button>
-                                              )}
                                     </div>
                                   </div>
                                 </div>
