@@ -167,31 +167,36 @@ const Price = ({ product, price, card, currency, originalPrice }) => {
 };
 
 const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
-  console.log("CATEGORY => ", product.category);
+  
   const router = useRouter();
   const userInfo = getUserSession();
 
   const [order, setOrder] = useState();
 
+    console.log("CATEGORY:", product?.category);
+  
  const showPrescriptionBtn = (() => {
-  const findMedicine = (obj) => {
-    if (!obj) return false;
+  const category = product?.category;
 
-    // Convert any value to string safely
-    const values = Object.values(obj)
-      .map((v) => (typeof v === "string" ? v.toLowerCase() : ""));
+  if (!category) return false;
 
-    // Check if ANY field contains "medicine"
-    if (values.some((v) => v.includes("medicine"))) return true;
-
-    // Check nested objects
-    return Object.values(obj).some(
-      (v) => typeof v === "object" && findMedicine(v)
+  const check = (text) => {
+    if (!text) return false;
+    const t = text.toLowerCase();
+    return (
+      t.includes("medicine") ||
+      t.includes("medicines") ||
+      t.includes("medical")
     );
   };
 
-  return findMedicine(product?.category);
+  if (Array.isArray(category)) {
+    return category.some((c) => check(c?.slug) || check(c?.name));
+  }
+
+  return check(category?.slug) || check(category?.name);
 })();
+
 
 
   const categories = Array.isArray(product.category)
