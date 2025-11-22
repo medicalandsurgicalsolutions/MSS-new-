@@ -180,19 +180,13 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   });
 })();
 
+const categories = Array.isArray(product?.category) ? product.category : [product?.category];
 
-
-
-  const categories = Array.isArray(product.category)
-    ? product.category
-    : [product.category];
-
-  return categories.some((cat) => {
-    const slug = cat?.slug?.toLowerCase() || "";
-    const name = cat?.name?.toLowerCase() || "";
-    return slug.includes("medicine") || name.includes("medicine");
-  });
-})();
+const isMedicine = categories.some((cat) => {
+  const slug = cat?.slug?.toLowerCase() || "";
+  const name = cat?.name?.toLowerCase() || "";
+  return slug.includes("medicine") || name.includes("medicine");
+});
 
 
   useEffect(() => {
@@ -973,35 +967,31 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                         </span>
                                       </button>
                                     </div>
-                                    <div className="flex gap-3 md:flex-col">
-                                           
+                                   <div className="flex gap-3 md:flex-col">
                                       <button
                                         onClick={() => handleAddToCart(product)}
-                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
                                       >
                                         {t("common:addToCart")}
-                                        {/* <span className="rounded-lg font-bold py-2 px-3">
-                                      {`${currency}${(item * price).toFixed(
-                                        2
-                                      )}`}
-                                    </span> */}
                                       </button>
-                                     <button
-                                        // onClick={() => handleAddToCart(product)}
-                                        className="
-                                          text-sm leading-4 inline-flex items-center cursor-pointer
-                                          transition ease-in-out duration-300 font-semibold font-serif
-                                          text-center justify-center rounded-md focus-visible:outline-none
-                                          focus:outline-none px-2 border border-cyan-600 bg-white
-                                          hover:bg-cyan-600 hover:text-white text-cyan-600
-                                          py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10
-                                        "
+                                      
+                                      <button
                                         onClick={(event) => handleAddItems(event, product)}
+                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-white hover:bg-cyan-600 hover:text-white text-cyan-600 py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
                                       >
                                         {t("Buy Now")}
                                       </button>
-
+                                    
+                                      {isMedicine && (
+                                        <button
+                                          className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-purple-600 bg-white hover:bg-purple-600 hover:text-white text-purple-600 py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                          onClick={() => console.log("Upload Prescription clicked", product._id)}
+                                        >
+                                          Upload Prescription
+                                        </button>
+                                      )}
                                     </div>
+
                                   </div>
                                 </div>
                               </div>
