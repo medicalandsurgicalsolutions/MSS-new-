@@ -38,6 +38,7 @@ const Search = ({
   // console.log("Prodect kjhlj;lhjkghg ",filteredProducts);
 
   const router = useRouter();
+  const fromMedicine = router.query.from === "medicine";
 
   const { asPath, query: searchQuery } = router;
   const { query, category: queryCategory, brand: queryBrand, title, slug, _id } = searchQuery;
@@ -508,6 +509,7 @@ const Search = ({
                         key={i + 1}
                         product={product}
                         attributes={attributes}
+                        fromMedicine={fromMedicine} 
                       />
                     ))}
                   </div>
