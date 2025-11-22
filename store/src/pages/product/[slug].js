@@ -172,28 +172,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   const userInfo = getUserSession();
 
   const [order, setOrder] = useState();
-
-   const product = data;
-
-   console.log("PRODUCT:", product);
-   console.log("CATEGORY:", product?.category);
-
   
-const showPrescriptionBtn = (() => {
-  const category = product?.category;
-
-  if (!category) return false;
-
-  const check = (text) => {
-    if (!text) return false;
-    text = text.toLowerCase();
-    return (
-      text.includes("medicine") ||
-      text.includes("medicines") ||
-      text.includes("medical")
-    );
-  };
-
   const categories = Array.isArray(category) ? category : [category];
 
   return categories.some((cat) => {
@@ -1021,18 +1000,6 @@ const showPrescriptionBtn = (() => {
                                       >
                                         {t("Buy Now")}
                                       </button>
-
-                                       {showPrescriptionBtn && (
-                                            <button
-                                              className="text-sm leading-4 inline-flex items-center cursor-pointer transition
-                                                ease-in-out duration-300 font-semibold text-center justify-center rounded-md
-                                                focus-visible:outline-none focus:outline-none px-2 bg-red-600 border border-red-600
-                                                hover:bg-white hover:text-red-600 text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
-                                              onClick={() => console.log("Upload prescription modal open")}
-                                            >
-                                              Upload Prescription
-                                            </button>
-                                          )}
 
                                     </div>
                                   </div>
