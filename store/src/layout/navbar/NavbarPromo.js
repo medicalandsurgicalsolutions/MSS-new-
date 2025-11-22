@@ -159,48 +159,6 @@ const NavbarPromo = () => {
           </div>
         </div>
       </div>
-
-      {/* ✅ Dropdown */}
-      {hoveredCategory !== null &&
-        data[0]?.children?.[hoveredCategory]?.children &&
-        createPortal(
-          <div
-            style={dropdownStyle}
-            className="bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md inline-block"
-            onMouseEnter={() => setHoveredCategory(hoveredCategory)}
-            onMouseLeave={handleMouseLeave}
-          >
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: `repeat(${Math.ceil(
-                  data[0].children[hoveredCategory].children.length / 8
-                )}, auto)`,
-              }}
-            >
-              {data[0].children[hoveredCategory].children.map(
-                (subCategory, subIndex) => (
-                  <div className="border-b border-white/30" key={subIndex}>
-                    <div
-                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
-                      transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        handleSubNestedCategory(
-                          subCategory?._id,
-                          showingTranslateValue(subCategory?.name)
-                        );
-                      }}
-                    >
-                      {subCategory?.name?.en}
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
-          </div>,
-          document.body
-        )}
     </>
   );
 };
