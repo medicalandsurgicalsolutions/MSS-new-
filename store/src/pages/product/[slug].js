@@ -172,9 +172,16 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
 
   const [order, setOrder] = useState();
 
-  const showPrescriptionBtn =
-    product?.category?.slug?.toLowerCase().includes("medicine") ||
-    product?.category?.name?.toLowerCase().includes("medicine");
+  const showPrescriptionBtn = (() => {
+  const categories = Array.isArray(product?.category)
+    ? product.category
+    : [product.category];
+
+  return categories.some((cat) =>
+    cat?.slug?.toLowerCase().includes("medicine") ||
+    cat?.name?.toLowerCase().includes("medicine")
+  );
+})();
 
 
   useEffect(() => {
