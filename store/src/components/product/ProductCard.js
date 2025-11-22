@@ -29,6 +29,8 @@ const ProductCard = ({ product, attributes }) => {
   const router = useRouter();
   const userInfo = getUserSession();
 
+  const [showUploadBtn, setShowUploadBtn] = useState(false);
+  
   const [sliceLimit, setSliceLimit] = useState(window.innerWidth <= 768 ? 34 : 44);
 
   useEffect(() => {
@@ -91,12 +93,17 @@ const ProductCard = ({ product, attributes }) => {
     setModalOpen(event);
   };
 
-  useEffect(() => {
+ useEffect(() => {
+    if (!router.isReady) return; // Wait for router
+
     if (router.query.from === "medicine") {
       setShowUploadBtn(true);
+    } else {
+      setShowUploadBtn(false);
     }
-  }, [router.query]);
+  }, [router.isReady, router.query]);
 
+  
   return (
     <>
       {modalOpen && (
@@ -191,7 +198,7 @@ const ProductCard = ({ product, attributes }) => {
               Buy now
             </div>
 
-                 {/* ✅ Upload Prescription (only when from Medicines category) */}
+        {/* Upload Prescription - only for medicines */}
         {showUploadBtn && (
           <div
             className="text-purple-600 border cursor-pointer ... "
@@ -200,7 +207,6 @@ const ProductCard = ({ product, attributes }) => {
             Upload Prescription
           </div>
         )}
-
           </div>
         </div>
       </div>
