@@ -167,6 +167,7 @@ const Price = ({ product, price, card, currency, originalPrice }) => {
 };
 
 const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
+  console.log("CATEGORY => ", product.category);
   const router = useRouter();
   const userInfo = getUserSession();
 
@@ -186,7 +187,6 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   });
 })();
 
-  console.log("CATEGORY => ", product.category);
 
   useEffect(() => {
     const hash = window.location.hash;
