@@ -91,6 +91,12 @@ const ProductCard = ({ product, attributes }) => {
     setModalOpen(event);
   };
 
+  useEffect(() => {
+    if (router.query.from === "medicine") {
+      setShowUploadBtn(true);
+    }
+  }, [router.query]);
+
   return (
     <>
       {modalOpen && (
@@ -184,6 +190,17 @@ const ProductCard = ({ product, attributes }) => {
             >
               Buy now
             </div>
+
+                 {/* ✅ Upload Prescription (only when from Medicines category) */}
+        {showUploadBtn && (
+          <div
+            className="text-purple-600 border cursor-pointer ... "
+            onClick={() => console.log("Upload prescription clicked", product._id)}
+          >
+            Upload Prescription
+          </div>
+        )}
+
           </div>
         </div>
       </div>
