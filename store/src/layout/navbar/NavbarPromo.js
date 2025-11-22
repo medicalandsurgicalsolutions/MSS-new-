@@ -1,16 +1,14 @@
 import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
-import { createPortal } from "react-dom";
 import SettingServices from "@services/SettingServices";
 import Cookies from "js-cookie";
 import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import { getUserSession } from "@lib/auth";
+import { useRouter } from "next/router";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
-import { useRouter } from "next/router";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
@@ -19,7 +17,7 @@ const NavbarPromo = () => {
   const router = useRouter();
   const { showingTranslateValue } = useUtilsFunction();
   const currentLanguage = Cookies.get("_curr_lang") || null;
-  const { data } = useAsync(() => CategoryServices.getShowingCategory());
+  const { data = [] } = useAsync(() => CategoryServices.getShowingCategory());
 
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
@@ -66,76 +64,72 @@ const NavbarPromo = () => {
   const handleMouseLeave = () => setHoveredCategory(null);
 
   return (
-    <>
-      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
-          
-    <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
-            {/* ✅ Home */}
+    <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
+        <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
+
+          {/* Home */}
+          <Link
+            href="/"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+              Home
+            </span>
+          </Link>
+
+          {/* Subtitle (Quick Delivery / New Arrivals) */}
+          {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
             <Link
-                href="/"
-                onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
-              >
-                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                  Home
-                </span>
-              </Link>
+              href="/search?query=latest"
+              onClick={() => setIsLoading(!isLoading)}
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+            >
+              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
+              </span>
+            </Link>
+          )}
 
-            {/* ✅ Subtitle (New Arrivals / Quick Delivery) */}
-            {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-              <Link
-                href="/search?query=latest"
-                onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-              >
-                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                  {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
-                </span>
-              </Link>
-            )}
-
-            {/* ✅ Categories */}
-            {data[0]?.children?.slice(0, 6)?.map((category, index) => (
-              <div
-                key={index}
-                className="relative cursor-pointer group py-2"
-                onMouseEnter={(e) => handleMouseEnter(index, e)}
-                onMouseLeave={handleMouseLeave}
-                onClick={() =>
-                  handleSubCategory(
-                    category?._id,
-                    showingTranslateValue(category?.name)
-                  )
-                }
-              >
-                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                  <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                    {capitalizeWords(category?.name?.en)}
-                  </div>
-                  {category?.children && (
-                    <div className="group-hover:rotate-180 duration-200 py-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-3"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </div>
-                  )}
+          {/* Categories (first 6) */}
+          {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+            <div
+              key={index}
+              className="relative cursor-pointer group py-2"
+              onMouseEnter={(e) => handleMouseEnter(index, e)}
+              onMouseLeave={handleMouseLeave}
+              onClick={() =>
+                handleSubCategory(category?._id, showingTranslateValue(category?.name))
+              }
+            >
+              <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+                <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                  {capitalizeWords(category?.name?.en)}
                 </div>
+                {category?.children && (
+                  <div className="group-hover:rotate-180 duration-200 py-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                      />
+                    </svg>
+                  </div>
+                )}
               </div>
-            ))}
+            </div>
+          ))}
 
-          {/* ✅ Medicine */}
+          {/* Medicines */}
           <Link
             href="/medicine"
             onClick={() => setIsLoading(!isLoading)}
@@ -146,21 +140,22 @@ const NavbarPromo = () => {
             </span>
           </Link>
 
-            {/* ✅ Buy in Bulk */}
-            <Link
-              href="/contact-us"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-            >
-              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                Buy In Bulk
-              </span>
-            </Link>
-          </div>
+          {/* Buy in Bulk */}
+          <Link
+            href="/contact-us"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+              Buy In Bulk
+            </span>
+          </Link>
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
 export default NavbarPromo;
+
