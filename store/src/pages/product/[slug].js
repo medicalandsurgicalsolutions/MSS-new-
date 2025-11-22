@@ -173,29 +173,34 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
 
   const [order, setOrder] = useState();
 
-    console.log("CATEGORY:", product?.category);
+   const product = data;
+
+   console.log("PRODUCT:", product);
+   console.log("CATEGORY:", product?.category);
+
   
- const showPrescriptionBtn = (() => {
+const showPrescriptionBtn = (() => {
   const category = product?.category;
 
   if (!category) return false;
 
   const check = (text) => {
     if (!text) return false;
-    const t = text.toLowerCase();
+    text = text.toLowerCase();
     return (
-      t.includes("medicine") ||
-      t.includes("medicines") ||
-      t.includes("medical")
+      text.includes("medicine") ||
+      text.includes("medicines") ||
+      text.includes("medical")
     );
   };
 
-  if (Array.isArray(category)) {
-    return category.some((c) => check(c?.slug) || check(c?.name));
-  }
+  const categories = Array.isArray(category) ? category : [category];
 
-  return check(category?.slug) || check(category?.name);
+  return categories.some((cat) => {
+    return check(cat?.slug) || check(cat?.name);
+  });
 })();
+
 
 
 
@@ -1017,7 +1022,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                         {t("Buy Now")}
                                       </button>
 
-                                        {showPrescriptionBtn && (
+                                       {showPrescriptionBtn && (
                                             <button
                                               className="text-sm leading-4 inline-flex items-center cursor-pointer transition
                                                 ease-in-out duration-300 font-semibold text-center justify-center rounded-md
@@ -1028,6 +1033,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                               Upload Prescription
                                             </button>
                                           )}
+
                                     </div>
                                   </div>
                                 </div>
