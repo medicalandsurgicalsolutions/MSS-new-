@@ -170,15 +170,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   
   const router = useRouter();
   const userInfo = getUserSession();
-
   const [order, setOrder] = useState();
-  
-  const categories = Array.isArray(category) ? category : [category];
-
-  return categories.some((cat) => {
-    return check(cat?.slug) || check(cat?.name);
-  });
-})();
 
   useEffect(() => {
     const hash = window.location.hash;
