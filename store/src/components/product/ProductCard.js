@@ -27,12 +27,9 @@ const ProductCard = ({ product, attributes }) => {
   const { globalSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
   const router = useRouter();
-  const userInfo = getUserSession();
-
-  const [showUploadBtn, setShowUploadBtn] = useState(false);
-  
+  const userInfo = getUserSession(); 
   const [sliceLimit, setSliceLimit] = useState(window.innerWidth <= 768 ? 34 : 44);
-
+  
   useEffect(() => {
     const handleResize = () => {
       setSliceLimit(window.innerWidth <= 768 ? 30 : 50);
@@ -93,16 +90,15 @@ const ProductCard = ({ product, attributes }) => {
     setModalOpen(event);
   };
 
- useEffect(() => {
-    if (!router.isReady) return; // Wait for router
+   const [showUploadBtn, setShowUploadBtn] = useState(false);
 
-    if (router.query.from === "medicine") {
+  useEffect(() => {
+    if (localStorage.getItem("fromMedicine") === "true") {
       setShowUploadBtn(true);
     } else {
       setShowUploadBtn(false);
     }
-  }, [router.isReady, router.query]);
-
+  }, []);
   
   return (
     <>
@@ -198,15 +194,12 @@ const ProductCard = ({ product, attributes }) => {
               Buy now
             </div>
 
-        {/* Upload Prescription - only for medicines */}
-        {showUploadBtn && (
-          <div
-            className="text-purple-600 border cursor-pointer ... "
-            onClick={() => console.log("Upload prescription clicked", product._id)}
-          >
-            Upload Prescription
-          </div>
-        )}
+          {/* Upload Prescription */}
+          {showUploadBtn && (
+            <div className="text-purple-600 ..." onClick={() => console.log("Upload prescription")}>
+              Upload Prescription
+            </div>
+          )}
           </div>
         </div>
       </div>
