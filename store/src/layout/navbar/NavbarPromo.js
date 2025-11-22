@@ -95,6 +95,27 @@ const NavbarPromo = () => {
               </Link>
             )}
 
+          {/* ✅ Dynamic Medicines from Admin (like New Arrivals) */}
+      {data[0]?.children
+        ?.filter((cat) =>
+          cat?.name?.en?.toLowerCase().trim() === "medicines"
+        )
+        ?.map((cat, index) => (
+          <Link
+            key={index}
+            href={`/search?category=${cat?.name?.en
+              ?.toLowerCase()
+              .replace(/[^A-Z0-9]+/gi, "-")}&_id=${cat?._id}`}
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+              {cat?.name?.en}
+            </span>
+          </Link>
+        ))}
+
+
             {/* ✅ Categories */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => (
               <div
