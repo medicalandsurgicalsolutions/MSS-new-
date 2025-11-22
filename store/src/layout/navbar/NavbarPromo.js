@@ -30,24 +30,19 @@ const NavbarPromo = () => {
   };
   */}
 
-  const handleSubCategory = (id, categoryName) => {
-    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-    router.push(`/search?category=${name}&_id=${id}`);
-    setIsLoading(!isLoading);
-  };
-  
-
-  const handleSubCategory = (id, categoryName) => {
+const handleSubCategory = (id, categoryName) => {
   const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-  
-  if (categoryName.toLowerCase() === "medicine" || categoryName.toLowerCase() === "medicines") {
-    router.push(`/search?category=${name}&_id=${id}&from=medicine`);
-  } else {
-    router.push(`/search?category=${name}&_id=${id}`);
-  }
+
+  router.push({
+    pathname: "/search",
+    query:
+      categoryName.toLowerCase() === "medicine" || categoryName.toLowerCase() === "medicines"
+        ? { category: name, _id: id, from: "medicine" }
+        : { category: name, _id: id },
+  });
+
   setIsLoading(!isLoading);
 };
-
 
   useEffect(() => {
     (async () => {
