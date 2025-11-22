@@ -89,16 +89,6 @@ const ProductCard = ({ product, attributes }) => {
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
   };
-
-   const [showUploadBtn, setShowUploadBtn] = useState(false);
-
-  useEffect(() => {
-    if (localStorage.getItem("fromMedicine") === "true") {
-      setShowUploadBtn(true);
-    } else {
-      setShowUploadBtn(false);
-    }
-  }, []);
   
   return (
     <>
@@ -193,13 +183,7 @@ const ProductCard = ({ product, attributes }) => {
             >
               Buy now
             </div>
-
-          {/* Upload Prescription */}
-          {showUploadBtn && (
-            <div className="text-purple-600 ..." onClick={() => console.log("Upload prescription")}>
-              Upload Prescription
-            </div>
-          )}
+                
           </div>
         </div>
       </div>
