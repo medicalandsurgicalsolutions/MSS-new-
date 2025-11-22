@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
++import { useState, useEffect, useContext } from "react";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import SettingServices from "@services/SettingServices";
@@ -7,6 +7,7 @@ import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { getUserSession } from "@lib/auth";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
 import { useRouter } from "next/router";
@@ -23,24 +24,17 @@ const NavbarPromo = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
 
-    {/* const handleSubNestedCategory = (id, categoryName) => {
+  const handleSubNestedCategory = (id, categoryName) => {
     const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
     router.push(`/search?category=${name}&_id=${id}`);
     setIsLoading(!isLoading);
   };
-  */}
 
-const handleSubCategory = (id, categoryName) => {
-  const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
-
-  router.push({
-    pathname: "/search",
-    query: { category: name, _id: id },
-  }, undefined, { shallow: true, state: { fromMedicine: categoryName.toLowerCase() === "medicine" } });
-
-  setIsLoading(!isLoading);
-};
-
+  const handleSubCategory = (id, categoryName) => {
+    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+    router.push(`/search?category=${name}&_id=${id}`);
+    setIsLoading(!isLoading);
+  };
 
   useEffect(() => {
     (async () => {
@@ -57,16 +51,7 @@ const handleSubCategory = (id, categoryName) => {
     return string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
   };
 
-  const handleMouseEnter = (index, e, category) => {
-    // 🚫 Medicine category => NO DROPDOWN
-    if (category?.name?.en?.toLowerCase() === "medicines" ||
-        category?.name?.en?.toLowerCase() === "medicine") 
-    {
-      setHoveredCategory(null);
-      return;
-    }
-
-    // ✅ other categories dropdown normal
+  const handleMouseEnter = (index, e) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setHoveredCategory(index);
     setDropdownStyle({
@@ -84,43 +69,38 @@ const handleSubCategory = (id, categoryName) => {
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
-
-          <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
-
-            {/* HOME */}
+          
+    <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
+            {/* ✅ Home */}
             <Link
-              href="/"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
-            >
-              <span className="relative after:content-[''] after:absolute after:w-0 
-              after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 
-              after:transition-all after:duration-300 group-hover:after:w-full">
-                Home
-              </span>
-            </Link>
+                href="/"
+                onClick={() => setIsLoading(!isLoading)}
+                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
+              >
+                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                  Home
+                </span>
+              </Link>
 
-            {/* SUBTITLE - NEW ARRIVALS */}
+            {/* ✅ Subtitle (New Arrivals / Quick Delivery) */}
             {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
               <Link
                 href="/search?query=latest"
                 onClick={() => setIsLoading(!isLoading)}
                 className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
               >
-                <span className="relative after:content-[''] after:absolute after:w-0 
-                after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 
-                after:transition-all after:duration-300 group-hover:after:w-full">
+                <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
                 </span>
               </Link>
             )}
 
-            {/* CATEGORIES */}
+            {/* ✅ Categories */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => (
               <div
                 key={index}
                 className="relative cursor-pointer group py-2"
-                onMouseEnter={(e) => handleMouseEnter(index, e, category)}
+                onMouseEnter={(e) => handleMouseEnter(index, e)}
                 onMouseLeave={handleMouseLeave}
                 onClick={() =>
                   handleSubCategory(
@@ -130,18 +110,10 @@ const handleSubCategory = (id, categoryName) => {
                 }
               >
                 <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-
-                  {/* category name */}
-                  <div className="font-medium relative after:content-[''] after:absolute 
-                    after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 
-                    after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+                  <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                     {capitalizeWords(category?.name?.en)}
                   </div>
-
-                  {/* dropdown icon — hidden for Medicines */}
-                  {category?.name?.en?.toLowerCase() !== "medicines" &&
-                   category?.name?.en?.toLowerCase() !== "medicine" &&
-                   category?.children && (
+                  {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -163,37 +135,32 @@ const handleSubCategory = (id, categoryName) => {
               </div>
             ))}
 
-            {/* MEDICINE (STATIC LINK) */}
-            <Link
-              href="/medicine?from=medicine"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-            >
-              <span className="relative after:content-[''] after:absolute after:w-0 
-              after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 
-              after:transition-all after:duration-300 group-hover:after:w-full">
-                Medicines
-              </span>
-            </Link>
+          {/* ✅ Medicine */}
+          <Link
+            href="/medicine"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
+              Medicines
+            </span>
+          </Link>
 
-            {/* BUY IN BULK */}
+            {/* ✅ Buy in Bulk */}
             <Link
               href="/contact-us"
               onClick={() => setIsLoading(!isLoading)}
               className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
-              <span className="relative after:content-[''] after:absolute after:w-0 
-              after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 
-              after:transition-all after:duration-300 group-hover:after:w-full">
+              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                 Buy In Bulk
               </span>
             </Link>
-
           </div>
         </div>
       </div>
 
-      {/* DROPDOWN FOR NON-MEDICINE ONLY */}
+      {/* ✅ Dropdown */}
       {hoveredCategory !== null &&
         data[0]?.children?.[hoveredCategory]?.children &&
         createPortal(
