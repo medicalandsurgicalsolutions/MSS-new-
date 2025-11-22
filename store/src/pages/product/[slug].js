@@ -167,10 +167,12 @@ const Price = ({ product, price, card, currency, originalPrice }) => {
 };
 
 const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
-  
   const router = useRouter();
   const userInfo = getUserSession();
+
   const [order, setOrder] = useState();
+
+  
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -556,7 +558,10 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                       productImage={product.image[0]} // Replace with your image path
                       watermarkImage={storeCustomizationSetting?.navbar?.logo} // Replace with your logo path
                   /> */}
+                  
                     
+
+                            
                   <div className="w-full">
                     <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                      <div className="xl:pr-6 md:pr-6 w-full md:w-2/3 mob-w-full">
@@ -950,17 +955,29 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                         </span>
                                       </button>
                                     </div>
-                                   <div className="flex gap-3 md:flex-col">
+                                    <div className="flex gap-3 md:flex-col">
                                       <button
                                         onClick={() => handleAddToCart(product)}
-                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
                                       >
                                         {t("common:addToCart")}
+                                        {/* <span className="rounded-lg font-bold py-2 px-3">
+                                      {`${currency}${(item * price).toFixed(
+                                        2
+                                      )}`}
+                                    </span> */}
                                       </button>
-                                      
-                                      <button
+                                     <button
+                                        // onClick={() => handleAddToCart(product)}
+                                        className="
+                                          text-sm leading-4 inline-flex items-center cursor-pointer
+                                          transition ease-in-out duration-300 font-semibold font-serif
+                                          text-center justify-center rounded-md focus-visible:outline-none
+                                          focus:outline-none px-2 border border-cyan-600 bg-white
+                                          hover:bg-cyan-600 hover:text-white text-cyan-600
+                                          py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10
+                                        "
                                         onClick={(event) => handleAddItems(event, product)}
-                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-white hover:bg-cyan-600 hover:text-white text-cyan-600 py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
                                       >
                                         {t("Buy Now")}
                                       </button>
@@ -980,48 +997,48 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
              
               {/* related products */}
         {showProduct?.length >= 2 && (
-                    <div className="pt-10 lg:pt-20 lg:pb-10">
-                    <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
-                      {t("common:relatedProducts")}
-                    </h3>
-                
-                    <div className="w-full">
-                      <div
-                        className="
-                          grid
-                          grid-cols-2
-                          sm:grid-cols-3
-                          md:grid-cols-4
-                          lg:grid-cols-5
-                          xl:grid-cols-5
-                          2xl:grid-cols-5
-                          gap-3
-                        "
-                      >
-                        {showProduct?.slice(1, 13).map((product, i) => (
-                          <ProductCard
-                            key={product._id}
-                            product={product}
-                            attributes={attributes}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+  <div className="pt-10 lg:pt-20 lg:pb-10">
+    <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
+      {t("common:relatedProducts")}
+    </h3>
 
-            {/* Reviews Section */}
-            <>
-              <section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
-                <Review
-                  product={product}
-                  customer={userInfo}
-                  order={order}
-                  ratings={ratings}
-                />
-                <ReviewList reviews={ratings} />
-              </section>
-            </>
+    <div className="w-full">
+      <div
+        className="
+          grid
+          grid-cols-2
+          sm:grid-cols-3
+          md:grid-cols-4
+          lg:grid-cols-5
+          xl:grid-cols-5
+          2xl:grid-cols-5
+          gap-3
+        "
+      >
+        {showProduct?.slice(1, 13).map((product, i) => (
+          <ProductCard
+            key={product._id}
+            product={product}
+            attributes={attributes}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
+{/* Reviews Section */}
+<>
+  <section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
+    <Review
+      product={product}
+      customer={userInfo}
+      order={order}
+      ratings={ratings}
+    />
+    <ReviewList reviews={ratings} />
+  </section>
+</>
 
              </div>
           </div>
