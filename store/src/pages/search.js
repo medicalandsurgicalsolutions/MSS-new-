@@ -35,11 +35,7 @@ const Search = ({
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const [visibleProduct, setVisibleProduct] = useState(4000);
   const [filteredProducts, setFilteredProducts] = useState([]);
-  // console.log("Prodect kjhlj;lhjkghg ",filteredProducts);
-
   const router = useRouter();
-  const fromMedicine = router.query.from === "medicine";
-  
   const { asPath, query: searchQuery } = router;
   const { query, category: queryCategory, brand: queryBrand, title, slug, _id } = searchQuery;
   // console.log(filteredProducts);
