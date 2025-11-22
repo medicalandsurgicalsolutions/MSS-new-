@@ -249,4 +249,176 @@ const Search = ({ products, attributes, brands, categories, departments, nextPag
   // console.log("productData ", productData); 
   // console.log("showProduct ", showProduct);
 
-  return isLoading ? ( <Loading loading={isLoading} /> ) : ( <Layout title="Search" description="This is search page"> <div className="mx-auto max-w-screen-2xl px-3 sm:px-10"> {/* <div className="w-full mt-4"> <div className="w-full grid grid-col gap-4 grid-cols-1 2xl:gap-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2"> <Card /> </div> <div className="relative"> <CategoryCarousel /> </div> </div> */} <div className="flex py-10 lg:py-12"> <div className="w-full lg:flex"> <div className="flex justify-between mb-3 bg-white shadow-sm rounded p-3 lg:hidden" onClick={() => setExpandFilter(expandFilter == "block" ? "hidden" : "block") } > <h6 className="text-sm ">{t("common:filters")}</h6> <span className="text-sm "> <IoFunnelSharp /> </span> </div> {/* Filters Section */} <div className={lg:w-1/4 p-6 rounded-lg bg-white shadow-md mb-6 lg:mb-0 lg:mr-6 ${expandFilter}} > {/* Filter Header */} <div className="flex justify-between items-center mb-6"> <h2 className="text-2xl font-semibold text-gray-800"> {t("common:filters")} </h2> <div className="flex gap-2"> <button onClick={reset} className="px-4 py-1 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition" > {t("common:reset")} </button> <button onClick={() => setApply(true)} className="px-4 py-1 rounded-md text-sm font-medium bg-cyan-500 text-white hover:cyan-600 transition" > {t("common:apply")} </button> </div> </div> {/* Price Range Slider */} <div className="mb-6"> <h3 className="text-lg font-semibold text-gray-700 mb-4"> {t("common:filterByPrice")} </h3> <div className="flex items-center space-x-4"> <span className="text-sm font-medium text-gray-600"> ₹{min} </span> <input type="range" min="0" max="100000" value={min} onChange={(e) => setMin(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500" /> <span className="text-sm font-medium text-gray-600"> ₹{max} </span> </div> </div> {/* Filter by Category */} <div className="mb-6"> <h3 className="text-lg font-semibold text-gray-700 mb-2"> {t("common:filterByCategory")} </h3> <div className="relative" ref={categoryRef}> <button type="button" onClick={() => setIsOpenCategory(!isOpenCategory)} className="w-full px-4 py-2 text-left border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" > {category.length > 0 ? ${category.length} ${t("common:selected")} : t("common:selectCategory")} </button> {isOpenCategory && ( <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md p-4 max-h-48 overflow-y-auto"> {categories[0]?.children?.map((c) => ( <label key={c?._id} className="flex items-center space-x-2" > <input type="checkbox" value={c?._id} checked={category.includes(c?._id)} onChange={() => handleCategoryChange(c?._id)} className="h-4 w-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" /> <span className="text-gray-700"> {showingTranslateValue(c?.name)} </span> </label> ))} </div> )} </div> </div> {/* Filter by Brand */} <div className="mb-6"> <h3 className="text-lg font-semibold text-gray-700 mb-2"> {t("common:filterByBrand")} </h3> <div className="relative" ref={brandRef}> <button type="button" onClick={() => setIsOpenBrand(!isOpenBrand)} className="w-full px-4 py-2 text-left border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" > {brand.length > 0 ? ${brand.length} ${t("common:selected")} : t("common:selectBrand")} </button> {isOpenBrand && ( <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md p-4 max-h-48 overflow-y-auto"> {brands.map((b) => ( <label key={b._id} className="flex items-center space-x-2" > <input type="checkbox" value={b._id} checked={brand.includes(b._id)} onChange={() => handleBrandChange(b._id)} className="h-4 w-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" /> <span className="text-gray-700"> {showingTranslateValue(b?.name)} </span> </label> ))} </div> )} </div> </div> {/* Filter by Attributes */} {/* {attributes.map((a, j) => ( <div key={j} className="mb-6"> <h3 className="text-lg font-semibold text-gray-700 mb-2">{showingTranslateValue(a?.name)}</h3> <div className="flex flex-wrap gap-2"> {a.variants.map((v, i) => ( <button key={i} onClick={() => handleAttributeChange({ attributeId: a._id, variantId: v._id })} className={px-3 py-1 text-xs rounded-full ${ attribute.some((attr) => attr.attributeId === a._id && attr.variantId === v._id) ? "bg-emerald-500 text-white" : "bg-gray-100 text-gray-600" }} > {showingTranslateValue(v?.name)} </button> ))} </div> </div> ))} */} </div> {/* Products Section */} <div className="w-full lg:w-3/4"> <div className="flex justify-between mb-3 bg-white shadow-sm rounded p-3"> <h6 className="text-sm "> {t("common:totalI")}{" "} <span className="font-bold">{totalProduct}</span>{" "} {t("common:itemsFound")} </h6> <span className="text-sm "> <select onChange={(e) => setSortedField(e.target.value)} className="py-0 text-sm font-medium block w-full rounded border-0 bg-emerald-50 pr-10 cursor-pointer focus:ring-0" > <option className="px-3" value="All" defaultValue hidden> {t("common:sortByPrice")} </option> <option className="px-3" value="Low"> {t("common:lowToHigh")} </option> <option className="px-3" value="High"> {t("common:highToLow")} </option> </select> </span> </div> {showProduct?.length === 0 && ( <div className="mx-auto p-5 my-5"> <Image className="my-4 mx-auto" src="/no-result.svg" alt="no-result" width={400} height={380} /> <h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl text-center mt-2 font-medium text-gray-600"> {t("common:sorryText")} 😞 </h2> </div> )} {isLoading ? ( <Loading loading={isLoading} /> ) : ( <> <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"> {showProduct?.slice(0, visibleProduct).map((product, i) => ( <ProductCard key={i + 1} product={product} attributes={attributes} /> ))} </div> <div className="flex"> {prevPage > 0 && ( <button onClick={() => loadNextPage(prevPage)} className="w-auto mx-auto md:text-sm leading-5 flex items-center transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none bg-indigo-100 text-gray-700 px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-cyan-600 h-12 mt-6 text-sm lg:text-sm" > {"Prev"} </button> )} {nextPage > 1 && showProduct.length == 20 && ( <button onClick={() => loadNextPage(nextPage)} className="w-auto mx-auto md:text-sm leading-5 flex items-center transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none bg-indigo-100 text-gray-700 px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-cyan-600 h-12 mt-6 text-sm lg:text-sm" > {"Next"} </button> )} </div> </> )} </div> </div> </div> </div> </Layout> ); }; export default Search; export const getServerSideProps = async (context) => { const { query, title, _id, page, brand } = context.query; console.log(query); const [data, attributes, brands, categories, departments] = await Promise.all( [ ProductServices.getShowingStoreProducts({ category: _id ? _id : "", brand: brand ? encodeURIComponent(brand) : "", title: title ? encodeURIComponent(title) : "", query: query ? encodeURIComponent(query) : "", page: page ? encodeURIComponent(page) : 1, }), AttributeServices.getShowingAttributes({}), ProductServices.getShowingsBrands(), CategoryServices.getShowingCategory(), DepartmentServices.getShowingDepartments(), ] ); return { props: { products: data?.products, nextPage: data?.nextPage ?? 1, prevPage: data?.prevPage ?? 0, totalProduct: data?.totalProduct ?? 0, attributes, brands, categories, departments, }, }; };
+  return isLoading ? ( 
+    <Loading loading={isLoading} /> ) : 
+      ( <Layout title="Search" description="This is search page">
+       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10"> 
+       {/* <div className="w-full mt-4"> 
+       <div className="w-full grid grid-col gap-4 grid-cols-1 2xl:gap-6 xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-2">
+       <Card />
+         </div>
+           <div className="relative"> 
+           <CategoryCarousel /> 
+            </div>
+         </div> 
+       */}
+       
+       <div className="flex py-10 lg:py-12"> 
+       <div className="w-full lg:flex">
+       <div className="flex justify-between mb-3 bg-white shadow-sm rounded p-3 lg:hidden" 
+       onClick={() =>  setExpandFilter(expandFilter == "block" ? "hidden" : "block") } >
+       <h6 className="text-sm ">
+         {t("common:filters")}
+       </h6> 
+       <span className="text-sm "> 
+         <IoFunnelSharp />
+       </span>
+         </div>
+       {/* Filters Section */}
+       
+       <div className={lg:w-1/4 p-6 rounded-lg bg-white shadow-md mb-6 lg:mb-0 lg:mr-6 ${expandFilter}} >
+         {/* Filter Header */} 
+       <div className="flex justify-between items-center mb-6"> 
+       <h2 className="text-2xl font-semibold text-gray-800"> 
+         {t("common:filters")} 
+       </h2>
+       <div className="flex gap-2">
+         <button onClick={reset} className="px-4 py-1 rounded-md text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition" >
+             {t("common:reset")} 
+          </button>
+         <button onClick={() =>
+            setApply(true)} className="px-4 py-1 rounded-md text-sm font-medium bg-cyan-500 text-white hover:cyan-600 transition" > 
+              {t("common:apply")} 
+            </button>
+              </div> 
+            </div> 
+                {/* Price Range Slider */} 
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-700 mb-4"> 
+                  {t("common:filterByPrice")} 
+                 </h3> 
+              <div className="flex items-center space-x-4">
+                <span className="text-sm font-medium text-gray-600"> ₹{min} </span> 
+              <input type="range" min="0" max="100000" value={min} onChange={(e) =>
+                setMin(Number(e.target.value))} className="w-full h-2 bg-gray-200 rounded-lg appearance-none 
+                 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+               <span className="text-sm font-medium text-gray-600"> ₹{max} </span> 
+               </div> 
+              </div> 
+        {/* Filter by Category */} 
+           <div className="mb-6"> 
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+            {t("common:filterByCategory")} 
+          </h3> 
+           <div className="relative" ref={categoryRef}> 
+            <button type="button" onClick={() =>  
+             setIsOpenCategory(!isOpenCategory)}
+              className="w-full px-4 py-2 text-left border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" > 
+               {category.length > 0 ? ${category.length} ${t("common:selected")} : t("common:selectCategory")} 
+            </button> 
+         {isOpenCategory && ( '
+         <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md p-4 max-h-48 overflow-y-auto"> 
+        {categories[0]?.children?.map((c) => (
+          <label key={c?._id} className="flex items-center space-x-2" > 
+                <input type="checkbox" value={c?._id} checked={category.includes(c?._id)} onChange={() =>
+                        handleCategoryChange(c?._id)}
+                          className="h-4 w-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" />
+                        <span className="text-gray-700"> 
+                            {showingTranslateValue(c?.name)
+                             </span>
+                        </label> 
+                        )
+                     )
+                  }
+              </div> 
+              )
+            }
+        </div>
+    </div>
+    {/* Filter by Brand */} 
+        <div className="mb-6"> 
+          <h3 className="text-lg font-semibold text-gray-700 mb-2">
+             {t("common:filterByBrand")}
+            </h3> 
+        <div className="relative" ref={brandRef}> 
+              <button type="button" onClick={() => 
+                setIsOpenBrand(!isOpenBrand)} 
+                  className="w-full px-4 py-2 text-left border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" > 
+                   {brand.length > 0 ? ${brand.length} ${t("common:selected")} : t("common:selectBrand")} </button> 
+                  {isOpenBrand && (
+                    <div className="absolute z-50 mt-2 w-full bg-white border border-gray-300 rounded-lg shadow-md p-4 max-h-48 overflow-y-auto"> 
+                  {brands.map((b) => ( 
+                    <label key={b._id} className="flex items-center space-x-2" > 
+                      <input type="checkbox" value={b._id} checked={brand.includes(b._id)} onChange={() => 
+                              handleBrandChange(b._id)} className="h-4 w-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" /> 
+                              <span className="text-gray-700"> 
+                              {showingTranslateValue(b?.name)} 
+               </span>
+       </label> 
+       )
+         )
+           }
+           </div> 
+       )
+      }
+    </div>
+  </div>
+       {/* Filter by Attributes */} 
+       {/* {attributes.map((a, j) => (
+        <div key={j} className="mb-6"> 
+         <h3 className="text-lg font-semibold text-gray-700 mb-2">
+          {showingTranslateValue(a?.name)}
+           </h3> 
+        <div className="flex flex-wrap gap-2"> 
+          {a.variants.map((v, i) => ( 
+           <button key={i} onClick={() =>
+            handleAttributeChange({ attributeId: a._id, variantId: v._id })} 
+             className={px-3 py-1 text-xs rounded-full ${ 
+              attribute.some((attr) => attr.attributeId === a._id && attr.variantId === v._id) 
+               ? "bg-emerald-500 text-white" : 
+              "bg-gray-100 text-gray-600" }}
+              > {showingTranslateValue(v?.name)}
+          </button> 
+           )
+          )
+        } 
+      </div>
+    </div>
+      )
+      )
+    }
+*/}
+  </div> 
+       {/* Products Section */}
+       <div className="w-full lg:w-3/4">
+       <div className="flex justify-between mb-3 bg-white shadow-sm rounded p-3"> 
+       <h6 className="text-sm ">
+         {t("common:totalI")}{" "}
+       <span className="font-bold">{totalProduct}</span>{" "} {t("common:itemsFound")} </h6>
+      <span className="text-sm ">
+   <select onChange={(e) => setSortedField(e.target.value)} 
+  className="py-0 text-sm font-medium block w-full rounded border-0 bg-emerald-50 pr-10 cursor-pointer focus:ring-0" > 
+  <option className="px-3" value="All" defaultValue hidden> {t("common:sortByPrice")} </option> 
+    <option className="px-3" value="Low">{t("common:lowToHigh")} </option> 
+    <option className="px-3" value="High"> {t("common:highToLow")} </option> 
+</select> 
+</span> 
+</div> 
+{showProduct?.length === 0 && (
+  <div className="mx-auto p-5 my-5"> 
+<Image className="my-4 mx-auto" src="/no-result.svg" alt="no-result" width={400} height={380} />
+<h2 className="text-lg md:text-xl lg:text-2xl xl:text-2xl text-center mt-2 font-medium text-gray-600"> {t("common:sorryText")} 😞 </h2>
+       </div> 
+       )
+    }
+  {isLoading ? ( <Loading loading={isLoading} /> ) 
+       : (
+         <>
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             {showProduct?.slice(0, visibleProduct).map((product, i) => (
+              <ProductCard key={i + 1} product={product} attributes={attributes} /> )
+        )
+       } 
+   </div>
+       
+       <div className="flex"> {prevPage > 0 && ( <button onClick={() => loadNextPage(prevPage)} className="w-auto mx-auto md:text-sm leading-5 flex items-center transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none bg-indigo-100 text-gray-700 px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-cyan-600 h-12 mt-6 text-sm lg:text-sm" > {"Prev"} </button> )} {nextPage > 1 && showProduct.length == 20 && ( <button onClick={() => loadNextPage(nextPage)} className="w-auto mx-auto md:text-sm leading-5 flex items-center transition ease-in-out duration-300 font-medium text-center justify-center border-0 border-transparent rounded-md focus-visible:outline-none focus:outline-none bg-indigo-100 text-gray-700 px-5 md:px-6 lg:px-8 py-2 md:py-3 lg:py-3 hover:text-white hover:bg-cyan-600 h-12 mt-6 text-sm lg:text-sm" > {"Next"} </button> )} </div> </> )} </div> </div> </div> </div> </Layout> ); }; export default Search; export const getServerSideProps = async (context) => { const { query, title, _id, page, brand } = context.query; console.log(query); const [data, attributes, brands, categories, departments] = await Promise.all( [ ProductServices.getShowingStoreProducts({ category: _id ? _id : "", brand: brand ? encodeURIComponent(brand) : "", title: title ? encodeURIComponent(title) : "", query: query ? encodeURIComponent(query) : "", page: page ? encodeURIComponent(page) : 1, }), AttributeServices.getShowingAttributes({}), ProductServices.getShowingsBrands(), CategoryServices.getShowingCategory(), DepartmentServices.getShowingDepartments(), ] ); return { props: { products: data?.products, nextPage: data?.nextPage ?? 1, prevPage: data?.prevPage ?? 0, totalProduct: data?.totalProduct ?? 0, attributes, brands, categories, departments, }, }; };
