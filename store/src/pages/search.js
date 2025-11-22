@@ -8,7 +8,7 @@ import ProductCard from "@components/product/ProductCard";
 import { SidebarContext } from "@context/SidebarContext"; 
 import Loading from "@components/preloader/Loading";
 import AttributeServices from "@services/AttributeServices";
-import Card from "@components/cta-card/Card"; 
+import Card from "@components/cta-card/Card";
 import CategoryCarousel from "@components/carousel/CategoryCarousel";
 import useUtilsFunction from "@hooks/useUtilsFunction"; 
 import DepartmentServices from "@services/DepartmentServices"; 
