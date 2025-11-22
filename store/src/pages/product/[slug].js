@@ -173,8 +173,26 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
 
   const [order, setOrder] = useState();
 
-  const showPrescriptionBtn = (() => {
-  if (!product?.category) return false;
+ const showPrescriptionBtn = (() => {
+  const findMedicine = (obj) => {
+    if (!obj) return false;
+
+    // Convert any value to string safely
+    const values = Object.values(obj)
+      .map((v) => (typeof v === "string" ? v.toLowerCase() : ""));
+
+    // Check if ANY field contains "medicine"
+    if (values.some((v) => v.includes("medicine"))) return true;
+
+    // Check nested objects
+    return Object.values(obj).some(
+      (v) => typeof v === "object" && findMedicine(v)
+    );
+  };
+
+  return findMedicine(product?.category);
+})();
+
 
   const categories = Array.isArray(product.category)
     ? product.category
