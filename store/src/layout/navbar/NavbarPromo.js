@@ -35,14 +35,12 @@ const handleSubCategory = (id, categoryName) => {
 
   router.push({
     pathname: "/search",
-    query:
-      categoryName.toLowerCase() === "medicine" || categoryName.toLowerCase() === "medicines"
-        ? { category: name, _id: id, from: "medicine" }
-        : { category: name, _id: id },
-  });
+    query: { category: name, _id: id },
+  }, undefined, { shallow: true, state: { fromMedicine: categoryName.toLowerCase() === "medicine" } });
 
   setIsLoading(!isLoading);
 };
+
 
   useEffect(() => {
     (async () => {
