@@ -39,7 +39,7 @@ const Search = ({
 
   const router = useRouter();
   const fromMedicine = router.query.from === "medicine";
-
+  
   const { asPath, query: searchQuery } = router;
   const { query, category: queryCategory, brand: queryBrand, title, slug, _id } = searchQuery;
   // console.log(filteredProducts);
