@@ -180,15 +180,6 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   });
 })();
 
-const categories = Array.isArray(product?.category) ? product.category : [product?.category];
-
-const isMedicine = categories.some((cat) => {
-  const slug = cat?.slug?.toLowerCase() || "";
-  const name = cat?.name?.toLowerCase() || "";
-  return slug.includes("medicine") || name.includes("medicine");
-});
-
-
   useEffect(() => {
     const hash = window.location.hash;
     if (hash === "#reviews") {
@@ -981,17 +972,7 @@ const isMedicine = categories.some((cat) => {
                                       >
                                         {t("Buy Now")}
                                       </button>
-                                    
-                                      {isMedicine && (
-                                        <button
-                                          className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-purple-600 bg-white hover:bg-purple-600 hover:text-white text-purple-600 py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
-                                          onClick={() => console.log("Upload Prescription clicked", product._id)}
-                                        >
-                                          Upload Prescription
-                                        </button>
-                                      )}
                                     </div>
-
                                   </div>
                                 </div>
                               </div>
@@ -1007,48 +988,48 @@ const isMedicine = categories.some((cat) => {
              
               {/* related products */}
         {showProduct?.length >= 2 && (
-  <div className="pt-10 lg:pt-20 lg:pb-10">
-    <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
-      {t("common:relatedProducts")}
-    </h3>
+                    <div className="pt-10 lg:pt-20 lg:pb-10">
+                    <h3 className="leading-7 text-lg lg:text-xl mb-3 font-semibold hover:text-gray-600">
+                      {t("common:relatedProducts")}
+                    </h3>
+                
+                    <div className="w-full">
+                      <div
+                        className="
+                          grid
+                          grid-cols-2
+                          sm:grid-cols-3
+                          md:grid-cols-4
+                          lg:grid-cols-5
+                          xl:grid-cols-5
+                          2xl:grid-cols-5
+                          gap-3
+                        "
+                      >
+                        {showProduct?.slice(1, 13).map((product, i) => (
+                          <ProductCard
+                            key={product._id}
+                            product={product}
+                            attributes={attributes}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-    <div className="w-full">
-      <div
-        className="
-          grid
-          grid-cols-2
-          sm:grid-cols-3
-          md:grid-cols-4
-          lg:grid-cols-5
-          xl:grid-cols-5
-          2xl:grid-cols-5
-          gap-3
-        "
-      >
-        {showProduct?.slice(1, 13).map((product, i) => (
-          <ProductCard
-            key={product._id}
-            product={product}
-            attributes={attributes}
-          />
-        ))}
-      </div>
-    </div>
-  </div>
-)}
-
-{/* Reviews Section */}
-<>
-  <section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
-    <Review
-      product={product}
-      customer={userInfo}
-      order={order}
-      ratings={ratings}
-    />
-    <ReviewList reviews={ratings} />
-  </section>
-</>
+            {/* Reviews Section */}
+            <>
+              <section id="reviews" className="mt-8 sm:mt-10 lg:mt-12">
+                <Review
+                  product={product}
+                  customer={userInfo}
+                  order={order}
+                  ratings={ratings}
+                />
+                <ReviewList reviews={ratings} />
+              </section>
+            </>
 
              </div>
           </div>
