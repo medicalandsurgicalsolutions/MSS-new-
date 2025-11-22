@@ -158,7 +158,7 @@ const NavbarPromo = () => {
 
             {/* MEDICINE (STATIC LINK) */}
             <Link
-              href="/medicine"
+              href="/medicine?from=medicine"
               onClick={() => setIsLoading(!isLoading)}
               className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
