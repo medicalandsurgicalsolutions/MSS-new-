@@ -172,6 +172,11 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
 
   const [order, setOrder] = useState();
 
+  const showPrescriptionBtn =
+    product?.category?.slug?.toLowerCase().includes("medicine") ||
+    product?.category?.name?.toLowerCase().includes("medicine");
+
+
   useEffect(() => {
     const hash = window.location.hash;
     if (hash === "#reviews") {
@@ -556,10 +561,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                       productImage={product.image[0]} // Replace with your image path
                       watermarkImage={storeCustomizationSetting?.navbar?.logo} // Replace with your logo path
                   /> */}
-                  
                     
-
-                            
                   <div className="w-full">
                     <div className=" md:flex flex-col-reverse md:flex-row lg:flex-row xl:flex-row">
                      <div className="xl:pr-6 md:pr-6 w-full md:w-2/3 mob-w-full">
