@@ -22,8 +22,8 @@ const NavbarPromo = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
 
-  // ❌ Block dropdown for these menu names
-  const blockedMenus = ["Medicine", "Medicines", "New Arrivals"];
+  // ✅ Normalize all to lowercase for perfect matching
+  const blockedMenus = ["medicine", "medicines", "new arrivals"];
 
   const handleSubNestedCategory = (id, categoryName) => {
     router.push(
@@ -49,9 +49,9 @@ const NavbarPromo = () => {
     string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
 
   const handleMouseEnter = (index, e) => {
-    const name = data[0]?.children?.[index]?.name?.en;
+    const name = data[0]?.children?.[index]?.name?.en?.toLowerCase();
 
-    // ❌ Prevent dropdown for Medicine
+    // ❌ Absolutely block dropdown for Medicine
     if (blockedMenus.includes(name)) return;
 
     const hasChildren = data[0]?.children?.[index]?.children?.length;
@@ -97,7 +97,7 @@ const NavbarPromo = () => {
 
             {/* CATEGORY LOOP */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => {
-              const name = category?.name?.en;
+              const name = category?.name?.en?.toLowerCase();
 
               return (
                 <div
@@ -110,12 +110,16 @@ const NavbarPromo = () => {
                   }}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2">
-                    <div className="font-medium">
+                  <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer">
+                    <Link
+                      href={`/search?category=${name}`}
+                      onClick={() => setIsLoading(!isLoading)}
+                      className="font-medium"
+                    >
                       {capitalizeWords(name)}
-                    </div>
+                    </Link>
 
-                    {/* ARROW ONLY IF NOT BLOCKED */}
+                    {/* ARROW ONLY IF DROPDOWN ALLOWED */}
                     {category?.children?.length > 0 &&
                       !blockedMenus.includes(name) && (
                         <div className="group-hover:rotate-180 duration-200 py-2">
@@ -140,7 +144,7 @@ const NavbarPromo = () => {
               );
             })}
 
-            {/* STATIC MEDICINES (NO DROPDOWN) */}
+            {/* STATIC MEDICINES LINK */}
             <Link
               href="/medicine"
               onClick={() => setIsLoading(!isLoading)}
