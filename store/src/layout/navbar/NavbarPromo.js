@@ -22,7 +22,7 @@ const NavbarPromo = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
 
-  // ✅ Normalize all to lowercase for perfect matching
+  // BLOCK dropdown for these names
   const blockedMenus = ["medicine", "medicines", "new arrivals"];
 
   const handleSubNestedCategory = (id, categoryName) => {
@@ -51,7 +51,7 @@ const NavbarPromo = () => {
   const handleMouseEnter = (index, e) => {
     const name = data[0]?.children?.[index]?.name?.en?.toLowerCase();
 
-    // ❌ Absolutely block dropdown for Medicine
+    // BLOCK dropdown for Medicine
     if (blockedMenus.includes(name)) return;
 
     const hasChildren = data[0]?.children?.[index]?.children?.length;
@@ -98,19 +98,19 @@ const NavbarPromo = () => {
             {/* CATEGORY LOOP */}
             {data[0]?.children?.slice(0, 6)?.map((category, index) => {
               const name = category?.name?.en?.toLowerCase();
+              const isMedicine = blockedMenus.includes(name);
 
               return (
                 <div
                   key={index}
                   className="relative group py-2"
                   onMouseEnter={(e) => {
-                    if (!blockedMenus.includes(name)) {
-                      handleMouseEnter(index, e);
-                    }
+                    if (!isMedicine) handleMouseEnter(index, e);
                   }}
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer">
+                    {/* Always clickable */}
                     <Link
                       href={`/search?category=${name}`}
                       onClick={() => setIsLoading(!isLoading)}
@@ -119,32 +119,31 @@ const NavbarPromo = () => {
                       {capitalizeWords(name)}
                     </Link>
 
-                    {/* ARROW ONLY IF DROPDOWN ALLOWED */}
-                    {category?.children?.length > 0 &&
-                      !blockedMenus.includes(name) && (
-                        <div className="group-hover:rotate-180 duration-200 py-2">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            strokeWidth={1.5}
-                            stroke="currentColor"
-                            className="size-3"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                            />
-                          </svg>
-                        </div>
-                      )}
+                    {/* Arrow only when NOT medicine */}
+                    {category?.children?.length > 0 && !isMedicine && (
+                      <div className="group-hover:rotate-180 duration-200 py-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-3"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
             })}
 
-            {/* STATIC MEDICINES LINK */}
+            {/* STATIC MEDICINES LINK IF NEEDED */}
             <Link
               href="/medicine"
               onClick={() => setIsLoading(!isLoading)}
