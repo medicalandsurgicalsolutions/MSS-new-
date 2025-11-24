@@ -128,23 +128,11 @@ const NavbarPromo = () => {
 
               {/* DROPDOWN */}
               {hoveredCategory === index && category?.children?.length > 0 && (
-                <div
-                  className="absolute bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 
-                  z-[50] rounded-md pointer-events-none"
-                  style={{
-                    minWidth: "200px",
-                    marginTop: "8px",
-                  }}
-                >
-                  <div
-                    className="pointer-events-auto"
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: `repeat(${Math.ceil(
-                        category.children.length / 8
-                      )}, auto)`,
-                    }}
-                  >
+           <div className="absolute bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md" 
+                style={{ minWidth: "200px", marginTop: "8px">
+
+                  <div style={{ display: "grid", gridTemplateColumns: repeat(${Math.ceil( category.children.length / 8 )}, auto), }} >
+                                    
                     {category.children.map((subCategory, subIndex) => (
                       <div className="border-b border-white/30" key={subIndex}>
                         <div
