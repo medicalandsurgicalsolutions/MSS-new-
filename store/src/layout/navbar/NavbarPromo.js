@@ -58,6 +58,7 @@ const NavbarPromo = () => {
       left: rect.left + "px",
       minWidth: rect.width + "px",
       width: "auto",
+      zIndex: 9999,
     });
   };
 
@@ -79,7 +80,7 @@ const NavbarPromo = () => {
             </span>
           </Link>
 
-          {/* Subtitle (Quick Delivery / New Arrivals) */}
+          {/* Subtitle */}
           {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
             <Link
               href="/search?query=latest"
@@ -92,7 +93,7 @@ const NavbarPromo = () => {
             </Link>
           )}
 
-          {/* Categories (first 6) */}
+          {/* Categories */}
           {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
             <div
               key={index}
@@ -107,6 +108,7 @@ const NavbarPromo = () => {
                 <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   {capitalizeWords(category?.name?.en)}
                 </div>
+
                 {category?.children && (
                   <div className="group-hover:rotate-180 duration-200 py-2">
                     <svg
@@ -126,6 +128,30 @@ const NavbarPromo = () => {
                   </div>
                 )}
               </div>
+
+              {/* ⬇️ DROPDOWN RENDER FIXED */}
+              {hoveredCategory === index &&
+                category?.children?.length > 0 && (
+                  <div
+                    className="absolute bg-white shadow-lg border rounded-md p-3 z-50"
+                    style={dropdownStyle}
+                  >
+                    {category.children.map((sub) => (
+                      <div
+                        key={sub._id}
+                        className="py-1 px-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap"
+                        onClick={() =>
+                          handleSubCategory(
+                            sub?._id,
+                            showingTranslateValue(sub?.name)
+                          )
+                        }
+                      >
+                        {capitalizeWords(sub?.name?.en)}
+                      </div>
+                    ))}
+                  </div>
+                )}
             </div>
           ))}
 
