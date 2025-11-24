@@ -24,7 +24,8 @@ const NavbarPromo = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
 
-  const nonDropdownMenus = ["Medicines", "Medicine", "Buy In Bulk", "New Arrivals"];
+  // ❌ No Dropdown for these
+  const blockedMenus = ["Medicines", "Medicine", "New Arrivals"];
 
   const handleSubNestedCategory = (id, categoryName) => {
     router.push(
@@ -50,8 +51,17 @@ const NavbarPromo = () => {
     string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
 
   const handleMouseEnter = (index, e) => {
+    const categoryName = data[0]?.children?.[index]?.name?.en;
+
+    // ❌ Block dropdown completely
+    if (blockedMenus.includes(categoryName)) return;
+
+    const hasChildren = data[0]?.children?.[index]?.children?.length;
+    if (!hasChildren) return;
+
     const rect = e.currentTarget.getBoundingClientRect();
     setHoveredCategory(index);
+
     setDropdownStyle({
       position: "absolute",
       top: rect.bottom + window.scrollY + "px",
@@ -87,57 +97,65 @@ const NavbarPromo = () => {
               </Link>
             )}
 
-            {/* CATEGORY LOOP */}
-            {data[0]?.children?.slice(0, 6)?.map((category, index) => (
-              <div
-                key={index}
-                className="relative cursor-pointer group py-2"
-                onMouseEnter={(e) => handleMouseEnter(index, e)}
-                onMouseLeave={handleMouseLeave}
-              >
-                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                  <div className="font-medium relative">
-                    {capitalizeWords(category?.name?.en)}
-                  </div>
+            {/* ---------------- CATEGORY LOOP ---------------- */}
+            {data[0]?.children
+              ?.filter((cat) => cat?.name?.en !== "Medicine") // ❌ Remove Medicine from list
+              ?.slice(0, 6)
+              ?.map((category, index) => {
+                const name = category?.name?.en;
+                const hasChildren = category?.children?.length > 0;
+                const showArrow = hasChildren && !blockedMenus.includes(name);
 
-                  {/* FIXED ARROW CONDITION */}
-                  {category?.children?.length > 0 &&
-                    !nonDropdownMenus.includes(category?.name?.en) && (
-                      <div className="group-hover:rotate-180 duration-200 py-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                          />
-                        </svg>
+                return (
+                  <div
+                    key={index}
+                    className="relative cursor-pointer group py-2"
+                    onMouseEnter={(e) => handleMouseEnter(index, e)}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+                      <div className="font-medium relative">
+                        {capitalizeWords(name)}
                       </div>
-                    )}
-                </div>
-              </div>
-            ))}
 
-            {/* MEDICINES (NO DROPDOWN, NO ARROW) */}
+                      {/* ✔ Arrow only for real dropdowns */}
+                      {showArrow && (
+                        <div className="group-hover:rotate-180 duration-200 py-2">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            className="size-3"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                            />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+
+            {/* ✔ Static Medicines (NO DROPDOWN) */}
             <Link
               href="/medicine"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
             >
               Medicines
             </Link>
 
-            {/* BUY IN BULK */}
+            {/* ✔ Buy in Bulk */}
             <Link
               href="/contact-us"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
             >
               Buy In Bulk
             </Link>
@@ -145,7 +163,7 @@ const NavbarPromo = () => {
         </div>
       </div>
 
-      {/* DROPDOWN RENDER */}
+      {/* ---------------- DROPDOWN MENU ---------------- */}
       {hoveredCategory !== null &&
         data[0]?.children?.[hoveredCategory]?.children &&
         createPortal(
