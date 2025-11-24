@@ -79,7 +79,7 @@ const NavbarPromo = () => {
             </span>
           </Link>
 
-          {/* Subtitle (Quick Delivery / New Arrivals) */}
+          {/* Subtitle */}
           {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
             <Link
               href="/search?query=latest"
@@ -94,80 +94,80 @@ const NavbarPromo = () => {
 
           {/* Categories (first 6) */}
           {data[0]?.children?.slice(0, 6)?.map((category, index) => (
-  <div
-    key={index}
-    className="relative cursor-pointer group py-2"
-    onMouseEnter={(e) => handleMouseEnter(index, e)}
-    onMouseLeave={handleMouseLeave}
-  >
-    {/* CATEGORY TITLE */}
-    <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-      <div className="font-medium relative">
-        {capitalizeWords(category?.name?.en)}
-      </div>
+            <div
+              key={index}
+              className="relative cursor-pointer group py-2"
+              onMouseEnter={(e) => handleMouseEnter(index, e)}
+              onMouseLeave={handleMouseLeave}
+            >
+              {/* CATEGORY TITLE */}
+              <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+                <div className="font-medium relative">
+                  {capitalizeWords(category?.name?.en)}
+                </div>
 
-      {category?.children && (
-        <div className="group-hover:rotate-180 duration-200 py-2">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="size-3"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="m19.5 8.25-7.5 7.5-7.5-7.5"
-            />
-          </svg>
-        </div>
-      )}
-    </div>
-
-    {/* ---------------- DROPDOWN BELOW CATEGORY ---------------- */}
-    {hoveredCategory === index && category?.children?.length > 0 && (
-      <div
-        className="absolute bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 z-[9999] rounded-md"
-        style={{
-          minWidth: "200px",
-          marginTop: "8px", // category ke neeche thoda gap
-        }}
-      >
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${Math.ceil(
-              category.children.length / 8
-            )}, auto)`,
-          }}
-        >
-          {category.children.map((subCategory, subIndex) => (
-            <div className="border-b border-white/30" key={subIndex}>
-              <div
-                className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
-                transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleSubNestedCategory(
-                    subCategory?._id,
-                    showingTranslateValue(subCategory?.name)
-                  );
-                }}
-              >
-                {subCategory?.name?.en}
+                {category?.children && (
+                  <div className="group-hover:rotate-180 duration-200 py-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="size-3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                      />
+                    </svg>
+                  </div>
+                )}
               </div>
+
+              {/* DROPDOWN */}
+              {hoveredCategory === index && category?.children?.length > 0 && (
+                <div
+                  className="absolute bg-cyan-500/95 text-white shadow-lg p-4 gap-y-2 gap-x-6 
+                  z-[50] rounded-md pointer-events-none"
+                  style={{
+                    minWidth: "200px",
+                    marginTop: "8px",
+                  }}
+                >
+                  <div
+                    className="pointer-events-auto"
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: `repeat(${Math.ceil(
+                        category.children.length / 8
+                      )}, auto)`,
+                    }}
+                  >
+                    {category.children.map((subCategory, subIndex) => (
+                      <div className="border-b border-white/30" key={subIndex}>
+                        <div
+                          className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
+                          transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleSubNestedCategory(
+                              subCategory?._id,
+                              showingTranslateValue(subCategory?.name)
+                            );
+                          }}
+                        >
+                          {subCategory?.name?.en}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
-        </div>
-      </div>
-    )}
-    {/* ---------------- END DROPDOWN ---------------- */}
-  </div>
-))}
 
-  
           {/* Medicines */}
           <Link
             href="/medicine"
@@ -197,3 +197,4 @@ const NavbarPromo = () => {
 };
 
 export default NavbarPromo;
+
