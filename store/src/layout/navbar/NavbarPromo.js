@@ -95,44 +95,53 @@ const NavbarPromo = () => {
 
           {/* Categories */}
          {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
-            <div
-              key={index}
-              className="relative group py-2"
-              onMouseEnter={() => setHoveredCategory(index)}
-              onMouseLeave={() => setHoveredCategory(null)}
-            >
-              {/* category title */}
-              <div
-                className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer"
-                onClick={() =>
-                  handleSubCategory(category?._id, showingTranslateValue(category?.name))
-                }
-              >
-                <div className="font-medium">
-                  {capitalizeWords(category?.name?.en)}
-                </div>
-          
-                {category?.children?.length > 0 && (
-                  <div className="group-hover:rotate-180 duration-200 py-2">
-                    ▼
-                  </div>
-                )}
-              </div>
-          
-              {/* 🔥 Dropdown directly below category */}
-             {hoveredCategory === index && category?.children?.length > 0 && (
-                <div className="absolute left-0 top-full mt-2 bg-white border border-cyan-600 shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-lg 
-                       p-4 z-50 grid grid-cols-2 gap-3 min-w-[280px]">
-                  {category.children.map((sub) => (
-                    <div key={sub._id}
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer rounded whitespace-nowrap"
-                      onClick={() =>
-                        handleSubCategory(sub?._id, showingTranslateValue(sub?.name))}>
-                      {capitalizeWords(sub?.name?.en)}
-                    </div>
-                  ))}
-                </div>
-              )}
+  <div
+    key={index}
+    className="relative group py-2"
+    onMouseEnter={() => setHoveredCategory(index)}
+    onMouseLeave={() => setHoveredCategory(null)}
+  >
+    {/* category title */}
+    <div
+      className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer"
+      onClick={() =>
+        handleSubCategory(category?._id, showingTranslateValue(category?.name))
+      }
+    >
+      <div className="font-medium">
+        {capitalizeWords(category?.name?.en)}
+      </div>
+
+      {category?.children?.length > 0 && (
+        <div className="group-hover:rotate-180 duration-200 py-2">
+          ▼
+        </div>
+      )}
+    </div>
+
+    {/* Dropdown */}
+    {hoveredCategory === index && category?.children?.length > 0 && (
+      <div className="
+        absolute left-0 top-full mt-2 bg-white border border-cyan-600 
+        shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-lg p-4 z-50 
+        grid grid-cols-2 gap-3 min-w-[280px]"
+      >
+        {category.children.map((sub) => (
+          <div
+            key={sub._id}
+            className="px-2 py-1 hover:bg-gray-100 cursor-pointer rounded whitespace-nowrap"
+            onClick={() =>
+              handleSubCategory(sub?._id, showingTranslateValue(sub?.name))
+            }
+          >
+            {capitalizeWords(sub?.name?.en)}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+))}
+
 
           {/* Medicines */}
           <Link
