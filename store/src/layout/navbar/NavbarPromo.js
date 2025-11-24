@@ -94,53 +94,84 @@ const NavbarPromo = () => {
           )}
 
           {/* Categories */}
-         {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+             {/* CATEGORY LOOP */}
+{data[0]?.children?.slice(0, 6)?.map((category, index) => (
   <div
     key={index}
-    className="relative group py-2"
+    className="relative cursor-pointer group py-2"
     onMouseEnter={() => setHoveredCategory(index)}
-    onMouseLeave={() => setHoveredCategory(null)}
+    onMouseLeave={handleMouseLeave}
   >
-    {/* category title */}
-    <div
-      className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer"
-      onClick={() =>
-        handleSubCategory(category?._id, showingTranslateValue(category?.name))
-      }
-    >
-      <div className="font-medium">
+    {/* Category Title */}
+    <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+      <div className="font-medium relative">
         {capitalizeWords(category?.name?.en)}
       </div>
 
       {category?.children?.length > 0 && (
         <div className="group-hover:rotate-180 duration-200 py-2">
-          ▼
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="size-3"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </svg>
         </div>
       )}
     </div>
 
-    {/* Dropdown */}
+    {/* 🔥 SAME PORTAL STYLE — NOW NORMAL DROPDOWN */}
     {hoveredCategory === index && category?.children?.length > 0 && (
-      <div className="
-        absolute left-0 top-full mt-2 bg-white border border-cyan-600 
-        shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-lg p-4 z-50 
-        grid grid-cols-2 gap-3 min-w-[280px]"
+      <div
+        className="
+          absolute left-0 top-full mt-2 
+          bg-cyan-500/95 text-white shadow-lg
+          p-4 rounded-md z-[9999]
+        "
       >
-        {category.children.map((sub) => (
-          <div
-            key={sub._id}
-            className="px-2 py-1 hover:bg-gray-100 cursor-pointer rounded whitespace-nowrap"
-            onClick={() =>
-              handleSubCategory(sub?._id, showingTranslateValue(sub?.name))
-            }
-          >
-            {capitalizeWords(sub?.name?.en)}
-          </div>
-        ))}
+        <div
+          className="grid gap-y-2 gap-x-6"
+          style={{
+            gridTemplateColumns: `repeat(${Math.ceil(
+              category.children.length / 8
+            )}, auto)`
+          }}
+        >
+          {category.children.map((sub, subIndex) => (
+            <div className="border-b border-white/30" key={subIndex}>
+              <div
+                className="
+                  block px-1 py-1 text-sm font-semibold 
+                  cursor-pointer whitespace-nowrap 
+                  transition-all duration-200 
+                  hover:text-yellow-300 hover:translate-x-1.5
+                "
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSubNestedCategory(
+                    sub?._id,
+                    showingTranslateValue(sub?.name)
+                  );
+                }}
+              >
+                {sub?.name?.en}
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     )}
   </div>
 ))}
+
 
 
           {/* Medicines */}
