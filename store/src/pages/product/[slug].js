@@ -955,33 +955,31 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                         </span>
                                       </button>
                                     </div>
-                                    <div className="flex gap-3 md:flex-col">
-                                      <button
-                                        onClick={() => handleAddToCart(product)}
-                                        className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold  text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
-                                      >
-                                        {t("common:addToCart")}
-                                        {/* <span className="rounded-lg font-bold py-2 px-3">
-                                      {`${currency}${(item * price).toFixed(
-                                        2
-                                      )}`}
-                                    </span> */}
-                                      </button>
-                                     <button
-                                        // onClick={() => handleAddToCart(product)}
-                                        className="
-                                          text-sm leading-4 inline-flex items-center cursor-pointer
-                                          transition ease-in-out duration-300 font-semibold font-serif
-                                          text-center justify-center rounded-md focus-visible:outline-none
-                                          focus:outline-none px-2 border border-cyan-600 bg-white
-                                          hover:bg-cyan-600 hover:text-white text-cyan-600
-                                          py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10
-                                        "
-                                        onClick={(event) => handleAddItems(event, product)}
-                                      >
-                                        {t("Buy Now")}
-                                      </button>
-                                    </div>
+                                   <div className="flex flex-col gap-3 md:flex-col">
+                                    <button onClick={() => handleAddToCart(product)}
+                                      className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center rounded-md focus-visible:outline-none focus:outline-none px-2 border border-cyan-600 bg-cyan-600 hover:bg-white hover:text-black text-white py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10">
+                                      {t("common:addToCart")}
+                                    </button>
+                                  
+                                    <button className="
+                                        text-sm leading-4 inline-flex items-center cursor-pointer
+                                        transition ease-in-out duration-300 font-semibold font-serif
+                                        text-center justify-center rounded-md focus-visible:outline-none
+                                        focus:outline-none px-2 border border-cyan-600 bg-white
+                                        hover:bg-cyan-600 hover:text-white text-cyan-600
+                                        py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                        onClick={(event) => handleAddItems(event, product)}>
+                                      {t("Buy Now")}
+                                    </button>
+                                  
+                                    {/* Upload Prescription Button */}
+                                    <button className="text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold font-serif text-center justify-center rounded-md focus-visible:outline-none
+                                        focus:outline-none px-2 border border-orange-500 bg-white hover:bg-orange-500 hover:text-white text-orange-500 py-4 md:py-3.5 lg:py-4 w-full md:h-12 h-10"
+                                        onClick={() => router.push("/upload-prescription")}>
+                                        Upload Prescription
+                                              </button>
+                                          </div>
+
                                   </div>
                                 </div>
                               </div>
