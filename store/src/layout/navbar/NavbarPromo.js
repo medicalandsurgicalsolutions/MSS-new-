@@ -7,23 +7,22 @@ import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { getUserSession } from "@lib/auth";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
 import { useRouter } from "next/router";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
-  const { storeCustomizationSetting } = useGetSetting();
+  const { lang, storeCustomizationSetting } = useGetSetting();
   const { isLoading, setIsLoading } = useContext(SidebarContext);
   const router = useRouter();
   const { showingTranslateValue } = useUtilsFunction();
+  const currentLanguage = Cookies.get("_curr_lang") || null;
   const { data } = useAsync(() => CategoryServices.getShowingCategory());
 
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
-
-  // BLOCK dropdown for these names
-  const blockedMenus = ["medicine", "medicines", "new arrivals"];
 
   const handleSubNestedCategory = (id, categoryName) => {
     router.push(
@@ -49,17 +48,8 @@ const NavbarPromo = () => {
     string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
 
   const handleMouseEnter = (index, e) => {
-    const name = data[0]?.children?.[index]?.name?.en?.toLowerCase();
-
-    // BLOCK dropdown for Medicine
-    if (blockedMenus.includes(name)) return;
-
-    const hasChildren = data[0]?.children?.[index]?.children?.length;
-    if (!hasChildren) return;
-
     const rect = e.currentTarget.getBoundingClientRect();
     setHoveredCategory(index);
-
     setDropdownStyle({
       position: "absolute",
       top: rect.bottom + window.scrollY + "px",
@@ -75,12 +65,12 @@ const NavbarPromo = () => {
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
-          <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] lg:text-[12px] xl:text-[14px]">
+          <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
 
             <Link
               href="/"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
               Home
             </Link>
@@ -89,65 +79,51 @@ const NavbarPromo = () => {
               <Link
                 href="/search?query=latest"
                 onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
+                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
               >
                 {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
               </Link>
             )}
 
             {/* CATEGORY LOOP */}
-            {data[0]?.children?.slice(0, 6)?.map((category, index) => {
-              const name = category?.name?.en?.toLowerCase();
-              const isMedicine = blockedMenus.includes(name);
-
-              return (
-                <div
-                  key={index}
-                  className="relative group py-2"
-                  onMouseEnter={(e) => {
-                    if (!isMedicine) handleMouseEnter(index, e);
-                  }}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer">
-                    {/* Always clickable */}
-                    <Link
-                      href={`/search?category=${name}`}
-                      onClick={() => setIsLoading(!isLoading)}
-                      className="font-medium"
-                    >
-                      {capitalizeWords(name)}
-                    </Link>
-
-                    {/* Arrow only when NOT medicine */}
-                    {category?.children?.length > 0 && !isMedicine && (
-                      <div className="group-hover:rotate-180 duration-200 py-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          strokeWidth={1.5}
-                          stroke="currentColor"
-                          className="size-3"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                          />
-                        </svg>
-                      </div>
-                    )}
+            {data[0]?.children?.slice(0, 6)?.map((category, index) => (
+              <div
+                key={index}
+                className="relative cursor-pointer group py-2"
+                onMouseEnter={(e) => handleMouseEnter(index, e)}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+                  <div className="font-medium relative">
+                    {capitalizeWords(category?.name?.en)}
                   </div>
-                </div>
-              );
-            })}
 
-            {/* STATIC MEDICINES LINK IF NEEDED */}
+                  {category?.children && (
+                    <div className="group-hover:rotate-180 duration-200 py-2">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="size-3"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                        />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+
             <Link
               href="/medicine"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
               Medicines
             </Link>
@@ -155,7 +131,7 @@ const NavbarPromo = () => {
             <Link
               href="/contact-us"
               onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 hover:text-emerald-600"
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
             >
               Buy In Bulk
             </Link>
@@ -163,7 +139,7 @@ const NavbarPromo = () => {
         </div>
       </div>
 
-      {/* DROPDOWN */}
+      {/* DROPDOWN RENDER */}
       {hoveredCategory !== null &&
         data[0]?.children?.[hoveredCategory]?.children &&
         createPortal(
@@ -185,7 +161,8 @@ const NavbarPromo = () => {
                 (subCategory, subIndex) => (
                   <div className="border-b border-white/30" key={subIndex}>
                     <div
-                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
+                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
+                      transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
                       onClick={(event) => {
                         event.stopPropagation();
                         handleSubNestedCategory(
