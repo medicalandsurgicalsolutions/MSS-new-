@@ -61,6 +61,10 @@ const NavbarPromo = () => {
 
   const handleMouseLeave = () => setHoveredCategory(null);
 
+  const handleSubCategory = (id, name) => {
+    handleSubNestedCategory(id, name);
+  };
+
   return (
     <>
       <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
@@ -94,12 +98,14 @@ const NavbarPromo = () => {
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                <div className="font-medium relative cursor-pointer"
-                  onClick={() =>
-                    handleSubCategory(category?._id, showingTranslateValue(category?.name))}>
-                  {capitalizeWords(category?.name?.en)}
-                </div>
-
+                  <div
+                    className="font-medium relative cursor-pointer"
+                    onClick={() =>
+                      handleSubCategory(category?._id, showingTranslateValue(category?.name))
+                    }
+                  >
+                    {capitalizeWords(category?.name?.en)}
+                  </div>
 
                   {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
@@ -123,13 +129,31 @@ const NavbarPromo = () => {
               </div>
             ))}
 
-            <Link
-              href="/medicine"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+            {/* Medicines now behaves like category */}
+            <div
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 cursor-pointer"
+              onClick={() => {
+                const medicineCategory = data[0]?.children?.find(
+                  (cat) =>
+                    showingTranslateValue(cat?.name)
+                      .toLowerCase()
+                      .includes("medicine")
+                );
+
+                if (medicineCategory) {
+                  handleSubNestedCategory(
+                    medicineCategory?._id,
+                    showingTranslateValue(medicineCategory?.name)
+                  );
+                } else {
+                  router.push("/medicine"); // fallback
+                }
+
+                setIsLoading(!isLoading);
+              }}
             >
               Medicines
-            </Link>
+            </div>
 
             <Link
               href="/contact-us"
