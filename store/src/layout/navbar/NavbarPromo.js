@@ -94,66 +94,50 @@ const NavbarPromo = () => {
           )}
 
           {/* Categories */}
-          {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
-            <div
-              key={index}
-              className="relative cursor-pointer group py-2"
-              onMouseEnter={(e) => handleMouseEnter(index, e)}
-              onMouseLeave={handleMouseLeave}
-              onClick={() =>
-                handleSubCategory(category?._id, showingTranslateValue(category?.name))
-              }
-            >
-              <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
-                  {capitalizeWords(category?.name?.en)}
-                </div>
+        {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+  <div
+    key={index}
+    className="relative group py-2"
+    onMouseEnter={() => setHoveredCategory(index)}
+    onMouseLeave={() => setHoveredCategory(null)}
+  >
+    {/* category title */}
+    <div
+      className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer"
+      onClick={() =>
+        handleSubCategory(category?._id, showingTranslateValue(category?.name))
+      }
+    >
+      <div className="font-medium">
+        {capitalizeWords(category?.name?.en)}
+      </div>
 
-                {category?.children && (
-                  <div className="group-hover:rotate-180 duration-200 py-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="size-3"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                      />
-                    </svg>
-                  </div>
-                )}
-              </div>
+      {category?.children?.length > 0 && (
+        <div className="group-hover:rotate-180 duration-200 py-2">
+          ▼
+        </div>
+      )}
+    </div>
 
-              {/* ⬇️ DROPDOWN RENDER FIXED */}
-              {hoveredCategory === index &&
-                category?.children?.length > 0 && (
-                  <div
-                    className="absolute bg-white shadow-lg border rounded-md p-3 z-50"
-                    style={dropdownStyle}
-                  >
-                    {category.children.map((sub) => (
-                      <div
-                        key={sub._id}
-                        className="py-1 px-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap"
-                        onClick={() =>
-                          handleSubCategory(
-                            sub?._id,
-                            showingTranslateValue(sub?.name)
-                          )
-                        }
-                      >
-                        {capitalizeWords(sub?.name?.en)}
-                      </div>
-                    ))}
-                  </div>
-                )}
-            </div>
-          ))}
+    {/* 🔥 Dropdown directly below category */}
+    {hoveredCategory === index && category?.children?.length > 0 && (
+      <div className="absolute left-0 top-full bg-white shadow-lg border rounded-md p-3 w-max z-50">
+        {category.children.map((sub) => (
+          <div
+            key={sub._id}
+            className="py-1 px-2 hover:bg-gray-100 cursor-pointer whitespace-nowrap"
+            onClick={() =>
+              handleSubCategory(sub?._id, showingTranslateValue(sub?.name))
+            }
+          >
+            {capitalizeWords(sub?.name?.en)}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
+))}
+
 
           {/* Medicines */}
           <Link
