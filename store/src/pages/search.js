@@ -66,7 +66,8 @@ const Search = ({ products, attributes, brands, categories, departments, nextPag
     if (slug) params.set("slug", slug); 
     if (_id) params.set("_id", _id); 
     if (page !== undefined) params.set("page", page); // Include page only if defined
-    await router.push(/search?${params.toString()}); 
+      await router.push(`/search?${params.toString()}`);
+
       // await router.push(/search?query=${query}&category=${queryCategory}&title=${title}&slug=${slug}&page=${page}); };
 
       useEffect(() => { 
