@@ -98,7 +98,7 @@ const NavbarPromo = () => {
                     {capitalizeWords(category?.name?.en)}
                   </div>
 
-                  {category?.children && (
+                {category?.children?.length > 0 && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
