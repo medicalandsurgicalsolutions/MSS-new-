@@ -6,9 +6,9 @@ import { notifyError } from "@utils/toast";
 import useGetSetting from "@hooks/useGetSetting";
 import { SidebarContext } from "@context/SidebarContext";
 import useUtilsFunction from "@hooks/useUtilsFunction";
+import { useRouter } from "next/router";
 import useAsync from "@hooks/useAsync";
 import CategoryServices from "@services/CategoryServices";
-import { useRouter } from "next/router";
 
 const NavbarPromo = () => {
   const [languages, setLanguages] = useState([]);
@@ -20,13 +20,17 @@ const NavbarPromo = () => {
   const { data = [] } = useAsync(() => CategoryServices.getShowingCategory());
 
   const [hoveredCategory, setHoveredCategory] = useState(null);
+  const [dropdownStyle, setDropdownStyle] = useState({});
 
   const handleSubNestedCategory = (id, categoryName) => {
-    router.push(
-      `/search?category=${categoryName
-        .toLowerCase()
-        .replace(/[^A-Z0-9]+/gi, "-")}&_id=${id}`
-    );
+    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+    router.push(`/search?category=${name}&_id=${id}`);
+    setIsLoading(!isLoading);
+  };
+
+  const handleSubCategory = (id, categoryName) => {
+    const name = categoryName.toLowerCase().replace(/[^A-Z0-9]+/gi, "-");
+    router.push(`/search?category=${name}&_id=${id}`);
     setIsLoading(!isLoading);
   };
 
@@ -41,114 +45,120 @@ const NavbarPromo = () => {
     })();
   }, []);
 
-  const capitalizeWords = (string) =>
-    string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
+  const capitalizeWords = (string) => {
+    return string?.toLowerCase()?.replace(/\b\w/g, (char) => char.toUpperCase());
+  };
+
+  const handleMouseEnter = (index, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    setHoveredCategory(index);
+    setDropdownStyle({
+      position: "absolute",
+      top: rect.bottom + window.scrollY + "px",
+      left: rect.left + "px",
+      minWidth: rect.width + "px",
+      width: "auto",
+      zIndex: 9999,
+    });
+  };
+
+  const handleMouseLeave = () => setHoveredCategory(null);
 
   return (
-    <>
-      <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
-          <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
+    <div className="hidden lg:block xl:block bg-gray-100 border-b text-sm text-black">
+      <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 lg:px-8 relative">
+        <div className="flex items-center justify-center flex-nowrap text-sm sm:text-[13px] md:text-[8px] lg:text-[12px] xl:text-[14px]">
 
-            <Link
-              href="/"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-            >
+          {/* Home */}
+          <Link
+            href="/"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600 snap-start"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
               Home
-            </Link>
+            </span>
+          </Link>
 
-            {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
-              <Link
-                href="/search?query=latest"
-                onClick={() => setIsLoading(!isLoading)}
-                className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-              >
+          {/* Subtitle */}
+          {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en && (
+            <Link
+              href="/search?query=latest"
+              onClick={() => setIsLoading(!isLoading)}
+              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+            >
+              <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                 {storeCustomizationSetting?.home?.quick_delivery_subtitle?.en}
-              </Link>
-            )}
+              </span>
+            </Link>
+          )}
 
-            {/* CATEGORY LOOP */}
-            {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+          {/* Categories */}
+         {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+            <div
+              key={index}
+              className="relative group py-2"
+              onMouseEnter={() => setHoveredCategory(index)}
+              onMouseLeave={() => setHoveredCategory(null)}
+            >
+              {/* category title */}
               <div
-                key={index}
-                className="relative group py-2 cursor-pointer"
-                onMouseEnter={() => setHoveredCategory(index)}
-                onMouseLeave={() => setHoveredCategory(null)}
+                className="mx-4 hover:text-emerald-600 flex items-center space-x-2 cursor-pointer"
+                onClick={() =>
+                  handleSubCategory(category?._id, showingTranslateValue(category?.name))
+                }
               >
-                <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2">
-                  <div className="font-medium">
-                    {capitalizeWords(category?.name?.en)}
-                  </div>
-
-                  {category?.children && (
-                    <div className="group-hover:rotate-180 duration-200 py-2">
-                      ▼
-                    </div>
-                  )}
+                <div className="font-medium">
+                  {capitalizeWords(category?.name?.en)}
                 </div>
-
-                {/* ⬇️ DROPDOWN (CATEGORY KE NICHE SHOW HOTAA HAI) */}
-                {hoveredCategory === index &&
-                  category?.children?.length > 0 && (
-                    <div className="
-                      absolute left-0 top-full mt-2
-                      bg-cyan-500/95 text-white shadow-xl border
-                      rounded-md p-4 z-[9999] w-max
-                    ">
-                      <div
-                        className="grid gap-y-2 gap-x-6"
-                        style={{
-                          gridTemplateColumns: `repeat(${Math.ceil(
-                            category.children.length / 8
-                          )}, auto)`
-                        }}
-                      >
-                        {category.children.map((subCategory, subIndex) => (
-                          <div
-                            className="border-b border-white/30"
-                            key={subIndex}
-                          >
-                            <div
-                              className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap
-                              transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                handleSubNestedCategory(
-                                  subCategory?._id,
-                                  showingTranslateValue(subCategory?.name)
-                                );
-                              }}
-                            >
-                              {subCategory?.name?.en}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
+          
+                {category?.children?.length > 0 && (
+                  <div className="group-hover:rotate-180 duration-200 py-2">
+                    ▼
+                  </div>
+                )}
               </div>
-            ))}
+          
+              {/* 🔥 Dropdown directly below category */}
+             {hoveredCategory === index && category?.children?.length > 0 && (
+                <div className="absolute left-0 top-full mt-2 bg-white border border-cyan-600 shadow-[0_4px_12px_rgba(0,0,0,0.12)] rounded-lg 
+                       p-4 z-50 grid grid-cols-2 gap-3 min-w-[280px]">
+                  {category.children.map((sub) => (
+                    <div key={sub._id}
+                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer rounded whitespace-nowrap"
+                      onClick={() =>
+                        handleSubCategory(sub?._id, showingTranslateValue(sub?.name))}>
+                      {capitalizeWords(sub?.name?.en)}
+                    </div>
+                  ))}
+                </div>
+              )}
 
-            <Link
-              href="/medicine"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-            >
+          {/* Medicines */}
+          <Link
+            href="/medicine"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
               Medicines
-            </Link>
+            </span>
+          </Link>
 
-            <Link
-              href="/contact-us"
-              onClick={() => setIsLoading(!isLoading)}
-              className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
-            >
+          {/* Buy in Bulk */}
+          <Link
+            href="/contact-us"
+            onClick={() => setIsLoading(!isLoading)}
+            className="mx-4 py-2 font-medium text-gray-800 relative group hover:text-emerald-600"
+          >
+            <span className="relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
               Buy In Bulk
-            </Link>
-          </div>
+            </span>
+          </Link>
+
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
