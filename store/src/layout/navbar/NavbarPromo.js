@@ -93,20 +93,23 @@ const NavbarPromo = () => {
           )}
 
           {/* Categories (first 6) */}
-          {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
+         {data?.[0]?.children?.slice(0, 6)?.map((category, index) => (
             <div
               key={index}
               className="relative cursor-pointer group py-2"
               onMouseEnter={(e) => handleMouseEnter(index, e)}
               onMouseLeave={handleMouseLeave}
-              onClick={() =>
-                handleSubCategory(category?._id, showingTranslateValue(category?.name))
-              }
             >
-              <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
+              <div
+                className="mx-4 hover:text-emerald-600 flex items-center space-x-2"
+                onClick={() =>
+                  handleSubCategory(category?._id, showingTranslateValue(category?.name))
+                }
+              >
                 <div className="font-medium relative after:content-[''] after:absolute after:w-0 after:h-[2px] after:bg-emerald-600 after:left-0 after:-bottom-1 after:transition-all after:duration-300 group-hover:after:w-full">
                   {capitalizeWords(category?.name?.en)}
                 </div>
+          
                 {category?.children && (
                   <div className="group-hover:rotate-180 duration-200 py-2">
                     <svg
@@ -126,8 +129,31 @@ const NavbarPromo = () => {
                   </div>
                 )}
               </div>
+          
+              {/* ---------------- DROPDOWN MENU ---------------- */}
+              {hoveredCategory === index && category?.children?.length > 0 && (
+                <div
+                  className="absolute bg-white shadow-lg border rounded-md p-3 z-50"
+                  style={dropdownStyle}
+                >
+                  {category.children.map((sub, subIndex) => (
+                    <div
+                      key={subIndex}
+                      className="px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-700 whitespace-nowrap"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSubCategory(sub?._id, showingTranslateValue(sub?.name));
+                      }}
+                    >
+                      {capitalizeWords(sub?.name?.en)}
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* ---------------- END DROPDOWN ---------------- */}
             </div>
           ))}
+
 
           {/* Medicines */}
           <Link
