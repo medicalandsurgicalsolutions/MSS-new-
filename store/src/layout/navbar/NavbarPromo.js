@@ -94,9 +94,12 @@ const NavbarPromo = () => {
                 onMouseLeave={handleMouseLeave}
               >
                 <div className="mx-4 hover:text-emerald-600 flex items-center space-x-2 relative">
-                  <div className="font-medium relative">
-                    {capitalizeWords(category?.name?.en)}
-                  </div>
+                <div className="font-medium relative cursor-pointer"
+                  onClick={() =>
+                    handleSubCategory(category?._id, showingTranslateValue(category?.name))}>
+                  {capitalizeWords(category?.name?.en)}
+                </div>
+
 
                   {category?.children && (
                     <div className="group-hover:rotate-180 duration-200 py-2">
