@@ -24,6 +24,8 @@ const NavbarPromo = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
   const [dropdownStyle, setDropdownStyle] = useState({});
 
+  const nonDropdownMenus = ["Medicines", "Medicine", "Buy In Bulk", "New Arrivals"];
+
   const handleSubNestedCategory = (id, categoryName) => {
     router.push(
       `/search?category=${categoryName
@@ -98,28 +100,31 @@ const NavbarPromo = () => {
                     {capitalizeWords(category?.name?.en)}
                   </div>
 
-                {category?.children?.length > 0 && (
-                    <div className="group-hover:rotate-180 duration-200 py-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="size-3"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                        />
-                      </svg>
-                    </div>
-                  )}
+                  {/* FIXED ARROW CONDITION */}
+                  {category?.children?.length > 0 &&
+                    !nonDropdownMenus.includes(category?.name?.en) && (
+                      <div className="group-hover:rotate-180 duration-200 py-2">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="size-3"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                          />
+                        </svg>
+                      </div>
+                    )}
                 </div>
               </div>
             ))}
 
+            {/* MEDICINES (NO DROPDOWN, NO ARROW) */}
             <Link
               href="/medicine"
               onClick={() => setIsLoading(!isLoading)}
@@ -128,6 +133,7 @@ const NavbarPromo = () => {
               Medicines
             </Link>
 
+            {/* BUY IN BULK */}
             <Link
               href="/contact-us"
               onClick={() => setIsLoading(!isLoading)}
@@ -161,7 +167,7 @@ const NavbarPromo = () => {
                 (subCategory, subIndex) => (
                   <div className="border-b border-white/30" key={subIndex}>
                     <div
-                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap 
+                      className="block px-1 text-sm font-semibold cursor-pointer py-1 whitespace-nowrap
                       transition-all duration-200 hover:text-yellow-300 hover:translate-x-1.5"
                       onClick={(event) => {
                         event.stopPropagation();
