@@ -183,6 +183,11 @@ const ProductCard = ({ product, attributes }) => {
             >
               Buy now
             </div>
+
+           <div
+              className="text-red-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 me-2 lg:me-0 px-3 py-1">
+              Upload Prescription
+            </div>
                 
           </div>
         </div>
