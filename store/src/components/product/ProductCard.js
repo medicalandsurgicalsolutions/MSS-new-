@@ -90,12 +90,17 @@ const ProductCard = ({ product, attributes }) => {
     setModalOpen(event);
   };
 
+const [selectedFile, setSelectedFile] = useState(null);
+const [previewUrl, setPreviewUrl] = useState(null);
+
   const handlePrescriptionUpload = (event) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  console.log("Uploaded Prescription Image:", file);
+  setSelectedFile(file);
+  setPreviewUrl(URL.createObjectURL(file));
 
+  console.log("Uploaded Prescription:", file);
 };
 
   
@@ -171,45 +176,85 @@ const ProductCard = ({ product, attributes }) => {
             />
           </div>
 
-          {/* 🟢 Add to Cart & Buy Now Buttons */}
-          <div className="absolute bottom-2 w-full lg:w-auto flex flex-col items-center lg:flex-row gap-2 mt-2 lg:mt-4 lg:justify-between">
-            <div
-              className="text-cyan-600 border cursor-pointer border-cyan-600 w-full lg:w-auto hover:text-white hover:bg-cyan-600 mb-1 me-2 lg:me-0 lg:mb-0 px-3 py-1 text-center"
-              onClick={() => {
-                handleModalOpen(!modalOpen, product._id);
-                handleLogEvent(
-                  "product",
-                  `opened ${showingTranslateValue(product?.title)} product modal`
-                );
-              }}
-            >
-              Add to cart
-            </div>
+        {/* 🟢 Upload First, Then Add to Cart + Buy Now */}
+<div className="absolute bottom-2 w-full flex flex-col items-center gap-3 lg:gap-2 mt-2 lg:mt-4">
 
-            <div
-              className="text-green-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 me-2 lg:me-0 px-3 py-1"
-              onClick={(event) => handleAddItems(event, product)}
-            >
-              Buy now
-            </div>
-
-          {/* Upload Prescription */}
-        <label
-          htmlFor={`upload-prescription-${product._id}`}
-          className="text-red-500 border cursor-pointer border-red-500 w-full lg:w-auto text-center hover:text-white hover:bg-red-500 me-2 lg:me-0 px-3 py-1"
-        >
-          Upload Prescription
-        </label>
-      
-        <input
-          type="file"
-          id={`upload-prescription-${product._id}`}
-          className="hidden"
-          accept="image/*"
-          onChange={handlePrescriptionUpload}
+  {/* 🔵 Upload Button */}
+  <div className="flex items-center gap-3 border rounded-md px-4 py-2 bg-gray-100 w-full lg:w-auto">
+    <label
+      htmlFor={`upload-prescription-${product._id}`}
+      className="flex items-center gap-2 text-blue-600 cursor-pointer"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        strokeWidth={1.5}
+        stroke="currentColor"
+        className="w-5 h-5"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5"
         />
-                
-          </div>
+      </svg>
+
+      Upload File
+    </label>
+
+    <span className="text-gray-500">
+      {selectedFile ? selectedFile.name : "No file chosen"}
+    </span>
+
+    <input
+      type="file"
+      id={`upload-prescription-${product._id}`}
+      className="hidden"
+      accept="image/*"
+      onChange={handlePrescriptionUpload}
+    />
+  </div>
+
+  {/* 🔥 Preview Image (optional) */}
+  {previewUrl && (
+    <div className="w-full flex justify-center">
+      <img
+        src={previewUrl}
+        alt="Prescription Preview"
+        className="w-20 h-20 object-cover rounded-md border"
+      />
+    </div>
+  )}
+
+  {/* 🟢 Add to Cart & Buy Now Buttons */}
+  <div className="w-full lg:w-auto flex flex-col lg:flex-row items-center gap-2">
+    
+    {/* Add to Cart */}
+    <div
+      className="text-cyan-600 border cursor-pointer border-cyan-600 w-full lg:w-auto hover:text-white hover:bg-cyan-600 px-3 py-1 text-center"
+      onClick={() => {
+        handleModalOpen(!modalOpen, product._id);
+        handleLogEvent(
+          "product",
+          `opened ${showingTranslateValue(product?.title)} product modal`
+        );
+      }}
+    >
+      Add to cart
+    </div>
+
+    {/* Buy Now */}
+    <div
+      className="text-green-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 px-3 py-1"
+      onClick={(event) => handleAddItems(event, product)}
+    >
+      Buy now
+    </div>
+
+  </div>
+</div>
+
         </div>
       </div>
     </>
