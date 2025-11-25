@@ -145,7 +145,7 @@ const [previewUrl, setPreviewUrl] = useState(null);
           </div>
         </div>
 
-        <div className="w-full h-44 lg:h-28 relative px-1 lg:px-4 pb-4 overflow-hidden">
+      <div className="w-full relative px-1 lg:px-4 pb-4">
           <div className="relative mb-1">
             <span className="text-gray-400 font-medium text-xs d-block mb-1">
               {product.unit}
