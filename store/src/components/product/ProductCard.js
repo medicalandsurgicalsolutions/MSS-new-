@@ -178,10 +178,11 @@ const ProductCard = ({ product, attributes }) => {
           </div>
 
      
-  {/* Upload + Buttons Section */}
-       <div className="mt-4 w-full flex flex-col items-center gap-3">
+      {/* Upload + Buttons Section */}
+       {/* Upload + Buttons Section */}
+<div className="mt-4 w-full flex flex-col items-center gap-3">
 
-  {/* ✅ SHOW ONLY ON MEDICINE PAGE */}
+  {/* ✅ Only show on Medicine page */}
   {isMedicinePage && (
     <>
       {/* 🔵 Upload File Box */}
@@ -201,8 +202,7 @@ const ProductCard = ({ product, attributes }) => {
             <path
               strokeLinecap="round"
               strokeLinejoin="round"
-              d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5"
-            />
+              d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5" />
           </svg>
           Upload File
         </label>
@@ -233,42 +233,45 @@ const ProductCard = ({ product, attributes }) => {
     </>
   )}
 
-  {/* 🟢 Buttons Row */}
-  {/* ADD TO CART BUTTON */}
-  <div
-    className={`w-1/2 px-3 py-1 text-center rounded-md border 
-      ${isMedicinePage && !selectedFile 
-        ? "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-400" 
-        : "cursor-pointer text-cyan-600 border-cyan-600 hover:text-white hover:bg-cyan-600"
-      }`}
-    onClick={() => {
-      if (isMedicinePage && !selectedFile) return; // ⛔ Block click
-      handleModalOpen(!modalOpen, product._id);
-      handleLogEvent(
-        "product",
-        `opened ${showingTranslateValue(product?.title)} product modal`
-      );
-    }}
-  >
-    Add to cart
-  </div>
+  {/* 🟢 BUTTONS ROW (center aligned side by side) */}
+  <div className="w-full flex items-center justify-between gap-3">
 
-  {/* BUY NOW BUTTON */}
-  <div
-    className={`w-1/2 px-3 py-1 text-center rounded-md border 
-      ${isMedicinePage && !selectedFile
-        ? "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-400"
-        : "cursor-pointer text-green-500 border-green-500 hover:text-white hover:bg-green-500"
-      }`}
-    onClick={(event) => {
-      if (isMedicinePage && !selectedFile) return; // ⛔ Block click
-      handleAddItems(event, product);
-    }}
-  >
-    Buy now
-  </div>
+    {/* ADD TO CART BUTTON */}
+    <button
+      disabled={isMedicinePage && !selectedFile}
+      className={`w-1/2 px-3 py-1 text-center rounded-md border 
+        ${isMedicinePage && !selectedFile 
+          ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed" 
+          : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
+        }`}
+      onClick={() => {
+        if (isMedicinePage && !selectedFile) return;
+        handleModalOpen(!modalOpen, product._id);
+        handleLogEvent("product", `opened ${showingTranslateValue(product?.title)} product modal`);
+      }}
+    >
+      Add to cart
+    </button>
+
+    {/* BUY NOW BUTTON */}
+    <button
+      disabled={isMedicinePage && !selectedFile}
+      className={`w-1/2 px-3 py-1 text-center rounded-md border 
+        ${isMedicinePage && !selectedFile 
+          ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed" 
+          : "border-green-500 text-green-500 hover:text-white hover:bg-green-500"
+        }`}
+      onClick={(event) => {
+        if (isMedicinePage && !selectedFile) return;
+        handleAddItems(event, product);
+      }}
+    >
+      Buy now
+    </button>
 
   </div>
+</div>
+
         </div>
       </div>
     </>
