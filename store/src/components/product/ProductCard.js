@@ -67,6 +67,7 @@ const ProductCard = ({ product, attributes }) => {
       price: p?.prices?.price,
       originalPrice: product?.prices?.originalPrice,
       quantity: 1,
+      prescriptionFile: isMedicinePage ? selectedFile : null,
     };
 
     // 🟢 If user not logged in → redirect to login with redirectUrl
@@ -104,6 +105,25 @@ const ProductCard = ({ product, attributes }) => {
   console.log("Uploaded Prescription:", file);
 };
 
+  const handleAddToCartWithPrescription = (productData) => {
+  if (isMedicinePage && !selectedFile) return;
+
+  const newItem = {
+    ...productData,
+    id: productData._id,
+    title: showingTranslateValue(productData.title),
+    price: productData?.prices?.price,
+    originalPrice: productData?.prices?.originalPrice,
+    quantity: 1,
+
+    // 🔵 attach prescription file inside cart item
+    prescriptionFile: isMedicinePage ? selectedFile : null,
+  };
+
+  addItem(newItem);
+  notifySuccess("Added to cart!");
+};
+
   
   return (
     <>
@@ -120,7 +140,7 @@ const ProductCard = ({ product, attributes }) => {
       <div className="group box-border overflow-hidden flex rounded-md shadow-sm border-2 border-cyan-100 pe-0 flex-col items-center bg-gray-50 relative">
         <div
           onClick={() => {
-            handleModalOpen(!modalOpen, product._id);
+           handleAddToCartWithPrescription(product);
             handleLogEvent(
               "product",
               `opened ${showingTranslateValue(product?.title)} product modal`
@@ -244,11 +264,7 @@ const ProductCard = ({ product, attributes }) => {
           ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed" 
           : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
         }`}
-      onClick={() => {
-        if (isMedicinePage && !selectedFile) return;
-        handleModalOpen(!modalOpen, product._id);
-        handleLogEvent("product", `opened ${showingTranslateValue(product?.title)} product modal`);
-      }}
+     onClick={() => handleAddToCartWithPrescription(product)}
     >
       Add to cart
     </button>
