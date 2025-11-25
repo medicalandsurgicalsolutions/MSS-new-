@@ -89,6 +89,15 @@ const ProductCard = ({ product, attributes }) => {
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
   };
+
+  const handlePrescriptionUpload = (event) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  console.log("Uploaded Prescription Image:", file);
+
+};
+
   
   return (
     <>
@@ -184,10 +193,21 @@ const ProductCard = ({ product, attributes }) => {
               Buy now
             </div>
 
-           <div
-              className="text-red-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 me-2 lg:me-0 px-3 py-1">
-              Upload Prescription
-            </div>
+          {/* Upload Prescription */}
+        <label
+          htmlFor={`upload-prescription-${product._id}`}
+          className="text-red-500 border cursor-pointer border-red-500 w-full lg:w-auto text-center hover:text-white hover:bg-red-500 me-2 lg:me-0 px-3 py-1"
+        >
+          Upload Prescription
+        </label>
+      
+        <input
+          type="file"
+          id={`upload-prescription-${product._id}`}
+          className="hidden"
+          accept="image/*"
+          onChange={handlePrescriptionUpload}
+        />
                 
           </div>
         </div>
