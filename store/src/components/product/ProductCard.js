@@ -47,49 +47,48 @@ const ProductCard = ({ product, attributes }) => {
 
   // ✅ Updated Buy Now Logic (adds item to react-use-cart + navigates)
   const handleAddItems = async (event, p) => {
-    event.stopPropagation();
+  event.stopPropagation();
 
-    if (p?.stock < 1) {
-      notifyError("Insufficient stock!");
-      return;
-    }
+  if (p?.stock < 1) {
+    notifyError("Insufficient stock!");
+    return;
+  }
 
-    const { slug, variants, categories, description, ...updatedProduct } = product;
+  if (isMedicinePage && !selectedFile) {
+    notifyError("Please upload prescription");
+    return;
+  }
 
-    const newItem = {
-      ...updatedProduct,
-      id: p?._id,
-      title: showingTranslateValue(p?.title),
-      slug: p?.slug,
-      variant: p?.prices,
-      gst: p?.gst,
-      hsn: p?.hsn,
-      price: p?.prices?.price,
-      originalPrice: product?.prices?.originalPrice,
-      quantity: 1,
-      prescriptionFile: isMedicinePage ? selectedFile : null,
-    };
+  const { slug, variants, categories, description, ...updatedProduct } = product;
 
-    // 🟢 If user not logged in → redirect to login with redirectUrl
-    if (!userInfo) {
-      router.push(`/auth/login?redirectUrl=checkout`);
-      return;
-    }
-
-    try {
-      // Add to cart first
-      addItem(newItem);
-      notifySuccess(`${p?.title} added to cart! Redirecting...`);
-
-      // wait for react-use-cart localStorage update
-      setTimeout(() => {
-        router.push("/checkout");
-      }, 400);
-    } catch (error) {
-      console.error("Buy Now Error:", error);
-      notifyError("Something went wrong while adding to cart.");
-    }
+  const newItem = {
+    ...updatedProduct,
+    id: p?._id,
+    title: showingTranslateValue(p?.title),
+    slug: p?.slug,
+    variant: p?.prices,
+    gst: p?.gst,
+    hsn: p?.hsn,
+    price: p?.prices?.price,
+    originalPrice: product?.prices?.originalPrice,
+    quantity: 1,
+    prescriptionFile: isMedicinePage ? selectedFile : null,
   };
+
+  if (!userInfo) {
+    router.push(`/auth/login?redirectUrl=checkout`);
+    return;
+  }
+
+  addItem(newItem);
+
+  notifySuccess(`${p?.title} added to cart! Redirecting...`);
+
+  setTimeout(() => {
+    router.push("/checkout");
+  }, 400);
+};
+
 
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
@@ -105,18 +104,21 @@ const ProductCard = ({ product, attributes }) => {
   console.log("Uploaded Prescription:", file);
 };
 
-  const handleAddToCartWithPrescription = (productData) => {
-  if (isMedicinePage && !selectedFile) return;
+const handleAddToCartWithPrescription = () => {
+  if (isMedicinePage && !selectedFile) {
+    notifyError("Please upload prescription");
+    return;
+  }
 
   const newItem = {
-    ...productData,
-    id: productData._id,
-    title: showingTranslateValue(productData.title),
-    price: productData?.prices?.price,
-    originalPrice: productData?.prices?.originalPrice,
+    ...product,
+    id: product._id,
+    title: showingTranslateValue(product?.title),
+    price: product?.prices?.price,
+    originalPrice: product?.prices?.originalPrice,
     quantity: 1,
 
-    // 🔵 attach prescription file inside cart item
+    // 🔥 Store prescription here
     prescriptionFile: isMedicinePage ? selectedFile : null,
   };
 
@@ -197,8 +199,6 @@ const ProductCard = ({ product, attributes }) => {
             />
           </div>
 
-     
-      {/* Upload + Buttons Section */}
        {/* Upload + Buttons Section */}
 <div className="mt-4 w-full flex flex-col items-center gap-3">
 
@@ -264,7 +264,11 @@ const ProductCard = ({ product, attributes }) => {
           ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed" 
           : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
         }`}
-     onClick={() => handleAddToCartWithPrescription(product)}
+    onClick={() => {
+  handleModalOpen(!modalOpen, product._id);
+  handleLogEvent("product", `opened ${showingTranslateValue(product?.title)} product modal`);
+}}
+
     >
       Add to cart
     </button>
