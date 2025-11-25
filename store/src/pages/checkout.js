@@ -67,36 +67,7 @@ const Checkout = () => {
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
 
-  // Optional: Razorpay order creator (not used yet; wire it inside submitHandler when needed)
-  const createOrderRazorpay = async (orderData) => {
-    try {
-      const token =
-        typeof window !== "undefined" &&
-        (localStorage.getItem("userToken") || localStorage.getItem("token"));
-
-      const response = await fetch(
-        "https://api.medicalsurgicalsolutions.com/api/order/create/razorpay",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...(token ? { Authorization: `Bearer ${token}` } : {}),
-          },
-          body: JSON.stringify(orderData),
-        }
-      );
-
-      const data = await response.json();
-      console.log("Order Response:", data);
-      return data;
-    } catch (err) {
-      console.error("Error creating order:", err);
-      notifyError("Failed to create order. Please try again.");
-      return null;
-    }
-  };
-
-  // COD UI helper
+  // COD helper (unchanged)
   const codObj = {
     Elements: null,
     init() {
@@ -162,6 +133,63 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
+  // Attach prescription URLs from localStorage to items (if present)
+  const attachPrescriptionsToItems = (cartItems = []) => {
+    return cartItems.map((it) => {
+      try {
+        // prefer existing `prescription` property if already there
+        if (it.prescription) return it;
+        const saved = localStorage.getItem(`prescription_${it.id}`);
+        if (saved) {
+          return {
+            ...it,
+            prescription: saved,
+          };
+        }
+        return it;
+      } catch (err) {
+        console.error("Error attaching prescription for item", it.id, err);
+        return it;
+      }
+    });
+  };
+
+  // wrapper to inject prescription URL and then call original submitHandler
+  const onSubmitWithPrescriptions = handleSubmit(async (formData) => {
+    // attach items (cart) to formData if needed by backend
+    const augmentedItems = attachPrescriptionsToItems(items || []);
+
+    // add cart to formData (some implementations expect cart in body)
+    const payload = {
+      ...formData,
+      cart: augmentedItems,
+    };
+
+    try {
+      // call existing submitHandler - many hooks return a promise
+      const result = await submitHandler(payload);
+
+      // On success (if submitHandler resolves), remove localStorage prescription keys for items
+      try {
+        (augmentedItems || []).forEach((it) => {
+          try {
+            localStorage.removeItem(`prescription_${it.id}`);
+          } catch (e) {
+            /* ignore */
+          }
+        });
+      } catch (e) {
+        /* ignore */
+      }
+
+      return result;
+    } catch (err) {
+      // If submit fails, do not clear localStorage so user can retry
+      console.error("Checkout submit failed", err);
+      throw err;
+    }
+  });
+
   return (
     <Layout title="Checkout" description="this is checkout page">
       <>
@@ -169,8 +197,7 @@ const Checkout = () => {
           <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
             <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
               <div className="mt-5 md:mt-0 md:col-span-2">
-                {/* FIX: use submitHandler (no newSubmitHandler) */}
-                <form onSubmit={handleSubmit(submitHandler)}>
+                <form onSubmit={onSubmitWithPrescriptions}>
                   {hasShippingAddress && (
                     <div className="flex justify-end my-2">
                       <SwitchToggle
@@ -217,14 +244,6 @@ const Checkout = () => {
                         />
                         <Error errorName={errors.lastName} />
                       </div>
-
-                      {/* If Stripe is enabled, uncomment CardElement import & block below */}
-                      {/* {showCard && (
-                        <div className="col-span-6">
-                          <CardElement />
-                          <p className="text-red-400 text-sm mt-1">{error}</p>
-                        </div>
-                      )} */}
 
                       <div className="col-span-6 sm:col-span-3">
                         <InputArea
@@ -427,14 +446,6 @@ const Checkout = () => {
                       )}
                     </h2>
 
-                    {/* Stripe card block commented (uncomment if using Stripe)
-                    {showCard && (
-                      <div className="mb-3">
-                        <CardElement />
-                        <p className="text-red-400 text-sm mt-1">{error}</p>
-                      </div>
-                    )} */}
-
                     <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
                       {storeSetting?.cod_status && (
                         <div className="" id="cod_input">
@@ -450,19 +461,6 @@ const Checkout = () => {
                           <Error errorMessage={errors.paymentMethod} />
                         </div>
                       )}
-
-                      {/* {storeSetting?.stripe_status && (
-                        <div className="">
-                          <InputPayment
-                            setShowCard={setShowCard}
-                            register={register}
-                            name={t("common:creditCard")}
-                            value="Card"
-                            Icon={ImCreditCard}
-                          />
-                          <Error errorMessage={errors.paymentMethod} />
-                        </div>
-                      )} */}
 
                       <div className="">
                         <InputPayment
