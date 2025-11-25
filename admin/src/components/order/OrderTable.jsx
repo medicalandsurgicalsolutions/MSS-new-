@@ -103,21 +103,21 @@ const OrderTable = ({ orders }) => {
                   </Link>
             </TableCell>
 
-           {/* Prescription Column */}
-            <TableCell className="text-center">
-              {order?.prescriptionUrl ? (
-                <a
-                  href={order.prescriptionUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-emerald-600 hover:underline"
-                >
-                  View
-                </a>
-              ) : (
-                <span className="text-gray-400 text-sm">No file</span>
-              )}
-            </TableCell>
+           <TableCell className="text-center">
+            {order.items.some(i => i.prescriptionUrl) ? (
+              <a
+                href={order.items.find(i => i.prescriptionUrl).prescriptionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-emerald-600 hover:underline"
+              >
+                View
+              </a>
+            ) : (
+              <span className="text-gray-400 text-sm">No file</span>
+            )}
+          </TableCell>
+
 
             <TableCell className="text-right flex justify-end">
               <div className="flex justify-between items-center">
