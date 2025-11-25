@@ -34,6 +34,70 @@ const Checkout = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
+const handleSubmitOrder = async () => {
+  try {
+    const user = getUserSession();
+    if (!user) {
+      router.push("/auth/login");
+      return;
+    }
+
+    const storedPrescriptions = JSON.parse(localStorage.getItem("prescriptions")) || {};
+
+    // 🔥 Attach prescription file URL to each item
+    const updatedItems = items.map((item) => ({
+      _id: item.id,
+      title: item.title,
+      price: item.price,
+      quantity: item.quantity,
+      prescriptionUrl: storedPrescriptions[item.id] || null,
+    }));
+
+    const orderData = {
+      userId: user.id,
+      items: updatedItems,
+      shippingAddress: {
+        address: address,
+        flat: flat,
+        zipCode: zipCode,
+      },
+      paymentMethod: paymentMethod,
+      total: cartTotal,
+      prescriptionUrl: null, // Using per-item prescription instead
+    };
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(orderData),
+    });
+
+    const data = await res.json();
+
+    if (!data.success) {
+      notifyError("Order failed");
+      return;
+    }
+
+    notifySuccess("Order placed successfully!");
+
+    // 🧹 Clear saved prescriptions
+    localStorage.removeItem("prescriptions");
+
+    // Empty cart
+    emptyCart();
+
+    setTimeout(() => {
+      router.push("/order-success");
+    }, 800);
+
+  } catch (err) {
+    console.log("Checkout Error:", err);
+    notifyError("Something went wrong");
+  }
+};
+
+  
   const {
     error,
     // stripe,
