@@ -234,27 +234,39 @@ const ProductCard = ({ product, attributes }) => {
   )}
 
   {/* 🟢 Buttons Row */}
-  <div className="w-full flex items-center justify-between gap-3">
+  {/* ADD TO CART BUTTON */}
+  <div
+    className={`w-1/2 px-3 py-1 text-center rounded-md border 
+      ${isMedicinePage && !selectedFile 
+        ? "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-400" 
+        : "cursor-pointer text-cyan-600 border-cyan-600 hover:text-white hover:bg-cyan-600"
+      }`}
+    onClick={() => {
+      if (isMedicinePage && !selectedFile) return; // ⛔ Block click
+      handleModalOpen(!modalOpen, product._id);
+      handleLogEvent(
+        "product",
+        `opened ${showingTranslateValue(product?.title)} product modal`
+      );
+    }}
+  >
+    Add to cart
+  </div>
 
-    <div
-      className="text-cyan-600 border cursor-pointer border-cyan-600 w-1/2 hover:text-white hover:bg-cyan-600 px-3 py-1 text-center rounded-md"
-      onClick={() => {
-        handleModalOpen(!modalOpen, product._id);
-        handleLogEvent(
-          "product",
-          `opened ${showingTranslateValue(product?.title)} product modal`
-        );
-      }}
-    >
-      Add to cart
-    </div>
-
-    <div
-      className="text-green-500 border cursor-pointer border-green-500 w-1/2 text-center hover:text-white hover:bg-green-500 px-3 py-1 rounded-md"
-      onClick={(event) => handleAddItems(event, product)}
-    >
-      Buy now
-    </div>
+  {/* BUY NOW BUTTON */}
+  <div
+    className={`w-1/2 px-3 py-1 text-center rounded-md border 
+      ${isMedicinePage && !selectedFile
+        ? "cursor-not-allowed bg-gray-300 text-gray-500 border-gray-400"
+        : "cursor-pointer text-green-500 border-green-500 hover:text-white hover:bg-green-500"
+      }`}
+    onClick={(event) => {
+      if (isMedicinePage && !selectedFile) return; // ⛔ Block click
+      handleAddItems(event, product);
+    }}
+  >
+    Buy now
+  </div>
 
   </div>
 </div>
