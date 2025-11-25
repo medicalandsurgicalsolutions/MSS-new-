@@ -177,10 +177,11 @@ const [previewUrl, setPreviewUrl] = useState(null);
           </div>
 
         {/* 🟢 Upload First, Then Add to Cart + Buy Now */}
-<div className="absolute bottom-2 w-full flex flex-col items-center gap-3 lg:gap-2 mt-2 lg:mt-4">
+{/* Upload + Buttons Section */}
+<div className="mt-4 w-full flex flex-col items-center gap-3">
 
-  {/* 🔵 Upload Button */}
-  <div className="flex items-center gap-3 border rounded-md px-4 py-2 bg-gray-100 w-full lg:w-auto">
+  {/* 🔵 Upload File Box */}
+  <div className="flex items-center justify-between border rounded-md px-4 py-2 bg-gray-100 w-full">
     <label
       htmlFor={`upload-prescription-${product._id}`}
       className="flex items-center gap-2 text-blue-600 cursor-pointer"
@@ -199,11 +200,10 @@ const [previewUrl, setPreviewUrl] = useState(null);
           d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5"
         />
       </svg>
-
       Upload File
     </label>
 
-    <span className="text-gray-500">
+    <span className="text-gray-500 text-sm truncate w-32 text-right">
       {selectedFile ? selectedFile.name : "No file chosen"}
     </span>
 
@@ -216,7 +216,7 @@ const [previewUrl, setPreviewUrl] = useState(null);
     />
   </div>
 
-  {/* 🔥 Preview Image (optional) */}
+  {/* Optional Preview */}
   {previewUrl && (
     <div className="w-full flex justify-center">
       <img
@@ -227,12 +227,11 @@ const [previewUrl, setPreviewUrl] = useState(null);
     </div>
   )}
 
-  {/* 🟢 Add to Cart & Buy Now Buttons */}
-  <div className="w-full lg:w-auto flex flex-col lg:flex-row items-center gap-2">
-    
-    {/* Add to Cart */}
+  {/* 🟢 Buttons Row */}
+  <div className="w-full flex items-center justify-between gap-3">
+
     <div
-      className="text-cyan-600 border cursor-pointer border-cyan-600 w-full lg:w-auto hover:text-white hover:bg-cyan-600 px-3 py-1 text-center"
+      className="text-cyan-600 border cursor-pointer border-cyan-600 w-1/2 hover:text-white hover:bg-cyan-600 px-3 py-1 text-center rounded-md"
       onClick={() => {
         handleModalOpen(!modalOpen, product._id);
         handleLogEvent(
@@ -244,9 +243,8 @@ const [previewUrl, setPreviewUrl] = useState(null);
       Add to cart
     </div>
 
-    {/* Buy Now */}
     <div
-      className="text-green-500 border cursor-pointer border-green-500 w-full lg:w-auto text-center hover:text-white hover:bg-green-500 px-3 py-1"
+      className="text-green-500 border cursor-pointer border-green-500 w-1/2 text-center hover:text-white hover:bg-green-500 px-3 py-1 rounded-md"
       onClick={(event) => handleAddItems(event, product)}
     >
       Buy now
@@ -254,6 +252,7 @@ const [previewUrl, setPreviewUrl] = useState(null);
 
   </div>
 </div>
+
 
         </div>
       </div>
