@@ -269,7 +269,6 @@ const ProductCard = ({ product, attributes }) => {
   </div>
 
   </div>
-</div>
         </div>
       </div>
     </>
