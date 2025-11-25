@@ -29,6 +29,10 @@ const ProductCard = ({ product, attributes }) => {
   const router = useRouter();
   const userInfo = getUserSession(); 
   const [sliceLimit, setSliceLimit] = useState(window.innerWidth <= 768 ? 34 : 44);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
+  const isMedicinePage = router.asPath.includes("medicines");
+
   
   useEffect(() => {
     const handleResize = () => {
@@ -89,9 +93,6 @@ const ProductCard = ({ product, attributes }) => {
   const handleModalOpen = (event, id) => {
     setModalOpen(event);
   };
-
-const [selectedFile, setSelectedFile] = useState(null);
-const [previewUrl, setPreviewUrl] = useState(null);
 
   const handlePrescriptionUpload = (event) => {
   const file = event.target.files[0];
@@ -176,55 +177,60 @@ const [previewUrl, setPreviewUrl] = useState(null);
             />
           </div>
 
-        {/* 🟢 Upload First, Then Add to Cart + Buy Now */}
-{/* Upload + Buttons Section */}
-<div className="mt-4 w-full flex flex-col items-center gap-3">
+     
+  {/* Upload + Buttons Section */}
+       <div className="mt-4 w-full flex flex-col items-center gap-3">
 
-  {/* 🔵 Upload File Box */}
-  <div className="flex items-center justify-between border rounded-md px-4 py-2 bg-gray-100 w-full">
-    <label
-      htmlFor={`upload-prescription-${product._id}`}
-      className="flex items-center gap-2 text-blue-600 cursor-pointer"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        strokeWidth={1.5}
-        stroke="currentColor"
-        className="w-5 h-5"
-      >
-        <path
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5"
+  {/* ✅ SHOW ONLY ON MEDICINE PAGE */}
+  {isMedicinePage && (
+    <>
+      {/* 🔵 Upload File Box */}
+      <div className="flex items-center justify-between border rounded-md px-4 py-2 bg-gray-100 w-full">
+        <label
+          htmlFor={`upload-prescription-${product._id}`}
+          className="flex items-center gap-2 text-blue-600 cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-5 h-5"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 12.75l7.5-7.5 7.5 7.5M12 5.25v13.5"
+            />
+          </svg>
+          Upload File
+        </label>
+
+        <span className="text-gray-500 text-sm truncate w-32 text-right">
+          {selectedFile ? selectedFile.name : "No file chosen"}
+        </span>
+
+        <input
+          type="file"
+          id={`upload-prescription-${product._id}`}
+          className="hidden"
+          accept="image/*"
+          onChange={handlePrescriptionUpload}
         />
-      </svg>
-      Upload File
-    </label>
+      </div>
 
-    <span className="text-gray-500 text-sm truncate w-32 text-right">
-      {selectedFile ? selectedFile.name : "No file chosen"}
-    </span>
-
-    <input
-      type="file"
-      id={`upload-prescription-${product._id}`}
-      className="hidden"
-      accept="image/*"
-      onChange={handlePrescriptionUpload}
-    />
-  </div>
-
-  {/* Optional Preview */}
-  {previewUrl && (
-    <div className="w-full flex justify-center">
-      <img
-        src={previewUrl}
-        alt="Prescription Preview"
-        className="w-20 h-20 object-cover rounded-md border"
-      />
-    </div>
+      {/* Optional Preview */}
+      {previewUrl && (
+        <div className="w-full flex justify-center">
+          <img
+            src={previewUrl}
+            alt="Prescription Preview"
+            className="w-20 h-20 object-cover rounded-md border"
+          />
+        </div>
+      )}
+    </>
   )}
 
   {/* 🟢 Buttons Row */}
@@ -252,8 +258,6 @@ const [previewUrl, setPreviewUrl] = useState(null);
 
   </div>
 </div>
-
-
         </div>
       </div>
     </>
