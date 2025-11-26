@@ -78,23 +78,7 @@ const Checkout = () => {
       typeof window !== "undefined" &&
       (localStorage.getItem("userToken") || localStorage.getItem("token"));
 
-    // Build FormData
-    const formData = new FormData();
-      formData.append("user_info", JSON.stringify(user_info));
-      formData.append("items", JSON.stringify(cartItems));
-      formData.append("total", total);
-      formData.append("subTotal", subTotal);
-      formData.append("shippingCost", shippingCost);
-      formData.append("discount", discount);
-      formData.append("paymentMethod", paymentMethod);
-      formData.append("status", "Pending");
-      formData.append("user", user._id);
-      
-      if (uploadedFile) {
-        formData.append("prescription", uploadedFile);
-      }
-
-    // USER INFO
+    // BUILD USER INFO
     const user_info = {
       firstName: data.firstName,
       lastName: data.lastName,
@@ -109,9 +93,7 @@ const Checkout = () => {
       zipCode: data.zipCode,
     };
 
-    formData.append("user_info", JSON.stringify(user_info));
-
-    // ITEMS + PRESCRIPTION URLS
+    // BUILD ORDER ITEMS
     const orderItems = items.map((item) => ({
       product: item.id,
       title: item.title,
@@ -120,22 +102,41 @@ const Checkout = () => {
       prescriptionUrl: getPrescriptionUrl(item.id) || null,
     }));
 
-    formData.append("items", JSON.stringify(orderItems));
+    // MAIN ORDER TOTALS
+    const subTotal = cartTotal;
+    const shippingCost = deliveryChargeToApply;
+    const discount = discountAmount;
+    const orderTotal = subTotal + shippingCost - discount;
 
-    // TOTALS
-    formData.append(
-      "total",
-      cartTotal + deliveryChargeToApply - discountAmount
-    );
-    formData.append("shippingCost", deliveryChargeToApply);
-    formData.append("discount", discountAmount);
+    // GET LOGGED-IN USER
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (!user?._id) {
+      return notifyError("User not logged in!");
+    }
+
+    // BUILD FORM DATA
+    const formData = new FormData();
+    formData.append("user_info", JSON.stringify(user_info));
+    formData.append("items", JSON.stringify(orderItems));
+    formData.append("subTotal", subTotal);
+    formData.append("shippingCost", shippingCost);
+    formData.append("discount", discount);
+    formData.append("total", orderTotal);
     formData.append("paymentMethod", data.paymentMethod);
     formData.append("status", "Pending");
+    formData.append("user", user._id);
 
-    // APPEND FILES (if uploaded)
+    // ATTACH PRESCRIPTION FILES
     items.forEach((item) => {
-      const file = localStorage.getItem(`file_${item.id}`);
-      if (file) {
+      const fileData = localStorage.getItem(`file_${item.id}`);
+      if (fileData) {
+        // convert base64 → Blob → File
+        const byteString = atob(fileData.split(",")[1]);
+        const buffer = new Uint8Array(byteString.length);
+        for (let i = 0; i < byteString.length; i++) {
+          buffer[i] = byteString.charCodeAt(i);
+        }
+        const file = new File([buffer], `prescription_${item.id}.jpg`, { type: "image/jpeg" });
         formData.append("prescription", file);
       }
     });
