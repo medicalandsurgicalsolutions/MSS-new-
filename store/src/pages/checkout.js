@@ -163,52 +163,49 @@ const Checkout = () => {
   };
 
   // Wrapper around the original submit that injects cart items (with prescriptions)
-  const onSubmitWithPrescriptions = handleSubmit(async (formData) => {
-    // augment items with prescription base64
-    const augmentedItems = attachPrescriptionsToItems(items || []);
+const onSubmitWithPrescriptions = handleSubmit(async (formData) => {
+  console.log("FORM DATA", formData); // for debugging
 
-    // prepare payload expected by backend - adapt to your API shape
-    const payload = {
-      // if your API uses req.user, no need to set userId here; keep consistent
-      cart: augmentedItems,
-      user_info: {
-        name: formData.firstName + (formData.lastName ? ` ${formData.lastName}` : ""),
-        contact: formData.phone || formData.contact || "",
-        address: formData.address || "",
-        flat: formData.flat || "",
-        district: formData.district || "",
-        landmark: formData.landmark || "",
-        state: formData.state || "",
-        city: formData.city || "",
-        country: formData.country || "",
-        zipCode: formData.zipCode || "",
-        email: formData.email || "",
-      },
-      paymentMethod: formData.paymentMethod,
-      subTotal: cartTotal,
-      shippingCost: deliveryChargeToApply || 0,
-      discount: discountAmount || 0,
-      total: total || 0,
-      shippingOption: formData.shippingOption || null,
-      // you can include other fields as needed
-    };
+  // attach prescriptions to items
+  const augmentedItems = attachPrescriptionsToItems(items || []);
 
-    // call existing submitHandler (your hook likely posts to /api/orders)
-    const result = await submitHandler(payload);
+  const payload = {
+    cart: augmentedItems,
+    user_info: {
+      name: `${formData.firstName || ""} ${formData.lastName || ""}`.trim(),
+      contact: formData.phone || formData.contact || "",
+      address: formData.address || "",
+      flat: formData.flat || "",
+      district: formData.district || "",
+      landmark: formData.landmark || "",
+      state: formData.state || "",
+      city: formData.city || "",
+      country: formData.country || "",
+      zipCode: formData.zipCode || "",
+      email: formData.email || "",
+    },
+    paymentMethod: formData.paymentMethod,
+    subTotal: cartTotal,
+    shippingCost: deliveryChargeToApply || 0,
+    discount: discountAmount || 0,
+    total: total || 0,
+    shippingOption: formData.shippingOption || null,
+  };
 
-    // on success, clear localStorage prescription keys for items
-    if (result && (result.success || result.status === 201 || result.order)) {
-      (augmentedItems || []).forEach((it) => {
-        try {
-          localStorage.removeItem(`prescription_${it.id}`);
-        } catch (e) {
-          /* ignore */
-        }
-      });
-    }
+  const result = await submitHandler(payload);
 
-    return result;
-  });
+  // clear prescription localStorage
+  if (result && (result.success || result.status === 201 || result.order)) {
+    augmentedItems.forEach((it) => {
+      try {
+        localStorage.removeItem(`prescription_${it.id}`);
+      } catch (e) {}
+    });
+  }
+
+  return result;
+});
+
 
   // ---------- UI (keeps the rest of your markup) ----------
   return (
