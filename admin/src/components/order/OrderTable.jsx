@@ -20,7 +20,8 @@ const OrderTable = ({ orders }) => {
   // console.log('globalSetting Orders', orders)
   const { t } = useTranslation();
   const { showDateTimeFormat, currency, getNumberTwo } = useUtilsFunction();
-
+  const [prescriptionPreview, setPrescriptionPreview] = useState(null);
+  const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
   // console.log('orders',orders)
 
   return (
@@ -103,7 +104,27 @@ const OrderTable = ({ orders }) => {
                   </Link>
             </TableCell>
 
-       <TableCell className="text-center">{"Prescription"}</TableCell>
+       <TableCell className="text-center">
+  {order?.items?.some((it) => it.prescriptionUrl) ? (
+    <button
+      onClick={() => {
+        // Get first prescription found in items
+        const firstPrescription = order.items.find(
+          (it) => it.prescriptionUrl
+        )?.prescriptionUrl;
+
+        setPrescriptionPreview(firstPrescription);
+        setOpenPrescriptionModal(true);
+      }}
+      className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md"
+    >
+      View
+    </button>
+  ) : (
+    <span className="text-gray-500 text-sm">No Prescription</span>
+  )}
+</TableCell>
+
 
             <TableCell className="text-right flex justify-end">
               <div className="flex justify-between items-center">
@@ -124,6 +145,34 @@ const OrderTable = ({ orders }) => {
           </TableRow>
         ))}
       </TableBody>
+
+      {openPrescriptionModal && (
+  <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div className="bg-white p-4 rounded-md shadow-lg max-w-md">
+      <h2 className="text-lg font-bold mb-3 text-center">Prescription</h2>
+
+      {prescriptionPreview ? (
+        <img
+          src={prescriptionPreview}
+          alt="Prescription"
+          className="w-full h-auto rounded-md border"
+        />
+      ) : (
+        <p className="text-center text-gray-600">No Prescription Found</p>
+      )}
+
+      <div className="text-center mt-4">
+        <button
+          onClick={() => setOpenPrescriptionModal(false)}
+          className="px-4 py-1 bg-red-500 text-white rounded-md"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </>
   );
 };
