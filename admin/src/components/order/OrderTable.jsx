@@ -21,138 +21,135 @@ const OrderTable = ({ orders }) => {
   const [localPrescriptions, setLocalPrescriptions] = useState({});
 
   useEffect(() => {
-    const keys = Object.keys(localStorage);
     let temp = {};
-
-    keys.forEach((key) => {
+    Object.keys(localStorage).forEach((key) => {
       if (key.startsWith("prescription_")) {
         const id = key.replace("prescription_", "");
         temp[id] = localStorage.getItem(key);
       }
     });
-
     setLocalPrescriptions(temp);
   }, []);
 
   return (
-    <>
-      <TableBody className="dark:bg-gray-900">
-        {orders?.map((order, i) => {
-          // 🔥 FIX: Prescription stored inside order.cart, not order.items
-          const backendPrescription = order.cart?.find(
-            (item) => item.prescriptionUrl
-          )?.prescriptionUrl;
+    <TableBody className="dark:bg-gray-900">
+      {orders?.map((order, i) => {
 
-          const localPrescription = localPrescriptions[order._id];
+        // 🔥🔥 FINALLY CORRECT: Prescription is inside cart → prescriptionUrl
+        const backendPrescription =
+          order.cart?.find((item) => item.prescriptionUrl)?.prescriptionUrl;
 
-          const finalPrescription = backendPrescription || localPrescription;
+        const localPrescription = localPrescriptions[order._id];
 
-          return (
-            <TableRow key={i}>
-              <TableCell>
-                <span className="font-semibold uppercase text-xs">
-                  {order?.invoice}
-                </span>
-              </TableCell>
+        // Final prescription to display
+        const finalPrescription = backendPrescription || localPrescription;
 
-              <TableCell>
-                <span className="text-sm">
-                  {showDateTimeFormat(order?.createdAt)}
-                </span>
-              </TableCell>
+        return (
+          <TableRow key={i}>
 
-              <TableCell className="text-xs">
-                <span className="text-sm">{order?.user_info?.name}</span>
-              </TableCell>
+            <TableCell>
+              <span className="font-semibold uppercase text-xs">
+                {order?.invoice}
+              </span>
+            </TableCell>
 
-              <TableCell>
-                <span className="text-sm font-semibold">
-                  {order?.paymentMethod}
-                </span>
-              </TableCell>
+            <TableCell>
+              <span className="text-sm">
+                {showDateTimeFormat(order?.createdAt)}
+              </span>
+            </TableCell>
 
-              <TableCell>
-                <span className="text-sm font-semibold">
-                  {currency}
-                  {getNumberTwo(
-                    Math.floor(order?.total) +
-                      (order?.total % 1 >= 0.5 ? 1 : 0)
-                  )}
-                </span>
-              </TableCell>
+            <TableCell className="text-xs">
+              <span className="text-sm">{order?.user_info?.name}</span>
+            </TableCell>
 
-              <TableCell>
-                <SelectDate id={order._id} order={order} />
-              </TableCell>
+            <TableCell>
+              <span className="text-sm font-semibold">
+                {order?.paymentMethod}
+              </span>
+            </TableCell>
 
-              <TableCell>
-                <SelectPartner id={order._id} order={order} />
-              </TableCell>
-
-              <TableCell>
-                <SelectInput id={order._id} order={order} />
-              </TableCell>
-
-              <TableCell>
-                <TrackInput id={order._id} order={order} />
-              </TableCell>
-
-              <TableCell className="text-xs">
-                <Status status={order?.status} />
-              </TableCell>
-
-              <TableCell className="text-center">
-                {order.isCancelByCustomer ? (
-                  order.paymentMethod === "RazorPay" ? (
-                    <Badge type="success">Refunded</Badge>
-                  ) : (
-                    <Badge type="success">Cancelled</Badge>
-                  )
-                ) : (
-                  <SelectStatus id={order._id} order={order} />
+            <TableCell>
+              <span className="text-sm font-semibold">
+                {currency}
+                {getNumberTwo(
+                  Math.floor(order?.total) +
+                    (order?.total % 1 >= 0.5 ? 1 : 0)
                 )}
-              </TableCell>
+              </span>
+            </TableCell>
 
-              <TableCell className="text-center">
-                <Link to={`/shipping/${order._id}`}>View</Link>
-              </TableCell>
+            <TableCell>
+              <SelectDate id={order._id} order={order} />
+            </TableCell>
 
-              {/* 🔥 FIX: Use prescription from cart, fallback to localStorage */}
-              <TableCell className="text-center">
-                {finalPrescription ? (
-                  <a
-                    href={finalPrescription}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    View
-                  </a>
+            <TableCell>
+              <SelectPartner id={order._id} order={order} />
+            </TableCell>
+
+            <TableCell>
+              <SelectInput id={order._id} order={order} />
+            </TableCell>
+
+            <TableCell>
+              <TrackInput id={order._id} order={order} />
+            </TableCell>
+
+            <TableCell className="text-xs">
+              <Status status={order?.status} />
+            </TableCell>
+
+            <TableCell className="text-center">
+              {order.isCancelByCustomer ? (
+                order.paymentMethod === "RazorPay" ? (
+                  <Badge type="success">Refunded</Badge>
                 ) : (
-                  <span className="text-gray-500">No Prescription</span>
-                )}
-              </TableCell>
+                  <Badge type="success">Cancelled</Badge>
+                )
+              ) : (
+                <SelectStatus id={order._id} order={order} />
+              )}
+            </TableCell>
 
-              <TableCell className="text-right flex justify-end">
-                <div className="flex items-center">
-                  <PrintReceipt orderId={order._id} />
-                  <span className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600">
-                    <Link to={`/order/${order._id}`}>
-                      <Tooltip
-                        id="view"
-                        Icon={FiZoomIn}
-                        title={t("ViewInvoice")}
-                        bgColor="#059669"
-                      />
-                    </Link>
-                  </span>
-                </div>
-              </TableCell>
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </>
+            <TableCell className="text-center">
+              <Link to={`/shipping/${order._id}`}>View</Link>
+            </TableCell>
+
+            {/* 🔥 Prescription Column */}
+            <TableCell className="text-center">
+              {finalPrescription ? (
+                <a
+                  href={finalPrescription}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:underline"
+                >
+                  View
+                </a>
+              ) : (
+                <span className="text-gray-500">No Prescription</span>
+              )}
+            </TableCell>
+
+            <TableCell className="text-right flex justify-end">
+              <div className="flex items-center">
+                <PrintReceipt orderId={order._id} />
+                <span className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600">
+                  <Link to={`/order/${order._id}`}>
+                    <Tooltip
+                      id="view"
+                      Icon={FiZoomIn}
+                      title={t("ViewInvoice")}
+                      bgColor="#059669"
+                    />
+                  </Link>
+                </span>
+              </div>
+            </TableCell>
+          </TableRow>
+        );
+      })}
+    </TableBody>
   );
 };
 
