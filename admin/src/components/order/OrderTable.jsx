@@ -3,6 +3,7 @@ import { TableBody, TableCell, TableRow, Badge } from "@windmill/react-ui";
 import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
 //internal import
 
