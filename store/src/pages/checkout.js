@@ -80,6 +80,19 @@ const Checkout = () => {
 
     // Build FormData
     const formData = new FormData();
+      formData.append("user_info", JSON.stringify(user_info));
+      formData.append("items", JSON.stringify(cartItems));
+      formData.append("total", total);
+      formData.append("subTotal", subTotal);
+      formData.append("shippingCost", shippingCost);
+      formData.append("discount", discount);
+      formData.append("paymentMethod", paymentMethod);
+      formData.append("status", "Pending");
+      formData.append("user", user._id);
+      
+      if (uploadedFile) {
+        formData.append("prescription", uploadedFile);
+      }
 
     // USER INFO
     const user_info = {
