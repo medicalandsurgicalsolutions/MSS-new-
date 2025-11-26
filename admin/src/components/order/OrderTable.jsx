@@ -21,7 +21,23 @@ const OrderTable = ({ orders }) => {
 
   const [prescriptionPreview, setPrescriptionPreview] = useState(null);
   const [openPrescriptionModal, setOpenPrescriptionModal] = useState(false);
+  const [localPrescriptions, setLocalPrescriptions] = useState({});
 
+  useEffect(() => {
+  // Load all prescription entries from localStorage
+  const keys = Object.keys(localStorage);
+  let temp = {};
+
+  keys.forEach((key) => {
+    if (key.startsWith("prescription_")) {
+      const orderId = key.replace("prescription_", "");
+      temp[orderId] = localStorage.getItem(key);
+    }
+  });
+
+  setLocalPrescriptions(temp);
+}, []);
+  
   return (
     <>
       <TableBody className="dark:bg-gray-900">
@@ -96,25 +112,29 @@ const OrderTable = ({ orders }) => {
             </TableCell>
 
             {/* Prescription View */}
-            <TableCell className="text-center">
-             {order?.items?.some((it) => it.prescriptionUrl) ? (
-                <button
-                  onClick={() => {
-                    const firstPrescription = order.items.find(
-                      (it) => it.prescriptionUrl
-                    )?.prescriptionUrl;
-            
-                    setPrescriptionPreview(firstPrescription);
-                    setOpenPrescriptionModal(true);
-                  }}
-                  className="text-blue-600 hover:underline"
-                >
-                  View
-                </button>
-              ) : (
-                <span className="text-gray-500">No Prescription</span>
-              )}
-            </TableCell>
+          <TableCell className="text-center">
+            {order?.items?.some((it) => it.prescriptionUrl) ||
+            localPrescriptions[order._id] ? (
+              <button
+                onClick={() => {
+                  const backendPrescription =
+                    order.items.find((it) => it.prescriptionUrl)?.prescriptionUrl;
+          
+                  const finalPres =
+                    backendPrescription || localPrescriptions[order._id];
+          
+                  setPrescriptionPreview(finalPres);
+                  setOpenPrescriptionModal(true);
+                }}
+                className="text-blue-600 hover:underline"
+              >
+                View
+              </button>
+            ) : (
+              <span className="text-gray-500">No Prescription</span>
+            )}
+          </TableCell>
+
 
             <TableCell className="text-right flex justify-end">
               <div className="flex items-center">
