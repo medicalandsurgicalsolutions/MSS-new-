@@ -71,66 +71,85 @@ const Checkout = () => {
   };
 
   const checkoutSubmitHandler = async (data) => {
-    if (isEmpty) return notifyError("Cart is empty!");
+  if (isEmpty) return notifyError("Cart is empty!");
 
-    try {
-      const token =
-        typeof window !== "undefined" &&
-        (localStorage.getItem("userToken") || localStorage.getItem("token"));
+  try {
+    const token =
+      typeof window !== "undefined" &&
+      (localStorage.getItem("userToken") || localStorage.getItem("token"));
 
-      // Attach prescription URL for each item
-      const orderItems = items.map((item) => ({
-        product: item.id,
-        title: item.title,
-        quantity: item.quantity,
-        price: item.price,
-        prescriptionUrl: getPrescriptionUrl(item.id),
-      }));
+    // Build FormData
+    const formData = new FormData();
 
-      const orderPayload = {
-        user_info: {
-          firstName: data.firstName,
-          lastName: data.lastName,
-          phone: data.phone,
-          flat: data.flat,
-          address: data.address,
-          landmark: data.landmark,
-          city: data.city,
-          district: data.district,
-          state: data.state,
-          country: data.country,
-          zipCode: data.zipCode,
-        },
-        items: orderItems,
-        total: cartTotal + deliveryChargeToApply - discountAmount,
-        shippingCost: deliveryChargeToApply,
-        discount: discountAmount,
-        paymentMethod: data.paymentMethod,
-        status: "pending",
-      };
+    // USER INFO
+    const user_info = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phone: data.phone,
+      flat: data.flat,
+      address: data.address,
+      landmark: data.landmark,
+      city: data.city,
+      district: data.district,
+      state: data.state,
+      country: data.country,
+      zipCode: data.zipCode,
+    };
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        },
-        body: JSON.stringify(orderPayload),
-      });
+    formData.append("user_info", JSON.stringify(user_info));
 
-      const result = await response.json();
+    // ITEMS + PRESCRIPTION URLS
+    const orderItems = items.map((item) => ({
+      product: item.id,
+      title: item.title,
+      quantity: item.quantity,
+      price: item.price,
+      prescriptionUrl: getPrescriptionUrl(item.id) || null,
+    }));
 
-      if (result.success) {
-        notifySuccess("Order placed successfully!");
-        window.location.href = "/orders";
-      } else {
-        notifyError(result.message || "Failed to place order.");
+    formData.append("items", JSON.stringify(orderItems));
+
+    // TOTALS
+    formData.append(
+      "total",
+      cartTotal + deliveryChargeToApply - discountAmount
+    );
+    formData.append("shippingCost", deliveryChargeToApply);
+    formData.append("discount", discountAmount);
+    formData.append("paymentMethod", data.paymentMethod);
+    formData.append("status", "Pending");
+
+    // APPEND FILES (if uploaded)
+    items.forEach((item) => {
+      const file = localStorage.getItem(`file_${item.id}`);
+      if (file) {
+        formData.append("prescription", file);
       }
-    } catch (err) {
-      console.error(err);
-      notifyError("Something went wrong!");
+    });
+
+    // SEND REQUEST
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
+      method: "POST",
+      headers: {
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      notifySuccess("Order placed successfully!");
+      window.location.href = "/orders";
+    } else {
+      notifyError(result.message || "Failed to place order.");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    notifyError("Something went wrong!");
+  }
+};
+
 
   // ---------------------- COD PIN CHECK ---------------------- //
   const codObj = {
