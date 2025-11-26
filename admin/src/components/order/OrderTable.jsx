@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { TableBody, TableCell, TableRow, Badge } from "@windmill/react-ui";
 import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
@@ -18,31 +18,9 @@ const OrderTable = ({ orders }) => {
   const { t } = useTranslation();
   const { showDateTimeFormat, currency, getNumberTwo } = useUtilsFunction();
 
-  const [localPrescriptions, setLocalPrescriptions] = useState({});
-
-  useEffect(() => {
-    let temp = {};
-    Object.keys(localStorage).forEach((key) => {
-      if (key.startsWith("prescription_")) {
-        const id = key.replace("prescription_", "");
-        temp[id] = localStorage.getItem(key);
-      }
-    });
-    setLocalPrescriptions(temp);
-  }, []);
-
   return (
     <TableBody className="dark:bg-gray-900">
       {orders?.map((order, i) => {
-
-        // 🔥🔥 FINALLY CORRECT: Prescription is inside cart → prescriptionUrl
-        const backendPrescription =
-          order.cart?.find((item) => item.prescriptionUrl)?.prescriptionUrl;
-
-        const localPrescription = localPrescriptions[order._id];
-
-        // Final prescription to display
-        const finalPrescription = backendPrescription || localPrescription;
 
         return (
           <TableRow key={i}>
@@ -115,11 +93,11 @@ const OrderTable = ({ orders }) => {
               <Link to={`/shipping/${order._id}`}>View</Link>
             </TableCell>
 
-            {/* 🔥 Prescription Column */}
+            {/* Prescription View */}
             <TableCell className="text-center">
-              {finalPrescription ? (
+              {order?.prescriptionUrl ? (
                 <a
-                  href={finalPrescription}
+                  href={order.prescriptionUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-600 hover:underline"
@@ -146,6 +124,7 @@ const OrderTable = ({ orders }) => {
                 </span>
               </div>
             </TableCell>
+
           </TableRow>
         );
       })}
