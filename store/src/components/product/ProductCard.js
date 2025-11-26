@@ -20,6 +20,7 @@ const ProductCard = ({ product, attributes }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [hasLocalPrescription, setHasLocalPrescription] = useState(false);
 
   const { items, addItem } = useCart();
   const { showingTranslateValue } = useUtilsFunction();
@@ -32,11 +33,17 @@ const ProductCard = ({ product, attributes }) => {
 
   // ✅ Save prescription to LocalStorage
   const savePrescriptionToLocalStorage = (productId, file) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      localStorage.setItem(`prescription_${productId}`, reader.result);
-    };
-    reader.readAsDataURL(file);
+    try {
+      const reader = new FileReader();
+      reader.onload = () => {
+        // reader.result is a data URL (base64)
+        localStorage.setItem(`prescription_${productId}`, reader.result);
+        setHasLocalPrescription(true);
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error("Error saving prescription to localStorage", err);
+    }
   };
 
   const handlePrescriptionUpload = (event) => {
@@ -48,6 +55,21 @@ const ProductCard = ({ product, attributes }) => {
     notifySuccess("Prescription uploaded successfully!");
   };
 
+  // Load any saved prescription for this product from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem(`prescription_${product._id}`);
+      if (saved) {
+        setPreviewUrl(saved);
+        setHasLocalPrescription(true);
+        // mark selectedFile truthy so UI shows file-chosen info if needed
+        setSelectedFile(true);
+      }
+    } catch (err) {
+      console.error("Error reading local prescription", err);
+    }
+  }, [product._id]);
+
   const handleAddItems = async (event, p) => {
     event.stopPropagation();
 
@@ -56,8 +78,9 @@ const ProductCard = ({ product, attributes }) => {
       return;
     }
 
-    // ✅ For Medicines, require prescription
-    if (isMedicinePage && !selectedFile) {
+    // ✅ For Medicines, require prescription from localStorage
+    const savedPres = localStorage.getItem(`prescription_${p._id}`);
+    if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
       return;
     }
@@ -69,9 +92,7 @@ const ProductCard = ({ product, attributes }) => {
       price: p?.prices?.price,
       originalPrice: p?.prices?.originalPrice,
       quantity: 1,
-      prescriptionUrl: isMedicinePage
-        ? localStorage.getItem(`prescription_${p._id}`)
-        : null,
+      prescriptionUrl: isMedicinePage ? savedPres : null,
     };
 
     if (!userInfo) {
@@ -87,7 +108,8 @@ const ProductCard = ({ product, attributes }) => {
   };
 
   const handleAddToCartWithPrescription = () => {
-    if (isMedicinePage && !selectedFile) {
+    const savedPres = localStorage.getItem(`prescription_${product._id}`);
+    if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
       return;
     }
@@ -99,9 +121,7 @@ const ProductCard = ({ product, attributes }) => {
       price: product?.prices?.price,
       originalPrice: product?.prices?.originalPrice,
       quantity: 1,
-      prescriptionUrl: isMedicinePage
-        ? localStorage.getItem(`prescription_${product._id}`)
-        : null,
+      prescriptionUrl: isMedicinePage ? savedPres : null,
     };
 
     addItem(newItem);
@@ -124,7 +144,8 @@ const ProductCard = ({ product, attributes }) => {
         {/* Product Image */}
         <div
           onClick={() => {
-            handleAddToCartWithPrescription();
+            // Open modal only — don't add to cart from image click
+            setModalOpen(true);
             handleLogEvent(
               "product",
               `opened ${showingTranslateValue(product?.title)} product modal`
@@ -169,7 +190,7 @@ const ProductCard = ({ product, attributes }) => {
                 className="flex items-center gap-2 text-blue-600 cursor-pointer border rounded-md px-4 py-2 bg-gray-100 w-full justify-between"
               >
                 Upload Prescription
-                <span>{selectedFile ? selectedFile.name : "No file chosen"}</span>
+                <span>{selectedFile ? (selectedFile.name || "Uploaded") : "No file chosen"}</span>
                 <input
                   type="file"
                   id={`upload-prescription-${product._id}`}
@@ -192,9 +213,9 @@ const ProductCard = ({ product, attributes }) => {
           {/* Buttons */}
           <div className="mt-4 w-full flex items-center justify-between gap-3">
             <button
-              disabled={isMedicinePage && !selectedFile}
+              disabled={isMedicinePage && !hasLocalPrescription}
               className={`w-1/2 px-3 py-1 text-center rounded-md border ${
-                isMedicinePage && !selectedFile
+                isMedicinePage && !hasLocalPrescription
                   ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed"
                   : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
               }`}
@@ -203,9 +224,9 @@ const ProductCard = ({ product, attributes }) => {
               Add to Cart
             </button>
             <button
-              disabled={isMedicinePage && !selectedFile}
+              disabled={isMedicinePage && !hasLocalPrescription}
               className={`w-1/2 px-3 py-1 text-center rounded-md border ${
-                isMedicinePage && !selectedFile
+                isMedicinePage && !hasLocalPrescription
                   ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed"
                   : "border-green-500 text-green-500 hover:text-white hover:bg-green-500"
               }`}
