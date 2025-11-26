@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
-// internal imports
 import Status from "@/components/table/Status";
 import Tooltip from "@/components/tooltip/Tooltip";
 import useUtilsFunction from "@/hooks/useUtilsFunction";
@@ -22,7 +21,6 @@ const OrderTable = ({ orders }) => {
   const [localPrescriptions, setLocalPrescriptions] = useState({});
 
   useEffect(() => {
-    // Load all prescription entries from localStorage
     const keys = Object.keys(localStorage);
     let temp = {};
 
@@ -40,8 +38,10 @@ const OrderTable = ({ orders }) => {
     <>
       <TableBody className="dark:bg-gray-900">
         {orders?.map((order, i) => {
-          const backendPrescription =
-            order.items?.find((it) => it.prescriptionUrl)?.prescriptionUrl;
+          // 🔥 FIX: Prescription stored inside order.cart, not order.items
+          const backendPrescription = order.cart?.find(
+            (item) => item.prescriptionUrl
+          )?.prescriptionUrl;
 
           const localPrescription = localPrescriptions[order._id];
 
@@ -117,7 +117,7 @@ const OrderTable = ({ orders }) => {
                 <Link to={`/shipping/${order._id}`}>View</Link>
               </TableCell>
 
-              {/* Prescription View */}
+              {/* 🔥 FIX: Use prescription from cart, fallback to localStorage */}
               <TableCell className="text-center">
                 {finalPrescription ? (
                   <a
