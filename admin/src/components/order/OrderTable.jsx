@@ -83,24 +83,18 @@ const OrderTable = ({ orders }) => {
           </TableCell>
 
           {/* Prescription View */}
-          <TableCell className="text-center">
-            {order.items && order.items.some(item => item.prescriptionUrl) ? (
-              order.items.map((item, idx) =>
-                item.prescriptionUrl ? (
-                  <div key={idx} className="mb-2">
-                    <a
-                      href={item.prescriptionUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:underline text-xs"
-                    >
-                      {item.product?.title ? item.product.title : `Prescription ${idx + 1}`}
-                    </a>
-                  </div>
-                ) : null
-              )
+         <TableCell className="text-center">
+            {order?.items?.some((item) => item.prescriptionUrl) ? (
+              <a
+                href={order.items.find((item) => item.prescriptionUrl)?.prescriptionUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:underline"
+              >
+                View
+              </a>
             ) : (
-              <span className="text-gray-500 text-xs">No Prescription</span>
+              <span className="text-gray-500">No Prescription</span>
             )}
           </TableCell>
 
