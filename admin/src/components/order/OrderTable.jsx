@@ -97,24 +97,22 @@ const OrderTable = ({ orders }) => {
 
             {/* Prescription View */}
             <TableCell className="text-center">
-              {order?.items?.some((it) => it.prescriptionUrl) ? (
+             {order?.items?.some((it) => it.prescriptionUrl) ? (
                 <button
                   onClick={() => {
                     const firstPrescription = order.items.find(
                       (it) => it.prescriptionUrl
                     )?.prescriptionUrl;
-
+            
                     setPrescriptionPreview(firstPrescription);
                     setOpenPrescriptionModal(true);
                   }}
-                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded-md"
+                  className="text-blue-600 hover:underline"
                 >
                   View
                 </button>
               ) : (
-                <span className="text-gray-500 text-sm">
-                  No Prescription
-                </span>
+                <span className="text-gray-500">No Prescription</span>
               )}
             </TableCell>
 
