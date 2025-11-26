@@ -1,7 +1,10 @@
+// pages/checkout.js
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
-// import { CardElement } from "@stripe/react-stripe-js";
 import Link from "next/link";
+import useTranslation from "next-translate/useTranslation";
+
+// icons and internal imports (same as your file)
 import {
   IoReturnUpBackOutline,
   IoArrowForward,
@@ -9,21 +12,20 @@ import {
   IoWalletSharp,
 } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
-import useTranslation from "next-translate/useTranslation";
 
-//internal import
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
+import SettingServices from "@services/SettingServices";
+import useGetSetting from "@hooks/useGetSetting";
+import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
+import useUtilsFunction from "@hooks/useUtilsFunction";
+
 import Label from "@components/form/Label";
 import Error from "@components/form/Error";
 import CartItem from "@components/cart/CartItem";
 import InputArea from "@components/form/InputArea";
-import useGetSetting from "@hooks/useGetSetting";
 import InputShipping from "@components/form/InputShipping";
 import InputPayment from "@components/form/InputPayment";
-import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
-import useUtilsFunction from "@hooks/useUtilsFunction";
-import SettingServices from "@services/SettingServices";
 import SwitchToggle from "@components/form/SwitchToggle";
 import PinncodeService from "@services/PincodeServices";
 import { notifyError, notifySuccess } from "@utils/toast";
@@ -34,73 +36,7 @@ const Checkout = () => {
   const { showingTranslateValue } = useUtilsFunction();
   const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
-const handleSubmitOrder = async () => {
-  try {
-    const user = getUserSession();
-    if (!user) {
-      router.push("/auth/login");
-      return;
-    }
-
-    const storedPrescriptions = JSON.parse(localStorage.getItem("prescriptions")) || {};
-
-    // 🔥 Attach prescription file URL to each item
-    const updatedItems = items.map((item) => ({
-      _id: item.id,
-      title: item.title,
-      price: item.price,
-      quantity: item.quantity,
-      prescriptionUrl: storedPrescriptions[item.id] || null,
-    }));
-
-    const orderData = {
-      userId: user.id,
-      items: updatedItems,
-      shippingAddress: {
-        address: address,
-        flat: flat,
-        zipCode: zipCode,
-      },
-      paymentMethod: paymentMethod,
-      total: cartTotal,
-      prescriptionUrl: null, // Using per-item prescription instead
-    };
-
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(orderData),
-    });
-
-    const data = await res.json();
-
-    if (!data.success) {
-      notifyError("Order failed");
-      return;
-    }
-
-    notifySuccess("Order placed successfully!");
-
-    // 🧹 Clear saved prescriptions
-    localStorage.removeItem("prescriptions");
-
-    // Empty cart
-    emptyCart();
-
-    setTimeout(() => {
-      router.push("/order-success");
-    }, 800);
-
-  } catch (err) {
-    console.log("Checkout Error:", err);
-    notifyError("Something went wrong");
-  }
-};
-
-  
   const {
-    error,
-    // stripe,
     couponInfo,
     couponRef,
     total,
@@ -115,7 +51,7 @@ const handleSubmitOrder = async () => {
     setActiveCharge,
     setShowCard,
     handleSubmit,
-    submitHandler,
+    submitHandler, // existing hook's submit function
     handleShippingCost,
     handleCouponCode,
     discountAmount,
@@ -131,7 +67,7 @@ const handleSubmitOrder = async () => {
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
 
-  // COD helper (unchanged)
+  // Pin check logic (same as your file)
   const codObj = {
     Elements: null,
     init() {
@@ -197,18 +133,26 @@ const handleSubmitOrder = async () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Attach prescription URLs from localStorage to items (if present)
+  // ------------ PRESCRIPTION HELPERS ------------
+
+  // Read base64 prescription for a given item id from localStorage
+  const getPrescriptionForItem = (itemId) => {
+    try {
+      return localStorage.getItem(`prescription_${itemId}`) || null;
+    } catch (err) {
+      console.error("Error reading prescription from localStorage", err);
+      return null;
+    }
+  };
+
+  // Attach prescription base64 to each item if available
   const attachPrescriptionsToItems = (cartItems = []) => {
     return cartItems.map((it) => {
       try {
-        // prefer existing `prescription` property if already there
-        if (it.prescription) return it;
-        const saved = localStorage.getItem(`prescription_${it.id}`);
+        if (it.prescription) return it; // already attached
+        const saved = getPrescriptionForItem(it.id);
         if (saved) {
-          return {
-            ...it,
-            prescription: saved,
-          };
+          return { ...it, prescription: saved };
         }
         return it;
       } catch (err) {
@@ -218,42 +162,55 @@ const handleSubmitOrder = async () => {
     });
   };
 
-  // wrapper to inject prescription URL and then call original submitHandler
+  // Wrapper around the original submit that injects cart items (with prescriptions)
   const onSubmitWithPrescriptions = handleSubmit(async (formData) => {
-    // attach items (cart) to formData if needed by backend
+    // augment items with prescription base64
     const augmentedItems = attachPrescriptionsToItems(items || []);
 
-    // add cart to formData (some implementations expect cart in body)
+    // prepare payload expected by backend - adapt to your API shape
     const payload = {
-      ...formData,
+      // if your API uses req.user, no need to set userId here; keep consistent
       cart: augmentedItems,
+      user_info: {
+        name: formData.firstName + (formData.lastName ? ` ${formData.lastName}` : ""),
+        contact: formData.phone || formData.contact || "",
+        address: formData.address || "",
+        flat: formData.flat || "",
+        district: formData.district || "",
+        landmark: formData.landmark || "",
+        state: formData.state || "",
+        city: formData.city || "",
+        country: formData.country || "",
+        zipCode: formData.zipCode || "",
+        email: formData.email || "",
+      },
+      paymentMethod: formData.paymentMethod,
+      subTotal: cartTotal,
+      shippingCost: deliveryChargeToApply || 0,
+      discount: discountAmount || 0,
+      total: total || 0,
+      shippingOption: formData.shippingOption || null,
+      // you can include other fields as needed
     };
 
-    try {
-      // call existing submitHandler - many hooks return a promise
-      const result = await submitHandler(payload);
+    // call existing submitHandler (your hook likely posts to /api/orders)
+    const result = await submitHandler(payload);
 
-      // On success (if submitHandler resolves), remove localStorage prescription keys for items
-      try {
-        (augmentedItems || []).forEach((it) => {
-          try {
-            localStorage.removeItem(`prescription_${it.id}`);
-          } catch (e) {
-            /* ignore */
-          }
-        });
-      } catch (e) {
-        /* ignore */
-      }
-
-      return result;
-    } catch (err) {
-      // If submit fails, do not clear localStorage so user can retry
-      console.error("Checkout submit failed", err);
-      throw err;
+    // on success, clear localStorage prescription keys for items
+    if (result && (result.success || result.status === 201 || result.order)) {
+      (augmentedItems || []).forEach((it) => {
+        try {
+          localStorage.removeItem(`prescription_${it.id}`);
+        } catch (e) {
+          /* ignore */
+        }
+      });
     }
+
+    return result;
   });
 
+  // ---------- UI (keeps the rest of your markup) ----------
   return (
     <Layout title="Checkout" description="this is checkout page">
       <>
@@ -273,6 +230,7 @@ const handleSubmitOrder = async () => {
                     </div>
                   )}
 
+                  {/* --- Personal details & shipping (kept same as your code) --- */}
                   <div className="form-group">
                     <h2 className="font-semibold  text-base text-gray-700 pb-3">
                       01.{" "}
@@ -324,6 +282,7 @@ const handleSubmitOrder = async () => {
                     </div>
                   </div>
 
+                  {/* --- Shipping, payment and confirm buttons are same as your file --- */}
                   <div className="form-group mt-12">
                     <h2 className="font-semibold  text-base text-gray-700 pb-3">
                       02.{" "}
@@ -443,8 +402,7 @@ const handleSubmitOrder = async () => {
                         />
                         <div className="grid grid-cols-6 gap-6">
                           {showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_one_desc
+                            storeCustomizationSetting?.checkout?.shipping_one_desc
                           ) && (
                             <div className="col-span-6 sm:col-span-3">
                               <InputShipping
@@ -452,17 +410,14 @@ const handleSubmitOrder = async () => {
                                 handleShippingCost={handleShippingCost}
                                 register={register}
                                 value={showingTranslateValue(
-                                  storeCustomizationSetting?.checkout
-                                    ?.shipping_name_two
+                                  storeCustomizationSetting?.checkout?.shipping_name_two
                                 )}
                                 description={showingTranslateValue(
-                                  storeCustomizationSetting?.checkout
-                                    ?.shipping_one_desc
+                                  storeCustomizationSetting?.checkout?.shipping_one_desc
                                 )}
                                 cost={
                                   Number(
-                                    storeCustomizationSetting?.checkout
-                                      ?.shipping_one_cost
+                                    storeCustomizationSetting?.checkout?.shipping_one_cost
                                   ) || 60
                                 }
                               />
@@ -471,8 +426,7 @@ const handleSubmitOrder = async () => {
                           )}
 
                           {showingTranslateValue(
-                            storeCustomizationSetting?.checkout
-                              ?.shipping_two_desc
+                            storeCustomizationSetting?.checkout?.shipping_two_desc
                           ) && (
                             <div className="col-span-6 sm:col-span-3">
                               <InputShipping
@@ -480,17 +434,14 @@ const handleSubmitOrder = async () => {
                                 handleShippingCost={handleShippingCost}
                                 register={register}
                                 value={showingTranslateValue(
-                                  storeCustomizationSetting?.checkout
-                                    ?.shipping_name_two
+                                  storeCustomizationSetting?.checkout?.shipping_name_two
                                 )}
                                 description={showingTranslateValue(
-                                  storeCustomizationSetting?.checkout
-                                    ?.shipping_two_desc
+                                  storeCustomizationSetting?.checkout?.shipping_two_desc
                                 )}
                                 cost={
                                   Number(
-                                    storeCustomizationSetting?.checkout
-                                      ?.shipping_two_cost
+                                    storeCustomizationSetting?.checkout?.shipping_two_cost
                                   ) || 0
                                 }
                               />
@@ -568,15 +519,12 @@ const handleSubmitOrder = async () => {
                               width={20}
                               height={10}
                             />
-                            <span className="ml-2">
-                              {t("common:processing")}
-                            </span>
+                            <span className="ml-2">{t("common:processing")}</span>
                           </span>
                         ) : (
                           <span className="flex justify-center text-center">
                             {showingTranslateValue(
-                              storeCustomizationSetting?.checkout
-                                ?.confirm_button
+                              storeCustomizationSetting?.checkout?.confirm_button
                             )}
                             <span className="text-xl ml-2">
                               <IoArrowForward />
@@ -590,6 +538,7 @@ const handleSubmitOrder = async () => {
               </div>
             </div>
 
+            {/* Order Summary (same as your file) */}
             <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
               <div className="border p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
                 <h2 className="font-semibold  text-lg pb-4">
@@ -615,6 +564,7 @@ const handleSubmitOrder = async () => {
                   )}
                 </div>
 
+                {/* Summary rows (subtotal, shipping, coupon, total) — YOUR SAME MARKUP */}
                 <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
                   <form className="w-full">
                     {couponInfo.couponCode ? (
