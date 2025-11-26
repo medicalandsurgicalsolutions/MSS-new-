@@ -33,6 +33,15 @@ const ProductCard = ({ product, attributes }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const isMedicinePage = router.asPath.includes("medicines");
 
+  // ✅ Save prescription in LocalStorage
+const savePrescriptionToLocalStorage = (productId, file) => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    localStorage.setItem(`prescription_${productId}`, reader.result);
+  };
+  reader.readAsDataURL(file);
+};
+
   
   useEffect(() => {
     const handleResize = () => {
@@ -101,8 +110,12 @@ const ProductCard = ({ product, attributes }) => {
   setSelectedFile(file);
   setPreviewUrl(URL.createObjectURL(file));
 
-  console.log("Uploaded Prescription:", file);
+  // 🔥 Save to LocalStorage
+  savePrescriptionToLocalStorage(product._id, file);
+
+  console.log("Prescription saved to localStorage");
 };
+
 
 const handleAddToCartWithPrescription = () => {
   if (isMedicinePage && !selectedFile) {
@@ -117,9 +130,8 @@ const handleAddToCartWithPrescription = () => {
     price: product?.prices?.price,
     originalPrice: product?.prices?.originalPrice,
     quantity: 1,
-
-    // 🔥 Store prescription here
-    prescriptionFile: isMedicinePage ? selectedFile : null,
+     // ⭐ Add Base64 prescription from LocalStorage
+  prescriptionUrl: localStorage.getItem(`prescription_${product._id}`) || null,
   };
 
   addItem(newItem);
