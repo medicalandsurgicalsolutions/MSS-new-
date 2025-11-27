@@ -64,6 +64,8 @@ const Checkout = () => {
 
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
+  
+
 
   // COD helper
   const codObj = {
@@ -114,6 +116,15 @@ const Checkout = () => {
 
     pinInput.addEventListener("input", handleInputChange);
     return () => pinInput.removeEventListener("input", handleInputChange);
+  }, []);
+
+   // ✅ Make sure this is at the top, before using it anywhere
+  const [prescriptions, setPrescriptions] = useState({});
+
+  // Initialize prescriptions from localStorage
+  useEffect(() => {
+    const savedPrescriptions = localStorage.getItem("prescriptions");
+    if (savedPrescriptions) setPrescriptions(JSON.parse(savedPrescriptions));
   }, []);
 
   const handlePrescriptionUpload = (file) => {
