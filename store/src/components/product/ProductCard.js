@@ -4,10 +4,8 @@ import { useEffect, useState } from "react";
 import { useCart } from "react-use-cart";
 import { useRouter } from "next/router";
 
-//internal imports
 import Price from "@components/common/Price";
 import { notifyError, notifySuccess } from "@utils/toast";
-import useAddToCart from "@hooks/useAddToCart";
 import useGetSetting from "@hooks/useGetSetting";
 import useUtilsFunction from "@hooks/useUtilsFunction";
 import ProductModal from "@components/modal/ProductModal";
@@ -22,7 +20,7 @@ const ProductCard = ({ product, attributes }) => {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [hasLocalPrescription, setHasLocalPrescription] = useState(false);
 
-  const { items, addItem } = useCart();
+  const { addItem } = useCart();
   const { showingTranslateValue } = useUtilsFunction();
   const { globalSetting } = useGetSetting();
   const router = useRouter();
@@ -31,45 +29,55 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  // ✅ Save prescription to LocalStorage
-  const savePrescriptionToLocalStorage = (productId, file) => {
+  // 🔥 CLOUDINARY UPLOAD FUNCTION
+  const uploadPrescription = async (file) => {
     try {
-      const reader = new FileReader();
-      reader.onload = () => {
-        // reader.result is a data URL (base64)
-        localStorage.setItem(`prescription_${productId}`, reader.result);
+      const fd = new FormData();
+      fd.append("prescription", file);
+
+      const res = await fetch("/api/upload/prescription", {
+        method: "POST",
+        body: fd,
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        localStorage.setItem(`prescription_${product._id}`, data.url);
+        setPreviewUrl(data.url);
         setHasLocalPrescription(true);
-      };
-      reader.readAsDataURL(file);
-    } catch (err) {
-      console.error("Error saving prescription to localStorage", err);
+        notifySuccess("Prescription uploaded successfully!");
+      } else {
+        notifyError("Upload failed!");
+      }
+    } catch (error) {
+      console.error(error);
+      notifyError("Upload error");
     }
   };
 
-  const handlePrescriptionUpload = (event) => {
+  // 📌 Handle file input
+  const handlePrescriptionUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
+
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
-    savePrescriptionToLocalStorage(product._id, file);
-    notifySuccess("Prescription uploaded successfully!");
+
+    // 🔥 UPLOAD TO CLOUDINARY INSTEAD OF LOCAL STORAGE BASE64
+    await uploadPrescription(file);
   };
 
-  // Load any saved prescription for this product from localStorage on mount
+  // 📌 Load saved URL on component mount
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(`prescription_${product._id}`);
-      if (saved) {
-        setPreviewUrl(saved);
-        setHasLocalPrescription(true);
-        // mark selectedFile truthy so UI shows file-chosen info if needed
-        setSelectedFile(true);
-      }
-    } catch (err) {
-      console.error("Error reading local prescription", err);
+    const saved = localStorage.getItem(`prescription_${product._id}`);
+    if (saved) {
+      setPreviewUrl(saved);
+      setHasLocalPrescription(true);
     }
   }, [product._id]);
 
+  // BUY NOW / ADD TO CART
   const handleAddItems = async (event, p) => {
     event.stopPropagation();
 
@@ -78,8 +86,8 @@ const ProductCard = ({ product, attributes }) => {
       return;
     }
 
-    // ✅ For Medicines, require prescription from localStorage
     const savedPres = localStorage.getItem(`prescription_${p._id}`);
+
     if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
       return;
@@ -102,6 +110,7 @@ const ProductCard = ({ product, attributes }) => {
 
     addItem(newItem);
     notifySuccess(`${p.title} added to cart! Redirecting...`);
+
     setTimeout(() => {
       router.push("/checkout");
     }, 400);
@@ -109,6 +118,7 @@ const ProductCard = ({ product, attributes }) => {
 
   const handleAddToCartWithPrescription = () => {
     const savedPres = localStorage.getItem(`prescription_${product._id}`);
+
     if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
       return;
@@ -141,15 +151,11 @@ const ProductCard = ({ product, attributes }) => {
       )}
 
       <div className="group box-border overflow-hidden flex rounded-md shadow-sm border-2 border-cyan-100 flex-col items-center bg-gray-50 relative">
-        {/* Product Image */}
+        {/* Image */}
         <div
           onClick={() => {
-            // Open modal only — don't add to cart from image click
             setModalOpen(true);
-            handleLogEvent(
-              "product",
-              `opened ${showingTranslateValue(product?.title)} product modal`
-            );
+            handleLogEvent("product", `opened ${showingTranslateValue(product?.title)} modal`);
           }}
           className="relative flex justify-center cursor-pointer w-full h-44"
         >
@@ -169,11 +175,12 @@ const ProductCard = ({ product, attributes }) => {
           </div>
         </div>
 
-        {/* Product Info */}
+        {/* Info */}
         <div className="w-full relative px-1 lg:px-4 pb-4">
           <h2 className="text-[13px] lg:text-xs font-medium text-gray-800">
             {showingTranslateValue(product?.title)}
           </h2>
+
           <Price
             card
             product={product}
@@ -182,7 +189,7 @@ const ProductCard = ({ product, attributes }) => {
             originalPrice={product?.prices?.originalPrice}
           />
 
-          {/* ✅ Only show upload on Medicines page */}
+          {/* Upload Prescription for Medicines Only */}
           {isMedicinePage && (
             <div className="mt-3 w-full flex flex-col items-center gap-3">
               <label
@@ -190,7 +197,9 @@ const ProductCard = ({ product, attributes }) => {
                 className="flex items-center gap-2 text-blue-600 cursor-pointer border rounded-md px-4 py-2 bg-gray-100 w-full justify-between"
               >
                 Upload Prescription
-                <span>{selectedFile ? (selectedFile.name || "Uploaded") : "No file chosen"}</span>
+                <span>
+                  {selectedFile ? selectedFile.name || "Uploaded" : "No file chosen"}
+                </span>
                 <input
                   type="file"
                   id={`upload-prescription-${product._id}`}
@@ -223,6 +232,7 @@ const ProductCard = ({ product, attributes }) => {
             >
               Add to Cart
             </button>
+
             <button
               disabled={isMedicinePage && !hasLocalPrescription}
               className={`w-1/2 px-3 py-1 text-center rounded-md border ${
