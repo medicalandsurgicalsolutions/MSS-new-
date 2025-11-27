@@ -13,11 +13,9 @@ import useTranslation from "next-translate/useTranslation";
 // Internal imports
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
-import Label from "@components/form/Label";
 import Error from "@components/form/Error";
 import CartItem from "@components/cart/CartItem";
 import InputArea from "@components/form/InputArea";
-import InputShipping from "@components/form/InputShipping";
 import InputPayment from "@components/form/InputPayment";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 import useUtilsFunction from "@hooks/useUtilsFunction";
@@ -35,39 +33,28 @@ const Checkout = () => {
 
   const {
     error,
-    couponInfo,
-    couponRef,
-    total,
     isEmpty,
     items,
-    cartTotal,
     currency,
     register,
-    codDisplay,
     errors,
     showCard,
     setActiveCharge,
     setShowCard,
     handleSubmit,
     submitHandler: originalSubmitHandler,
-    handleShippingCost,
-    handleCouponCode,
-    discountAmount,
-    deliveryChargeToApply,
-    shippingCost,
     isCheckoutSubmit,
     useExistingAddress,
     hasShippingAddress,
-    isCouponAvailable,
     handleDefaultShippingAddress,
   } = useCheckoutSubmit();
 
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
-  
-   const [prescriptions, setPrescriptions] = useState({}); // store prescriptions from localStorage
 
-  // Load prescriptions from localStorage on mount
+  // Prescriptions from localStorage
+  const [prescriptions, setPrescriptions] = useState({});
+
   useEffect(() => {
     const stored = localStorage.getItem("prescriptions");
     if (stored) setPrescriptions(JSON.parse(stored));
@@ -124,28 +111,31 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Convert file to base64 immediately and store that
-const handlePrescriptionUpload = async (file) => {
-  const base64 = await fileToBase64(file);
-  const id = new Date().getTime();
-  const newPrescriptions = { ...prescriptions, [id]: { name: file.name, data: base64 } };
-  setPrescriptions(newPrescriptions);
-  localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
-  notifySuccess("Prescription added successfully");
-};
+  // Convert File object to Base64 (just in case you use elsewhere)
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
 
-// Then enhancedSubmitHandler can just read the base64 directly
-const enhancedSubmitHandler = async (data) => {
-  const firstPrescription = Object.values(prescriptions)[0] || null;
-  const payload = {
-    ...data,
-    prescriptionUrl: firstPrescription ? firstPrescription.data : null,
+  // Enhanced submit handler - attaches prescription from localStorage
+  const enhancedSubmitHandler = async (data) => {
+    try {
+      const firstPrescription = Object.values(prescriptions)[0] || null;
+      const payload = {
+        ...data,
+        prescriptionUrl: firstPrescription ? firstPrescription.data : null,
+      };
+
+      await originalSubmitHandler(payload);
+    } catch (err) {
+      console.error("Checkout submit error:", err);
+      notifyError("Failed to submit order. Please try again.");
+    }
   };
 
-  await originalSubmitHandler(payload); // use correct function
-};
-
-  
   return (
     <Layout title="Checkout" description="this is checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
@@ -153,8 +143,8 @@ const enhancedSubmitHandler = async (data) => {
           {/* Left form */}
           <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
             <div className="mt-5 md:mt-0 md:col-span-2">
-             <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
-                {/* Use default shipping toggle */}
+              <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
+                {/* Default shipping toggle */}
                 {hasShippingAddress && (
                   <div className="flex justify-end my-2">
                     <SwitchToggle
@@ -169,18 +159,13 @@ const enhancedSubmitHandler = async (data) => {
                 {/* Personal Details */}
                 <div className="form-group">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    01.{" "}
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.checkout?.personal_details
-                    )}
+                    01. {showingTranslateValue(storeCustomizationSetting?.checkout?.personal_details)}
                   </h2>
                   <div className="grid grid-cols-6 gap-6">
                     <div className="col-span-6 sm:col-span-3">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.first_name
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.first_name)}
                         name="firstName"
                         type="text"
                         placeholder="Enter your first name"
@@ -191,9 +176,7 @@ const enhancedSubmitHandler = async (data) => {
                     <div className="col-span-6 sm:col-span-3">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.last_name
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.last_name)}
                         name="lastName"
                         type="text"
                         placeholder="Enter your last name"
@@ -205,9 +188,7 @@ const enhancedSubmitHandler = async (data) => {
                     <div className="col-span-6 sm:col-span-3">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.checkout_phone
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.checkout_phone)}
                         name="phone"
                         type="tel"
                         placeholder="Enter phone number"
@@ -217,31 +198,11 @@ const enhancedSubmitHandler = async (data) => {
                   </div>
                 </div>
 
-           {/* Prescription Upload */}
-                <div className="form-group mt-6">
-                  <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    00. Prescription Upload
-                  </h2>
-                 
-                  <div className="mt-2">
-                    {Object.values(prescriptions).map((file, index) => (
-                      <div key={index} className="text-sm text-gray-600">
-                        {file.name}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-  
                 {/* Shipping Details */}
                 <div className="form-group mt-12">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    02.{" "}
-                    {showingTranslateValue(
-                      storeCustomizationSetting?.checkout?.shipping_details
-                    )}
+                    02. {showingTranslateValue(storeCustomizationSetting?.checkout?.shipping_details)}
                   </h2>
-
                   <div className="grid grid-cols-6 gap-6 mb-8">
                     <div className="col-span-6">
                       <InputArea
@@ -257,9 +218,7 @@ const enhancedSubmitHandler = async (data) => {
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.street_address
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.street_address)}
                         name="address"
                         type="text"
                         placeholder="Eg: Patparganj Industrial Area, Sector 36"
@@ -281,9 +240,7 @@ const enhancedSubmitHandler = async (data) => {
                     <div className="col-span-6 sm:col-span-6 lg:col-span-2">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.city
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.city)}
                         name="city"
                         type="text"
                         placeholder="Eg: New Delhi"
@@ -305,9 +262,7 @@ const enhancedSubmitHandler = async (data) => {
                     <div className="col-span-6 sm:col-span-3 lg:col-span-2" id="PinInput">
                       <InputArea
                         register={register}
-                        label={showingTranslateValue(
-                          storeCustomizationSetting?.checkout?.zip_code
-                        )}
+                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.zip_code)}
                         value={inputPincode}
                         name="zipCode"
                         type="text"
@@ -337,7 +292,7 @@ const enhancedSubmitHandler = async (data) => {
 
                   <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
                     {storeSetting?.cod_status && (
-                      <div className="" id="cod_input">
+                      <div id="cod_input">
                         <InputPayment
                           setShowCard={setShowCard}
                           register={register}
@@ -351,7 +306,7 @@ const enhancedSubmitHandler = async (data) => {
                       </div>
                     )}
 
-                    <div className="">
+                    <div>
                       <InputPayment
                         setShowCard={setShowCard}
                         register={register}
@@ -370,7 +325,7 @@ const enhancedSubmitHandler = async (data) => {
                   <div className="col-span-6 sm:col-span-3">
                     <Link
                       href="/"
-                      className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center  w-full"
+                      className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center w-full"
                     >
                       <span className="text-xl mr-2">
                         <IoReturnUpBackOutline />
@@ -382,7 +337,7 @@ const enhancedSubmitHandler = async (data) => {
                     <button
                       type="submit"
                       disabled={isEmpty || isCheckoutSubmit}
-                      className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm  font-medium text-white flex justify-center w-full"
+                      className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm font-medium text-white flex justify-center w-full"
                     >
                       {isCheckoutSubmit ? (
                         <span className="flex justify-center text-center">
@@ -415,7 +370,6 @@ const enhancedSubmitHandler = async (data) => {
                 {items.map((item) => (
                   <div key={item.id}>
                     <CartItem item={item} currency={currency} />
-                    {/* Show prescription if exists */}
                     {item.prescription && (
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Prescription:</p>
@@ -438,8 +392,6 @@ const enhancedSubmitHandler = async (data) => {
                   </div>
                 )}
               </div>
-
-              {/* Keep your totals, discount, shipping cost code intact */}
             </div>
           </div>
         </div>
