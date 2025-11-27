@@ -87,7 +87,7 @@ const ProductCard = ({ product, attributes }) => {
       price: p?.prices?.price,
       originalPrice: p?.prices?.originalPrice,
       quantity: 1,
-      prescription: isMedicinePage ? savedPres : null,
+      prescription: isMedicinePage ? stored[product._id] || null : null,
     };
 
     if (!userInfo) {
