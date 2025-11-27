@@ -124,38 +124,25 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  const handlePrescriptionUpload = (file) => {
-    const id = new Date().getTime(); // unique key
-    const newPrescriptions = { ...prescriptions, [id]: file };
-    setPrescriptions(newPrescriptions);
-    localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
-    notifySuccess("Prescription added successfully");
+  // Convert file to base64 immediately and store that
+const handlePrescriptionUpload = async (file) => {
+  const base64 = await fileToBase64(file);
+  const id = new Date().getTime();
+  const newPrescriptions = { ...prescriptions, [id]: { name: file.name, data: base64 } };
+  setPrescriptions(newPrescriptions);
+  localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
+  notifySuccess("Prescription added successfully");
+};
+
+// Then enhancedSubmitHandler can just read the base64 directly
+const enhancedSubmitHandler = async (data) => {
+  const firstPrescription = Object.values(prescriptions)[0] || null;
+  const payload = {
+    ...data,
+    prescriptionUrl: firstPrescription ? firstPrescription.data : null,
   };
-
-const fileToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-
-  // Attach prescription from localStorage automatically to order
-  const enhancedSubmitHandler = async (data) => {
-    const firstPrescriptionFile = Object.values(prescriptions)[0] || null;
-    let prescriptionData = null;
-
-    if (firstPrescriptionFile) {
-      prescriptionData = await fileToBase64(firstPrescriptionFile);
-    }
-
-    const payload = {
-      ...data,
-      prescriptionUrl: prescriptionData, // base64 data
-    };
-
-    await submitHandler(payload);
-  };
+  await submitHandler(payload);
+};
   
   return (
     <Layout title="Checkout" description="this is checkout page">
