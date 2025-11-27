@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
+// import { CardElement } from "@stripe/react-stripe-js";
 import Link from "next/link";
 import {
   IoReturnUpBackOutline,
@@ -9,18 +10,22 @@ import {
 } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
 import useTranslation from "next-translate/useTranslation";
+
+//internal import
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
+import Label from "@components/form/Label";
 import Error from "@components/form/Error";
 import CartItem from "@components/cart/CartItem";
 import InputArea from "@components/form/InputArea";
+import useGetSetting from "@hooks/useGetSetting";
+import InputShipping from "@components/form/InputShipping";
 import InputPayment from "@components/form/InputPayment";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import useGetSetting from "@hooks/useGetSetting";
 import SettingServices from "@services/SettingServices";
-import PinncodeService from "@services/PincodeServices";
 import SwitchToggle from "@components/form/SwitchToggle";
+import PinncodeService from "@services/PincodeServices";
 import { notifyError, notifySuccess } from "@utils/toast";
 
 const Checkout = () => {
@@ -31,91 +36,113 @@ const Checkout = () => {
 
   const {
     error,
+    // stripe,
+    couponInfo,
+    couponRef,
+    total,
     isEmpty,
     items,
+    cartTotal,
     currency,
     register,
+    codDisplay,
     errors,
     showCard,
     setActiveCharge,
     setShowCard,
     handleSubmit,
-    submitHandler: originalSubmitHandler,
+    submitHandler,
+    handleShippingCost,
+    handleCouponCode,
+    discountAmount,
+    deliveryChargeToApply,
+    shippingCost,
     isCheckoutSubmit,
     useExistingAddress,
     hasShippingAddress,
+    isCouponAvailable,
     handleDefaultShippingAddress,
   } = useCheckoutSubmit();
 
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
 
-  // ✔ Stores { itemId : { name, base64 } }
-  // 🔥 FIXED: PRESCRIPTIONS STORED AS REAL File
-  const [prescriptions, setPrescriptions] = useState({});
+  // Optional: Razorpay order creator (not used yet; wire it inside submitHandler when needed)
+  const createOrderRazorpay = async (orderData) => {
+    try {
+      const token =
+        typeof window !== "undefined" &&
+        (localStorage.getItem("userToken") || localStorage.getItem("token"));
 
-  useEffect(() => {
-    const stored = localStorage.getItem("prescriptions");
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      // Convert back to File objects
-      const reconstructed = {};
-      Object.keys(parsed).forEach((id) => {
-        const p = parsed[id];
-        reconstructed[id] = dataURLtoFile(p.base64, p.name);
-      });
-      setPrescriptions(reconstructed);
+      const response = await fetch(
+        "https://api.medicalsurgicalsolutions.com/api/order/create/razorpay",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            ...(token ? { Authorization: `Bearer ${token}` } : {}),
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
+
+      const data = await response.json();
+      console.log("Order Response:", data);
+      return data;
+    } catch (err) {
+      console.error("Error creating order:", err);
+      notifyError("Failed to create order. Please try again.");
+      return null;
     }
-  }, []);
+  };
 
-  // Convert base64 from localStorage → real File again
-  function dataURLtoFile(dataurl, filename) {
-    const arr = dataurl.split(",");
-    const mime = arr[0].match(/:(.*?);/)[1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    return new File([u8arr], filename, { type: mime });
-  }
-
-  // COD helper
+  // COD UI helper
   const codObj = {
     Elements: null,
     init() {
-      if (!this.Elements)
+      if (!this.Elements) {
         this.Elements = document.querySelectorAll("#cod_input *");
+      }
     },
     enable() {
       this.init();
       if (!this.Elements || !this.Elements.length) return;
-      notifySuccess("COD is available for this pincode");
+      notifySuccess("cod is available for this pincode");
       this.Elements[0].style.borderColor = "rgb(40, 204, 40)";
-      this.Elements.forEach((el) => (el.style.cursor = "auto"));
+      this.Elements.forEach((el) => {
+        el.style.cursor = "auto";
+      });
     },
     disable() {
       this.init();
       if (!this.Elements || !this.Elements.length) return;
-      notifyError("COD is unavailable for this pincode");
       this.Elements[0].style.borderColor = "red";
-      this.Elements.forEach((el) => (el.style.cursor = "not-allowed"));
+      notifyError("cod is unavailable for this pincode");
+      this.Elements.forEach((el) => {
+        el.style.cursor = "not-allowed";
+      });
     },
   };
 
   const CheckPin = async (pin) => {
     const response = await PinncodeService.getOnePin(pin).catch((e) => {
-      if (e?.response?.data?.error !== "pincode not found") console.error(e);
+      if (e?.response?.data?.error !== "pincode not found") {
+        console.error(e?.message);
+      }
       return undefined;
     });
 
-    if (!response || response.status !== "show") {
+    if (response === undefined) {
       setIsCodDisable(true);
       codObj.disable();
     } else {
-      setIsCodDisable(false);
-      codObj.enable();
+      if (response?.status === "show") {
+        setIsCodDisable(false);
+        codObj.enable();
+      } else {
+        setIsCodDisable(true);
+        codObj.disable();
+      }
     }
   };
 
@@ -126,354 +153,515 @@ const Checkout = () => {
     const handleInputChange = (event) => {
       const newPin = event.target.value;
       setInputPincode(newPin);
-      if (newPin.length >= 6) CheckPin(newPin);
+      if (newPin.length >= 6) {
+        CheckPin(newPin);
+      }
     };
 
     pinInput.addEventListener("input", handleInputChange);
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // File → Base64 for storing in localStorage only
-  const fileToBase64 = (file) =>
-    new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-    });
-
-  // 🔥 FIXED: Stores both File + base64 in localStorage
- const handlePrescriptionUpload = async (file, itemId) => {
-  if (!file) return;
-
-  const base64 = await fileToBase64(file);
-
-  setPrescriptions((prev) => ({
-    ...prev,
-    [itemId]: { file, base64, name: file.name },
-  }));
-
-  // Save Base64 in localStorage as well
-  const stored = JSON.parse(localStorage.getItem("prescriptions") || "{}");
-  stored[itemId] = { name: file.name, base64 };
-  localStorage.setItem("prescriptions", JSON.stringify(stored));
-
-  notifySuccess("Prescription added successfully");
-};
-
-
-  // 🔥 FINAL FIX — REAL FILE SENT TO BACKEND
-  const enhancedSubmitHandler = async (data) => {
-  try {
-    const formData = new FormData();
-
-    formData.append("user_info", JSON.stringify(data.user_info));
-    formData.append("paymentMethod", data.paymentMethod);
-    formData.append("cart", JSON.stringify(data.cart));
-
-    // Attach prescriptions (multiple)
-    Object.keys(prescriptions).forEach((itemId) => {
-      const file = prescriptions[itemId];
-      // Prefix file name with itemId for backend mapping
-      formData.append("prescriptions", file, `${itemId}_${file.name}`);
-    });
-
-    await originalSubmitHandler(formData);
-
-    notifySuccess("Order submitted successfully!");
-
-    // Clean up localStorage
-    localStorage.removeItem("prescriptions");
-    setPrescriptions({});
-  } catch (err) {
-    console.error("Checkout submit error:", err);
-    notifyError("Failed to submit order.");
-  }
-};
-
-
   return (
-    <Layout title="Checkout" description="Checkout page">
-      <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-        <div className="py-10 lg:py-12 flex flex-col md:flex-row">
-          {/* LEFT FORM */}
-          <div className="md:w-full lg:w-3/5">
-            <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
-              {/* Shipping toggle */}
-              {hasShippingAddress && (
-                <div className="flex justify-end my-2">
-                  <SwitchToggle
-                    id="shipping-address"
-                    title="Use Default Shipping Address"
-                    processOption={useExistingAddress}
-                    handleProcess={handleDefaultShippingAddress}
-                  />
-                </div>
-              )}
-
-              {/* PERSONAL DETAILS */}
-              <div className="form-group">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  01. Personal Details
-                </h2>
-
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="First Name"
-                      name="firstName"
-                      type="text"
-                      placeholder="Enter your first name"
-                    />
-                    <Error errorName={errors.firstName} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="Last Name"
-                      name="lastName"
-                      type="text"
-                      placeholder="Enter your last name"
-                    />
-                    <Error errorName={errors.lastName} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="Phone"
-                      name="phone"
-                      type="tel"
-                      placeholder="Enter phone"
-                    />
-                    <Error errorName={errors.phone} />
-                  </div>
-                </div>
-              </div>
-
-              {/* SHIPPING DETAILS */}
-              <div className="form-group mt-10">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  02. Shipping Details
-                </h2>
-
-                <div className="grid grid-cols-6 gap-6">
-                  <div className="col-span-6">
-                    <InputArea
-                      register={register}
-                      label="House / Floor"
-                      name="flat"
-                      type="text"
-                      placeholder="Eg: 102 / First Floor"
-                    />
-                    <Error errorName={errors.flat} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="Street Address"
-                      name="address"
-                      type="text"
-                      placeholder="Eg: Patparganj, Sector 36"
-                    />
-                    <Error errorName={errors.address} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="Landmark"
-                      name="landmark"
-                      type="text"
-                      placeholder="Eg: Near Axis Bank"
-                    />
-                    <Error errorName={errors.landmark} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="City"
-                      name="city"
-                      type="text"
-                      placeholder="Eg: New Delhi"
-                    />
-                    <Error errorName={errors.city} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="State"
-                      name="state"
-                      type="text"
-                      placeholder="Eg: Delhi"
-                    />
-                    <Error errorName={errors.state} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3" id="PinInput">
-                    <InputArea
-                      register={register}
-                      label="Zip Code"
-                      name="zipCode"
-                      value={inputPincode}
-                      type="text"
-                      placeholder="110092"
-                    />
-                    <Error errorName={errors.zipCode} />
-                  </div>
-
-                  <div className="col-span-6 sm:col-span-3">
-                    <InputArea
-                      register={register}
-                      label="Country"
-                      name="country"
-                      type="text"
-                      placeholder="India"
-                    />
-                    <Error errorName={errors.country} />
-                  </div>
-                </div>
-              </div>
-
-              {/* PRESCRIPTION UPLOAD */}
-              {/* PRESCRIPTION UPLOAD */}
-              <div className="form-group mt-10">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  Upload Prescription
-                </h2>
-                {items.map((item) => (
-                  <div key={item.id} className="mb-4">
-                    <p className="text-sm font-medium">{item.name}</p>
-                    <input
-                      type="file"
-                      accept="image/*,application/pdf"
-                      onChange={(e) =>
-                        handlePrescriptionUpload(e.target.files[0], item.id)
-                      }
-                      className="border p-2 rounded w-full"
-                    />
-                    {prescriptions[item.id]?.name && (
-                      <p className="text-green-600 text-sm mt-1">
-                        {prescriptions[item.id].name}
-                      </p>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-
-              {/* PAYMENT METHOD */}
-              <div className="form-group mt-10">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  03. Payment Method
-                </h2>
-
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  {storeSetting?.cod_status && (
-                    <div id="cod_input">
-                      <InputPayment
-                        setShowCard={setShowCard}
-                        register={register}
-                        name="Cash on Delivery"
-                        value="Cash"
-                        disable={isCodDisable}
-                        Icon={IoWalletSharp}
-                        setActiveCharge={setActiveCharge}
+    <Layout title="Checkout" description="this is checkout page">
+      <>
+        <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
+          <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
+            <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
+              <div className="mt-5 md:mt-0 md:col-span-2">
+                {/* FIX: use submitHandler (no newSubmitHandler) */}
+                <form onSubmit={handleSubmit(submitHandler)}>
+                  {hasShippingAddress && (
+                    <div className="flex justify-end my-2">
+                      <SwitchToggle
+                        id="shipping-address"
+                        title="Use Default Shipping Address"
+                        processOption={useExistingAddress}
+                        handleProcess={handleDefaultShippingAddress}
                       />
-                      <Error errorMessage={errors.paymentMethod} />
                     </div>
                   )}
 
-                  <div>
-                    <InputPayment
-                      setShowCard={setShowCard}
-                      register={register}
-                      name="Razorpay"
-                      value="RazorPay"
-                      Icon={ImCreditCard}
-                      setActiveCharge={setActiveCharge}
-                    />
-                    <Error errorMessage={errors.paymentMethod} />
-                  </div>
-                </div>
-              </div>
+                  <div className="form-group">
+                    <h2 className="font-semibold  text-base text-gray-700 pb-3">
+                      01.{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.personal_details
+                      )}
+                    </h2>
 
-              {/* BUTTONS */}
-              <div className="grid grid-cols-6 gap-4 mt-10">
-                <div className="col-span-6 sm:col-span-3">
-                  <Link
-                    href="/"
-                    className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:border-gray-300"
-                  >
-                    <IoReturnUpBackOutline className="inline mr-2" />
-                    Continue Shopping
-                  </Link>
-                </div>
-
-                <div className="col-span-6 sm:col-span-3">
-                  <button
-                    type="submit"
-                    disabled={isEmpty || isCheckoutSubmit}
-                    className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 text-white rounded py-3 text-sm font-medium w-full flex justify-center"
-                  >
-                    {isCheckoutSubmit ? (
-                      <span className="flex items-center">
-                        <img
-                          src="/loader/spinner.gif"
-                          alt="loading"
-                          width={20}
+                    <div className="grid grid-cols-6 gap-6">
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.first_name
+                          )}
+                          name="firstName"
+                          type="text"
+                          placeholder="Enter your first name"
                         />
-                        <span className="ml-2">Processing...</span>
+                        <Error errorName={errors.firstName} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.last_name
+                          )}
+                          name="lastName"
+                          type="text"
+                          placeholder="Enter your last name"
+                          required={false}
+                        />
+                        <Error errorName={errors.lastName} />
+                      </div>
+
+                      {/* If Stripe is enabled, uncomment CardElement import & block below */}
+                      {/* {showCard && (
+                        <div className="col-span-6">
+                          <CardElement />
+                          <p className="text-red-400 text-sm mt-1">{error}</p>
+                        </div>
+                      )} */}
+
+                      <div className="col-span-6 sm:col-span-3">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.checkout_phone
+                          )}
+                          name="phone"
+                          type="tel"
+                          placeholder="Enter phone number"
+                        />
+                        <Error errorName={errors.contact} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="form-group mt-12">
+                    <h2 className="font-semibold  text-base text-gray-700 pb-3">
+                      02.{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.shipping_details
+                      )}
+                    </h2>
+
+                    <div className="grid grid-cols-6 gap-6 mb-8">
+                      <div className="col-span-6">
+                        <InputArea
+                          register={register}
+                          label={"Plat, House number, floor, building"}
+                          name="flat"
+                          type="text"
+                          placeholder="Eg: 402, Ground Floor"
+                        />
+                        <Error errorName={errors.flat} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.street_address
+                          )}
+                          name="address"
+                          type="text"
+                          placeholder="Eg: Patparganj Industrial Area, Sector 36"
+                        />
+                        <Error errorName={errors.address} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={"Landmark"}
+                          name="landmark"
+                          type="text"
+                          placeholder="Eg: Near Bagga Link"
+                        />
+                        <Error errorName={errors.landmark} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.city
+                          )}
+                          name="city"
+                          type="text"
+                          placeholder="Eg: New Delhi"
+                        />
+                        <Error errorName={errors.city} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={"District"}
+                          name="district"
+                          type="text"
+                          placeholder="Eg: New Delhi"
+                        />
+                        <Error errorName={errors.district} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-6 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={"State"}
+                          name="state"
+                          type="text"
+                          placeholder="Eg: Uttar Pradesh"
+                        />
+                        <Error errorName={errors.state} />
+                      </div>
+
+                      <div className="col-span-6 sm:col-span-3 lg:col-span-2">
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.country
+                          )}
+                          name="country"
+                          type="text"
+                          placeholder="Eg: India"
+                        />
+                        <Error errorName={errors.country} />
+                      </div>
+
+                      <div
+                        id="PinInput"
+                        className="col-span-6 sm:col-span-3 lg:col-span-2"
+                      >
+                        <InputArea
+                          register={register}
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.zip_code
+                          )}
+                          value={inputPincode}
+                          name="zipCode"
+                          type="text"
+                          placeholder="Eg: 110092"
+                        />
+                        <Error errorName={errors.zipCode} />
+                      </div>
+                    </div>
+
+                    {storeCustomizationSetting?.checkout?.shipping_two_cost && (
+                      <>
+                        <Label
+                          label={showingTranslateValue(
+                            storeCustomizationSetting?.checkout?.shipping_cost
+                          )}
+                        />
+                        <div className="grid grid-cols-6 gap-6">
+                          {showingTranslateValue(
+                            storeCustomizationSetting?.checkout
+                              ?.shipping_one_desc
+                          ) && (
+                            <div className="col-span-6 sm:col-span-3">
+                              <InputShipping
+                                currency={currency}
+                                handleShippingCost={handleShippingCost}
+                                register={register}
+                                value={showingTranslateValue(
+                                  storeCustomizationSetting?.checkout
+                                    ?.shipping_name_two
+                                )}
+                                description={showingTranslateValue(
+                                  storeCustomizationSetting?.checkout
+                                    ?.shipping_one_desc
+                                )}
+                                cost={
+                                  Number(
+                                    storeCustomizationSetting?.checkout
+                                      ?.shipping_one_cost
+                                  ) || 60
+                                }
+                              />
+                              <Error errorName={errors.shippingOption} />
+                            </div>
+                          )}
+
+                          {showingTranslateValue(
+                            storeCustomizationSetting?.checkout
+                              ?.shipping_two_desc
+                          ) && (
+                            <div className="col-span-6 sm:col-span-3">
+                              <InputShipping
+                                currency={currency}
+                                handleShippingCost={handleShippingCost}
+                                register={register}
+                                value={showingTranslateValue(
+                                  storeCustomizationSetting?.checkout
+                                    ?.shipping_name_two
+                                )}
+                                description={showingTranslateValue(
+                                  storeCustomizationSetting?.checkout
+                                    ?.shipping_two_desc
+                                )}
+                                cost={
+                                  Number(
+                                    storeCustomizationSetting?.checkout
+                                      ?.shipping_two_cost
+                                  ) || 0
+                                }
+                              />
+                              <Error errorName={errors.shippingOption} />
+                            </div>
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="form-group mt-12">
+                    <h2 className="font-semibold text-base text-gray-700 pb-3">
+                      03.{" "}
+                      {showingTranslateValue(
+                        storeCustomizationSetting?.checkout?.payment_method
+                      )}
+                    </h2>
+
+                    {/* Stripe card block commented (uncomment if using Stripe)
+                    {showCard && (
+                      <div className="mb-3">
+                        <CardElement />
+                        <p className="text-red-400 text-sm mt-1">{error}</p>
+                      </div>
+                    )} */}
+
+                    <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
+                      {storeSetting?.cod_status && (
+                        <div className="" id="cod_input">
+                          <InputPayment
+                            setShowCard={setShowCard}
+                            register={register}
+                            name={t("common:cashOnDelivery")}
+                            value="Cash"
+                            disable={isCodDisable}
+                            Icon={IoWalletSharp}
+                            setActiveCharge={setActiveCharge}
+                          />
+                          <Error errorMessage={errors.paymentMethod} />
+                        </div>
+                      )}
+
+                      {/* {storeSetting?.stripe_status && (
+                        <div className="">
+                          <InputPayment
+                            setShowCard={setShowCard}
+                            register={register}
+                            name={t("common:creditCard")}
+                            value="Card"
+                            Icon={ImCreditCard}
+                          />
+                          <Error errorMessage={errors.paymentMethod} />
+                        </div>
+                      )} */}
+
+                      <div className="">
+                        <InputPayment
+                          setShowCard={setShowCard}
+                          register={register}
+                          name="RazorPay"
+                          value="RazorPay"
+                          Icon={ImCreditCard}
+                          setActiveCharge={setActiveCharge}
+                        />
+                        <Error errorMessage={errors.paymentMethod} />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
+                    <div className="col-span-6 sm:col-span-3">
+                      <Link
+                        href="/"
+                        className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center  w-full"
+                      >
+                        <span className="text-xl mr-2">
+                          <IoReturnUpBackOutline />
+                        </span>
+                        {showingTranslateValue(
+                          storeCustomizationSetting?.checkout?.continue_button
+                        )}
+                      </Link>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <button
+                        type="submit"
+                        disabled={isEmpty || isCheckoutSubmit}
+                        className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm  font-medium text-white flex justify-center w-full"
+                      >
+                        {isCheckoutSubmit ? (
+                          <span className="flex justify-center text-center">
+                            <img
+                              src="/loader/spinner.gif"
+                              alt="Loading"
+                              width={20}
+                              height={10}
+                            />
+                            <span className="ml-2">
+                              {t("common:processing")}
+                            </span>
+                          </span>
+                        ) : (
+                          <span className="flex justify-center text-center">
+                            {showingTranslateValue(
+                              storeCustomizationSetting?.checkout
+                                ?.confirm_button
+                            )}
+                            <span className="text-xl ml-2">
+                              <IoArrowForward />
+                            </span>
+                          </span>
+                        )}
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
+              <div className="border p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
+                <h2 className="font-semibold  text-lg pb-4">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.checkout?.order_summary
+                  )}
+                </h2>
+
+                <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
+                  {items.map((item) => (
+                    <CartItem key={item.id} item={item} currency={currency} />
+                  ))}
+
+                  {isEmpty && (
+                    <div className="text-center py-10">
+                      <span className="flex justify-center my-auto text-gray-500 font-semibold text-4xl">
+                        <IoBagHandle />
+                      </span>
+                      <h2 className="font-medium  text-sm pt-2 text-gray-600">
+                        No Item Added Yet!
+                      </h2>
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex items-center mt-4 py-4 lg:py-4 text-sm w-full font-semibold text-heading last:border-b-0 last:text-base last:pb-0">
+                  <form className="w-full">
+                    {couponInfo.couponCode ? (
+                      <span className="bg-green-50 px-4 py-3 leading-tight w-full rounded-md flex justify-between">
+                        <p className="text-green-600">Coupon Applied </p>
+                        <span className="text-green-500 text-right">
+                          {couponInfo.couponCode}
+                        </span>
                       </span>
                     ) : (
-                      <span className="flex items-center">
-                        Confirm Order
-                        <IoArrowForward className="ml-2" />
-                      </span>
-                    )}
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-
-          {/* RIGHT SUMMARY */}
-          <div className="md:w-full lg:w-2/5 lg:ml-10 mt-10 md:mt-0">
-            <div className="border p-5 rounded-lg bg-white">
-              <h2 className="font-semibold text-lg pb-4">Order Summary</h2>
-
-<div className="overflow-y-scroll max-h-64 bg-gray-50">
-                {items.map((item) => (
-                  <div key={item.id}>
-                    <CartItem item={item} currency={currency} />
-                    {prescriptions[item.id]?.base64 && (
-                      <div className="mt-2">
-                        <p className="text-sm text-gray-500">Prescription:</p>
-                        <img
-                          src={prescriptions[item.id].base64}
-                          alt={prescriptions[item.id].name}
-                          className="h-20 w-20 object-cover border rounded"
+                      <div className="flex flex-col sm:flex-row items-start justify-end">
+                        <input
+                          ref={couponRef}
+                          type="text"
+                          placeholder={t("common:couponCode")}
+                          className="form-input py-2 px-3 md:px-4 w-full appearance-none transition ease-in-out border text-input text-sm rounded-md h-12 duration-200 bg-white border-gray-200 focus:ring-0 focus:outline-none focus:border-emerald-500 placeholder-gray-500 placeholder-opacity-75"
                         />
+                        {isCouponAvailable ? (
+                          <button
+                            disabled={isCouponAvailable}
+                            type="submit"
+                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-emerald-500 h-12 text-sm lg:text-base w-full sm:w-auto"
+                          >
+                            <img
+                              src="/loader/spinner.gif"
+                              alt="Loading"
+                              width={20}
+                              height={10}
+                            />
+                            <span className=" ml-2 font-light">Processing</span>
+                          </button>
+                        ) : (
+                          <button
+                            disabled={isCouponAvailable}
+                            onClick={handleCouponCode}
+                            className="md:text-sm leading-4 inline-flex items-center cursor-pointer transition ease-in-out duration-300 font-semibold text-center justify-center border border-gray-200 rounded-md placeholder-white focus-visible:outline-none focus:outline-none px-5 md:px-6 lg:px-8 py-3 md:py-3.5 lg:py-3 mt-3 sm:mt-0 sm:ml-3 md:mt-0 md:ml-3 lg:mt-0 lg:ml-3 hover:text-white hover:bg-emerald-500 h-12 text-sm lg:text-base w-full sm:w-auto"
+                          >
+                            {showingTranslateValue(
+                              storeCustomizationSetting?.checkout?.apply_button
+                            )}
+                          </button>
+                        )}
                       </div>
                     )}
-                  </div>
-                ))}
+                  </form>
+                </div>
 
-                {isEmpty && (
-                  <div className="text-center py-10">
-                    <IoBagHandle className="text-4xl mx-auto text-gray-500" />
-                    <h2 className="text-gray-600 text-sm">No Item Added Yet!</h2>
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.checkout?.sub_total
+                  )}
+                  <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
+                    {currency}
+                    {cartTotal?.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-gray-500 last:border-b-0 last:text-base last:pb-0">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.checkout?.shipping_cost
+                  )}
+                  {deliveryChargeToApply > 0 ? (
+                    <span className="ml-auto flex-shrink-0 text-gray-800 font-bold">
+                      {currency}
+                      {deliveryChargeToApply?.toFixed(2)}
+                    </span>
+                  ) : (
+                    <span className="ml-auto flex-shrink-0 text-green-600 font-bold">
+                      Free Delivery
+                    </span>
+                  )}
+                </div>
+
+                {codDisplay > 0 && (
+                  <div className="flex items-center py-2 text-sm w-full font-semibold text-red-600 last:border-b-0 last:text-base last:pb-0">
+                    COD Charge
+                    <span className="ml-auto flex-shrink-0 font-bold text-red-600">
+                      {currency}
+                      {codDisplay.toFixed(2)}
+                    </span>
                   </div>
                 )}
+
+                <div className="flex items-center py-2 text-sm w-full font-semibold text-green-600 last:border-b-0 last:text-base last:pb-0">
+                  {showingTranslateValue(
+                    storeCustomizationSetting?.checkout?.discount
+                  )}
+                  <span className="ml-auto flex-shrink-0 font-bold text-green-600">
+                    {currency}
+                    {discountAmount.toFixed(2)}
+                  </span>
+                </div>
+
+                <div className="border-t mt-4">
+                  <div className="flex items-center font-bold justify-between pt-5 text-sm uppercase">
+                    {showingTranslateValue(
+                      storeCustomizationSetting?.checkout?.total_cost
+                    )}
+                    <span className="font-extrabold text-lg">
+                      {currency}
+                      {parseFloat(total).toFixed(2)}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     </Layout>
   );
 };
