@@ -121,20 +121,31 @@ const Checkout = () => {
     });
 
   // Enhanced submit handler - attaches prescription from localStorage
-  const enhancedSubmitHandler = async (data) => {
-    try {
-      const firstPrescription = Object.values(prescriptions)[0] || null;
-      const payload = {
-        ...data,
-        prescriptionUrl: firstPrescription ? firstPrescription.data : null,
-      };
+ const enhancedSubmitHandler = async (data) => {
+  try {
+    // Get first prescription
+    const firstPrescription = Object.values(prescriptions)[0] || null;
 
-      await originalSubmitHandler(payload);
-    } catch (err) {
-      console.error("Checkout submit error:", err);
-      notifyError("Failed to submit order. Please try again.");
-    }
-  };
+    // Map prescription to each cart item (or the one that needs it)
+    const cartWithPrescription = data.cart.map((item) => ({
+      ...item,
+      prescription: firstPrescription
+        ? { name: firstPrescription.name, data: firstPrescription.data }
+        : null,
+    }));
+
+    const payload = {
+      ...data,
+      cart: cartWithPrescription, // attach prescription per item
+    };
+
+    await originalSubmitHandler(payload);
+  } catch (err) {
+    console.error("Checkout submit error:", err);
+    notifyError("Failed to submit order. Please try again.");
+  }
+};
+
 
   return (
     <Layout title="Checkout" description="this is checkout page">
