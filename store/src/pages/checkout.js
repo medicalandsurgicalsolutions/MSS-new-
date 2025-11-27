@@ -166,29 +166,33 @@ const Checkout = () => {
 
   // 🔥 FINAL FIX — REAL FILE SENT TO BACKEND
   const enhancedSubmitHandler = async (data) => {
-    try {
-      const formData = new FormData();
+  try {
+    const formData = new FormData();
 
-      formData.append("user_info", JSON.stringify(data.user_info));
-      formData.append("paymentMethod", data.paymentMethod);
-      formData.append("cart", JSON.stringify(data.cart));
+    formData.append("user_info", JSON.stringify(data.user_info));
+    formData.append("paymentMethod", data.paymentMethod);
+    formData.append("cart", JSON.stringify(data.cart));
 
-      // Attach prescriptions
-      Object.keys(prescriptions).forEach((itemId) => {
-        formData.append("prescriptions", prescriptions[itemId]);
-      });
+    // Attach prescriptions (multiple)
+    Object.keys(prescriptions).forEach((itemId) => {
+      const file = prescriptions[itemId];
+      // Prefix file name with itemId for backend mapping
+      formData.append("prescriptions", file, `${itemId}_${file.name}`);
+    });
 
-      await originalSubmitHandler(formData);
+    await originalSubmitHandler(formData);
 
-      notifySuccess("Order submitted successfully!");
+    notifySuccess("Order submitted successfully!");
 
-      localStorage.removeItem("prescriptions");
-      setPrescriptions({});
-    } catch (err) {
-      console.error("Checkout submit error:", err);
-      notifyError("Failed to submit order.");
-    }
-  };
+    // Clean up localStorage
+    localStorage.removeItem("prescriptions");
+    setPrescriptions({});
+  } catch (err) {
+    console.error("Checkout submit error:", err);
+    notifyError("Failed to submit order.");
+  }
+};
+
 
   return (
     <Layout title="Checkout" description="Checkout page">
