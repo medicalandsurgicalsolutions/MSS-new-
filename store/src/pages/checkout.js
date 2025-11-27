@@ -65,7 +65,13 @@ const Checkout = () => {
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
   
+   const [prescriptions, setPrescriptions] = useState({}); // store prescriptions from localStorage
 
+  // Load prescriptions from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("prescriptions");
+    if (stored) setPrescriptions(JSON.parse(stored));
+  }, []);
 
   // COD helper
   const codObj = {
@@ -118,15 +124,6 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-   // ✅ Make sure this is at the top, before using it anywhere
-  const [prescriptions, setPrescriptions] = useState({});
-
-  // Initialize prescriptions from localStorage
-  useEffect(() => {
-    const savedPrescriptions = localStorage.getItem("prescriptions");
-    if (savedPrescriptions) setPrescriptions(JSON.parse(savedPrescriptions));
-  }, []);
-
   const handlePrescriptionUpload = (file) => {
     const id = new Date().getTime(); // unique key
     const newPrescriptions = { ...prescriptions, [id]: file };
@@ -135,15 +132,31 @@ const Checkout = () => {
     notifySuccess("Prescription added successfully");
   };
 
-  // Enhanced submit handler
+const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  // Attach prescription from localStorage automatically to order
   const enhancedSubmitHandler = async (data) => {
-    const firstPrescription = Object.values(prescriptions)[0] || null;
+    const firstPrescriptionFile = Object.values(prescriptions)[0] || null;
+    let prescriptionData = null;
+
+    if (firstPrescriptionFile) {
+      prescriptionData = await fileToBase64(firstPrescriptionFile);
+    }
+
     const payload = {
       ...data,
-      prescriptionUrl: firstPrescription ? firstPrescription.name : null,
+      prescriptionUrl: prescriptionData, // base64 data
     };
-    await originalSubmitHandler(payload);
+
+    await submitHandler(payload);
   };
+  
   return (
     <Layout title="Checkout" description="this is checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
@@ -151,7 +164,7 @@ const Checkout = () => {
           {/* Left form */}
           <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
             <div className="mt-5 md:mt-0 md:col-span-2">
-              <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
+             <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
                 {/* Use default shipping toggle */}
                 {hasShippingAddress && (
                   <div className="flex justify-end my-2">
@@ -215,17 +228,12 @@ const Checkout = () => {
                   </div>
                 </div>
 
- {/* Prescription Upload */}
+           {/* Prescription Upload */}
                 <div className="form-group mt-6">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
                     00. Prescription Upload
                   </h2>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => handlePrescriptionUpload(e.target.files[0])}
-                    className="border border-gray-300 p-2 rounded"
-                  />
+                 
                   <div className="mt-2">
                     {Object.values(prescriptions).map((file, index) => (
                       <div key={index} className="text-sm text-gray-600">
