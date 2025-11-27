@@ -97,19 +97,25 @@ const OrderTable = ({ orders }) => {
           {/* PRESCRIPTION COLUMN — UPDATED + WORKING */}
           {/* ---------------------------------------------------------------------- */}
           <TableCell className="text-center">
-            {order?.prescriptionUrl ? (
-              <a
-                href={order.prescriptionUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-              >
-                View
-              </a>
-            ) : (
-              <span className="text-gray-500">No Prescription</span>
+            {order.items?.map((item, idx) =>
+              item.prescriptionUrl ? (
+                <a
+                  key={idx}
+                  href={item.prescriptionUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 block mb-1"
+                >
+                  {item.title} Prescription
+                </a>
+              ) : (
+                <span key={idx} className="text-gray-500 block mb-1">
+                  {item.title}: No Prescription
+                </span>
+              )
             )}
           </TableCell>
+
           {/* ---------------------------------------------------------------------- */}
 
           {/* Actions */}
