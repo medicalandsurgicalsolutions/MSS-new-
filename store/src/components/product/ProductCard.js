@@ -29,16 +29,22 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  // 🔥 CLOUDINARY UPLOAD FUNCTION
+  // 🔥 Upload Prescription to Backend
   const uploadPrescription = async (file) => {
     try {
-      const fd = new FormData();
-      fd.append("prescription", file);
+      const formData = new FormData();
+      formData.append("prescription", file);
 
-      const res = await fetch("/api/upload/prescription", {
-        method: "POST",
-        body: fd,
-      });
+      const token = localStorage.getItem("userToken") || localStorage.getItem("token");
+
+      const res = await fetch(
+        "https://www.medicalsurgicalsolutions.com/api/upload/prescription",
+        {
+          method: "POST",
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+          body: formData,
+        }
+      );
 
       const data = await res.json();
 
@@ -48,7 +54,7 @@ const ProductCard = ({ product, attributes }) => {
         setHasLocalPrescription(true);
         notifySuccess("Prescription uploaded successfully!");
       } else {
-        notifyError("Upload failed!");
+        notifyError(data.message || "Upload failed!");
       }
     } catch (error) {
       console.error(error);
@@ -56,7 +62,7 @@ const ProductCard = ({ product, attributes }) => {
     }
   };
 
-  // 📌 Handle file input
+  // 📌 Handle file input change
   const handlePrescriptionUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -64,11 +70,11 @@ const ProductCard = ({ product, attributes }) => {
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
 
-    // 🔥 UPLOAD TO CLOUDINARY INSTEAD OF LOCAL STORAGE BASE64
+    // Upload to backend
     await uploadPrescription(file);
   };
 
-  // 📌 Load saved URL on component mount
+  // Load saved prescription on mount
   useEffect(() => {
     const saved = localStorage.getItem(`prescription_${product._id}`);
     if (saved) {
@@ -77,7 +83,7 @@ const ProductCard = ({ product, attributes }) => {
     }
   }, [product._id]);
 
-  // BUY NOW / ADD TO CART
+  // Add to cart handler
   const handleAddItems = async (event, p) => {
     event.stopPropagation();
 
@@ -116,6 +122,7 @@ const ProductCard = ({ product, attributes }) => {
     }, 400);
   };
 
+  // Add to cart (without redirect)
   const handleAddToCartWithPrescription = () => {
     const savedPres = localStorage.getItem(`prescription_${product._id}`);
 
@@ -197,9 +204,7 @@ const ProductCard = ({ product, attributes }) => {
                 className="flex items-center gap-2 text-blue-600 cursor-pointer border rounded-md px-4 py-2 bg-gray-100 w-full justify-between"
               >
                 Upload Prescription
-                <span>
-                  {selectedFile ? selectedFile.name || "Uploaded" : "No file chosen"}
-                </span>
+                <span>{selectedFile ? selectedFile.name : "No file chosen"}</span>
                 <input
                   type="file"
                   id={`upload-prescription-${product._id}`}
