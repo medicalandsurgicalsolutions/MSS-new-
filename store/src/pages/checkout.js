@@ -116,31 +116,26 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Updated submit handler to include prescriptions from localStorage
-  const submitHandler = async (formData) => {
-    try {
-      const storedPrescriptions =
-        JSON.parse(localStorage.getItem("prescriptions")) || {};
-
-      // Attach prescription to each item
-      const itemsWithPrescriptions = items.map((item) => ({
-        ...item,
-        prescription: storedPrescriptions[item.id] || item.prescription || null,
-      }));
-
-      const orderData = {
-        ...formData,
-        items: itemsWithPrescriptions,
-      };
-
-      await originalSubmitHandler(orderData);
-
-      // Clear localStorage after successful submission
-      localStorage.removeItem("prescriptions");
-    } catch (err) {
-      notifyError("Order submission failed. Prescription data is saved locally.");
-    }
+ // Handle prescription upload
+  const handlePrescriptionUpload = (file) => {
+    const id = new Date().getTime(); // unique key
+    const newPrescriptions = { ...prescriptions, [id]: file };
+    setPrescriptions(newPrescriptions);
+    localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
+    notifySuccess("Prescription added successfully");
   };
+
+  // Attach prescriptions to order payload
+  const enhancedSubmitHandler = async (data) => {
+    // Take first prescription or null
+    const firstPrescription = Object.values(prescriptions)[0] || null;
+    const payload = {
+      ...data,
+      prescriptionUrl: firstPrescription ? firstPrescription.name : null,
+    };
+    await submitHandler(payload);
+  };
+
 
   return (
     <Layout title="Checkout" description="this is checkout page">
@@ -212,6 +207,28 @@ const Checkout = () => {
                     </div>
                   </div>
                 </div>
+
+
+          {/* Prescription Upload */}
+                <div className="form-group mt-6">
+                  <h2 className="font-semibold text-base text-gray-700 pb-3">
+                    00. Prescription Upload
+                  </h2>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handlePrescriptionUpload(e.target.files[0])}
+                    className="border border-gray-300 p-2 rounded"
+                  />
+                  <div className="mt-2">
+                    {Object.values(prescriptions).map((file, index) => (
+                      <div key={index} className="text-sm text-gray-600">
+                        {file.name}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
 
                 {/* Shipping Details */}
                 <div className="form-group mt-12">
