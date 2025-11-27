@@ -47,7 +47,7 @@ const Checkout = () => {
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
 
-  // Prescriptions from localStorage
+  // Prescription upload state
   const [prescriptions, setPrescriptions] = useState({});
 
   useEffect(() => {
@@ -106,19 +106,39 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Checkout submit handler with prescription
+  // Convert file to base64
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  // Handle prescription upload
+  const handlePrescriptionUpload = async (file, itemId) => {
+    if (!file) return;
+    const base64 = await fileToBase64(file);
+    const newPrescriptions = { ...prescriptions, [itemId]: { name: file.name, data: base64 } };
+    setPrescriptions(newPrescriptions);
+    localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
+    notifySuccess("Prescription added successfully");
+  };
+
+  // Checkout submit handler with prescription per item
   const enhancedSubmitHandler = async (data) => {
     try {
-      const storedPrescriptions = JSON.parse(localStorage.getItem("prescriptions") || "{}");
-      const firstPrescription = Object.values(storedPrescriptions)[0] || null;
-
       const payload = {
         ...data,
-        prescriptionUrl: firstPrescription ? firstPrescription.data : null, // attach to order
+        cart: data.cart.map((item) => ({
+          ...item,
+          prescriptionUrl: prescriptions[item.id]?.data || null,
+        })),
       };
-
       await originalSubmitHandler(payload);
       notifySuccess("Order submitted successfully!");
+      localStorage.removeItem("prescriptions");
+      setPrescriptions({});
     } catch (err) {
       console.error("Checkout submit error:", err);
       notifyError("Failed to submit order. Please try again.");
@@ -129,10 +149,12 @@ const Checkout = () => {
     <Layout title="Checkout" description="this is checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
         <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
+
           {/* Left form */}
           <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
             <div className="mt-5 md:mt-0 md:col-span-2">
               <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
+                
                 {/* Default shipping toggle */}
                 {hasShippingAddress && (
                   <div className="flex justify-end my-2">
@@ -145,7 +167,7 @@ const Checkout = () => {
                   </div>
                 )}
 
-                {/* Personal Details */}
+                {/* 01. Personal Details */}
                 <div className="form-group">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
                     01. {showingTranslateValue(storeCustomizationSetting?.checkout?.personal_details)}
@@ -161,7 +183,6 @@ const Checkout = () => {
                       />
                       <Error errorName={errors.firstName} />
                     </div>
-
                     <div className="col-span-6 sm:col-span-3">
                       <InputArea
                         register={register}
@@ -173,7 +194,6 @@ const Checkout = () => {
                       />
                       <Error errorName={errors.lastName} />
                     </div>
-
                     <div className="col-span-6 sm:col-span-3">
                       <InputArea
                         register={register}
@@ -187,7 +207,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* Shipping Details */}
+                {/* 02. Shipping Details */}
                 <div className="form-group mt-12">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
                     02. {showingTranslateValue(storeCustomizationSetting?.checkout?.shipping_details)}
@@ -273,12 +293,30 @@ const Checkout = () => {
                   </div>
                 </div>
 
-                {/* Payment Section */}
+                {/* Prescription Upload */}
+                <div className="form-group mt-6">
+                  <h2 className="font-semibold text-base text-gray-700 pb-3">Upload Prescription</h2>
+                  {items.map((item) => (
+                    <div key={item.id} className="mb-4">
+                      <p className="text-sm font-medium">{item.name}</p>
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={(e) => handlePrescriptionUpload(e.target.files[0], item.id)}
+                        className="border p-2 rounded w-full"
+                      />
+                      {prescriptions[item.id] && (
+                        <p className="text-green-500 text-sm mt-1">{prescriptions[item.id].name}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* 03. Payment Section */}
                 <div className="form-group mt-12">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
                     03. {showingTranslateValue(storeCustomizationSetting?.checkout?.payment_method)}
                   </h2>
-
                   <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
                     {storeSetting?.cod_status && (
                       <div id="cod_input">
@@ -294,7 +332,6 @@ const Checkout = () => {
                         <Error errorMessage={errors.paymentMethod} />
                       </div>
                     )}
-
                     <div>
                       <InputPayment
                         setShowCard={setShowCard}
@@ -354,24 +391,22 @@ const Checkout = () => {
               <h2 className="font-semibold text-lg pb-4">
                 {showingTranslateValue(storeCustomizationSetting?.checkout?.order_summary)}
               </h2>
-
               <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
                 {items.map((item) => (
                   <div key={item.id}>
                     <CartItem item={item} currency={currency} />
-                    {item.prescriptionUrl && (
+                    {prescriptions[item.id] && (
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Prescription:</p>
                         <img
-                          src={item.prescriptionUrl}
-                          alt="Prescription"
+                          src={prescriptions[item.id].data}
+                          alt={prescriptions[item.id].name}
                           className="h-20 w-20 object-cover border rounded"
                         />
                       </div>
                     )}
                   </div>
                 ))}
-
                 {isEmpty && (
                   <div className="text-center py-10">
                     <span className="flex justify-center my-auto text-gray-500 font-semibold text-4xl">
@@ -383,6 +418,7 @@ const Checkout = () => {
               </div>
             </div>
           </div>
+
         </div>
       </div>
     </Layout>
