@@ -52,12 +52,40 @@ const Checkout = () => {
   const [isCodDisable, setIsCodDisable] = useState(false);
 
   // ✔ Stores { itemId : { name, base64 } }
+
+  // 🔥 FIXED: PRESCRIPTIONS STORED AS REAL File
   const [prescriptions, setPrescriptions] = useState({});
 
   useEffect(() => {
     const stored = localStorage.getItem("prescriptions");
-    if (stored) setPrescriptions(JSON.parse(stored));
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      // Convert back to File objects
+      const reconstructed = {};
+
+      Object.keys(parsed).forEach((id) => {
+        const p = parsed[id];
+        reconstructed[id] = dataURLtoFile(p.base64, p.name);
+      });
+
+      setPrescriptions(reconstructed);
+    }
   }, []);
+
+  // Convert base64 from localStorage → real File again
+  function dataURLtoFile(dataurl, filename) {
+    const arr = dataurl.split(",");
+    const mime = arr[0].match(/:(.*?);/)[1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+
+    return new File([u8arr], filename, { type: mime });
+  }
 
   // COD helper
   const codObj = {
@@ -111,52 +139,55 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // ✔ File → Base64 immediately
+  // File → Base64 for storing in localStorage only
   const fileToBase64 = (file) =>
-    new Promise((resolve, reject) => {
+    new Promise((resolve) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
     });
 
-  // ✔ Handles per-item prescription upload
+  // 🔥 FIXED: Stores both File + base64 in localStorage
   const handlePrescriptionUpload = async (file, itemId) => {
     if (!file) return;
 
-    try {
-      const base64 = await fileToBase64(file);
+    const base64 = await fileToBase64(file);
 
-      const updated = {
-        ...prescriptions,
-        [itemId]: { name: file.name, base64 },
-      };
+    const updated = {
+      ...prescriptions,
+      [itemId]: file,
+    };
 
-      setPrescriptions(updated);
-      localStorage.setItem("prescriptions", JSON.stringify(updated));
+    // save file as base64 in localStorage
+    const storeObj = {
+      ...JSON.parse(localStorage.getItem("prescriptions") || "{}"),
+      [itemId]: { name: file.name, base64 },
+    };
 
-      notifySuccess("Prescription added successfully");
-    } catch (err) {
-      notifyError("Prescription upload failed");
-    }
+    localStorage.setItem("prescriptions", JSON.stringify(storeObj));
+    setPrescriptions(updated);
+
+    notifySuccess("Prescription added successfully");
   };
 
-  // ✔ Final Submit
+  // 🔥 FINAL FIX — REAL FILE SENT TO BACKEND
   const enhancedSubmitHandler = async (data) => {
     try {
-      // Attach prescription to each item
-      const cartWithRx = data.cart.map((item) => ({
-        ...item,
-        prescriptionUrl: prescriptions[item.id]?.base64 || null,
-      }));
+      const formData = new FormData();
 
-      const finalPayload = { ...data, cart: cartWithRx };
+      formData.append("user_info", JSON.stringify(data.user_info));
+      formData.append("paymentMethod", data.paymentMethod);
+      formData.append("cart", JSON.stringify(data.cart));
 
-      await originalSubmitHandler(finalPayload);
+      // Attach prescriptions
+      Object.keys(prescriptions).forEach((itemId) => {
+        formData.append("prescriptions", prescriptions[itemId]);
+      });
+
+      await originalSubmitHandler(formData);
 
       notifySuccess("Order submitted successfully!");
 
-      // Reset prescriptions
       localStorage.removeItem("prescriptions");
       setPrescriptions({});
     } catch (err) {
@@ -164,7 +195,6 @@ const Checkout = () => {
       notifyError("Failed to submit order.");
     }
   };
-
   return (
     <Layout title="Checkout" description="Checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
