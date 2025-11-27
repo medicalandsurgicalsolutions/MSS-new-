@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { IoReturnUpBackOutline, IoArrowForward, IoBagHandle, IoWalletSharp } from "react-icons/io5";
+import {
+  IoReturnUpBackOutline,
+  IoArrowForward,
+  IoBagHandle,
+  IoWalletSharp,
+} from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
 import useTranslation from "next-translate/useTranslation";
 
-// Internal imports
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
 import Error from "@components/form/Error";
@@ -47,7 +51,7 @@ const Checkout = () => {
   const [inputPincode, setInputPincode] = useState("");
   const [isCodDisable, setIsCodDisable] = useState(false);
 
-  // Prescription upload state
+  // ✔ Stores { itemId : { name, base64 } }
   const [prescriptions, setPrescriptions] = useState({});
 
   useEffect(() => {
@@ -59,7 +63,8 @@ const Checkout = () => {
   const codObj = {
     Elements: null,
     init() {
-      if (!this.Elements) this.Elements = document.querySelectorAll("#cod_input *");
+      if (!this.Elements)
+        this.Elements = document.querySelectorAll("#cod_input *");
     },
     enable() {
       this.init();
@@ -79,7 +84,7 @@ const Checkout = () => {
 
   const CheckPin = async (pin) => {
     const response = await PinncodeService.getOnePin(pin).catch((e) => {
-      if (e?.response?.data?.error !== "pincode not found") console.error(e?.message);
+      if (e?.response?.data?.error !== "pincode not found") console.error(e);
       return undefined;
     });
 
@@ -106,7 +111,7 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Convert file to base64
+  // ✔ File → Base64 immediately
   const fileToBase64 = (file) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -115,291 +120,321 @@ const Checkout = () => {
       reader.onerror = (error) => reject(error);
     });
 
-  // Handle prescription upload
+  // ✔ Handles per-item prescription upload
   const handlePrescriptionUpload = async (file, itemId) => {
     if (!file) return;
-    const base64 = await fileToBase64(file);
-    const newPrescriptions = { ...prescriptions, [itemId]: { name: file.name, data: base64 } };
-    setPrescriptions(newPrescriptions);
-    localStorage.setItem("prescriptions", JSON.stringify(newPrescriptions));
-    notifySuccess("Prescription added successfully");
+
+    try {
+      const base64 = await fileToBase64(file);
+
+      const updated = {
+        ...prescriptions,
+        [itemId]: { name: file.name, base64 },
+      };
+
+      setPrescriptions(updated);
+      localStorage.setItem("prescriptions", JSON.stringify(updated));
+
+      notifySuccess("Prescription added successfully");
+    } catch (err) {
+      notifyError("Prescription upload failed");
+    }
   };
 
-  // Checkout submit handler with prescription per item
+  // ✔ Final Submit
   const enhancedSubmitHandler = async (data) => {
     try {
-      const payload = {
-        ...data,
-        cart: data.cart.map((item) => ({
-          ...item,
-          prescriptionUrl: prescriptions[item.id]?.data || null,
-        })),
-      };
-      await originalSubmitHandler(payload);
+      // Attach prescription to each item
+      const cartWithRx = data.cart.map((item) => ({
+        ...item,
+        prescriptionUrl: prescriptions[item.id]?.base64 || null,
+      }));
+
+      const finalPayload = { ...data, cart: cartWithRx };
+
+      await originalSubmitHandler(finalPayload);
+
       notifySuccess("Order submitted successfully!");
+
+      // Reset prescriptions
       localStorage.removeItem("prescriptions");
       setPrescriptions({});
     } catch (err) {
       console.error("Checkout submit error:", err);
-      notifyError("Failed to submit order. Please try again.");
+      notifyError("Failed to submit order.");
     }
   };
 
   return (
-    <Layout title="Checkout" description="this is checkout page">
+    <Layout title="Checkout" description="Checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
-        <div className="py-10 lg:py-12 px-0 2xl:max-w-screen-2xl w-full xl:max-w-screen-xl flex flex-col md:flex-row lg:flex-row">
+        <div className="py-10 lg:py-12 flex flex-col md:flex-row">
 
-          {/* Left form */}
-          <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
-            <div className="mt-5 md:mt-0 md:col-span-2">
-              <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
-                
-                {/* Default shipping toggle */}
-                {hasShippingAddress && (
-                  <div className="flex justify-end my-2">
-                    <SwitchToggle
-                      id="shipping-address"
-                      title="Use Default Shipping Address"
-                      processOption={useExistingAddress}
-                      handleProcess={handleDefaultShippingAddress}
+          {/* LEFT FORM */}
+          <div className="md:w-full lg:w-3/5">
+            <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
+
+              {/* Shipping toggle */}
+              {hasShippingAddress && (
+                <div className="flex justify-end my-2">
+                  <SwitchToggle
+                    id="shipping-address"
+                    title="Use Default Shipping Address"
+                    processOption={useExistingAddress}
+                    handleProcess={handleDefaultShippingAddress}
+                  />
+                </div>
+              )}
+
+              {/* PERSONAL DETAILS */}
+              <div className="form-group">
+                <h2 className="font-semibold text-base text-gray-700 pb-3">
+                  01. Personal Details
+                </h2>
+
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="First Name"
+                      name="firstName"
+                      type="text"
+                      placeholder="Enter your first name"
                     />
+                    <Error errorName={errors.firstName} />
                   </div>
-                )}
 
-                {/* 01. Personal Details */}
-                <div className="form-group">
-                  <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    01. {showingTranslateValue(storeCustomizationSetting?.checkout?.personal_details)}
-                  </h2>
-                  <div className="grid grid-cols-6 gap-6">
-                    <div className="col-span-6 sm:col-span-3">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.first_name)}
-                        name="firstName"
-                        type="text"
-                        placeholder="Enter your first name"
-                      />
-                      <Error errorName={errors.firstName} />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.last_name)}
-                        name="lastName"
-                        type="text"
-                        placeholder="Enter your last name"
-                        required={false}
-                      />
-                      <Error errorName={errors.lastName} />
-                    </div>
-                    <div className="col-span-6 sm:col-span-3">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.checkout_phone)}
-                        name="phone"
-                        type="tel"
-                        placeholder="Enter phone number"
-                      />
-                      <Error errorName={errors.phone} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="Last Name"
+                      name="lastName"
+                      type="text"
+                      placeholder="Enter your last name"
+                    />
+                    <Error errorName={errors.lastName} />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="Phone"
+                      name="phone"
+                      type="tel"
+                      placeholder="Enter phone"
+                    />
+                    <Error errorName={errors.phone} />
                   </div>
                 </div>
+              </div>
 
-                {/* 02. Shipping Details */}
-                <div className="form-group mt-12">
-                  <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    02. {showingTranslateValue(storeCustomizationSetting?.checkout?.shipping_details)}
-                  </h2>
-                  <div className="grid grid-cols-6 gap-6 mb-8">
-                    <div className="col-span-6">
-                      <InputArea
-                        register={register}
-                        label={"Plat, House number, floor, building"}
-                        name="flat"
-                        type="text"
-                        placeholder="Eg: 402, Ground Floor"
-                      />
-                      <Error errorName={errors.flat} />
-                    </div>
+              {/* SHIPPING DETAILS */}
+              <div className="form-group mt-10">
+                <h2 className="font-semibold text-base text-gray-700 pb-3">
+                  02. Shipping Details
+                </h2>
 
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.street_address)}
-                        name="address"
-                        type="text"
-                        placeholder="Eg: Patparganj Industrial Area, Sector 36"
-                      />
-                      <Error errorName={errors.address} />
-                    </div>
+                <div className="grid grid-cols-6 gap-6">
+                  <div className="col-span-6">
+                    <InputArea
+                      register={register}
+                      label="House / Floor"
+                      name="flat"
+                      type="text"
+                      placeholder="Eg: 102 / First Floor"
+                    />
+                    <Error errorName={errors.flat} />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <InputArea
-                        register={register}
-                        label={"Landmark"}
-                        name="landmark"
-                        type="text"
-                        placeholder="Eg: Near Bagga Link"
-                      />
-                      <Error errorName={errors.landmark} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="Street Address"
+                      name="address"
+                      type="text"
+                      placeholder="Eg: Patparganj, Sector 36"
+                    />
+                    <Error errorName={errors.address} />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.city)}
-                        name="city"
-                        type="text"
-                        placeholder="Eg: New Delhi"
-                      />
-                      <Error errorName={errors.city} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="Landmark"
+                      name="landmark"
+                      type="text"
+                      placeholder="Eg: Near Axis Bank"
+                    />
+                    <Error errorName={errors.landmark} />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-6 lg:col-span-2">
-                      <InputArea
-                        register={register}
-                        label={"State"}
-                        name="state"
-                        type="text"
-                        placeholder="Eg: Uttar Pradesh"
-                      />
-                      <Error errorName={errors.state} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="City"
+                      name="city"
+                      type="text"
+                      placeholder="Eg: New Delhi"
+                    />
+                    <Error errorName={errors.city} />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2" id="PinInput">
-                      <InputArea
-                        register={register}
-                        label={showingTranslateValue(storeCustomizationSetting?.checkout?.zip_code)}
-                        value={inputPincode}
-                        name="zipCode"
-                        type="text"
-                        placeholder="Eg: 110092"
-                      />
-                      <Error errorName={errors.zipCode} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="State"
+                      name="state"
+                      type="text"
+                      placeholder="Eg: Delhi"
+                    />
+                    <Error errorName={errors.state} />
+                  </div>
 
-                    <div className="col-span-6 sm:col-span-3 lg:col-span-2">
-                      <InputArea
-                        register={register}
-                        label={"Country"}
-                        name="country"
-                        type="text"
-                        placeholder="Eg: India"
-                      />
-                      <Error errorName={errors.country} />
-                    </div>
+                  <div className="col-span-6 sm:col-span-3" id="PinInput">
+                    <InputArea
+                      register={register}
+                      label="Zip Code"
+                      name="zipCode"
+                      value={inputPincode}
+                      type="text"
+                      placeholder="110092"
+                    />
+                    <Error errorName={errors.zipCode} />
+                  </div>
+
+                  <div className="col-span-6 sm:col-span-3">
+                    <InputArea
+                      register={register}
+                      label="Country"
+                      name="country"
+                      type="text"
+                      placeholder="India"
+                    />
+                    <Error errorName={errors.country} />
                   </div>
                 </div>
+              </div>
 
-                {/* Prescription Upload */}
-                <div className="form-group mt-6">
-                  <h2 className="font-semibold text-base text-gray-700 pb-3">Upload Prescription</h2>
-                  {items.map((item) => (
-                    <div key={item.id} className="mb-4">
-                      <p className="text-sm font-medium">{item.name}</p>
-                      <input
-                        type="file"
-                        accept="image/*,application/pdf"
-                        onChange={(e) => handlePrescriptionUpload(e.target.files[0], item.id)}
-                        className="border p-2 rounded w-full"
-                      />
-                      {prescriptions[item.id] && (
-                        <p className="text-green-500 text-sm mt-1">{prescriptions[item.id].name}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
+              {/* PRESCRIPTION UPLOAD */}
+              <div className="form-group mt-10">
+                <h2 className="font-semibold text-base text-gray-700 pb-3">
+                  Upload Prescription
+                </h2>
 
-                {/* 03. Payment Section */}
-                <div className="form-group mt-12">
-                  <h2 className="font-semibold text-base text-gray-700 pb-3">
-                    03. {showingTranslateValue(storeCustomizationSetting?.checkout?.payment_method)}
-                  </h2>
-                  <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
-                    {storeSetting?.cod_status && (
-                      <div id="cod_input">
-                        <InputPayment
-                          setShowCard={setShowCard}
-                          register={register}
-                          name={t("common:cashOnDelivery")}
-                          value="Cash"
-                          disable={isCodDisable}
-                          Icon={IoWalletSharp}
-                          setActiveCharge={setActiveCharge}
-                        />
-                        <Error errorMessage={errors.paymentMethod} />
-                      </div>
+                {items.map((item) => (
+                  <div key={item.id} className="mb-4">
+                    <p className="text-sm font-medium">{item.name}</p>
+
+                    <input
+                      type="file"
+                      accept="image/*,application/pdf"
+                      onChange={(e) =>
+                        handlePrescriptionUpload(e.target.files[0], item.id)
+                      }
+                      className="border p-2 rounded w-full"
+                    />
+
+                    {prescriptions[item.id] && (
+                      <p className="text-green-600 text-sm mt-1">
+                        {prescriptions[item.id].name}
+                      </p>
                     )}
-                    <div>
+                  </div>
+                ))}
+              </div>
+
+              {/* PAYMENT METHOD */}
+              <div className="form-group mt-10">
+                <h2 className="font-semibold text-base text-gray-700 pb-3">
+                  03. Payment Method
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {storeSetting?.cod_status && (
+                    <div id="cod_input">
                       <InputPayment
                         setShowCard={setShowCard}
                         register={register}
-                        name="RazorPay"
-                        value="RazorPay"
-                        Icon={ImCreditCard}
+                        name="Cash on Delivery"
+                        value="Cash"
+                        disable={isCodDisable}
+                        Icon={IoWalletSharp}
                         setActiveCharge={setActiveCharge}
                       />
                       <Error errorMessage={errors.paymentMethod} />
                     </div>
+                  )}
+
+                  <div>
+                    <InputPayment
+                      setShowCard={setShowCard}
+                      register={register}
+                      name="Razorpay"
+                      value="RazorPay"
+                      Icon={ImCreditCard}
+                      setActiveCharge={setActiveCharge}
+                    />
+                    <Error errorMessage={errors.paymentMethod} />
                   </div>
+                </div>
+              </div>
+
+              {/* BUTTONS */}
+              <div className="grid grid-cols-6 gap-4 mt-10">
+                <div className="col-span-6 sm:col-span-3">
+                  <Link
+                    href="/"
+                    className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:border-gray-300"
+                  >
+                    <IoReturnUpBackOutline className="inline mr-2" />
+                    Continue Shopping
+                  </Link>
                 </div>
 
-                {/* Buttons */}
-                <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
-                  <div className="col-span-6 sm:col-span-3">
-                    <Link
-                      href="/"
-                      className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center w-full"
-                    >
-                      <span className="text-xl mr-2">
-                        <IoReturnUpBackOutline />
+                <div className="col-span-6 sm:col-span-3">
+                  <button
+                    type="submit"
+                    disabled={isEmpty || isCheckoutSubmit}
+                    className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 text-white rounded py-3 text-sm font-medium w-full flex justify-center"
+                  >
+                    {isCheckoutSubmit ? (
+                      <span className="flex items-center">
+                        <img
+                          src="/loader/spinner.gif"
+                          alt="loading"
+                          width={20}
+                        />
+                        <span className="ml-2">Processing...</span>
                       </span>
-                      {showingTranslateValue(storeCustomizationSetting?.checkout?.continue_button)}
-                    </Link>
-                  </div>
-                  <div className="col-span-6 sm:col-span-3">
-                    <button
-                      type="submit"
-                      disabled={isEmpty || isCheckoutSubmit}
-                      className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm font-medium text-white flex justify-center w-full"
-                    >
-                      {isCheckoutSubmit ? (
-                        <span className="flex justify-center text-center">
-                          <img src="/loader/spinner.gif" alt="Loading" width={20} height={10} />
-                          <span className="ml-2">{t("common:processing")}</span>
-                        </span>
-                      ) : (
-                        <span className="flex justify-center text-center">
-                          {showingTranslateValue(storeCustomizationSetting?.checkout?.confirm_button)}
-                          <span className="text-xl ml-2">
-                            <IoArrowForward />
-                          </span>
-                        </span>
-                      )}
-                    </button>
-                  </div>
+                    ) : (
+                      <span className="flex items-center">
+                        Confirm Order
+                        <IoArrowForward className="ml-2" />
+                      </span>
+                    )}
+                  </button>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
 
-          {/* Right Column - Order Summary */}
-          <div className="md:w-full lg:w-2/5 lg:ml-10 xl:ml-14 md:ml-6 flex flex-col h-full md:sticky lg:sticky top-28 md:order-2 lg:order-2">
-            <div className="border p-5 lg:px-8 lg:py-8 rounded-lg bg-white order-1 sm:order-2">
+          {/* RIGHT SUMMARY */}
+          <div className="md:w-full lg:w-2/5 lg:ml-10 mt-10 md:mt-0">
+            <div className="border p-5 rounded-lg bg-white">
               <h2 className="font-semibold text-lg pb-4">
-                {showingTranslateValue(storeCustomizationSetting?.checkout?.order_summary)}
+                Order Summary
               </h2>
-              <div className="overflow-y-scroll flex-grow scrollbar-hide w-full max-h-64 bg-gray-50 block">
+
+              <div className="overflow-y-scroll max-h-64 bg-gray-50">
                 {items.map((item) => (
                   <div key={item.id}>
                     <CartItem item={item} currency={currency} />
+
                     {prescriptions[item.id] && (
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Prescription:</p>
                         <img
-                          src={prescriptions[item.id].data}
+                          src={prescriptions[item.id].base64}
                           alt={prescriptions[item.id].name}
                           className="h-20 w-20 object-cover border rounded"
                         />
@@ -407,12 +442,11 @@ const Checkout = () => {
                     )}
                   </div>
                 ))}
+
                 {isEmpty && (
                   <div className="text-center py-10">
-                    <span className="flex justify-center my-auto text-gray-500 font-semibold text-4xl">
-                      <IoBagHandle />
-                    </span>
-                    <h2 className="font-medium text-sm pt-2 text-gray-600">No Item Added Yet!</h2>
+                    <IoBagHandle className="text-4xl mx-auto text-gray-500" />
+                    <h2 className="text-gray-600 text-sm">No Item Added Yet!</h2>
                   </div>
                 )}
               </div>
