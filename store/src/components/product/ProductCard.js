@@ -29,60 +29,42 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  // Upload Prescription to backend
-  const uploadPrescription = async (file) => {
-    try {
-      const formData = new FormData();
-      formData.append("prescription", file);
-
-      const token = localStorage.getItem("userToken") || localStorage.getItem("token");
-
-      const res = await fetch(
-        "https://www.medicalsurgicalsolutions.com/api/upload/prescription",
-        {
-          method: "POST",
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-          body: formData,
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.success) {
-        localStorage.setItem(`prescription_${product._id}`, data.url);
-        setPreviewUrl(data.url);
-        setHasLocalPrescription(true);
-        notifySuccess("Prescription uploaded successfully!");
-      } else {
-        notifyError(data.message || "Upload failed!");
-      }
-    } catch (error) {
-      console.error(error);
-      notifyError("Upload error");
-    }
-  };
-
-  // Handle file input
-  const handlePrescriptionUpload = async (event) => {
+  // 📌 Handle file input change and store in localStorage
+  const handlePrescriptionUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
-    await uploadPrescription(file);
+
+    // Convert file to Base64 for localStorage
+    const reader = new FileReader();
+    reader.onload = () => {
+      const fileData = reader.result;
+      const stored = JSON.parse(localStorage.getItem("prescriptions")) || {};
+      stored[product._id] = {
+        name: file.name,
+        type: file.type,
+        data: fileData,
+      };
+      localStorage.setItem("prescriptions", JSON.stringify(stored));
+      setHasLocalPrescription(true);
+      notifySuccess("Prescription saved locally!");
+    };
+    reader.readAsDataURL(file);
   };
 
   // Load saved prescription on mount
   useEffect(() => {
-    const saved = localStorage.getItem(`prescription_${product._id}`);
-    if (saved) {
-      setPreviewUrl(saved);
+    const stored = JSON.parse(localStorage.getItem("prescriptions")) || {};
+    if (stored[product._id]) {
+      setPreviewUrl(stored[product._id].data);
       setHasLocalPrescription(true);
     }
   }, [product._id]);
 
-  // Add to cart handler (Buy Now)
-  const handleAddItems = async (event, p) => {
+  // Add to cart handler
+  const handleAddItems = (event, p) => {
     event.stopPropagation();
 
     if (p?.stock < 1) {
@@ -90,7 +72,8 @@ const ProductCard = ({ product, attributes }) => {
       return;
     }
 
-    const savedPres = localStorage.getItem(`prescription_${p._id}`);
+    const stored = JSON.parse(localStorage.getItem("prescriptions")) || {};
+    const savedPres = stored[p._id] || null;
 
     if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
@@ -104,7 +87,7 @@ const ProductCard = ({ product, attributes }) => {
       price: p?.prices?.price,
       originalPrice: p?.prices?.originalPrice,
       quantity: 1,
-      prescriptionUrl: isMedicinePage ? savedPres : null,
+      prescription: isMedicinePage ? savedPres : null,
     };
 
     if (!userInfo) {
@@ -120,9 +103,9 @@ const ProductCard = ({ product, attributes }) => {
     }, 400);
   };
 
-  // Add to cart (without redirect)
   const handleAddToCartWithPrescription = () => {
-    const savedPres = localStorage.getItem(`prescription_${product._id}`);
+    const stored = JSON.parse(localStorage.getItem("prescriptions")) || {};
+    const savedPres = stored[product._id] || null;
 
     if (isMedicinePage && !savedPres) {
       notifyError("Please upload prescription");
@@ -136,7 +119,7 @@ const ProductCard = ({ product, attributes }) => {
       price: product?.prices?.price,
       originalPrice: product?.prices?.originalPrice,
       quantity: 1,
-      prescriptionUrl: isMedicinePage ? savedPres : null,
+      prescription: isMedicinePage ? savedPres : null,
     };
 
     addItem(newItem);
@@ -160,7 +143,10 @@ const ProductCard = ({ product, attributes }) => {
         <div
           onClick={() => {
             setModalOpen(true);
-            handleLogEvent("product", `opened ${showingTranslateValue(product?.title)} modal`);
+            handleLogEvent(
+              "product",
+              `opened ${showingTranslateValue(product?.title)} modal`
+            );
           }}
           className="relative flex justify-center cursor-pointer w-full h-44"
         >
@@ -194,7 +180,7 @@ const ProductCard = ({ product, attributes }) => {
             originalPrice={product?.prices?.originalPrice}
           />
 
-          {/* Upload Prescription */}
+          {/* Upload Prescription for Medicines Only */}
           {isMedicinePage && (
             <div className="mt-3 w-full flex flex-col items-center gap-3">
               <label
@@ -231,7 +217,7 @@ const ProductCard = ({ product, attributes }) => {
                   ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed"
                   : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
               }`}
-              onClick={handleAddToCartWithPrescription}
+              onClick={() => handleAddToCartWithPrescription()}
             >
               Add to Cart
             </button>
