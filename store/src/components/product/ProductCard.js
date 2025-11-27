@@ -29,7 +29,7 @@ const ProductCard = ({ product, attributes }) => {
 
   const currency = globalSetting?.default_currency || "$";
 
-  // 🔥 Upload Prescription to Backend
+  // Upload Prescription to backend
   const uploadPrescription = async (file) => {
     try {
       const formData = new FormData();
@@ -62,15 +62,13 @@ const ProductCard = ({ product, attributes }) => {
     }
   };
 
-  // 📌 Handle file input change
+  // Handle file input
   const handlePrescriptionUpload = async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
     setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(file));
-
-    // Upload to backend
     await uploadPrescription(file);
   };
 
@@ -83,7 +81,7 @@ const ProductCard = ({ product, attributes }) => {
     }
   }, [product._id]);
 
-  // Add to cart handler
+  // Add to cart handler (Buy Now)
   const handleAddItems = async (event, p) => {
     event.stopPropagation();
 
@@ -196,7 +194,7 @@ const ProductCard = ({ product, attributes }) => {
             originalPrice={product?.prices?.originalPrice}
           />
 
-          {/* Upload Prescription for Medicines Only */}
+          {/* Upload Prescription */}
           {isMedicinePage && (
             <div className="mt-3 w-full flex flex-col items-center gap-3">
               <label
@@ -233,7 +231,7 @@ const ProductCard = ({ product, attributes }) => {
                   ? "border-gray-400 text-gray-400 bg-gray-200 cursor-not-allowed"
                   : "border-cyan-600 text-cyan-600 hover:text-white hover:bg-cyan-600"
               }`}
-              onClick={() => handleAddToCartWithPrescription()}
+              onClick={handleAddToCartWithPrescription}
             >
               Add to Cart
             </button>
