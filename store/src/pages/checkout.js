@@ -142,27 +142,24 @@ const Checkout = () => {
     });
 
   // 🔥 FIXED: Stores both File + base64 in localStorage
-  const handlePrescriptionUpload = async (file, itemId) => {
-    if (!file) return;
+ const handlePrescriptionUpload = async (file, itemId) => {
+  if (!file) return;
 
-    const base64 = await fileToBase64(file);
+  const base64 = await fileToBase64(file);
 
-    const updated = {
-      ...prescriptions,
-      [itemId]: file,
-    };
+  setPrescriptions((prev) => ({
+    ...prev,
+    [itemId]: { file, base64, name: file.name },
+  }));
 
-    // save file as base64 in localStorage
-    const storeObj = {
-      ...JSON.parse(localStorage.getItem("prescriptions") || "{}"),
-      [itemId]: { name: file.name, base64 },
-    };
+  // Save Base64 in localStorage as well
+  const stored = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+  stored[itemId] = { name: file.name, base64 };
+  localStorage.setItem("prescriptions", JSON.stringify(stored));
 
-    localStorage.setItem("prescriptions", JSON.stringify(storeObj));
-    setPrescriptions(updated);
+  notifySuccess("Prescription added successfully");
+};
 
-    notifySuccess("Prescription added successfully");
-  };
 
   // 🔥 FINAL FIX — REAL FILE SENT TO BACKEND
   const enhancedSubmitHandler = async (data) => {
@@ -343,11 +340,11 @@ const Checkout = () => {
               </div>
 
               {/* PRESCRIPTION UPLOAD */}
+              {/* PRESCRIPTION UPLOAD */}
               <div className="form-group mt-10">
                 <h2 className="font-semibold text-base text-gray-700 pb-3">
                   Upload Prescription
                 </h2>
-
                 {items.map((item) => (
                   <div key={item.id} className="mb-4">
                     <p className="text-sm font-medium">{item.name}</p>
@@ -359,7 +356,7 @@ const Checkout = () => {
                       }
                       className="border p-2 rounded w-full"
                     />
-                    {prescriptions[item.id] && (
+                    {prescriptions[item.id]?.name && (
                       <p className="text-green-600 text-sm mt-1">
                         {prescriptions[item.id].name}
                       </p>
@@ -367,6 +364,7 @@ const Checkout = () => {
                   </div>
                 ))}
               </div>
+
 
               {/* PAYMENT METHOD */}
               <div className="form-group mt-10">
@@ -448,12 +446,11 @@ const Checkout = () => {
             <div className="border p-5 rounded-lg bg-white">
               <h2 className="font-semibold text-lg pb-4">Order Summary</h2>
 
-              <div className="overflow-y-scroll max-h-64 bg-gray-50">
+<div className="overflow-y-scroll max-h-64 bg-gray-50">
                 {items.map((item) => (
                   <div key={item.id}>
                     <CartItem item={item} currency={currency} />
-
-                    {prescriptions[item.id] && (
+                    {prescriptions[item.id]?.base64 && (
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Prescription:</p>
                         <img
