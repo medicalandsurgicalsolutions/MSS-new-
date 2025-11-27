@@ -141,8 +141,10 @@ const enhancedSubmitHandler = async (data) => {
     ...data,
     prescriptionUrl: firstPrescription ? firstPrescription.data : null,
   };
-  await submitHandler(payload);
+
+  await originalSubmitHandler(payload); // use correct function
 };
+
   
   return (
     <Layout title="Checkout" description="this is checkout page">
