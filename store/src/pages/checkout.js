@@ -8,7 +8,6 @@ import {
   IoWalletSharp,
 } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
-
 import useTranslation from "next-translate/useTranslation";
 import Layout from "@layout/Layout";
 import useAsync from "@hooks/useAsync";
