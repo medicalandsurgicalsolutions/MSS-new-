@@ -116,7 +116,6 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
- // Handle prescription upload
   const handlePrescriptionUpload = (file) => {
     const id = new Date().getTime(); // unique key
     const newPrescriptions = { ...prescriptions, [id]: file };
@@ -125,18 +124,15 @@ const Checkout = () => {
     notifySuccess("Prescription added successfully");
   };
 
-  // Attach prescriptions to order payload
+  // Enhanced submit handler
   const enhancedSubmitHandler = async (data) => {
-    // Take first prescription or null
     const firstPrescription = Object.values(prescriptions)[0] || null;
     const payload = {
       ...data,
       prescriptionUrl: firstPrescription ? firstPrescription.name : null,
     };
-    await submitHandler(payload);
+    await originalSubmitHandler(payload);
   };
-
-
   return (
     <Layout title="Checkout" description="this is checkout page">
       <div className="mx-auto max-w-screen-2xl px-3 sm:px-10">
@@ -144,7 +140,7 @@ const Checkout = () => {
           {/* Left form */}
           <div className="md:w-full lg:w-3/5 flex h-full flex-col order-2 sm:order-1 lg:order-1">
             <div className="mt-5 md:mt-0 md:col-span-2">
-              <form onSubmit={handleSubmit(submitHandler)}>
+              <form onSubmit={handleSubmit(enhancedSubmitHandler)}>
                 {/* Use default shipping toggle */}
                 {hasShippingAddress && (
                   <div className="flex justify-end my-2">
@@ -208,8 +204,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-
-          {/* Prescription Upload */}
+ {/* Prescription Upload */}
                 <div className="form-group mt-6">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
                     00. Prescription Upload
@@ -229,7 +224,7 @@ const Checkout = () => {
                   </div>
                 </div>
 
-
+  
                 {/* Shipping Details */}
                 <div className="form-group mt-12">
                   <h2 className="font-semibold text-base text-gray-700 pb-3">
