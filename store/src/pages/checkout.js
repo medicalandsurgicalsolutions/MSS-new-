@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import {
-  IoReturnUpBackOutline,
-  IoArrowForward,
-  IoBagHandle,
-  IoWalletSharp,
-} from "react-icons/io5";
+import { IoReturnUpBackOutline, IoArrowForward, IoBagHandle, IoWalletSharp } from "react-icons/io5";
 import { ImCreditCard } from "react-icons/im";
 import useTranslation from "next-translate/useTranslation";
 
@@ -111,41 +106,24 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Convert File object to Base64 (just in case you use elsewhere)
-  const fileToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  // Checkout submit handler with prescription
+  const enhancedSubmitHandler = async (data) => {
+    try {
+      const storedPrescriptions = JSON.parse(localStorage.getItem("prescriptions") || "{}");
+      const firstPrescription = Object.values(storedPrescriptions)[0] || null;
 
-  // Enhanced submit handler - attaches prescription from localStorage
- const enhancedSubmitHandler = async (data) => {
-  try {
-    // Get first prescription
-    const firstPrescription = Object.values(prescriptions)[0] || null;
+      const payload = {
+        ...data,
+        prescriptionUrl: firstPrescription ? firstPrescription.data : null, // attach to order
+      };
 
-    // Map prescription to each cart item (or the one that needs it)
-    const cartWithPrescription = data.cart.map((item) => ({
-      ...item,
-      prescription: firstPrescription
-        ? { name: firstPrescription.name, data: firstPrescription.data }
-        : null,
-    }));
-
-    const payload = {
-      ...data,
-      cart: cartWithPrescription, // attach prescription per item
-    };
-
-    await originalSubmitHandler(payload);
-  } catch (err) {
-    console.error("Checkout submit error:", err);
-    notifyError("Failed to submit order. Please try again.");
-  }
-};
-
+      await originalSubmitHandler(payload);
+      notifySuccess("Order submitted successfully!");
+    } catch (err) {
+      console.error("Checkout submit error:", err);
+      notifyError("Failed to submit order. Please try again.");
+    }
+  };
 
   return (
     <Layout title="Checkout" description="this is checkout page">
@@ -204,7 +182,7 @@ const Checkout = () => {
                         type="tel"
                         placeholder="Enter phone number"
                       />
-                      <Error errorName={errors.contact} />
+                      <Error errorName={errors.phone} />
                     </div>
                   </div>
                 </div>
@@ -381,12 +359,12 @@ const Checkout = () => {
                 {items.map((item) => (
                   <div key={item.id}>
                     <CartItem item={item} currency={currency} />
-                    {item.prescription && (
+                    {item.prescriptionUrl && (
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">Prescription:</p>
                         <img
-                          src={item.prescription.data}
-                          alt={item.prescription.name}
+                          src={item.prescriptionUrl}
+                          alt="Prescription"
                           className="h-20 w-20 object-cover border rounded"
                         />
                       </div>
