@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TableBody, TableCell, TableRow, Badge } from "@windmill/react-ui";
-import { useTranslation } from "react-i18next";
 import { FiZoomIn } from "react-icons/fi";
 import { Link } from "react-router-dom";
 
@@ -14,14 +13,20 @@ import SelectInput from "@/components/form/selectOption/SelectInput";
 import TrackInput from "@/components/form/selectOption/TrackInput";
 import SelectPartner from "@/components/form/selectOption/SelectPartner";
 
-const OrderTable = ({ orders }) => {
-  const { t } = useTranslation();
+const OrderTable = () => {
   const { showDateTimeFormat, currency, getNumberTwo } = useUtilsFunction();
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    // Load orders from localStorage
+    const storedOrders = JSON.parse(localStorage.getItem("orders")) || [];
+    setOrders(storedOrders);
+  }, []);
 
   return (
     <TableBody className="dark:bg-gray-900">
       {orders?.map((order, i) => (
-        <TableRow key={i}>
+        <TableRow key={order._id || i}>
           {/* Invoice */}
           <TableCell>
             <span className="font-semibold uppercase text-xs">{order?.invoice}</span>
@@ -93,26 +98,23 @@ const OrderTable = ({ orders }) => {
             <Link to={`/shipping/${order._id}`}>View</Link>
           </TableCell>
 
-          {/* PRESCRIPTION COLUMN — LOCAL FILE SUPPORT */}
+          {/* PRESCRIPTION COLUMN */}
           <TableCell className="text-center">
             {order.items?.length ? (
               order.items.map((item, idx) => (
                 item.prescriptionFile ? (
                   <a
-                    key={item.id || item.title}
+                    key={item.id || idx}
                     href={URL.createObjectURL(item.prescriptionFile)}
-                    download={item.prescriptionFile.name}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`View ${item.title} prescription`}
                     className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 block mb-1"
                   >
                     {item.title} Prescription
                   </a>
                 ) : (
-                  <span
-                    key={item.id || item.title}
-                    className="text-gray-500 block mb-1"
-                  >
+                  <span key={item.id || idx} className="text-gray-500 block mb-1">
                     {item.title}: No Prescription
                   </span>
                 )
@@ -128,12 +130,7 @@ const OrderTable = ({ orders }) => {
               <PrintReceipt orderId={order._id} />
               <span className="p-2 cursor-pointer text-gray-400 hover:text-emerald-600">
                 <Link to={`/order/${order._id}`}>
-                  <Tooltip
-                    id="view"
-                    Icon={FiZoomIn}
-                    title={t("ViewInvoice")}
-                    bgColor="#059669"
-                  />
+                  <Tooltip id="view" Icon={FiZoomIn} title="View Invoice" bgColor="#059669" />
                 </Link>
               </span>
             </div>
