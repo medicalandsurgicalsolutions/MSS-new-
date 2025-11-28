@@ -104,64 +104,68 @@ const Checkout = () => {
   }, []);
 
   // Form submission with prescription files
-  const handleFormSubmit = async (data) => {
-    try {
-      const formData = new FormData();
+const handleFormSubmit = async (data) => {
+  try {
+    const formData = new FormData();
 
-      // User info
-      formData.append(
-        "user_info",
-        JSON.stringify({
-          firstName: data.firstName,
-          lastName: data.lastName,
-          phone: data.phone,
-          flat: data.flat,
-          address: data.address,
-          landmark: data.landmark,
-          city: data.city,
-          district: data.district,
-          state: data.state,
-          country: data.country,
-          zipCode: data.zipCode,
-        })
-      );
+    // User Info
+    formData.append(
+      "user_info",
+      JSON.stringify({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        flat: data.flat,
+        address: data.address,
+        landmark: data.landmark,
+        city: data.city,
+        district: data.district || "",
+        state: data.state || "",
+        country: data.country || "India",
+        zipCode: data.zipCode,
+      })
+    );
 
-      // Cart & totals
-      formData.append("cart", JSON.stringify(items));
-      formData.append("total", total);
-      formData.append("shippingCost", deliveryChargeToApply);
-      formData.append("discount", discountAmount);
-      formData.append("paymentMethod", data.paymentMethod);
-      formData.append("status", "pending");
+    // Cart & other order info
+    formData.append("cart", JSON.stringify(items));
+    formData.append("total", total);
+    formData.append("shippingCost", deliveryChargeToApply);
+    formData.append("discount", discountAmount);
+    formData.append("paymentMethod", data.paymentMethod);
+    formData.append("status", "pending");
 
-      // Prescription files
-      prescriptionFiles.forEach((file, index) => {
-        if (file) {
-          formData.append(
-            "prescriptions",
-            file,
-            `${items[index]?.id || index}_${file.name}`
-          );
-        }
-      });
+    // Attach prescription files (itemId_filename)
+    prescriptionFiles.forEach((file, index) => {
+      if (file) {
+        formData.append(
+          "prescriptions",
+          file,
+          `${items[index]?.id || index}_${file.name}`
+        );
+      }
+    });
 
-      // POST to backend
-      const response = await fetch("https://www.medicalsurgicalsolutions.com/api/orders/addOrder", {
+    // ✅ Use full backend URL
+    const response = await fetch(
+      "https://www.medicalsurgicalsolutions.com/api/orders/addOrder",
+      {
         method: "POST",
         body: formData,
-      });
-
-      const result = await response.json();
-      if (result.success) {
-        notifySuccess("Order placed successfully!");
-      } else {
-        notifyError(result.message);
       }
-    } catch (err) {
-      console.error(err);
-      notifyError("Order submission failed!");
+    );
+
+    const result = await response.json();
+    if (result.success) {
+      notifySuccess("Order placed successfully!");
+      // optionally redirect to order confirmation page
+    } else {
+      notifyError(result.message || "Failed to place order!");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    notifyError("Order submission failed!");
+  }
+};
 
   return (
     <Layout title="Checkout" description="Checkout page">
