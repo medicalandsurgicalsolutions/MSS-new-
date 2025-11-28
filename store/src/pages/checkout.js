@@ -7,7 +7,6 @@ import useTranslation from "next-translate/useTranslation";
 
 // Internal imports
 import Layout from "@layout/Layout";
-import useAsync from "@hooks/useAsync";
 import Label from "@components/form/Label";
 import Error from "@components/form/Error";
 import CartItem from "@components/cart/CartItem";
@@ -16,7 +15,6 @@ import useGetSetting from "@hooks/useGetSetting";
 import InputPayment from "@components/form/InputPayment";
 import useCheckoutSubmit from "@hooks/useCheckoutSubmit";
 import useUtilsFunction from "@hooks/useUtilsFunction";
-import SettingServices from "@services/SettingServices";
 import SwitchToggle from "@components/form/SwitchToggle";
 import PinncodeService from "@services/PincodeServices";
 import { notifyError, notifySuccess } from "@utils/toast";
@@ -25,17 +23,14 @@ const Checkout = () => {
   const { t } = useTranslation();
   const { storeCustomizationSetting } = useGetSetting();
   const { showingTranslateValue } = useUtilsFunction();
-  const { data: storeSetting } = useAsync(SettingServices.getStoreSetting);
 
   const {
-    error,
     total,
     isEmpty,
     items,
     cartTotal,
     currency,
     register,
-    codDisplay,
     errors,
     showCard,
     setActiveCharge,
@@ -103,69 +98,48 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // Form submission with prescription files
-const handleFormSubmit = async (data) => {
-  try {
-    const formData = new FormData();
+  // -------------------- LocalStorage order submit --------------------
+  const handleFormSubmit = (data) => {
+    try {
+      // Prepare order object
+      const order = {
+        id: Date.now(), // unique order id
+        user_info: {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          phone: data.phone,
+          flat: data.flat,
+          address: data.address,
+          landmark: data.landmark,
+          city: data.city,
+          district: data.district || "",
+          state: data.state || "",
+          country: data.country || "India",
+          zipCode: data.zipCode,
+        },
+        items: items.map((item, idx) => ({
+          ...item,
+          prescriptionFile: prescriptionFiles[idx] || null,
+        })),
+        total,
+        shippingCost: deliveryChargeToApply,
+        discount: discountAmount,
+        paymentMethod: data.paymentMethod,
+        status: "pending",
+        createdAt: new Date().toISOString(),
+        invoice: `INV-${Math.floor(Math.random() * 1000000)}`,
+      };
 
-    // User Info
-    formData.append(
-      "user_info",
-      JSON.stringify({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
-        flat: data.flat,
-        address: data.address,
-        landmark: data.landmark,
-        city: data.city,
-        district: data.district || "",
-        state: data.state || "",
-        country: data.country || "India",
-        zipCode: data.zipCode,
-      })
-    );
+      // Save to localStorage
+      const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
+      localStorage.setItem("orders", JSON.stringify([...existingOrders, order]));
 
-    // Cart & other order info
-    formData.append("cart", JSON.stringify(items));
-    formData.append("total", total);
-    formData.append("shippingCost", deliveryChargeToApply);
-    formData.append("discount", discountAmount);
-    formData.append("paymentMethod", data.paymentMethod);
-    formData.append("status", "pending");
-
-    // Attach prescription files (itemId_filename)
-    prescriptionFiles.forEach((file, index) => {
-      if (file) {
-        formData.append(
-          "prescriptions",
-          file,
-          `${items[index]?.id || index}_${file.name}`
-        );
-      }
-    });
-
-    // ✅ Use full backend URL
-    const response = await fetch(
-      "https://www.medicalsurgicalsolutions.com/api/orders/addOrder",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const result = await response.json();
-    if (result.success) {
       notifySuccess("Order placed successfully!");
-      // optionally redirect to order confirmation page
-    } else {
-      notifyError(result.message || "Failed to place order!");
+    } catch (err) {
+      console.error(err);
+      notifyError("Order submission failed!");
     }
-  } catch (err) {
-    console.error(err);
-    notifyError("Order submission failed!");
-  }
-};
+  };
 
   return (
     <Layout title="Checkout" description="Checkout page">
@@ -174,7 +148,7 @@ const handleFormSubmit = async (data) => {
           {/* Left Form */}
           <div className="md:w-full lg:w-3/5 flex flex-col">
             <form onSubmit={handleSubmit(handleFormSubmit)}>
-              {/* Use default shipping address */}
+              {/* Default Shipping Address */}
               {hasShippingAddress && (
                 <div className="flex justify-end my-2">
                   <SwitchToggle
@@ -201,7 +175,7 @@ const handleFormSubmit = async (data) => {
                     <Error errorName={errors.lastName} />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <InputArea register={register} label="Phone" name="phone" type="tel" placeholder="Enter phone number" />
+                    <InputArea register={register} label="Phone" name="phone" type="tel" placeholder="Enter your phone" />
                     <Error errorName={errors.phone} />
                   </div>
                 </div>
@@ -214,7 +188,7 @@ const handleFormSubmit = async (data) => {
                 </h2>
                 <div className="grid grid-cols-6 gap-6 mb-8">
                   <div className="col-span-6">
-                    <InputArea register={register} label="Flat/House Number" name="flat" type="text" placeholder="Eg: 402, Ground Floor" />
+                    <InputArea register={register} label="Flat/House No" name="flat" type="text" placeholder="Eg: 402, Ground Floor" />
                     <Error errorName={errors.flat} />
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
@@ -265,20 +239,18 @@ const handleFormSubmit = async (data) => {
                   03. {showingTranslateValue(storeCustomizationSetting?.checkout?.payment_method)}
                 </h2>
                 <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
-                  {storeSetting?.cod_status && (
-                    <div id="cod_input">
-                      <InputPayment
-                        setShowCard={setShowCard}
-                        register={register}
-                        name={t("common:cashOnDelivery")}
-                        value="Cash"
-                        disable={isCodDisable}
-                        Icon={IoWalletSharp}
-                        setActiveCharge={setActiveCharge}
-                      />
-                      <Error errorMessage={errors.paymentMethod} />
-                    </div>
-                  )}
+                  <div id="cod_input">
+                    <InputPayment
+                      setShowCard={setShowCard}
+                      register={register}
+                      name={t("common:cashOnDelivery")}
+                      value="Cash"
+                      disable={isCodDisable}
+                      Icon={IoWalletSharp}
+                      setActiveCharge={setActiveCharge}
+                    />
+                    <Error errorMessage={errors.paymentMethod} />
+                  </div>
                   <div>
                     <InputPayment
                       setShowCard={setShowCard}
@@ -296,10 +268,7 @@ const handleFormSubmit = async (data) => {
               {/* Submit Buttons */}
               <div className="grid grid-cols-6 gap-4 lg:gap-6 mt-10">
                 <div className="col-span-6 sm:col-span-3">
-                  <Link
-                    href="/"
-                    className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center w-full"
-                  >
+                  <Link href="/" className="bg-indigo-50 border border-indigo-100 rounded py-3 text-center text-sm font-medium text-gray-700 hover:text-gray-800 hover:border-gray-300 transition-all flex justify-center w-full">
                     <span className="text-xl mr-2"><IoReturnUpBackOutline /></span>
                     Continue Shopping
                   </Link>
