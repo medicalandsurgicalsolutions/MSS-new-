@@ -93,9 +93,9 @@ const OrderTable = ({ orders }) => {
             <Link to={`/shipping/${order._id}`}>View</Link>
           </TableCell>
 
-          {/* ---------------------------------------------------------------------- */}
+         
           {/* PRESCRIPTION COLUMN — UPDATED + WORKING */}
-          /* ---------------------------------------------------------------------- */
+        
             <TableCell className="text-center">
               {order.items?.length ? (
                 order.items.map((item) => (
