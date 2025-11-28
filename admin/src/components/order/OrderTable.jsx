@@ -34,7 +34,7 @@ const OrderTable = ({ orders }) => {
 
           {/* Customer */}
           <TableCell className="text-xs">
-            <span className="text-sm">{order?.user_info?.name}</span>
+            <span className="text-sm">{order?.user_info?.firstName} {order?.user_info?.lastName}</span>
           </TableCell>
 
           {/* Payment */}
@@ -93,38 +93,34 @@ const OrderTable = ({ orders }) => {
             <Link to={`/shipping/${order._id}`}>View</Link>
           </TableCell>
 
-         
-          {/* PRESCRIPTION COLUMN — UPDATED + WORKING */}
-        
-            <TableCell className="text-center">
-              {order.items?.length ? (
-                order.items.map((item) => (
-                  item.prescriptionUrl ? (
-                    <a
-                      key={item.id || item.title} // Use item.id if available, fallback to title
-                      href={item.prescriptionUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`View ${item.title} prescription`}
-                      className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 block mb-1"
-                    >
-                      {item.title} Prescription
-                    </a>
-                  ) : (
-                    <span
-                      key={item.id || item.title}
-                      className="text-gray-500 block mb-1"
-                    >
-                      {item.title}: No Prescription
-                    </span>
-                  )
-                ))
-              ) : (
-                <span className="text-gray-400">No Items</span>
-              )}
-            </TableCell>
-
-          {/* ---------------------------------------------------------------------- */}
+          {/* PRESCRIPTION COLUMN — LOCAL FILE SUPPORT */}
+          <TableCell className="text-center">
+            {order.items?.length ? (
+              order.items.map((item, idx) => (
+                item.prescriptionFile ? (
+                  <a
+                    key={item.id || item.title}
+                    href={URL.createObjectURL(item.prescriptionFile)}
+                    download={item.prescriptionFile.name}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700 block mb-1"
+                  >
+                    {item.title} Prescription
+                  </a>
+                ) : (
+                  <span
+                    key={item.id || item.title}
+                    className="text-gray-500 block mb-1"
+                  >
+                    {item.title}: No Prescription
+                  </span>
+                )
+              ))
+            ) : (
+              <span className="text-gray-400">No Items</span>
+            )}
+          </TableCell>
 
           {/* Actions */}
           <TableCell className="text-right flex justify-end">
