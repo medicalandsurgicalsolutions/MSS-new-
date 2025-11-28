@@ -98,12 +98,19 @@ const Checkout = () => {
     return () => pinInput.removeEventListener("input", handleInputChange);
   }, []);
 
-  // -------------------- LocalStorage order submit --------------------
+  // --- Save Order in LocalStorage ---
   const handleFormSubmit = (data) => {
     try {
-      // Prepare order object
-      const order = {
-        id: Date.now(), // unique order id
+      // Attach prescription files to items
+      const itemsWithPrescriptions = items.map((item, idx) => ({
+        ...item,
+        prescriptionFile: prescriptionFiles[idx] || null,
+      }));
+
+      const orderData = {
+        _id: Date.now().toString(), // unique id
+        invoice: `INV-${Date.now()}`,
+        createdAt: new Date().toISOString(),
         user_info: {
           firstName: data.firstName,
           lastName: data.lastName,
@@ -117,24 +124,30 @@ const Checkout = () => {
           country: data.country || "India",
           zipCode: data.zipCode,
         },
-        items: items.map((item, idx) => ({
-          ...item,
-          prescriptionFile: prescriptionFiles[idx] || null,
-        })),
+        items: itemsWithPrescriptions,
         total,
-        shippingCost: deliveryChargeToApply,
+        cartTotal,
         discount: discountAmount,
+        shippingCost: deliveryChargeToApply,
         paymentMethod: data.paymentMethod,
         status: "pending",
-        createdAt: new Date().toISOString(),
-        invoice: `INV-${Math.floor(Math.random() * 1000000)}`,
+        isCancelByCustomer: false,
       };
 
-      // Save to localStorage
+      // Get existing orders from localStorage
       const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
-      localStorage.setItem("orders", JSON.stringify([...existingOrders, order]));
+
+      // Add new order
+      existingOrders.push(orderData);
+
+      // Save back to localStorage
+      localStorage.setItem("orders", JSON.stringify(existingOrders));
 
       notifySuccess("Order placed successfully!");
+
+      // Optionally, clear cart, prescriptionFiles, etc.
+      setPrescriptionFiles([]);
+      window.location.href = "/order-success"; // redirect page
     } catch (err) {
       console.error(err);
       notifyError("Order submission failed!");
@@ -148,7 +161,7 @@ const Checkout = () => {
           {/* Left Form */}
           <div className="md:w-full lg:w-3/5 flex flex-col">
             <form onSubmit={handleSubmit(handleFormSubmit)}>
-              {/* Default Shipping Address */}
+              {/* Default Shipping */}
               {hasShippingAddress && (
                 <div className="flex justify-end my-2">
                   <SwitchToggle
@@ -163,7 +176,7 @@ const Checkout = () => {
               {/* Personal Details */}
               <div className="form-group">
                 <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  01. {showingTranslateValue(storeCustomizationSetting?.checkout?.personal_details)}
+                  01. Personal Details
                 </h2>
                 <div className="grid grid-cols-6 gap-6">
                   <div className="col-span-6 sm:col-span-3">
@@ -175,7 +188,7 @@ const Checkout = () => {
                     <Error errorName={errors.lastName} />
                   </div>
                   <div className="col-span-6 sm:col-span-3">
-                    <InputArea register={register} label="Phone" name="phone" type="tel" placeholder="Enter your phone" />
+                    <InputArea register={register} label="Phone" name="phone" type="tel" placeholder="Enter phone number" />
                     <Error errorName={errors.phone} />
                   </div>
                 </div>
@@ -183,12 +196,10 @@ const Checkout = () => {
 
               {/* Shipping Details */}
               <div className="form-group mt-12">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  02. {showingTranslateValue(storeCustomizationSetting?.checkout?.shipping_details)}
-                </h2>
+                <h2 className="font-semibold text-base text-gray-700 pb-3">02. Shipping Details</h2>
                 <div className="grid grid-cols-6 gap-6 mb-8">
                   <div className="col-span-6">
-                    <InputArea register={register} label="Flat/House No" name="flat" type="text" placeholder="Eg: 402, Ground Floor" />
+                    <InputArea register={register} label="Flat/House Number" name="flat" type="text" placeholder="Eg: 402, Ground Floor" />
                     <Error errorName={errors.flat} />
                   </div>
                   <div className="col-span-6 sm:col-span-6 lg:col-span-2">
@@ -235,31 +246,14 @@ const Checkout = () => {
 
               {/* Payment Methods */}
               <div className="form-group mt-12">
-                <h2 className="font-semibold text-base text-gray-700 pb-3">
-                  03. {showingTranslateValue(storeCustomizationSetting?.checkout?.payment_method)}
-                </h2>
+                <h2 className="font-semibold text-base text-gray-700 pb-3">03. Payment Methods</h2>
                 <div className="grid sm:grid-cols-3 grid-cols-1 gap-4">
                   <div id="cod_input">
-                    <InputPayment
-                      setShowCard={setShowCard}
-                      register={register}
-                      name={t("common:cashOnDelivery")}
-                      value="Cash"
-                      disable={isCodDisable}
-                      Icon={IoWalletSharp}
-                      setActiveCharge={setActiveCharge}
-                    />
+                    <InputPayment setShowCard={setShowCard} register={register} name="Cash" value="Cash" disable={isCodDisable} Icon={IoWalletSharp} setActiveCharge={setActiveCharge} />
                     <Error errorMessage={errors.paymentMethod} />
                   </div>
                   <div>
-                    <InputPayment
-                      setShowCard={setShowCard}
-                      register={register}
-                      name="RazorPay"
-                      value="RazorPay"
-                      Icon={ImCreditCard}
-                      setActiveCharge={setActiveCharge}
-                    />
+                    <InputPayment setShowCard={setShowCard} register={register} name="RazorPay" value="RazorPay" Icon={ImCreditCard} setActiveCharge={setActiveCharge} />
                     <Error errorMessage={errors.paymentMethod} />
                   </div>
                 </div>
@@ -279,17 +273,7 @@ const Checkout = () => {
                     disabled={isEmpty || isCheckoutSubmit}
                     className="bg-emerald-500 hover:bg-emerald-600 border border-emerald-500 transition-all rounded py-3 text-center text-sm font-medium text-white flex justify-center w-full"
                   >
-                    {isCheckoutSubmit ? (
-                      <span className="flex justify-center text-center">
-                        <img src="/loader/spinner.gif" alt="Loading" width={20} height={10} />
-                        <span className="ml-2">Processing</span>
-                      </span>
-                    ) : (
-                      <span className="flex justify-center text-center">
-                        Confirm Order
-                        <span className="text-xl ml-2"><IoArrowForward /></span>
-                      </span>
-                    )}
+                    Confirm Order <span className="text-xl ml-2"><IoArrowForward /></span>
                   </button>
                 </div>
               </div>
