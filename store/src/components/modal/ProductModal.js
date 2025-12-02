@@ -124,28 +124,33 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
           {/* LEFT COLUMN */}
           <div className="bg-gray-50 p-6 flex flex-col justify-start items-start border-r border-gray-100">
               <div className="relative flex justify-center mb-4 sticky top-0">
-            <div className="absolute top-2 left-2 flex items-center gap-2">
-              {/* Discount Badge */}
-              {discount > 0 && (
-                <Discount product={product} discount={discount} modal />
-              )}
-          
-              {/* Logo on Right Side of Discount */}
-              <img
-                src={logo.src ? logo.src : logo}
-                alt="Brand Logo"
-                className="w-8 h-8 object-contain"
-              />
-            </div>
-          
-            <Image
-              src={img || product.image[0] || DUMMY_IMAGE}
-              width={320}
-              height={320}
-              alt="product"
-              className="rounded-lg object-contain"
-            />
-          </div>
+
+                      {/* Discount + Logo Wrapper */}
+                      <div className="absolute top-2 left-0 right-0 px-4 flex justify-between items-center w-full">
+                    
+                        {/* Discount Badge */}
+                        {discount > 0 && (
+                          <Discount product={product} discount={discount} modal />
+                        )}
+                    
+                        {/* Logo on Opposite Side */}
+                        <img
+                          src={logo.src ? logo.src : logo}
+                          alt="Brand Logo"
+                          className="w-10 h-10 object-contain"
+                        />
+                      </div>
+                    
+                      {/* Product Image */}
+                      <Image
+                        src={img || product.image[0] || DUMMY_IMAGE}
+                        width={320}
+                        height={320}
+                        alt="product"
+                        className="rounded-lg object-contain"
+                      />
+                    </div>
+
 
 
             <h2 className="text-xl font-semibold text-gray-800 text-left">
