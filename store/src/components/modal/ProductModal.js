@@ -126,12 +126,12 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
             <div className="relative flex justify-center mb-4 sticky top-0">
               
                 {/* Discount Left */}
-                <div className="absolute top-2 left-2 z-10">
-                  {discount > 0 && (
-                    <Discount product={product} discount={discount} modal />
-                  )}
-                </div>
-              
+               <div style={{ top: "14rem", left: "2rem" }} className="absolute z-10">
+                {discount > 0 && (
+                  <Discount product={product} discount={discount} modal />
+                )}
+              </div>
+
                 {/* Logo Right */}
                 <div className="absolute top-2 right-2 z-10">
                   <img
