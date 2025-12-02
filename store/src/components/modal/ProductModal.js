@@ -146,7 +146,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                   </div> */}
 
                 {/* Logo Right */}
-                <div className="absolute top-2 right-2 z-10">
+                <div className="absolute top-1 right-1 z-10 w-full">
                   <img
                     src={logo.src ? logo.src : logo}
                     alt="Brand Logo"
