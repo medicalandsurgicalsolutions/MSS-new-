@@ -18,6 +18,8 @@ import useUtilsFunction from "@hooks/useUtilsFunction";
 import { handleLogEvent } from "src/lib/analytics";
 import DUMMY_IMAGE from "@components/constants";
 import useGetSetting from "@hooks/useGetSetting";
+import logo from "../../../public/logo/logo-color.png";
+
 
 const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }) => {
   const router = useRouter();
@@ -123,6 +125,14 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
           <div className="bg-gray-50 p-6 flex flex-col justify-start items-start border-r border-gray-100">
             <div className="relative flex justify-center mb-4 sticky top-0">
               <Discount product={product} discount={discount} modal />
+               {/* Logo on Right Side of Discount */}
+                <img
+                  src={logo.src ? logo.src : logo}
+                  alt="Brand Logo"
+                  className="w-8 h-8 object-contain"
+                />
+              </div>
+
               <Image
                 src={img || product.image[0] || DUMMY_IMAGE}
                 width={320}
