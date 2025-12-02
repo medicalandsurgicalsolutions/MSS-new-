@@ -13,7 +13,7 @@ import ImageWithFallback from "@components/common/ImageWithFallBack";
 import DUMMY_IMAGE from "@components/constants";
 import { getUserSession } from "@lib/auth";
 import { handleLogEvent } from "src/lib/analytics";
-import logo from "../../../public/logo/logo-color.png";
+
 
 const ProductCard = ({ product, attributes }) => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -151,16 +151,7 @@ const ProductCard = ({ product, attributes }) => {
           }}
           className="relative flex justify-center cursor-pointer w-full h-44"
         >
-            {/* Logo in Top-Left */}
-            <div className="absolute top-1 left-1 z-20">
-              <Image
-               src={storeCustomizationSetting?.navbar?.logo || logo} alt="Company Logo"
-                width={30}
-                height={30}
-                alt="brand-logo"
-                className="rounded-md opacity-90"
-              />
-            </div>
+        
                {/* Product Image */}
           <div className="relative w-full h-full">
             {product.image[0] ? (
