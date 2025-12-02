@@ -132,7 +132,7 @@ const ProductModal = ({ modalOpen, setModalOpen, product, attributes, currency }
                 )}
               </div> */}
 
-              <div className="absolute top-2 left-2 z-10"> {discount > 0 && ( <Discount product={product} discount={discount} modal /> )} </div>
+              <div className="absolute top-2 left-2 z-10 w-full"> {discount > 0 && ( <Discount product={product} discount={discount} modal /> )} </div>
 
                 {/* Logo Right */}
                 <div className="absolute top-2 right-2 z-10">
