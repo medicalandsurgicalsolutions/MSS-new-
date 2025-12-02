@@ -13,6 +13,7 @@ import ImageWithFallback from "@components/common/ImageWithFallBack";
 import DUMMY_IMAGE from "@components/constants";
 import { getUserSession } from "@lib/auth";
 import { handleLogEvent } from "src/lib/analytics";
+import logo from "../../../public/logo/logo-color.png";
 
 
 const ProductCard = ({ product, attributes }) => {
@@ -149,9 +150,21 @@ const ProductCard = ({ product, attributes }) => {
               `opened ${showingTranslateValue(product?.title)} modal`
             );
           }}
-          className="relative flex justify-center cursor-pointer w-full h-44"
-        >
-        
+          className="relative flex justify-center cursor-pointer w-full h-44">
+
+          {/* 🔥 TOP-RIGHT LOGO */}
+            <div className="absolute top-2 right-2 z-40">
+              <Image
+                src={logo}
+                alt="logo"
+                width={40}
+                height={40}
+                className="rounded-full shadow-md"
+              />
+            </div>
+
+            
+            
                {/* Product Image */}
           <div className="relative w-full h-full">
             {product.image[0] ? (
