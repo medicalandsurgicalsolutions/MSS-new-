@@ -9,7 +9,7 @@ import {
   Table,
 } from "@windmill/react-ui";
 import Multiselect from "multiselect-react-dropdown";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MultiSelect } from "react-multi-select-component";
 import { Modal } from "react-responsive-modal";
@@ -17,10 +17,10 @@ import "react-responsive-modal/styles.css";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { FiX } from "react-icons/fi";
-import { FiXCircle } from "react-icons/fi";
 import ReactQuill from "react-quill";
 
 //internal import
+
 import Title from "@/components/form/others/Title";
 import Error from "@/components/form/others/Error";
 import InputArea from "@/components/form/input/InputArea";
@@ -41,6 +41,8 @@ import useAsync from "@/hooks/useAsync";
 import BrandServices from "@/services/BrandServices";
 import CustomSelect from "../form/selectOption/CustomSelect";
 
+//internal import
+
 const ProductDrawer = ({ id }) => {
   const { t } = useTranslation();
 
@@ -49,12 +51,12 @@ const ProductDrawer = ({ id }) => {
   const codList = [
     {
       _id: true,
-      name: "Yes",
+      name: "Yes"
     },
     {
       _id: false,
-      name: "No",
-    },
+      name: "No"
+    }
   ];
 
   const {
@@ -70,8 +72,8 @@ const ProductDrawer = ({ id }) => {
     attribue,
     setValues,
     variants,
-    imageUrl, // might be string or array from hook
-    setImageUrl, // hook setter (we'll keep it in sync)
+    imageUrl,
+    setImageUrl,
     handleSubmit,
     isCombination,
     variantTitle,
@@ -107,41 +109,6 @@ const ProductDrawer = ({ id }) => {
 
   const { currency, showingTranslateValue } = useUtilsFunction();
 
-  const [productImage, setProductImage] = useState(
-  Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []
-);
-
-// Sync when hook loads existing product (UPDATE)
-useEffect(() => {
-  setProductImage(Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []);
-}, [imageUrl]);
-
-// Sync back to hook (so update API receives correct image format)
-useEffect(() => {
-  if (setImageUrl) {
-    if (productImage.length === 0) {
-      setImageUrl("");
-    } else if (productImage.length === 1) {
-      setImageUrl(productImage[0]);
-    } else {
-      setImageUrl(productImage);
-    }
-  }
-}, [productImage]);
-
-    
-  // Helper to detect multiple
-  const hasMultiple = Array.isArray(productImage) && productImage.length > 1;
-
-  // Remove single image or an image from array
-  const handleRemoveImageLocal = (img) => {
-    if (Array.isArray(productImage)) {
-      setProductImage((prev = []) => prev.filter((i) => i !== img));
-    } else {
-      setProductImage([]);
-    }
-  };
-
   return (
     <>
       <Modal
@@ -156,10 +123,9 @@ useEffect(() => {
       >
         <div className="cursor-pointer">
           <UploaderThree
-            imageUrl={productImage}
-            setImageUrl={setProductImage}
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
             handleSelectImage={handleSelectImage}
-            product // pass boolean to enable multiple in UploaderThree as well
           />
         </div>
       </Modal>
@@ -214,42 +180,120 @@ useEffect(() => {
         <form onSubmit={handleSubmit(onSubmit)} className="block" id="block">
           {tapValue === "Basic Info" && (
             <div className="px-6 pt-8 flex-grow w-full h-full max-h-full pb-40 md:pb-32 lg:pb-32 xl:pb-32">
-              {/* ... other fields unchanged ... */}
+              {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductID")} />
+                <div className="col-span-8 sm:col-span-4">{productId}</div>
+              </div> */}
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductTitleName")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Input
+                    {...register(`title`, {
+                      required: "Title is required!",
+                    })}
+                    name="title"
+                    type="text"
+                    placeholder={t("ProductTitleName")}
+                    onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.title} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductBrandName")} />
+                <div className="col-span-8 sm:col-span-4">
+                  {/* <Input
+                    {...register(`brand`, {
+                      required: "Brand is required!",
+                    })}
+                    name="brand"
+                    type="text"
+                    placeholder={t("ProductBrandName")}
+                    onBlur={(e) => handleProductSlug(e.target.value)}
+                  /> */}
+                  <CustomSelect register={register} label="Select Brand" name="brand" objectList={brands} />
+                  <Error errorName={errors.brand} />
+                </div>
+              </div>
+              {/* <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductDescription")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Textarea
+                    className="border text-sm  block w-full bg-gray-100 border-gray-200"
+                    {...register("description", {
+                      required: false,
+                    })}
+                    name="description"
+                    placeholder={t("ProductDescription")}
+                    rows="4"
+                    spellCheck="false"
+                  />
+                  <Error errorName={errors.description} />
+                </div>
+              </div> */}
 
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                  <LabelArea label={t("ProductDescription")} />
+                  <div className="col-span-8 sm:col-span-4">
+                  {/* <div dangerouslySetInnerHTML={{ __html: description }} /> */}
+                    <ReactQuill
+                      theme="snow"
+                      className="bg-gray-100 border border-gray-200 text-sm"
+                      value={description} // Bind the editor's value to state
+                      onChange={(value) => setDescription(value)} // Update the state on change
+                      placeholder={t("ProductDescription")}
+                    />
+                    {errors.description && <Error errorName={errors.description} />}
+                  </div>
+              </div>
+
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Meta Title"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Textarea
+                    className="border text-sm  block w-full bg-gray-100 border-gray-200"
+                    {...register("metatitle", {
+                      required: false,
+                    })}
+                    name="metatitle"
+                    placeholder={"Meta Title"}
+                    rows="4"
+                    spellCheck="false"
+                  />
+                  <Error errorName={errors.metatitle} />
+                </div>
+              </div>
+
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"meta Description"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Textarea
+                    className="border text-sm  block w-full bg-gray-100 border-gray-200"
+                    {...register("metadescription", {
+                      required: false,
+                    })}
+                    name="metadescription"
+                    placeholder={"meta Description"}
+                    rows="4"
+                    spellCheck="false"
+                  />
+                  <Error errorName={errors.metadescription} />
+                </div>
+              </div>
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductImage")} />
                 <div className="col-span-8 sm:col-span-4">
-                  {/* pass product prop so dropzone allows multiple */}
-                <Uploader
-                    product        // allow multiple
+                  <Uploader
+                    product
                     folder="product"
-                    imageUrl={productImage}
-                    setImageUrl={setProductImage}
+                    imageUrl={imageUrl}
+                    setImageUrl={setImageUrl}
                   />
+                </div>
+              </div>
 
-                  {/* Preview area: supports both array and single string */}
-                <div className="flex flex-wrap mt-3 gap-2">
-                    {Array.isArray(productImage) &&
-                        productImage.map((img, index) => (
-                          <div key={index} className="relative inline-block">
-                            <img
-                              src={img}
-                              alt="product"
-                              className="h-24 w-24 object-cover border rounded"
-                            />
-                            <button
-                              type="button"
-                              className="absolute top-0 right-0 text-red-500 bg-white rounded-full p-1"
-                              onClick={() => setProductImage(prev => prev.filter(i => i !== img))}
-                            >
-                              <FiXCircle />
-                            </button>
-                          </div>
-                        ))}
-                    </div>
-
-
-              {/* Rest of your fields (SKU, HSN, price etc.) unchanged */}
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductSKU")} />
                 <div className="col-span-8 sm:col-span-4">
@@ -264,8 +308,233 @@ useEffect(() => {
                 </div>
               </div>
 
-              {/* ... keep the rest exactly as in your original file ... */}
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Product HSN"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputArea
+                    register={register}
+                    label={"Product HSN"}
+                    name="hsn"
+                    type="text"
+                    placeholder={"Product HSN"}
+                  />
+                  <Error errorName={errors.hsn} />
+                </div>
+              </div>
 
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductBarcode")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputArea
+                    register={register}
+                    label={t("ProductBarcode")}
+                    name="barcode"
+                    type="text"
+                    placeholder={t("ProductBarcode")}
+                  />
+                  <Error errorName={errors.barcode} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("Category")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <ParentCategory
+                    lang={language}
+                    selectedCategory={selectedCategory}
+                    setSelectedCategory={setSelectedCategory}
+                    setDefaultCategory={setDefaultCategory}
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("DefaultCategory")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Multiselect
+                    displayValue="name"
+                    isObject={true}
+                    singleSelect={true}
+                    ref={resetRefTwo}
+                    hidePlaceholder={true}
+                    onKeyPressFn={function noRefCheck() {}}
+                    onRemove={function noRefCheck() {}}
+                    onSearch={function noRefCheck() {}}
+                    onSelect={(v) => setDefaultCategory(v)}
+                    selectedValues={defaultCategory}
+                    options={selectedCategory}
+                    placeholder={"Default Category"}
+                  ></Multiselect>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label="Product Price" />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputValue
+                    // disabled={isCombination}
+                    register={register}
+                    maxValue={1000000}
+                    minValue={1}
+                    label="Original Price"
+                    name="originalPrice"
+                    type="number"
+                    placeholder="OriginalPrice"
+                    defaultValue={0.0}
+                    required={true}
+                    product
+                    currency={currency}
+                  />
+                  <Error errorName={errors.originalPrice} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("SalePrice")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputValue
+                    // disabled={isCombination}
+                    product
+                    register={register}
+                    minValue={0}
+                    defaultValue={0.0}
+                    required={true}
+                    label="Sale price"
+                    name="price"
+                    type="number"
+                    placeholder="Sale price"
+                    currency={currency}
+                  />
+                  <Error errorName={errors.price} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Delivery Charge"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputValue
+                    // disabled={isCombination}
+                    register={register}
+                    minValue={0}
+                    defaultValue={0}
+                    required={true}
+                    label="deliveryCharge"
+                    name="deliveryCharge"
+                    type="number"
+                    placeholder="Delivery Charge"
+                  />
+                  <Error errorName={errors.deliveryCharge} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"GST %"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputValue
+                    disabled={isCombination}
+                    register={register}
+                    minValue={0}
+                    defaultValue={0.0}
+                    required={true}
+                    label="Gst%"
+                    name="gst"
+                    type="number"
+                    placeholder="Gst%"
+                  />
+                  <Error errorName={errors.gst} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6 relative">
+                <LabelArea label={t("ProductQuantity")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <InputValueFive
+                    required={true}
+                    disabled={isCombination}
+                    register={register}
+                    minValue={0}
+                    defaultValue={0}
+                    label="Quantity"
+                    name="stock"
+                    type="number"
+                    placeholder={t("ProductQuantity")}
+                  />
+                  <Error errorName={errors.stock} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={t("ProductSlug")} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Input
+                    {...register(`slug`, {
+                      required: "slug is required!",
+                    })}
+                    className=" mr-2 p-2"
+                    name="slug"
+                    type="text"
+                    defaultValue={slug}
+                    placeholder={t("ProductSlug")}
+                    // onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.slug} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"productRefrenceNo"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Input
+                    {...register(`productRefrenceNo`, {
+                      required: "Product Refrence No is required!",
+                    })}
+                    className=" mr-2 p-2"
+                    name="productRefrenceNo"
+                    type="text"
+                    placeholder={"Product Refrence No"}
+                    // onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.productRefrenceNo} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"MOQ"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Input
+                    {...register(`moq`, {
+                      required: "MOQ is required!",
+                    })}
+                    className=" mr-2 p-2"
+                    name="moq"
+                    type="text"
+                    placeholder={"MOQ"}
+                    // onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.moq} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"Packing"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <Input
+                    {...register(`packing`, {
+                      required: "Packing is required!",
+                    })}
+                    className=" mr-2 p-2"
+                    name="packing"
+                    type="text"
+                    placeholder={"Packing"}
+                    // onBlur={(e) => handleProductSlug(e.target.value)}
+                  />
+                  <Error errorName={errors.packing} />
+                </div>
+              </div>
+              <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
+                <LabelArea label={"COD Avaialble"} />
+                <div className="col-span-8 sm:col-span-4">
+                  <CustomSelect register={register} label="COD Available" name="isCodAvaialble" objectList={codList} />
+                  <Error errorName={errors.isCodAvaialble} />
+                </div>
+              </div>
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductTag")} />
                 <div className="col-span-8 sm:col-span-4">
@@ -279,14 +548,20 @@ useEffect(() => {
             </div>
           )}
 
-          {/* Combination tab unchanged - keep your original content */}
           {tapValue === "Combination" &&
             isCombination &&
             (attribue.length < 1 ? (
-              <div className="bg-teal-100 border border-teal-600 rounded-md text-teal-900 px-4 py-3 m-4" role="alert">
+              <div
+                className="bg-teal-100 border border-teal-600 rounded-md text-teal-900 px-4 py-3 m-4"
+                role="alert"
+              >
                 <div className="flex">
                   <div className="py-1">
-                    <svg className="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <svg
+                      className="fill-current h-6 w-6 text-teal-500 mr-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
                       <path d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
                     </svg>
                   </div>
@@ -303,8 +578,14 @@ useEffect(() => {
               </div>
             ) : (
               <div className="p-6">
+                {/* <h4 className="mb-4 font-semibold text-lg">Variants</h4> */}
                 <div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 gap-3 md:gap-3 xl:gap-3 lg:gap-2 mb-3">
-                  <MultiSelect options={attTitle} value={attributes} onChange={(v) => handleAddAtt(v)} labelledBy="Select" />
+                  <MultiSelect
+                    options={attTitle}
+                    value={attributes}
+                    onChange={(v) => handleAddAtt(v)}
+                    labelledBy="Select"
+                  />
 
                   {attributes?.map((attribute, i) => (
                     <div key={attribute._id}>
@@ -313,14 +594,24 @@ useEffect(() => {
                         {showingTranslateValue(attribute?.title)}
                       </div>
 
-                      <AttributeOptionTwo id={i + 1} values={values} lang={language} attributes={attribute} setValues={setValues} />
+                      <AttributeOptionTwo
+                        id={i + 1}
+                        values={values}
+                        lang={language}
+                        attributes={attribute}
+                        setValues={setValues}
+                      />
                     </div>
                   ))}
                 </div>
 
                 <div className="flex justify-end mb-6">
                   {attributes?.length > 0 && (
-                    <Button onClick={handleGenerateCombination} type="button" className="mx-2">
+                    <Button
+                      onClick={handleGenerateCombination}
+                      type="button"
+                      className="mx-2"
+                    >
                       <span className="text-xs">{t("GenerateVariants")}</span>
                     </Button>
                   )}
@@ -335,49 +626,62 @@ useEffect(() => {
             ))}
 
           {isCombination ? (
-            <DrawerButton id={id} save title="Product" isSubmitting={isSubmitting} handleProductTap={handleProductTap} />
+            <DrawerButton
+              id={id}
+              save
+              title="Product"
+              isSubmitting={isSubmitting}
+              handleProductTap={handleProductTap}
+            />
           ) : (
             <DrawerButton id={id} title="Product" isSubmitting={isSubmitting} />
           )}
 
-          {tapValue === "Combination" && <DrawerButton id={id} title="Product" isSubmitting={isSubmitting} />}
+          {tapValue === "Combination" && (
+            <DrawerButton id={id} title="Product" isSubmitting={isSubmitting} />
+          )}
         </form>
 
-        {tapValue === "Combination" && isCombination && variantTitle.length > 0 && (
-          <div className="px-6 overflow-x-auto">
-            {isCombination && (
-              <TableContainer className="md:mb-32 mb-40 rounded-b-lg">
-                <Table>
-                  <TableHeader>
-                    <tr>
-                      <TableCell>{t("Image")}</TableCell>
-                      <TableCell>{t("Combination")}</TableCell>
-                      <TableCell>{t("Sku")}</TableCell>
-                      <TableCell>{t("Barcode")}</TableCell>
-                      <TableCell>{t("Price")}</TableCell>
-                      <TableCell>{t("SalePrice")}</TableCell>
-                      <TableCell>{t("QuantityTbl")}</TableCell>
-                      <TableCell className="text-right">{t("Action")}</TableCell>
-                    </tr>
-                  </TableHeader>
+        {tapValue === "Combination" &&
+          isCombination &&
+          variantTitle.length > 0 && (
+            <div className="px-6 overflow-x-auto">
+              {/* {variants?.length >= 0 && ( */}
+              {isCombination && (
+                <TableContainer className="md:mb-32 mb-40 rounded-b-lg">
+                  <Table>
+                    <TableHeader>
+                      <tr>
+                        <TableCell>{t("Image")}</TableCell>
+                        <TableCell>{t("Combination")}</TableCell>
+                        <TableCell>{t("Sku")}</TableCell>
+                        <TableCell>{t("Barcode")}</TableCell>
+                        <TableCell>{t("Price")}</TableCell>
+                        <TableCell>{t("SalePrice")}</TableCell>
+                        <TableCell>{t("QuantityTbl")}</TableCell>
+                        <TableCell className="text-right">
+                          {t("Action")}
+                        </TableCell>
+                      </tr>
+                    </TableHeader>
 
-                  <AttributeListTable
-                    lang={language}
-                    variants={variants}
-                    setTapValue={setTapValue}
-                    variantTitle={variantTitle}
-                    isBulkUpdate={isBulkUpdate}
-                    handleSkuBarcode={handleSkuBarcode}
-                    handleEditVariant={handleEditVariant}
-                    handleRemoveVariant={handleRemoveVariant}
-                    handleQuantityPrice={handleQuantityPrice}
-                    handleSelectInlineImage={handleSelectInlineImage}
-                  />
-                </Table>
-              </TableContainer>
-            )}
-          </div>
-        )}
+                    <AttributeListTable
+                      lang={language}
+                      variants={variants}
+                      setTapValue={setTapValue}
+                      variantTitle={variantTitle}
+                      isBulkUpdate={isBulkUpdate}
+                      handleSkuBarcode={handleSkuBarcode}
+                      handleEditVariant={handleEditVariant}
+                      handleRemoveVariant={handleRemoveVariant}
+                      handleQuantityPrice={handleQuantityPrice}
+                      handleSelectInlineImage={handleSelectInlineImage}
+                    />
+                  </Table>
+                </TableContainer>
+              )}
+            </div>
+          )}
       </Scrollbars>
     </>
   );
