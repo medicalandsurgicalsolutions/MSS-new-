@@ -286,16 +286,14 @@ const ProductDrawer = ({ id }) => {
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("ProductImage")} />
                 <div className="col-span-8 sm:col-span-4">
-                  <div className="col-span-8 sm:col-span-4">
-                          <Uploader
-                            product
-                            folder="product"
-                            imageUrl={ProductImage}
-                            setImageUrl={setProductImage} 
-                            multiple
-                          />
-
-                </div>
+                   <Uploader
+                      product
+                      folder="product"
+                      imageUrl={ProductImage}
+                      setImageUrl={setProductImage}
+                      multiple   
+                    />
+              </div>
               </div>
 
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
