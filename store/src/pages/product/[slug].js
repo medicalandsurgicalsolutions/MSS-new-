@@ -397,7 +397,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
   const { t } = useTranslation();
 
   // category name slug
-  const category_name = showingTranslateValue(product?.category?.name)
+ const category_name = (showingTranslateValue(product?.category?.name) || "")
     .toLowerCase()
     .replace(/[^A-Z0-9]+/gi, "-");
 
