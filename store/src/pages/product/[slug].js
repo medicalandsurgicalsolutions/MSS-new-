@@ -602,30 +602,32 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                         </div>
 
                         {/* <p className="pb-0 mb-0 text-cyan-700 font-bold text-sm">{`HSN ${product?.hsn}`}</p> */}
-                       <div className="discount my-4">
-                        <div className="p-y">
-                          <h2 className="font-semibold text-base mb-2">
-                            Additional Offers
-                          </h2>
-                          <div className="border-dashed border-2 bg-gray-50 border-green-400 p-4 rounded-md">
-                            {storeCustomizationSetting?.home?.discount_coupon_code?.length > 0 ? (
-                              <ul className="space-y-2">
-                                {storeCustomizationSetting.home.discount_coupon_code.map((offer, index) => (
-                                  <li key={index} className="flex items-center space-x-2">
-                                    <FaTags className="text-red-600 mt-1" size={20} />
-                                    <p className="text-green-600 font-medium text-sm">
-                                      {freeHighliter(offer)}
-                                    </p>
-                                  </li>
-                                ))}
-                              </ul>
-                            ) : (
-                              // Show message **outside of <ul>**
-                              <p className="text-gray-500 font-medium text-sm">No discount offers available</p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
+                      <div className="px-2">
+                           <div className="discount my-4">
+                                    <div className="p-y">
+                                      <h2 className="font-semibold text-base mb-2">
+                                        Additional Offers
+                                      </h2>
+                                      <div className="border-dashed border-2 bg-gray-50 border-green-400 p-4 rounded-md">
+                                        {storeCustomizationSetting?.home?.discount_coupon_code?.length > 0 ? (
+                                          <ul className="space-y-2">
+                                            {storeCustomizationSetting.home.discount_coupon_code.map((offer, index) => (
+                                              <li key={index} className="flex items-center space-x-2">
+                                                <FaTags className="text-red-600 mt-1" size={20} />
+                                                <p className="text-green-600 font-medium text-sm">
+                                                  {freeHighliter(offer)}
+                                                </p>
+                                              </li>
+                                            ))}
+                                          </ul>
+                                        ) : (
+                                          <p className="text-gray-500 font-medium text-sm">
+                                            No discount offers available
+                                          </p>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
 
 
                           <div className="payment_methods my-4">
