@@ -609,6 +609,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                 Additional Offers
                               </h2>
                               <div className="border-dashed border-2 bg-gray-50 border-green-400 p-4 rounded-md ">
+                           {console.log("Discount Offers:", storeCustomizationSetting?.home?.discount_coupon_code)}
                                 <ul className="space-y-2">
                                   {storeCustomizationSetting?.home?.discount_coupon_code.length > 0 &&
                                     storeCustomizationSetting?.home?.discount_coupon_code.map((offer, index) => (
