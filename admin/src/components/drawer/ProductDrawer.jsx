@@ -107,38 +107,29 @@ const ProductDrawer = ({ id }) => {
 
   const { currency, showingTranslateValue } = useUtilsFunction();
 
-  /**
-   * Local state `productImage` (array) that mirrors `imageUrl` from hook.
-   * - if hook returns string -> convert to [string]
-   * - if hook returns array -> use it
-   * - syncing ensures we don't have to change the hook.
-   */
   const [productImage, setProductImage] = useState(
-    Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []
-  );
+  Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []
+);
 
-  // When hook provides/updates imageUrl (e.g., when loading product), update local array
-  useEffect(() => {
-    setProductImage(Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []);
-  }, [imageUrl]);
+// Sync when hook loads existing product (UPDATE)
+useEffect(() => {
+  setProductImage(Array.isArray(imageUrl) ? imageUrl : imageUrl ? [imageUrl] : []);
+}, [imageUrl]);
 
-  // When local productImage changes, push back to hook's setter so save uses correct value.
-  // Keeps backward compatibility: if only single image, we still send string; if multiple, send array.
-  useEffect(() => {
-    if (setImageUrl) {
-      if (productImage.length === 0) {
-        setImageUrl("");
-      } else if (productImage.length === 1) {
-        // if your backend/hook expects a single string, this will match prior behavior
-        setImageUrl(productImage[0]);
-      } else {
-        // multiple images
-        setImageUrl(productImage);
-      }
+// Sync back to hook (so update API receives correct image format)
+useEffect(() => {
+  if (setImageUrl) {
+    if (productImage.length === 0) {
+      setImageUrl("");
+    } else if (productImage.length === 1) {
+      setImageUrl(productImage[0]);
+    } else {
+      setImageUrl(productImage);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productImage]);
+  }
+}, [productImage]);
 
+    
   // Helper to detect multiple
   const hasMultiple = Array.isArray(productImage) && productImage.length > 1;
 
@@ -229,36 +220,34 @@ const ProductDrawer = ({ id }) => {
                 <LabelArea label={t("ProductImage")} />
                 <div className="col-span-8 sm:col-span-4">
                   {/* pass product prop so dropzone allows multiple */}
-                  <Uploader
-                    product
+                <Uploader
+                    product        // allow multiple
                     folder="product"
                     imageUrl={productImage}
                     setImageUrl={setProductImage}
                   />
 
                   {/* Preview area: supports both array and single string */}
-                  <div className="flex flex-wrap mt-3 gap-2">
-                    {Array.isArray(productImage) && productImage.length > 0 ? (
-                      productImage.map((img, i) => (
-                        <div key={i} className="relative inline-block">
-                          <img
-                            src={img}
-                            alt={`product-${i}`}
-                            className="h-24 w-24 object-cover border rounded"
-                          />
-                          <button
-                            type="button"
-                            className="absolute top-0 right-0 text-red-500 bg-white rounded-full p-1"
-                            onClick={() => handleRemoveImageLocal(img)}
-                          >
-                            <FiXCircle />
-                          </button>
-                        </div>
-                      ))
-                    ) : null}
-                  </div>
-                </div>
-              </div>
+                <div className="flex flex-wrap mt-3 gap-2">
+                    {Array.isArray(productImage) &&
+                        productImage.map((img, index) => (
+                          <div key={index} className="relative inline-block">
+                            <img
+                              src={img}
+                              alt="product"
+                              className="h-24 w-24 object-cover border rounded"
+                            />
+                            <button
+                              type="button"
+                              className="absolute top-0 right-0 text-red-500 bg-white rounded-full p-1"
+                              onClick={() => setProductImage(prev => prev.filter(i => i !== img))}
+                            >
+                              <FiXCircle />
+                            </button>
+                          </div>
+                        ))}
+                    </div>
+
 
               {/* Rest of your fields (SKU, HSN, price etc.) unchanged */}
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
