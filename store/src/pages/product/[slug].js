@@ -625,7 +625,7 @@ const ProductScreen = ({ product, ratings, attributes, relatedProducts }) => {
                                   </ul>
                                </div>
                           </div>
-                        </div>
+              
 
                           <div className="payment_methods my-4">
                             <div className="space-y-4 my-4 ">
