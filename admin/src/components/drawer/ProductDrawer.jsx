@@ -351,11 +351,11 @@ const ProductDrawer = ({ id }) => {
               <div className="grid grid-cols-6 gap-3 md:gap-5 xl:gap-6 lg:gap-6 mb-6">
                 <LabelArea label={t("DefaultCategory")} />
                 <div className="col-span-8 sm:col-span-4">
-                <Multiselect
+                  <Multiselect
                     displayValue="name"
                     isObject={true}
                     singleSelect={true}
-                    innerRef={resetRefTwo}   
+                    ref={resetRefTwo}
                     hidePlaceholder={true}
                     onKeyPressFn={function noRefCheck() {}}
                     onRemove={function noRefCheck() {}}
