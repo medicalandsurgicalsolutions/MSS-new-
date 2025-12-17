@@ -211,7 +211,20 @@ const ProductDrawer = ({ id }) => {
                     placeholder={t("ProductBrandName")}
                     onBlur={(e) => handleProductSlug(e.target.value)}
                   /> */}
-                  <CustomSelect register={register} label="Select Brand" name="brand" objectList={brands} />
+  <CustomSelect
+  register={register}
+  label={t("ProductBrandName")}
+  name="brand"
+  objectList={brands?.map((brand) => ({
+    value: brand._id,  
+    label: brand.name, 
+  })) || []}      
+  defaultValue={
+    values?.brand
+      ? { value: values.brand._id, label: values.brand.name }
+      : null
+  }
+/>
                   <Error errorName={errors.brand} />
                 </div>
               </div>
