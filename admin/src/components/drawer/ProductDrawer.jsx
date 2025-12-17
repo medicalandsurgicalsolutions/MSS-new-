@@ -177,12 +177,14 @@ const ProductDrawer = ({ id }) => {
 
               {/* BRAND */}
               <LabelArea label={t("ProductBrandName")} />
-              <CustomSelect
-                register={register}
-                label="Select Brand"
-                name="brand"
-                objectList={brands || []}   {/* ✅ FIX */}
-              />
+              {/* Safe fallback for async brands */}
+                <CustomSelect
+                  register={register}
+                  label="Select Brand"
+                  name="brand"
+                  objectList={brands || []}
+                />
+
               <Error errorName={errors.brand} />
 
               {/* DESCRIPTION */}
