@@ -355,7 +355,7 @@ const ProductDrawer = ({ id }) => {
                     displayValue="name"
                     isObject={true}
                     singleSelect={true}
-                    ref={resetRefTwo}
+                  
                     hidePlaceholder={true}
                     onKeyPressFn={function noRefCheck() {}}
                     onRemove={function noRefCheck() {}}
