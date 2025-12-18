@@ -27,11 +27,13 @@ const CustomSelect = ({
         {label}
       </option>
 
-      {objectList.map((item) => (
-        <option key={item?._id} value={item?._id}>
-          {showingTranslateValue(item?.name || item?.title) || item?.name}
-        </option>
-      ))}
+    {objectList
+  ?.filter((item) => item && item._id) // ✅ FIX
+  .map((item) => (
+    <option key={item._id} value={item._id}>
+      {showingTranslateValue(item?.name || item?.title) || item?.name}
+    </option>
+  ))}
     </Select>
   );
 };
