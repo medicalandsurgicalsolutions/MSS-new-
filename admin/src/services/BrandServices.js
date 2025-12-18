@@ -2,7 +2,7 @@ import requests from "./httpService";
 
 const BrandServices = {
   getAllBrands: async () => {
-    return requests.get("/brand");
+    return requests.get("/brands");
   },
 
   getBrandById: async (id) => {
