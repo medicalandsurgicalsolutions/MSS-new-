@@ -48,15 +48,14 @@ const ProductDrawer = ({ id }) => {
 
 const { data: brandData } = useAsync(BrandServices.getAllBrands);
 
+  console.log("RAW brandData 👉", brandData);
 const brands = Array.isArray(brandData)
   ? brandData
   : Array.isArray(brandData?.brands)
   ? brandData.brands
   : [];
 
-console.log("brandData 👉", brandData);
-console.log("brands 👉", brands);
-console.log("product brand 👉", values?.brand);
+  console.log("CLEAN brands 👉", brands);
   
   const codList = [
     {
