@@ -211,7 +211,13 @@ const ProductDrawer = ({ id }) => {
                     placeholder={t("ProductBrandName")}
                     onBlur={(e) => handleProductSlug(e.target.value)}
                   /> */}
-                  <CustomSelect register={register} label="Select Brand" name="brand" objectList={brands} />
+                 <CustomSelect
+  register={register}
+  label="Select Brand"
+  name="brand"
+  objectList={brands}
+  setData={(val) => setValues(prev => ({ ...prev, brand: val }))}
+ />
                   <Error errorName={errors.brand} />
                 </div>
               </div>
