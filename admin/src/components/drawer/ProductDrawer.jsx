@@ -46,8 +46,14 @@ import CustomSelect from "../form/selectOption/CustomSelect";
 const ProductDrawer = ({ id }) => {
   const { t } = useTranslation();
 
-  const { data: brands } = useAsync(BrandServices.getAllBrands);
+const { data: brandData } = useAsync(BrandServices.getAllBrands);
 
+const brands = Array.isArray(brandData)
+  ? brandData
+  : Array.isArray(brandData?.brands)
+  ? brandData.brands
+  : [];
+  
   const codList = [
     {
       _id: true,
@@ -211,13 +217,12 @@ const ProductDrawer = ({ id }) => {
                     placeholder={t("ProductBrandName")}
                     onBlur={(e) => handleProductSlug(e.target.value)}
                   /> */}
-                 <CustomSelect
-  register={register}
-  label="Select Brand"
-  name="brand"
-  objectList={brands}
-  setData={(val) => setValues(prev => ({ ...prev, brand: val }))}
- />
+                    <CustomSelect
+                        register={register}
+                          label="Select Brand"
+                          name="brand"
+                          objectList={brands}
+                        />
                   <Error errorName={errors.brand} />
                 </div>
               </div>
