@@ -1,5 +1,4 @@
 import ReactTagInput from "@pathofdev/react-tag-input";
-import React, { useState } from "react";
 import {
   Button,
   Input,
@@ -10,6 +9,7 @@ import {
   Table,
 } from "@windmill/react-ui";
 import Multiselect from "multiselect-react-dropdown";
+import React, { useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MultiSelect } from "react-multi-select-component";
 import { Modal } from "react-responsive-modal";
@@ -46,17 +46,8 @@ import CustomSelect from "../form/selectOption/CustomSelect";
 const ProductDrawer = ({ id }) => {
   const { t } = useTranslation();
 
-const { data: brandData } = useAsync(BrandServices.getAllBrands);
+  const { data: brands } = useAsync(BrandServices.getAllBrands);
 
-  console.log("RAW brandData 👉", brandData);
-const brands = Array.isArray(brandData)
-  ? brandData
-  : Array.isArray(brandData?.brands)
-  ? brandData.brands
-  : [];
-
-  console.log("CLEAN brands 👉", brands);
-  
   const codList = [
     {
       _id: true,
@@ -80,7 +71,6 @@ const brands = Array.isArray(brandData)
     openModal,
     attribue,
     setValues,
-    setValue,
     variants,
     imageUrl,
     setImageUrl,
@@ -221,14 +211,7 @@ const brands = Array.isArray(brandData)
                     placeholder={t("ProductBrandName")}
                     onBlur={(e) => handleProductSlug(e.target.value)}
                   /> */}
-                   <CustomSelect
-                      register={register}
-                      setValue={setValue}
-                      defaultValue={values?.brand?._id || values?.brand || ""}
-                      label="Select Brand"
-                      name="brand"
-                      objectList={brands}
-                    />
+                  <CustomSelect register={register} label="Select Brand" name="brand" objectList={brands} />
                   <Error errorName={errors.brand} />
                 </div>
               </div>
