@@ -11,21 +11,20 @@ const CustomSelect = ({ setData, register, name, label, objectList = [] }) => {
       {...register(name, {
         required: `${label} is required!`,
       })}
-      onChange={(e) => {
-        if (setData) {
-          setData(e.target.value);
-        }
-      }}
+      onChange={(e) => setData && setData(e.target.value)}
     >
       <option value="" hidden>
         {label}
       </option>
 
-      {objectList?.map((item) => (
-        <option key={item?._id} value={item?._id}>
-          {showingTranslateValue(item?.name || item?.title) || item?.name}
-        </option>
-      ))}
+      {Array.isArray(objectList) &&
+        objectList
+          .filter((item) => item && item._id)  
+          .map((item) => (
+            <option key={item._id} value={item._id}>
+              {showingTranslateValue(item?.name || item?.title) || item?.name}
+            </option>
+          ))}
     </Select>
   );
 };
