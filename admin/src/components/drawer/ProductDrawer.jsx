@@ -53,6 +53,10 @@ const brands = Array.isArray(brandData)
   : Array.isArray(brandData?.brands)
   ? brandData.brands
   : [];
+
+console.log("brandData 👉", brandData);
+console.log("brands 👉", brands);
+console.log("product brand 👉", values?.brand);
   
   const codList = [
     {
@@ -77,6 +81,7 @@ const brands = Array.isArray(brandData)
     openModal,
     attribue,
     setValues,
+    setValue,
     variants,
     imageUrl,
     setImageUrl,
@@ -217,12 +222,14 @@ const brands = Array.isArray(brandData)
                     placeholder={t("ProductBrandName")}
                     onBlur={(e) => handleProductSlug(e.target.value)}
                   /> */}
-                    <CustomSelect
-                        register={register}
-                          label="Select Brand"
-                          name="brand"
-                          objectList={brands}
-                        />
+                   <CustomSelect
+                      register={register}
+                      setValue={setValue}
+                      defaultValue={values?.brand?._id || values?.brand || ""}
+                      label="Select Brand"
+                      name="brand"
+                      objectList={brands}
+                    />
                   <Error errorName={errors.brand} />
                 </div>
               </div>
