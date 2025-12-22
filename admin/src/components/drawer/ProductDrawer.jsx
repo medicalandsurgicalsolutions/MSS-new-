@@ -9,7 +9,7 @@ import {
   Table,
 } from "@windmill/react-ui";
 import Multiselect from "multiselect-react-dropdown";
-import React, { useState } from "react";
+import React from "react";
 import { Scrollbars } from "react-custom-scrollbars-2";
 import { MultiSelect } from "react-multi-select-component";
 import { Modal } from "react-responsive-modal";
