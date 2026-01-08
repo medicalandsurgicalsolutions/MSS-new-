@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderWidth: 0.5,
     padding: 0,
-    textAlign: "left",
   },
   tableRow: {
     flexDirection: "row",
@@ -156,7 +155,7 @@ const InvoiceForDownload = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-
+        
         {/* HEADER */}
         <View style={styles.invoiceFirst}>
           <View>
@@ -205,7 +204,7 @@ const InvoiceForDownload = ({
           </View>
         </View>
 
-        {/* ITEMS */}
+        {/* ITEMS TABLE */}
         <View style={styles.table}>
           <View style={styles.tableHeaderRow}>
             <View style={styles.tableCol}><Text style={styles.cell}>HSN</Text></View>
@@ -228,9 +227,8 @@ const InvoiceForDownload = ({
           ))}
         </View>
 
-        {/* TOTAL DETAILS - FINAL */}
+        {/* TOTAL ONLY */}
         <View style={styles.invoiceThird}>
-          
           <View style={{ width: "50%" }}>
             <Text style={styles.title}>{t("InvoicepaymentMethod")}</Text>
             <Text style={{ fontSize: 10, color: "#0e9f6e" }}>
@@ -245,10 +243,9 @@ const InvoiceForDownload = ({
               {getNumberTwo(data?.total)}
             </Text>
           </View>
-
         </View>
 
-        {/* AMOUNT IN WORDS */}
+        {/* IN WORDS */}
         <View style={{ width: "95%", marginTop: 5 }}>
           <Text style={{ textAlign: "right", fontSize: 10 }}>
             {capitalizeFirstLetter(numberToWords(getNumberTwo(data.total)))} Only
