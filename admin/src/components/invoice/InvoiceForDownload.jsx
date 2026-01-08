@@ -242,7 +242,7 @@ const InvoiceForDownload = ({
             <Text style={{ fontSize: 10, color: "#0e9f6e" }}>{data?.paymentMethod}</Text>
           </View>
 
-          <View style={{ width: "25%" }}>
+          {/* <View style={{ width: "25%" }}>
             <Text style={styles.title}>Sub Total</Text>
             <Text style={styles.infoCost}>{currency}{getNumberTwo(data?.subTotal)}</Text>
           </View>
@@ -255,7 +255,7 @@ const InvoiceForDownload = ({
           <View style={{ width: "25%" }}>
             <Text style={styles.title}>{t("discount")}</Text>
             <Text style={styles.infoCost}>{currency}{getNumberTwo(data?.discount)}</Text>
-          </View>
+          </View> */}
 
           <View style={{ width: "25%" }}>
             <Text style={styles.title}>Total</Text>
