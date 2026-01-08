@@ -669,7 +669,20 @@ const InvoiceForDownload = ({
                 {data?.paymentMethod}
               </Text>
             </View>
-            <View style={{ width: "25%", alignItems: "baseline" }}>
+             <View style={{ width: "25%", alignItems: "baseline" }}>
+    <Text style={styles.title}>
+      <Text style={{ width: "45%", textAlign: "right", float: "left" }}>
+        Total
+      </Text>
+    </Text>
+    <Text style={styles.title}>
+      <Text style={styles.totalAmount}>
+        {currency}
+        {getNumberTwo(data?.total)}
+      </Text>
+    </Text>
+  </View>
+            {/* <View style={{ width: "25%", alignItems: "baseline" }}>
               <Text style={styles.title}>
                 <Text style={{ width: "25%", alignItems: "baseline" }}>
                   Sub Total
@@ -684,9 +697,9 @@ const InvoiceForDownload = ({
                   </Text>
                 </Text>
               </Text>
-            </View>
+            </View> */}
 
-            <View style={{ width: "25%", alignItems: "baseline" }}>
+            {/* <View style={{ width: "25%", alignItems: "baseline" }}>
               <Text style={styles.title}>
                 <Text style={{ textAlign: "left" }}>{t("ShippingCost")}</Text>
               </Text>
@@ -729,7 +742,9 @@ const InvoiceForDownload = ({
                 </Text>
               </Text>
             </View>
-          </View>
+          </View> */}
+
+            
           <View style={{ width: "95%", alignItems: "baseline" }}>
               <Text style={styles.title}>
                 <Text style={{ textAlign: "right" }}>
