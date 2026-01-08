@@ -669,30 +669,74 @@ const InvoiceForDownload = ({
                 {data?.paymentMethod}
               </Text>
             </View>
+            <View style={{ width: "25%", alignItems: "baseline" }}>
+              <Text style={styles.title}>
+                <Text style={{ width: "25%", alignItems: "baseline" }}>
+                  Sub Total
+                </Text>
+              </Text>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "left" }}>
+                  <Text style={styles.infoCost}>
+                    {currency}
 
-            {/* TOTAL ONLY */}
-        <View style={styles.invoiceThird}>
-          <View style={{ width: "25%" }}>
-            <Text style={styles.title}>{t("InvoicepaymentMethod")}</Text>
-            <Text style={{ fontSize: 10, color: "#0e9f6e" }}>{data?.paymentMethod}</Text>
+                    {getNumberTwo(data?.subTotal)}
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+
+            <View style={{ width: "25%", alignItems: "baseline" }}>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "left" }}>{t("ShippingCost")}</Text>
+              </Text>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "left" }}>
+                  <Text style={styles.infoCost}>
+                    {currency}
+                    {getNumberTwo(data?.shippingCost)}
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            <View style={{ width: "25%", alignItems: "baseline" }}>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "left" }}>{t("discount")} </Text>
+              </Text>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "left" }}>
+                  <Text style={styles.infoCost}>
+                    {" "}
+                    {currency}
+                    {getNumberTwo(data?.discount)}
+                  </Text>
+                </Text>
+              </Text>
+            </View>
+            <View style={{ width: "25%", alignItems: "baseline" }}>
+              <Text style={styles.title}>
+                <Text
+                  style={{ width: "45%", textAlign: "right", float: "left" }}
+                >
+                  Total
+                </Text>
+              </Text>
+              <Text style={styles.title}>
+                <Text style={styles.totalAmount}>
+                  {currency}
+
+                  {getNumberTwo(data?.total)}
+                </Text>
+              </Text>
+            </View>
           </View>
-
-          <View style={{ width: "25%" }}>
-            <Text style={styles.title}>Total</Text>
-            <Text style={styles.totalAmount}>
-              {currency}{getNumberTwo(finalTotal)}
-            </Text>
-          </View>
-        </View>
-            
-
-            
-          {/* AMOUNT IN WORDS */}
-        <View style={{ width: "95%", marginTop: 5 }}>
-          <Text style={{ textAlign: "right", fontSize: 10 }}>
-            {capitalizeFirstLetter(numberToWords(getNumberTwo(finalTotal)))} Only
-          </Text>
-        </View>
+          <View style={{ width: "95%", alignItems: "baseline" }}>
+              <Text style={styles.title}>
+                <Text style={{ textAlign: "right" }}>
+                  {capitalizeFirstLetter(numberToWords(getNumberTwo(data.total)))}{" Only"}
+                </Text>
+              </Text>
+            </View>
         </Page>
       </Document>
     </>
