@@ -742,7 +742,8 @@ const InvoiceForDownload = ({
                 </Text>
               </Text>
             </View>
-          </View> */}
+          </View>
+          */}
 
             
           <View style={{ width: "95%", alignItems: "baseline" }}>
