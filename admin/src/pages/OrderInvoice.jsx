@@ -38,6 +38,7 @@ const OrderInvoice = () => {
   const {
     currency,
     globalSetting,
+    showDateTimeFormat,
     numberToWords,
     capitalizeFirstLetter,
     showDateFormat,
@@ -53,16 +54,33 @@ const OrderInvoice = () => {
         className="bg-white dark:bg-gray-800 mb-4 p-6 lg:p-8 rounded-xl shadow-sm overflow-hidden"
       >
         {!loading && (
-          <>
+          <div className="">
             <div className="flex lg:flex-row md:flex-row flex-col lg:items-center justify-between pb-4 border-b border-gray-50 dark:border-gray-700 dark:text-gray-300">
               <h1 className="font-bold font-serif text-xl uppercase">
                 <h2 className="w-24 h-20">
-                  <img src={logo} alt="Logo" width="110" />
+                  {mode === "dark" ? (
+                    <img src={logo} alt="Logo" width="110" />
+                  ) : (
+                    <img src={logo} alt="Logo" width="110" />
+                  )}
                 </h2>
                 {t("InvoicePageTittle")}
+                {/* <p className="text-xs mt-1 text-black">
+                  {t("InvoiceStatus")}
+                  <span className="pl-2 font-medium text-xs capitalize">
+                    {" "}
+                    <Status status={data.status} />
+                  </span>
+                </p> */}
               </h1>
-
               <div className="sm:text-right lg:text-right text-left">
+                {/* <h2 className="lg:flex lg:justify-end text-lg font-serif font-semibold mt-4 lg:mt-0 lg:ml-0 md:mt-0">
+                  {mode === "dark" ? (
+                    <img src={logo} alt="Logo" width="110" />
+                  ) : (
+                    <img src={logo} alt="Logo" width="110" />
+                  )}
+                </h2> */}
                 <p className="text-sm text-black dark:text-gray-400 mt-2">
                   {globalSetting?.shop_name} <br />
                   {globalSetting?.address} <br />
@@ -72,96 +90,83 @@ const OrderInvoice = () => {
                 </p>
               </div>
             </div>
-
             <div className="flex lg:flex-row md:flex-row flex-col justify-between pt-4">
-              <div className="mb-3 flex flex-col">
-                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500">
+              <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
+                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoiceDate")}
                 </span>
-                <span className="text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 block">
                   {showDateFormat(data?.createdAt)}
                 </span>
               </div>
-
-              <div className="mb-3 flex flex-col">
-                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500">
-                  {(data?.user_info?.city?.toLowerCase().trim() || "") ===
-                  "delhi"
-                    ? "GST No"
-                    : "IGST No"}
+              <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
+                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
+                  {(data?.user_info?.city?.toString()?.toLowerCase().trim() || "") === "delhi" ? "GST No" : "IGST No"}
                 </span>
-                <span className="text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 block">
                   {globalSetting?.vat_number}
                 </span>
               </div>
-
-              <div className="mb-3 flex flex-col">
-                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500">
-                  Drug License No
+              <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
+                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
+                  {"Drug License No"}
                 </span>
-                <span className="text-sm text-black dark:text-gray-400">
-                  PTG-149905 (21),PTG-149904 (20)
+                <span className="text-sm text-black dark:text-gray-400 block">
+                  {"PTG-149905 (21),PTG-149904 (20)"}
                 </span>
               </div>
-
-              <div className="mb-3 flex flex-col">
-                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500">
+              <div className="mb-3 md:mb-0 lg:mb-0 flex flex-col">
+                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoiceNo")}
                 </span>
-                <span className="text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 block">
                   #{data?.invoice}
                 </span>
               </div>
-
               <div className="flex flex-col sm:text-right lg:text-right text-left">
-                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500">
-                  Customer Name
+                <span className="font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
+                  {"Customer Name"}
                 </span>
-                <span className="text-sm text-black dark:text-gray-400">
-                  Mr./Mrs. {data?.user_info?.name} <br />
-                  {data?.user_info?.email} <br />
-                  {data?.user_info?.contact} <br />
-                  {data?.user_info?.flat},{" "}
-                  {data?.user_info?.address?.substring(0, 30)} <br />
-                  {data?.user_info?.landmark}, {data?.user_info?.city} <br />
-                  {data?.user_info?.district}, {data?.user_info?.state},{" "}
-                  {data?.user_info?.country}, {data?.user_info?.zipCode}
+                <span className="text-sm text-black dark:text-gray-400 block">
+                  {"Mr./Mrs. "}{data?.user_info?.name} <br />
+                  {data?.user_info?.email}<br/>
+                  <span className="ml-2">{data?.user_info?.contact}</span>
+                  <br />
+                  {data?.user_info?.flat}{", "}{data?.user_info?.address?.substring(0, 30)}
+                  <br />
+                  {data?.user_info?.landmark}{", "}{data?.user_info?.city}
+                  <br />
+                  {data?.user_info?.district}, {data?.user_info?.state}, {data?.user_info?.country},{" "}
+                  {data?.user_info?.zipCode}
                 </span>
               </div>
             </div>
-          </>
+          </div>
         )}
-
         <div>
           {loading ? (
             <Loading loading={loading} />
           ) : error ? (
-            <span className="text-red-500 text-center mx-auto">{error}</span>
+            <span className="text-center mx-auto text-red-500">{error}</span>
           ) : (
             <TableContainer className="my-8">
               <Table>
                 <TableHeader>
                   <tr className="bg-white">
                     <TableCell className="text-black">{t("Sr")}</TableCell>
-                    <TableCell className="text-center text-black">HSN</TableCell>
-                    <TableCell className="text-center text-black">
-                      Reference No
-                    </TableCell>
-                    <TableCell className="text-center text-black">
-                      Product Title
-                    </TableCell>
+                    <TableCell className="text-center text-black">{"HSN"}</TableCell>
+                    <TableCell className="text-center text-black">{"Refrence No"}</TableCell>
+                    <TableCell className="text-center text-black">Product Title</TableCell>
+                    {/* <TableCell className="text-center text-black">MFR</TableCell> */}
                     <TableCell className="text-center text-black">
                       {t("Quantity")}
                     </TableCell>
                     <TableCell className="text-center text-black">
                       {t("ItemPrice")}
                     </TableCell>
-                    <TableCell className="text-right text-black">
-                      {t("Amount")}
-                    </TableCell>
+                    <TableCell className="text-right text-black">{t("Amount")}</TableCell>
                   </tr>
                 </TableHeader>
-
                 <Invoice
                   data={data}
                   currency={currency}
@@ -175,80 +180,62 @@ const OrderInvoice = () => {
         {!loading && (
           <div className="border rounded-xl border-gray-100 p-8 py-6 bg-white dark:bg-gray-900 dark:border-gray-800">
             <div className="flex lg:flex-row md:flex-row flex-col justify-between">
-
-              <div className="flex flex-col mb-3">
-                <span className="font-bold text-sm uppercase text-black dark:text-gray-500">
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoicepaymentMethod")}
                 </span>
-                <span className="font-semibold text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 font-semibold font-serif block">
                   {data.paymentMethod}
                 </span>
               </div>
-
               {data.paymentMethod === "Cash" && (
-                <div className="flex flex-col mb-3">
-                  <span className="font-bold text-sm uppercase text-black dark:text-gray-500">
-                    COD Charge
+                <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                  <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
+                    {"COD Charge"}
                   </span>
-                  <span className="font-semibold text-sm text-black dark:text-gray-400">
-                    {currency}60
+                  <span className="text-sm text-black dark:text-gray-400 font-semibold font-serif block">
+                    {currency}
+                    {"60"}
                   </span>
                 </div>
               )}
-
-              <div className="flex flex-col mb-3">
-                <span className="font-bold text-sm uppercase text-black dark:text-gray-500">
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("ShippingCost")}
                 </span>
-                <span className="font-semibold text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 font-semibold font-serif block">
                   {currency}
                   {getNumberTwo(data.shippingCost)}
                 </span>
               </div>
-
-              <div className="flex flex-col mb-3">
-                <span className="font-bold text-sm uppercase text-black dark:text-gray-500">
+              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoiceDicount")}
                 </span>
-                <span className="font-semibold text-sm text-black dark:text-gray-400">
+                <span className="text-sm text-black dark:text-gray-400 font-semibold font-serif block">
                   {currency}
                   {getNumberTwo(data.discount)}
                 </span>
               </div>
-
-              <div className="flex flex-col">
-                <span className="font-bold text-sm uppercase text-black dark:text-gray-500">
+              <div className="flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoiceTotalAmount")}
                 </span>
-                <span className="text-xl font-bold text-black dark:text-emerald-500">
+                <span className="text-xl font-serif font-bold text-black dark:text-emerald-500 block">
                   {currency}
-                  {getNumberTwo(
-                    Math.floor(data.total) +
-                      (data.total % 1 >= 0.5 ? 1 : 0)
-                  )}
+                  {getNumberTwo(Math.floor(data.total) + (data.total % 1 >= 0.5 ? 1 : 0))}
                 </span>
               </div>
-
             </div>
-
-            <div className="w-full text-right font-serif font-semibold text-black dark:text-gray-400 mt-2">
-              {capitalizeFirstLetter(
-                numberToWords(
-                  getNumberTwo(
-                    Math.floor(data.total) +
-                      (data.total % 1 >= 0.5 ? 1 : 0)
-                  )
-                )
-              )}{" "}
-              Only
+            <div className="w-full text-right text-black dark:text-gray-400 font-semibold font-serif mt-2">
+              {capitalizeFirstLetter(numberToWords(getNumberTwo(Math.floor(data.total) + (data.total % 1 >= 0.5 ? 1 : 0))))}{" Only"}
             </div>
           </div>
         )}
       </div>
-
       {!loading && (
         <div className="mb-4 mt-3 flex justify-end">
-          <PDFDownloadLink
+          {/* <PDFDownloadLink
             document={
               <InvoiceForDownload
                 t={t}
@@ -263,11 +250,11 @@ const OrderInvoice = () => {
             }
             fileName="Invoice"
           >
-            {({ loading }) =>
+            {({ blob, url, loading, error }) =>
               loading ? (
                 "Loading..."
               ) : (
-                <button className="flex items-center text-sm font-medium px-5 py-2 rounded-md text-white bg-emerald-500 hover:bg-emerald-600">
+                <button className="flex items-center text-sm leading-5 transition-colors duration-150 font-medium focus:outline-none px-5 py-2 rounded-md text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600  w-auto cursor-pointer">
                   Download Invoice
                   <span className="ml-2 text-base">
                     <IoCloudDownloadOutline />
@@ -275,11 +262,11 @@ const OrderInvoice = () => {
                 </button>
               )
             }
-          </PDFDownloadLink>
+          </PDFDownloadLink> */}
 
           <ReactToPrint
             trigger={() => (
-              <button className="ml-3 flex items-center text-sm px-5 py-2 rounded-md text-white bg-emerald-500 hover:bg-emerald-600">
+              <button className="flex items-center text-sm leading-5 transition-colors duration-150 font-medium focus:outline-none px-5 py-2 rounded-md text-white bg-emerald-500 border border-transparent active:bg-emerald-600 hover:bg-emerald-600  w-auto">
                 {t("PrintInvoice")}
                 <span className="ml-2">
                   <FiPrinter />
