@@ -188,7 +188,7 @@ const OrderInvoice = () => {
                   {data.paymentMethod}
                 </span>
               </div>
-              {data.paymentMethod === "Cash" && (
+              /* {data.paymentMethod === "Cash" && (
                 <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
                   <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                     {"COD Charge"}
@@ -198,7 +198,7 @@ const OrderInvoice = () => {
                     {"60"}
                   </span>
                 </div>
-              )}
+              )} */
               <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("ShippingCost")}
