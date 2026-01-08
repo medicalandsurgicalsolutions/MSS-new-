@@ -132,13 +132,6 @@ const styles = StyleSheet.create({
     fontSize: 9,
     color: "#6b7280",
   },
-  infoCost: {
-    fontSize: 10,
-    color: "#6b7280",
-    marginLeft: "4%",
-    marginTop: 7,
-    width: "25%",
-  },
   totalAmount: {
     fontSize: 10,
     color: "#ef4444",
@@ -163,7 +156,7 @@ const InvoiceForDownload = ({
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        
+
         {/* HEADER */}
         <View style={styles.invoiceFirst}>
           <View>
@@ -235,32 +228,24 @@ const InvoiceForDownload = ({
           ))}
         </View>
 
-        {/* TOTAL DETAILS */}
+        {/* TOTAL DETAILS - FINAL */}
         <View style={styles.invoiceThird}>
-          <View style={{ width: "25%" }}>
+          
+          <View style={{ width: "50%" }}>
             <Text style={styles.title}>{t("InvoicepaymentMethod")}</Text>
-            <Text style={{ fontSize: 10, color: "#0e9f6e" }}>{data?.paymentMethod}</Text>
+            <Text style={{ fontSize: 10, color: "#0e9f6e" }}>
+              {data?.paymentMethod}
+            </Text>
           </View>
 
-          {/* <View style={{ width: "25%" }}>
-            <Text style={styles.title}>Sub Total</Text>
-            <Text style={styles.infoCost}>{currency}{getNumberTwo(data?.subTotal)}</Text>
-          </View>
-
-          <View style={{ width: "25%" }}>
-            <Text style={styles.title}>{t("ShippingCost")}</Text>
-            <Text style={styles.infoCost}>{currency}{getNumberTwo(data?.shippingCost)}</Text>
-          </View>
-
-          <View style={{ width: "25%" }}>
-            <Text style={styles.title}>{t("discount")}</Text>
-            <Text style={styles.infoCost}>{currency}{getNumberTwo(data?.discount)}</Text>
-          </View> */}
-
-          <View style={{ width: "25%" }}>
+          <View style={{ width: "50%" }}>
             <Text style={styles.title}>Total</Text>
-            <Text style={styles.totalAmount}>{currency}{getNumberTwo(data?.total)}</Text>
+            <Text style={styles.totalAmount}>
+              {currency}
+              {getNumberTwo(data?.total)}
+            </Text>
           </View>
+
         </View>
 
         {/* AMOUNT IN WORDS */}
