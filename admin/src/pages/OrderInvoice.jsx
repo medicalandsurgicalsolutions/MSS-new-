@@ -199,7 +199,7 @@ const OrderInvoice = () => {
                   </span>
                 </div>
               )} */}
-              <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
+              {/* <div className="mb-3 md:mb-0 lg:mb-0  flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("ShippingCost")}
                 </span>
@@ -217,6 +217,15 @@ const OrderInvoice = () => {
                   {getNumberTwo(data.discount)}
                 </span>
               </div>
+              <div className="flex flex-col sm:flex-wrap">
+                <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
+                  {t("InvoiceTotalAmount")}
+                </span>
+                <span className="text-xl font-serif font-bold text-black dark:text-emerald-500 block">
+                  {currency}
+                  {getNumberTwo(Math.floor(data.total) + (data.total % 1 >= 0.5 ? 1 : 0))}
+                </span>
+              </div> */}
               <div className="flex flex-col sm:flex-wrap">
                 <span className="mb-1 font-bold font-serif text-sm uppercase text-black dark:text-gray-500 block">
                   {t("InvoiceTotalAmount")}
