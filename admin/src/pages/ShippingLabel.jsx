@@ -151,14 +151,7 @@ export default function ShippingLabel() {
                     : "Cash on Delivery"}
                 </span>
               </p>
-              {data?.paymentMethod === "Cash" && (
-                <p className="">
-                  <span className="">COD Charge: </span>
-                  <span className="font-semibold">
-                    {"60"} INR
-                  </span>
-                </p>
-              )}
+              
               <p className="">
                 <span className="">Total Price: </span>
                 <span className="font-semibold">
